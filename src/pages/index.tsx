@@ -1,5 +1,5 @@
-import SampleComponent from '@src/components/SampleComponent'
+import CustomButton from '@src/components/CustomButton'
 
 export default function Home() {
-  return <SampleComponent />
+  return <CustomButton />
 }
