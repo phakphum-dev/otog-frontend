@@ -1,5 +1,9 @@
-import CustomButton from '@src/components/CustomButton'
+import { ToggleColorModeButton } from '@src/components/ToggleColorModeButton'
+import { withColorMode } from '@src/theme/ColorMode'
 
-export default function Home() {
-  return <CustomButton />
+function Home() {
+  return <ToggleColorModeButton />
 }
+
+export default withColorMode(Home)
+export { getServerSideProps } from '@src/theme/ColorMode'
