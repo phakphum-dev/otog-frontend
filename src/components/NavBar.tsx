@@ -16,6 +16,9 @@ export const NavBar = () => {
               <Link as={NextLink} href="/problem">
                 โจทย์
               </Link>
+              <Link as={NextLink} href="/submission">
+                ผลตรวจ
+              </Link>
               <ToggleColorModeButton />
             </Stack>
           </Flex>
