@@ -6,7 +6,7 @@ import { theme } from '@src/theme'
 import 'focus-visible/dist/focus-visible'
 // import '../styles/globals.css'
 
-function MyApp({ Component, pageProps }: AppProps) {
+export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
@@ -22,5 +22,3 @@ function MyApp({ Component, pageProps }: AppProps) {
     </>
   )
 }
-
-export default MyApp
