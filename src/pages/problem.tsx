@@ -1,8 +1,7 @@
 import { Container } from '@chakra-ui/react'
-import { withColorMode } from '@src/theme/ColorMode'
 import { ProblemTable } from '@src/components/ProblemTable'
 
-function ProblemPage() {
+export default function ProblemPage() {
   return (
     <Container>
       <ProblemTable />
@@ -10,5 +9,4 @@ function ProblemPage() {
   )
 }
 
-export default withColorMode(ProblemPage)
 export { getServerSideProps } from '@src/theme/ColorMode'

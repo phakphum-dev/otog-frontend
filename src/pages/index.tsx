@@ -1,9 +1,7 @@
-import { ToggleColorModeButton } from '@src/components/ToggleColorModeButton'
-import { withColorMode } from '@src/theme/ColorMode'
+import { Container } from '@chakra-ui/react'
 
-function HomePage() {
-  return <ToggleColorModeButton />
+export default function HomePage() {
+  return <Container>หน้าแรก</Container>
 }
 
-export default withColorMode(HomePage)
 export { getServerSideProps } from '@src/theme/ColorMode'
