@@ -1,29 +1,136 @@
-import { Box, Container, Flex, Link, Stack } from '@chakra-ui/react'
-import { ToggleColorModeButton } from './ToggleColorModeButton'
+import {
+  Avatar,
+  Box,
+  Container,
+  Heading,
+  HStack,
+  Link,
+  Menu,
+  MenuItem,
+  MenuButton,
+  MenuList,
+  Spacer,
+  Button,
+  IconButton,
+  useDisclosure,
+  useBreakpointValue,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  DrawerBody,
+  VStack,
+  useColorModeValue,
+  useTheme,
+} from '@chakra-ui/react'
 import NextLink from 'next/link'
+import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
+import { useEffect, useRef } from 'react'
+import { useRouter } from 'next/dist/client/router'
 
 export const NavBar = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const isMobile = useBreakpointValue({ base: true, md: false }) as boolean
+  const btnRef = useRef(null)
+
+  const { pathname } = useRouter()
+  useEffect(() => {
+    onClose()
+  }, [isMobile, pathname])
+
+  const bg = useColorModeValue('white', 'gray.800')
+
   return (
     <>
       <Box bg="transparend" h={14} w="100%" />
-      <Box position="fixed" my={2} h={10} top={0} left={0} w="100%">
+      <Box
+        zIndex={10}
+        position="fixed"
+        py={2}
+        h={14}
+        top={0}
+        left={0}
+        w="100%"
+        borderBottom="1px"
+        borderColor="gray.200"
+        bg={bg}
+      >
         <Container>
-          <Flex justify="space-between" align="center">
-            <Link as={NextLink} href="/">
-              OTOG
-            </Link>
-            <Stack direction="row" spacing={8} align="center">
+          <HStack align="start">
+            <Heading size="md" p={2}>
+              <Link as={NextLink} href="/">
+                OTOG
+              </Link>
+            </Heading>
+            <Spacer />
+            <IconButton
+              display={{ md: 'none' }}
+              variant="ghost"
+              aria-label="Open menu"
+              p={2}
+              onClick={onOpen}
+              icon={<HamburgerIcon />}
+              ref={btnRef}
+            />
+            <HStack hidden={isMobile} spacing={8} p={2}>
               <Link as={NextLink} href="/problem">
                 โจทย์
               </Link>
               <Link as={NextLink} href="/submission">
                 ผลตรวจ
               </Link>
-              <ToggleColorModeButton />
-            </Stack>
-          </Flex>
+              <Link as={NextLink} href="/contest">
+                แข่งขัน
+              </Link>
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  variant="link"
+                  rightIcon={<ChevronDownIcon />}
+                >
+                  <Avatar size="xs" />
+                </MenuButton>
+                <MenuList>
+                  <NextLink href="/profile">
+                    <MenuItem>โปรไฟล์</MenuItem>
+                  </NextLink>
+                  <MenuItem color="red.500">ออกจากระบบ</MenuItem>
+                </MenuList>
+              </Menu>
+            </HStack>
+          </HStack>
         </Container>
       </Box>
+      <Drawer
+        isOpen={isMobile && isOpen}
+        placement="right"
+        onClose={onClose}
+        finalFocusRef={btnRef}
+      >
+        <DrawerOverlay>
+          <DrawerContent>
+            <DrawerCloseButton />
+            <DrawerBody>
+              <VStack spacing={8} p={2} align="flex-start">
+                <Avatar size="xs" />
+                <Link as={NextLink} href="/problem">
+                  โจทย์
+                </Link>
+                <Link as={NextLink} href="/submission">
+                  ผลตรวจ
+                </Link>
+                <Link as={NextLink} href="/contest">
+                  แข่งขัน
+                </Link>
+                <Link as={NextLink} href="/profile">
+                  โปรไฟล์
+                </Link>
+                <Link color="red.500">ออกจากระบบ</Link>
+              </VStack>
+            </DrawerBody>
+          </DrawerContent>
+        </DrawerOverlay>
+      </Drawer>
     </>
   )
 }
