@@ -3,7 +3,7 @@ import { FaFileUpload } from 'react-icons/fa'
 
 export type SubmitButtonProps = Omit<IconButtonProps, 'aria-label'>
 
-export const SubmitButton: React.FC<SubmitButtonProps> = (props) => {
+export function SubmitButton(props: SubmitButtonProps) {
   return (
     <IconButton aria-label="Upload file" icon={<FaFileUpload />} {...props} />
   )

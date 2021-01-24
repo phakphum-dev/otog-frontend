@@ -21,14 +21,13 @@ import {
   DrawerBody,
   VStack,
   useColorModeValue,
-  useTheme,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
 import { useEffect, useRef } from 'react'
 import { useRouter } from 'next/dist/client/router'
 
-export const NavBar = () => {
+export function NavBar() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const isMobile = useBreakpointValue({ base: true, md: false }) as boolean
   const btnRef = useRef(null)

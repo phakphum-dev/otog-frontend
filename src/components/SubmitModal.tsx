@@ -21,7 +21,7 @@ export interface SubmitModal {
   isOpen: boolean
 }
 
-export const SubmitModal: React.FC<SubmitModal> = (props) => {
+export function SubmitModal(props: SubmitModal) {
   const { problem, onClose, isOpen } = props
 
   const [file, setFile] = useState<File>()

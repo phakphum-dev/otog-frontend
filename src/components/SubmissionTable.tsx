@@ -59,7 +59,7 @@ const initialSubmission: SubmissionDto = {
   language: 'c',
 }
 
-export const SubmissionTable = () => {
+export function SubmissionTable() {
   const [modalSubmission, setModalSubmission] = useState<SubmissionDto>(
     initialSubmission
   )
@@ -105,7 +105,7 @@ export interface SubmissionRowProps {
   setModalSubmission: Dispatch<SetStateAction<SubmissionDto>>
 }
 
-export const SubmissionRow: React.FC<SubmissionRowProps> = (props) => {
+export const SubmissionRow = (props: SubmissionRowProps) => {
   const { submission, onOpen, setModalSubmission } = props
 
   const onModalOpen = useCallback(() => {

@@ -27,7 +27,7 @@ const initialProblem: ProblemDto = {
   memory: 0,
 }
 
-export const ProblemTable = () => {
+export function ProblemTable() {
   const [modalProblem, setModalProblem] = useState<ProblemDto>(initialProblem)
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -64,7 +64,7 @@ export interface ProblemRowProps {
   setModalProblem: Dispatch<SetStateAction<ProblemDto>>
 }
 
-export const ProblemRow: React.FC<ProblemRowProps> = (props) => {
+export function ProblemRow(props: ProblemRowProps) {
   const { problem, onOpen, setModalProblem } = props
   const onModalOpen = useCallback(() => {
     onOpen()

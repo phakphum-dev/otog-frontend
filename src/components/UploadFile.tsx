@@ -11,7 +11,7 @@ export interface UploadFileProps extends InputProps {
   fileName?: string
 }
 
-export const UploadFile: React.FC<UploadFileProps> = (props) => {
+export function UploadFile(props: UploadFileProps) {
   const { fileName, ...rest } = props
   const inputRef = useRef<HTMLInputElement>(null)
   const openFileSelect = useCallback(() => {

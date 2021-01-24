@@ -17,7 +17,7 @@ export interface CodeModalProps extends Omit<ModalProps, 'children'> {
   submission: SubmissionDto
 }
 
-export const CodeModal: React.FC<CodeModalProps> = (props) => {
+export function CodeModal(props: CodeModalProps) {
   const { submission, onClose, isOpen } = props
   return (
     <Modal onClose={onClose} isOpen={isOpen} size="xl">
