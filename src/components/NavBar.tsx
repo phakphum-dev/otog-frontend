@@ -1,3 +1,7 @@
+import NextLink from 'next/link'
+import { useRouter } from 'next/router'
+import { useEffect, useRef } from 'react'
+
 import {
   Avatar,
   Box,
@@ -22,10 +26,7 @@ import {
   VStack,
   useColorModeValue,
 } from '@chakra-ui/react'
-import NextLink from 'next/link'
 import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
-import { useEffect, useRef } from 'react'
-import { useRouter } from 'next/dist/client/router'
 
 export function NavBar() {
   const { isOpen, onOpen, onClose } = useDisclosure()

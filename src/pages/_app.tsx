@@ -5,7 +5,7 @@ import { ChakraProvider, cookieStorageManager, Flex } from '@chakra-ui/react'
 import { theme } from '@src/theme'
 import 'focus-visible/dist/focus-visible'
 
-import { NavBar } from '@src/components/Navbar'
+import { NavBar } from '@src/components/NavBar'
 // import '../styles/globals.css'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
