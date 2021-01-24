@@ -50,9 +50,8 @@ export function NavBar() {
         top={0}
         left={0}
         w="100%"
-        borderBottom="1px"
-        borderColor="gray.200"
         bg={bg}
+        boxShadow="base"
       >
         <Container>
           <HStack align="start">
