@@ -8,3 +8,5 @@ export default function ProfilePage() {
     </Container>
   )
 }
+
+export { getServerSideProps } from '@src/theme/ColorMode'
