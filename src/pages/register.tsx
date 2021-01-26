@@ -2,7 +2,6 @@ import NextLink from 'next/link'
 import {
   Box,
   Button,
-  Center,
   Container,
   Divider,
   Img,
@@ -10,7 +9,7 @@ import {
   Stack,
 } from '@chakra-ui/react'
 
-export default function LoginPage() {
+export default function RegisterPage() {
   return (
     <Container>
       <Stack align="center" mt={16}>
@@ -19,13 +18,10 @@ export default function LoginPage() {
           <Stack spacing={4}>
             <Input type="username" placeholder="ชื่อผู้ใช้" />
             <Input type="password" placeholder="รหัสผ่าน" />
+            <Input placeholder="ชื่อที่ใช้แสดง" />
             <Button colorScheme="orange" type="submit">
-              เข้าสู่ระบบ
+              ลงทะเบียน
             </Button>
-            <Divider />
-            <NextLink href="/register">
-              <Button>ลงทะเบียน</Button>
-            </NextLink>
           </Stack>
         </Box>
       </Stack>
