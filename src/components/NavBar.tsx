@@ -40,6 +40,8 @@ export function NavBar() {
 
   const bg = useColorModeValue('white', 'gray.800')
 
+  const { isLogin } = { isLogin: false }
+
   return (
     <>
       <Box bg="transparend" h={14} w="100%" />
@@ -81,21 +83,27 @@ export function NavBar() {
               <Link as={NextLink} href="/contest">
                 แข่งขัน
               </Link>
-              <Menu>
-                <MenuButton
-                  as={Button}
-                  variant="link"
-                  rightIcon={<ChevronDownIcon />}
-                >
-                  <Avatar size="xs" />
-                </MenuButton>
-                <MenuList>
-                  <NextLink href="/profile">
-                    <MenuItem>โปรไฟล์</MenuItem>
-                  </NextLink>
-                  <MenuItem color="red.500">ออกจากระบบ</MenuItem>
-                </MenuList>
-              </Menu>
+              {isLogin ? (
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    variant="link"
+                    rightIcon={<ChevronDownIcon />}
+                  >
+                    <Avatar size="xs" />
+                  </MenuButton>
+                  <MenuList>
+                    <NextLink href="/profile">
+                      <MenuItem>โปรไฟล์</MenuItem>
+                    </NextLink>
+                    <MenuItem color="red.500">ออกจากระบบ</MenuItem>
+                  </MenuList>
+                </Menu>
+              ) : (
+                <Link as={NextLink} href="/login">
+                  เข้าสู่ระบบ
+                </Link>
+              )}
             </HStack>
           </HStack>
         </Container>
