@@ -27,7 +27,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      <ChakraProvider colorModeManager={colorModeManager} theme={theme}>
+      <ChakraProvider theme={theme} colorModeManager={colorModeManager}>
         <Flex direction="column" minH="100vh">
           <Flex direction="column" flex={1}>
             <NavBar />
