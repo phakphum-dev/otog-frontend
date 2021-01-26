@@ -75,8 +75,8 @@ export function SubmissionTable() {
             <Th>ชื่อ</Th>
             <Th>ข้อ</Th>
             <Th>ผลตรวจ</Th>
-            <Th>เวลารวม</Th>
-            <Th>คะแนน</Th>
+            <Th isNumeric>เวลารวม</Th>
+            {/* <Th>คะแนน</Th> */}
           </Tr>
         </Thead>
         <Tbody>
@@ -125,8 +125,8 @@ export const SubmissionRow = (props: SubmissionRowProps) => {
         <Link href="#">{submission.problem.name}</Link>
       </Td>
       <Td>{submission.result}</Td>
-      <Td>{submission.timeUsed}</Td>
-      <Td>{submission.score}</Td>
+      <Td isNumeric>{submission.timeUsed}</Td>
+      {/* <Td>{submission.score}</Td> */}
     </Tr>
   )
 }
