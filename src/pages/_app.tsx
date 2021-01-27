@@ -8,6 +8,9 @@ import 'focus-visible/dist/focus-visible'
 import { NavBar } from '@src/components/NavBar'
 // import '../styles/globals.css'
 
+import { SWRConfig } from 'swr'
+import { get } from '@src/utils/api'
+
 export default function MyApp({ Component, pageProps }: AppProps) {
   const { colorModeCookie } = pageProps
   const colorModeManager =
@@ -27,14 +30,16 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      <ChakraProvider theme={theme} colorModeManager={colorModeManager}>
-        <Flex direction="column" minH="100vh">
-          <Flex direction="column" flex={1}>
-            <NavBar />
-            <Component {...pageProps} />
+      <SWRConfig value={{ fetcher: get }}>
+        <ChakraProvider theme={theme} colorModeManager={colorModeManager}>
+          <Flex direction="column" minH="100vh">
+            <Flex direction="column" flex={1}>
+              <NavBar />
+              <Component {...pageProps} />
+            </Flex>
           </Flex>
-        </Flex>
-      </ChakraProvider>
+        </ChakraProvider>
+      </SWRConfig>
     </>
   )
 }

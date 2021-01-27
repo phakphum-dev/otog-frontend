@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useState } from 'react'
+import { Dispatch, memo, SetStateAction, useCallback, useState } from 'react'
 import {
   Link,
   Table,
@@ -13,12 +13,7 @@ import {
 import { SubmitButton } from './SubmitButton'
 import { SubmitModal } from './SubmitModal'
 import { ProblemDto } from '@src/utils/api/Problem'
-
-const problems: ProblemDto[] = [
-  { id: 3, name: 'Frog Frog Frog', timeLimit: 1, memory: 64 },
-  { id: 2, name: 'ชนแก้วว', timeLimit: 1, memory: 128 },
-  { id: 1, name: 'สลับราคา', timeLimit: 1, memory: 256 },
-]
+import useSWR from 'swr'
 
 const initialProblem: ProblemDto = {
   id: 0,
@@ -26,10 +21,18 @@ const initialProblem: ProblemDto = {
   timeLimit: 0,
   memory: 0,
 }
+interface ProblemTableProps {
+  initialProblems?: ProblemDto[]
+}
 
-export function ProblemTable() {
+export function ProblemTable(props: ProblemTableProps) {
+  const { initialProblems } = props
   const [modalProblem, setModalProblem] = useState<ProblemDto>(initialProblem)
   const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const { data: problems } = useSWR<ProblemDto[]>('problem', {
+    initialData: initialProblems,
+  })
 
   return (
     <>
@@ -43,14 +46,11 @@ export function ProblemTable() {
           </Tr>
         </Thead>
         <Tbody>
-          {problems.map((problem) => (
-            <ProblemRow
-              problem={problem}
-              key={problem.id}
-              onOpen={onOpen}
-              setModalProblem={setModalProblem}
-            />
-          ))}
+          <ProblemsRows
+            problems={problems}
+            onOpen={onOpen}
+            setModalProblem={setModalProblem}
+          />
         </Tbody>
       </Table>
       <SubmitModal problem={modalProblem} isOpen={isOpen} onClose={onClose} />
@@ -58,13 +58,39 @@ export function ProblemTable() {
   )
 }
 
-export interface ProblemRowProps {
-  problem: ProblemDto
+interface ModalProblemProps {
   onOpen: () => void
   setModalProblem: Dispatch<SetStateAction<ProblemDto>>
 }
 
-export function ProblemRow(props: ProblemRowProps) {
+interface ProblemRowsProps extends ModalProblemProps {
+  problems: ProblemDto[] | undefined
+}
+
+const ProblemsRows = memo(
+  (props: ProblemRowsProps) => {
+    const { problems, onOpen, setModalProblem } = props
+    return (
+      <>
+        {problems?.map((problem) => (
+          <ProblemRow
+            key={problem.id}
+            problem={problem}
+            onOpen={onOpen}
+            setModalProblem={setModalProblem}
+          />
+        ))}
+      </>
+    )
+  },
+  (prevProps, nextProps) => prevProps.problems === nextProps.problems
+)
+
+interface ProblemRowProps extends ModalProblemProps {
+  problem: ProblemDto
+}
+
+function ProblemRow(props: ProblemRowProps) {
   const { problem, onOpen, setModalProblem } = props
   const onModalOpen = useCallback(() => {
     onOpen()
