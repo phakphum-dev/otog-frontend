@@ -8,8 +8,15 @@ import 'focus-visible/dist/focus-visible'
 import { NavBar } from '@src/components/NavBar'
 // import '../styles/globals.css'
 
+import '@src/styles/nprogress.css'
+import dynamic from 'next/dynamic'
+
 import { SWRConfig } from 'swr'
 import { get } from '@src/utils/api'
+
+const TopProgressBar = dynamic(() => import('@src/components/ProgressBar'), {
+  ssr: false,
+})
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const { colorModeCookie } = pageProps
@@ -32,6 +39,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <SWRConfig value={{ fetcher: get }}>
         <ChakraProvider theme={theme} colorModeManager={colorModeManager}>
+          <TopProgressBar />
           <Flex direction="column" minH="100vh">
             <Flex direction="column" flex={1}>
               <NavBar />
