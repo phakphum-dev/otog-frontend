@@ -1,12 +1,5 @@
-import {
-  Button,
-  Center,
-  Container,
-  Heading,
-  Img,
-  Stack,
-  Text,
-} from '@chakra-ui/react'
+import { Center, Container, Heading, Img, Stack, Text } from '@chakra-ui/react'
+import { OrangeButton } from '@src/components/OrangeButton'
 
 export default function HomePage() {
   return (
@@ -19,7 +12,7 @@ export default function HomePage() {
           <Text color="gray.500" fontSize="md">
             Code and Create algorithms efficiently.
           </Text>
-          <Button width="150px">{'>_ Sign Up'}</Button>
+          <OrangeButton width="150px">{'>_ Sign Up'}</OrangeButton>
         </Stack>
         <Center flex={1}>
           <Img src="/computer.svg" width="100%" />

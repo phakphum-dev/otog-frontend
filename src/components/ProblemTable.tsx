@@ -101,7 +101,7 @@ function ProblemRow(props: ProblemRowProps) {
     <Tr key={problem.id}>
       <Td>{problem.id}</Td>
       <Td>
-        <Link color="orange.400" href="#">
+        <Link color="otog" href="#">
           {problem.name}
           <br />({problem.timeLimit} วินาที {problem.memory} MB)
         </Link>

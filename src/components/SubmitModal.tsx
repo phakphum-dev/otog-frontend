@@ -10,10 +10,10 @@ import {
   FormControl,
   FormLabel,
   Select,
-  Button,
 } from '@chakra-ui/react'
 import { UploadFile } from './UploadFile'
 import { ProblemDto } from '@src/utils/api/Problem'
+import { OrangeButton } from './OrangeButton'
 
 export interface SubmitModal {
   problem: ProblemDto
@@ -64,7 +64,7 @@ export function SubmitModal(props: SubmitModal) {
         </ModalBody>
 
         <ModalFooter>
-          <Button onClick={onClose}>ส่ง</Button>
+          <OrangeButton onClick={onClose}>ส่ง</OrangeButton>
         </ModalFooter>
       </ModalContent>
     </Modal>

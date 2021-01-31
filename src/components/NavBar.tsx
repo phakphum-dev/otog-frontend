@@ -27,6 +27,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
+import { ToggleColorModeButton } from './ToggleColorModeButton'
 
 export function NavBar() {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -104,6 +105,7 @@ export function NavBar() {
                   เข้าสู่ระบบ
                 </Link>
               )}
+              <ToggleColorModeButton variant="link" />
             </HStack>
           </HStack>
         </Container>
