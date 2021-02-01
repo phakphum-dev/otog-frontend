@@ -1,11 +1,11 @@
-import { Container } from '@chakra-ui/react'
+import { PageContainer } from '@src/components/PageContainer'
 import { ToggleColorModeButton } from '@src/components/ToggleColorModeButton'
 
 export default function ProfilePage() {
   return (
-    <Container>
+    <PageContainer>
       <ToggleColorModeButton />
-    </Container>
+    </PageContainer>
   )
 }
 

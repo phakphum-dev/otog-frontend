@@ -1,10 +1,15 @@
-import { Center, Container, Heading, Img, Stack, Text } from '@chakra-ui/react'
+import { Center, Heading, Img, Stack, Text } from '@chakra-ui/react'
 import { OrangeButton } from '@src/components/OrangeButton'
+import { PageContainer } from '@src/components/PageContainer'
 
 export default function HomePage() {
   return (
-    <Container>
-      <Stack direction={{ base: 'column', md: 'row' }} spacing={16} mt={16}>
+    <PageContainer>
+      <Stack
+        direction={{ base: 'column', md: 'row' }}
+        spacing={16}
+        mt={{ base: 16, md: 32 }}
+      >
         <Stack spacing={6} flex={1}>
           <Heading as="h1" size="2xl">
             Become a god of Competitive Programming
@@ -18,7 +23,7 @@ export default function HomePage() {
           <Img src="/computer.svg" width="100%" />
         </Center>
       </Stack>
-    </Container>
+    </PageContainer>
   )
 }
 

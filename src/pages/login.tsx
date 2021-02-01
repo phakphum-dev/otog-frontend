@@ -1,18 +1,11 @@
 import NextLink from 'next/link'
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  Img,
-  Input,
-  Stack,
-} from '@chakra-ui/react'
+import { Box, Button, Divider, Img, Input, Stack } from '@chakra-ui/react'
 import { OrangeButton } from '@src/components/OrangeButton'
+import { PageContainer } from '@src/components/PageContainer'
 
 export default function LoginPage() {
   return (
-    <Container>
+    <PageContainer>
       <Stack align="center" mt={16}>
         <Img src="logo512.png" boxSize="100px" />
         <Box boxShadow="md" borderRadius="md" p={4}>
@@ -27,7 +20,7 @@ export default function LoginPage() {
           </Stack>
         </Box>
       </Stack>
-    </Container>
+    </PageContainer>
   )
 }
 
