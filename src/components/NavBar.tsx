@@ -5,9 +5,9 @@ import { useEffect, useRef } from 'react'
 import {
   Avatar,
   Box,
-  Container,
   Heading,
   HStack,
+  Image,
   Link,
   Menu,
   MenuItem,
@@ -28,6 +28,7 @@ import {
 } from '@chakra-ui/react'
 import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
 import { ToggleColorModeButton } from './ToggleColorModeButton'
+import { PageContainer } from './PageContainer'
 
 export function NavBar() {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -57,13 +58,23 @@ export function NavBar() {
         bg={bg}
         boxShadow="base"
       >
-        <Container>
+        <PageContainer>
           <HStack align="start">
-            <Heading size="md" p={2}>
-              <Link as={NextLink} href="/">
-                OTOG
-              </Link>
-            </Heading>
+            <NextLink href="/">
+              <HStack cursor="pointer">
+                <Image src="logo196.png" boxSize={8} my={1} />
+                <Heading size="md" py={2}>
+                  <Box
+                    display={{ base: 'none', md: 'inline-block', xl: 'none' }}
+                  >
+                    OTOG
+                  </Box>
+                  <Box display={{ base: 'none', xl: 'inline-block' }}>
+                    One Tambon One Grader
+                  </Box>
+                </Heading>
+              </HStack>
+            </NextLink>
             <Spacer />
             <IconButton
               display={{ md: 'none' }}
@@ -108,7 +119,7 @@ export function NavBar() {
               <ToggleColorModeButton variant="link" />
             </HStack>
           </HStack>
-        </Container>
+        </PageContainer>
       </Box>
       <Drawer
         isOpen={isMobile && isOpen}

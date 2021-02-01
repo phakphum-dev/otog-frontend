@@ -16,4 +16,14 @@ const colors = {
   },
 }
 
-export const theme = extendTheme({ colors })
+const sizes = {
+  container: {
+    sm: '640px',
+    md: '768px',
+    lg: '768px',
+    xl: '768px',
+    // xl: '1280px'
+  },
+}
+
+export const theme = extendTheme({ colors, sizes })
