@@ -22,6 +22,7 @@ const sizes = {
     md: '768px',
     lg: '768px',
     xl: '768px',
+    // lg: '1024px',
     // xl: '1280px'
   },
 }

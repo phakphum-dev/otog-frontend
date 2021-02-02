@@ -1,6 +1,6 @@
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 
 import {
   Avatar,
@@ -8,7 +8,6 @@ import {
   Heading,
   HStack,
   Image,
-  Link,
   Menu,
   MenuItem,
   MenuButton,
@@ -25,15 +24,28 @@ import {
   DrawerBody,
   VStack,
   useColorModeValue,
+  ButtonProps,
+  forwardRef,
 } from '@chakra-ui/react'
 import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
 import { ToggleColorModeButton } from './ToggleColorModeButton'
 import { PageContainer } from './PageContainer'
 
+const entries = [
+  { href: '/problem', title: 'โจทย์' },
+  { href: '/submission', title: 'ผลตรวจ' },
+  { href: '/contest', title: 'แข่งขัน' },
+]
+
+function isActive(href: string, pathname: string) {
+  return href.slice(1) === pathname.split('/')[1]
+}
+
 export function NavBar() {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const isMobile = useBreakpointValue({ base: true, md: false }) as boolean
   const btnRef = useRef(null)
+
+  const isMobile = useBreakpointValue({ base: true, md: false }) as boolean
 
   const { pathname } = useRouter()
   useEffect(() => {
@@ -43,6 +55,15 @@ export function NavBar() {
   const bg = useColorModeValue('white', 'gray.800')
 
   const { isLogin } = { isLogin: false }
+
+  const navItems = useMemo(
+    () =>
+      entries.map((entry) => ({
+        ...entry,
+        active: isActive(entry.href, pathname),
+      })),
+    [pathname]
+  )
 
   return (
     <>
@@ -59,7 +80,7 @@ export function NavBar() {
         boxShadow="base"
       >
         <PageContainer>
-          <HStack align="start">
+          <HStack>
             <NextLink href="/">
               <HStack cursor="pointer">
                 <Image src="logo196.png" boxSize={8} my={1} />
@@ -70,7 +91,8 @@ export function NavBar() {
                     OTOG
                   </Box>
                   <Box display={{ base: 'none', xl: 'inline-block' }}>
-                    One Tambon One Grader
+                    OTOG
+                    {/* One Tambon One Grader */}
                   </Box>
                 </Heading>
               </HStack>
@@ -86,15 +108,9 @@ export function NavBar() {
               ref={btnRef}
             />
             <HStack hidden={isMobile} spacing={8} p={2}>
-              <Link as={NextLink} href="/problem">
-                โจทย์
-              </Link>
-              <Link as={NextLink} href="/submission">
-                ผลตรวจ
-              </Link>
-              <Link as={NextLink} href="/contest">
-                แข่งขัน
-              </Link>
+              {navItems.map((item) => (
+                <NavItem {...item} />
+              ))}
               {isLogin ? (
                 <Menu>
                   <MenuButton
@@ -112,12 +128,13 @@ export function NavBar() {
                   </MenuList>
                 </Menu>
               ) : (
-                <Link as={NextLink} href="/login">
-                  เข้าสู่ระบบ
-                </Link>
+                <NavItem href="/login" title="เข้าสู่ระบบ" />
               )}
-              <ToggleColorModeButton variant="link" />
             </HStack>
+            <ToggleColorModeButton
+              variant="link"
+              display={{ base: 'none', md: 'inline-flex' }}
+            />
           </HStack>
         </PageContainer>
       </Box>
@@ -131,21 +148,18 @@ export function NavBar() {
           <DrawerContent>
             <DrawerCloseButton />
             <DrawerBody>
-              <VStack spacing={8} p={2} align="flex-start">
+              <VStack py={2} spacing={3} align="flex-start">
                 <Avatar size="xs" />
-                <Link as={NextLink} href="/problem">
-                  โจทย์
-                </Link>
-                <Link as={NextLink} href="/submission">
-                  ผลตรวจ
-                </Link>
-                <Link as={NextLink} href="/contest">
-                  แข่งขัน
-                </Link>
-                <Link as={NextLink} href="/profile">
-                  โปรไฟล์
-                </Link>
-                <Link color="red.500">ออกจากระบบ</Link>
+                {navItems.map((item) => (
+                  <DrawerItem key={item.href} {...item} />
+                ))}
+                {isLogin && <DrawerItem href="/profile" title="โปรไฟล์" />}
+                {isLogin ? (
+                  <DrawerButton color="red.500">ออกจากระบบ</DrawerButton>
+                ) : (
+                  <DrawerItem href="/login" title="เข้าสู่ระบบ" />
+                )}
+                <ToggleColorModeButton />
               </VStack>
             </DrawerBody>
           </DrawerContent>
@@ -154,3 +168,56 @@ export function NavBar() {
     </>
   )
 }
+interface ItemProps extends ButtonProps {
+  active?: boolean
+  href: string
+  title: string
+}
+
+function NavItem(props: ItemProps) {
+  const { pathname } = useRouter()
+  const { href, title, active = isActive(href, pathname), ...rest } = props
+
+  const color = useColorModeValue('gray.500', 'gray.400')
+  const activeColor = useColorModeValue('gray.700', 'white')
+
+  return (
+    <NextLink href={href} key={href}>
+      <Button
+        variant="link"
+        fontWeight="normal"
+        color={active ? activeColor : color}
+        _hover={{ color: activeColor, textDecor: 'none' }}
+        {...rest}
+      >
+        {title}
+      </Button>
+    </NextLink>
+  )
+}
+
+function DrawerItem(props: ItemProps) {
+  const { pathname } = useRouter()
+  const { href, title, active = isActive(href, pathname), ...rest } = props
+  return (
+    <NextLink href={href} key={href} passHref>
+      <DrawerButton disabled={active} {...rest}>
+        {title}
+      </DrawerButton>
+    </NextLink>
+  )
+}
+
+const DrawerButton = forwardRef((props: ButtonProps, ref) => {
+  return (
+    <Button
+      ref={ref}
+      variant="ghost"
+      justifyContent="flex-start"
+      fontWeight="normal"
+      width="100%"
+      px={1}
+      {...props}
+    />
+  )
+})
