@@ -10,7 +10,7 @@ export default function LoginPage() {
         <Img src="logo512.png" boxSize="100px" />
         <Box boxShadow="md" borderRadius="md" p={4}>
           <Stack spacing={4}>
-            <Input type="username" placeholder="ชื่อผู้ใช้" />
+            <Input type="username" placeholder="ชื่อผู้ใช้" autoFocus />
             <Input type="password" placeholder="รหัสผ่าน" />
             <OrangeButton type="submit">เข้าสู่ระบบ</OrangeButton>
             <Divider />

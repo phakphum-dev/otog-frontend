@@ -9,7 +9,7 @@ export default function RegisterPage() {
         <Img src="logo512.png" boxSize="100px" />
         <Box boxShadow="md" borderRadius="md" p={4}>
           <Stack spacing={4}>
-            <Input type="username" placeholder="ชื่อผู้ใช้" />
+            <Input type="username" placeholder="ชื่อผู้ใช้" autoFocus />
             <Input type="password" placeholder="รหัสผ่าน" />
             <Input placeholder="ชื่อที่ใช้แสดง" />
             <OrangeButton colorScheme="orange" type="submit">
