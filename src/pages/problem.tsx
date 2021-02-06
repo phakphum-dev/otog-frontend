@@ -21,6 +21,11 @@ export default function ProblemPage(props: ProblemPageProps) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const colorModeProps = await getColorModeProps(context)
-  const initialProblems = await get('problem')
-  return { props: { initialProblems, ...colorModeProps } }
+  try {
+    const initialProblems = await get<ProblemDto[]>('problem')
+    return { props: { initialProblems, ...colorModeProps } }
+  } catch (e) {
+    console.log(e)
+  }
+  return { props: colorModeProps }
 }
