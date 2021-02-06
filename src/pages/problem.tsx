@@ -4,17 +4,12 @@ import { getServerSideProps as getColorModeProps } from '@src/theme/ColorMode'
 import { PageContainer } from '@src/components/PageContainer'
 import { ProblemTable } from '@src/components/ProblemTable'
 
-import { get } from '@src/utils/api'
-import { ProblemDto } from '@src/utils/api/Problem'
+import { getProblems } from '@src/utils/api/Problem'
 
-interface ProblemPageProps {
-  initialProblems: ProblemDto[]
-}
-
-export default function ProblemPage(props: ProblemPageProps) {
+export default function ProblemPage() {
   return (
     <PageContainer>
-      <ProblemTable initialProblems={props.initialProblems} />
+      <ProblemTable />
     </PageContainer>
   )
 }
@@ -22,8 +17,8 @@ export default function ProblemPage(props: ProblemPageProps) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const colorModeProps = await getColorModeProps(context)
   try {
-    const initialProblems = await get<ProblemDto[]>('problem')
-    return { props: { initialProblems, ...colorModeProps } }
+    const problems = await getProblems()
+    return { props: { initialData: { problems }, ...colorModeProps } }
   } catch (e) {
     console.log(e)
   }

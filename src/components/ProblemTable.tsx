@@ -12,8 +12,7 @@ import {
 } from '@chakra-ui/react'
 import { SubmitButton } from './SubmitButton'
 import { SubmitModal } from './SubmitModal'
-import { ProblemDto } from '@src/utils/api/Problem'
-import useSWR from 'swr'
+import { ProblemDto, useProblems } from '@src/utils/api/Problem'
 
 const initialProblem: ProblemDto = {
   id: 0,
@@ -21,18 +20,12 @@ const initialProblem: ProblemDto = {
   timeLimit: 0,
   memory: 0,
 }
-interface ProblemTableProps {
-  initialProblems?: ProblemDto[]
-}
 
-export function ProblemTable(props: ProblemTableProps) {
-  const { initialProblems } = props
+export function ProblemTable() {
   const [modalProblem, setModalProblem] = useState<ProblemDto>(initialProblem)
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const { data: problems } = useSWR<ProblemDto[]>('problem', {
-    initialData: initialProblems,
-  })
+  const { data: problems } = useProblems()
 
   return (
     <>

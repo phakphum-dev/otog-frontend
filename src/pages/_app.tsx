@@ -13,13 +13,14 @@ import dynamic from 'next/dynamic'
 
 import { SWRConfig } from 'swr'
 import { get } from '@src/utils/api'
+import { InitialDataProvider } from '@src/utils/hooks/useInitialData'
 
 const TopProgressBar = dynamic(() => import('@src/components/ProgressBar'), {
   ssr: false,
 })
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  const { colorModeCookie } = pageProps
+  const { colorModeCookie, initialData } = pageProps
   const colorModeManager =
     typeof colorModeCookie === 'string'
       ? cookieStorageManager(colorModeCookie)
@@ -38,15 +39,17 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         />
       </Head>
       <SWRConfig value={{ fetcher: get }}>
-        <ChakraProvider theme={theme} colorModeManager={colorModeManager}>
-          <TopProgressBar />
-          <Flex direction="column" minH="100vh">
-            <Flex direction="column" flex={1}>
-              <NavBar />
-              <Component {...pageProps} />
+        <InitialDataProvider value={initialData}>
+          <ChakraProvider theme={theme} colorModeManager={colorModeManager}>
+            <TopProgressBar />
+            <Flex direction="column" minH="100vh">
+              <Flex direction="column" flex={1}>
+                <NavBar />
+                <Component {...pageProps} />
+              </Flex>
             </Flex>
-          </Flex>
-        </ChakraProvider>
+          </ChakraProvider>
+        </InitialDataProvider>
       </SWRConfig>
     </>
   )
