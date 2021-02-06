@@ -109,7 +109,7 @@ export function NavBar() {
             />
             <HStack hidden={isMobile} spacing={8} p={2}>
               {navItems.map((item) => (
-                <NavItem {...item} />
+                <NavItem key={item.href} {...item} />
               ))}
               {isLogin ? (
                 <Menu>
