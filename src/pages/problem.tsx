@@ -1,6 +1,7 @@
 import { GetServerSideProps } from 'next'
 import { getServerSideProps as getColorModeProps } from '@src/theme/ColorMode'
 
+import { Container } from '@chakra-ui/react'
 import { PageContainer } from '@src/components/PageContainer'
 import { ProblemTable } from '@src/components/ProblemTable'
 
@@ -9,7 +10,9 @@ import { getProblems } from '@src/utils/api/Problem'
 export default function ProblemPage() {
   return (
     <PageContainer>
-      <ProblemTable />
+      <Container>
+        <ProblemTable />
+      </Container>
     </PageContainer>
   )
 }
