@@ -30,24 +30,8 @@ export function useSubmissions() {
   return useSWR<SubmissionDto[]>('submission', { initialData })
 }
 
-const initialSubmission: SubmissionWithSourceCodeDto = {
-  id: 0,
-  problem: { id: 0, name: '', timeLimit: 0, memory: 0 },
-  user: { showName: '' },
-  timeUsed: 0,
-  result: '',
-  score: 0,
-  language: 'c',
-  timeSent: 0,
-  errmsg: null,
-  contestId: null,
-  isGrading: false,
-  sourceCode: '',
-}
-
 export function useSubmission(submissionId: number) {
   return useSWR<SubmissionWithSourceCodeDto>(
-    submissionId === 0 ? null : `submission/${submissionId}`,
-    { initialData: initialSubmission }
+    submissionId === 0 ? null : `submission/${submissionId}`
   )
 }
