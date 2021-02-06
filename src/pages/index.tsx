@@ -1,3 +1,4 @@
+import NextLink from 'next/link'
 import { Center, Heading, Img, Stack, Text } from '@chakra-ui/react'
 import { OrangeButton } from '@src/components/OrangeButton'
 import { PageContainer } from '@src/components/PageContainer'
@@ -17,7 +18,9 @@ export default function HomePage() {
           <Text color="gray.500" fontSize="md">
             Code and Create algorithms efficiently.
           </Text>
-          <OrangeButton width="150px">{'>_ Sign Up'}</OrangeButton>
+          <NextLink href="/register">
+            <OrangeButton width="150px">{'Sign Up'}</OrangeButton>
+          </NextLink>
         </Stack>
         <Center flex={1}>
           <Img src="/computer.svg" width="100%" />
