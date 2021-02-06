@@ -19,6 +19,12 @@ const initialProblem: ProblemDto = {
   name: '',
   timeLimit: 0,
   memory: 0,
+  sname: '',
+  score: 0,
+  state: 0,
+  recentShowTime: 0,
+  case: '',
+  rating: 0,
 }
 
 export function ProblemTable() {

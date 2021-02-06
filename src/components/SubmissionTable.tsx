@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useState } from 'react'
+import { Dispatch, memo, SetStateAction, useCallback, useState } from 'react'
 import {
   Button,
   Link,
@@ -11,59 +11,16 @@ import {
   Tr,
   useDisclosure,
 } from '@chakra-ui/react'
-import { SubmissionDto } from '@src/utils/api/Submission'
-import { CodeModal } from './CodeModal'
 
-const submissions: SubmissionDto[] = [
-  {
-    id: 3,
-    problem: { id: 1, name: 'สลับราคา', timeLimit: 1, memory: 256 },
-    user: { showName: 'TerZ' },
-    timeUsed: 1,
-    result: 'PPPT',
-    score: 75,
-    code: '#include <studio.h>',
-    language: 'cpp',
-  },
-  {
-    id: 2,
-    problem: { id: 2, name: 'ชนแก้วว', timeLimit: 1, memory: 128 },
-    user: { showName: 'Cher' },
-    timeUsed: 0.0,
-    result: 'PP',
-    score: 100,
-    code: 'int main()',
-
-    language: 'c',
-  },
-  {
-    id: 1,
-    problem: { id: 3, name: 'Frog Frog Frog', timeLimit: 1, memory: 64 },
-    user: { showName: 'Anos' },
-    timeUsed: 0.1,
-    result: '--',
-    score: 0,
-    code: 'if (true) { printf("a"); }',
-    language: 'cpp',
-  },
-]
-
-const initialSubmission: SubmissionDto = {
-  id: 0,
-  problem: { id: 0, name: '', timeLimit: 0, memory: 0 },
-  user: { showName: '' },
-  timeUsed: 0,
-  result: '',
-  score: 0,
-  code: '',
-  language: 'c',
-}
+import { SubmissionDto, useSubmissions } from '@src/utils/api/Submission'
+import { CodeModal, ErrorModal } from './CodeModal'
+import { API_HOST } from '@src/utils/api'
 
 export function SubmissionTable() {
-  const [modalSubmission, setModalSubmission] = useState<SubmissionDto>(
-    initialSubmission
-  )
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [submissionId, setSubmissionId] = useState<number>(0)
+
+  const { data: submissions } = useSubmissions()
 
   return (
     <>
@@ -75,23 +32,20 @@ export function SubmissionTable() {
             <Th>ชื่อ</Th>
             <Th>ข้อ</Th>
             <Th>ผลตรวจ</Th>
-            <Th isNumeric>เวลารวม</Th>
+            <Th>เวลารวม</Th>
             {/* <Th>คะแนน</Th> */}
           </Tr>
         </Thead>
         <Tbody>
-          {submissions.map((submission) => (
-            <SubmissionRow
-              submission={submission}
-              key={submission.id}
-              onOpen={onOpen}
-              setModalSubmission={setModalSubmission}
-            />
-          ))}
+          <SubmissionRows
+            submissions={submissions}
+            onOpen={onOpen}
+            setSubmissionId={setSubmissionId}
+          />
         </Tbody>
       </Table>
       <CodeModal
-        submission={modalSubmission}
+        submissionId={submissionId}
         isOpen={isOpen}
         onClose={onClose}
       />
@@ -99,33 +53,87 @@ export function SubmissionTable() {
   )
 }
 
-export interface SubmissionRowProps {
-  submission: SubmissionDto
+interface ModalSubmissionProps {
   onOpen: () => void
-  setModalSubmission: Dispatch<SetStateAction<SubmissionDto>>
+  setSubmissionId: Dispatch<SetStateAction<number>>
 }
 
-export const SubmissionRow = (props: SubmissionRowProps) => {
-  const { submission, onOpen, setModalSubmission } = props
+interface SubmissionRowsProps extends ModalSubmissionProps {
+  submissions: SubmissionDto[] | undefined
+}
 
-  const onModalOpen = useCallback(() => {
+const SubmissionRows = memo(
+  (props: SubmissionRowsProps) => {
+    const { submissions, onOpen, setSubmissionId } = props
+    return (
+      <>
+        {submissions?.map((submission) => (
+          <SubmissionRow
+            submission={submission}
+            key={submission.id}
+            onOpen={onOpen}
+            setSubmissionId={setSubmissionId}
+          />
+        ))}
+      </>
+    )
+  },
+  (prevProps, nextProps) => prevProps.submissions === nextProps.submissions
+)
+
+interface SubmissionRowProps extends ModalSubmissionProps {
+  submission: SubmissionDto
+}
+
+const SubmissionRow = (props: SubmissionRowProps) => {
+  const { submission, onOpen, setSubmissionId } = props
+
+  const onCodeModalOpen = useCallback(() => {
     onOpen()
-    setModalSubmission(submission)
+    setSubmissionId(submission.id)
   }, [])
+
+  const {
+    isOpen: isErrorModalOpen,
+    onOpen: onErrorModalOpen,
+    onClose: onErrorModalClose,
+  } = useDisclosure()
 
   return (
     <Tr key={submission.id}>
-      <Td>
-        <Button variant="ghost" onClick={onModalOpen}>
+      <Td inNumeric>
+        <Button variant="ghost" onClick={onCodeModalOpen} px={0}>
           {submission.id}
         </Button>
       </Td>
       <Td>{submission.user.showName}</Td>
       <Td>
-        <Link href="#">{submission.problem.name}</Link>
+        <Link
+          href={`${API_HOST}problem/doc/${submission.problem.id}`}
+          target="_blank"
+        >
+          {submission.problem.name}
+        </Link>
       </Td>
-      <Td>{submission.result}</Td>
-      <Td isNumeric>{submission.timeUsed}</Td>
+      <Td>
+        {submission.isGrading ? (
+          submission.result
+        ) : submission.errmsg ? (
+          <>
+            <Button px={1} variant="ghost" onClick={onErrorModalOpen}>
+              {submission.result}
+            </Button>
+            <ErrorModal
+              isOpen={isErrorModalOpen}
+              onClose={onErrorModalClose}
+              submission={submission}
+            />
+          </>
+        ) : (
+          <code>{submission.result}</code>
+        )}
+      </Td>
+      <Td>{submission.timeUsed}</Td>
       {/* <Td>{submission.score}</Td> */}
     </Tr>
   )

@@ -7,6 +7,12 @@ export interface ProblemDto {
   name: string
   timeLimit: number
   memory: number
+  sname: string
+  score: number
+  state: number
+  recentShowTime: number
+  case: string
+  rating: number
 }
 
 export async function getProblems() {
