@@ -1,5 +1,4 @@
-import NextLink from 'next/link'
-import { Box, Center, Img, Input, Stack } from '@chakra-ui/react'
+import { Box, Img, Input, Stack } from '@chakra-ui/react'
 import { OrangeButton } from '@src/components/OrangeButton'
 import { PageContainer } from '@src/components/PageContainer'
 

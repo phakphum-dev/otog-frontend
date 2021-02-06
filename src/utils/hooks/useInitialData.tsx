@@ -1,4 +1,4 @@
-import { createContext, ProviderProps, useContext, useMemo } from 'react'
+import { createContext, ProviderProps, useContext } from 'react'
 
 export const InitialDataContext = createContext({} as any)
 export const useInitialDataContext = () => useContext(InitialDataContext)

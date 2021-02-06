@@ -1,4 +1,4 @@
-import { Container, ContainerProps, Flex, useToken } from '@chakra-ui/react'
+import { Container, ContainerProps, useToken } from '@chakra-ui/react'
 
 export function PageContainer(props: ContainerProps) {
   const maxWidth = useToken('sizes', 'container')
