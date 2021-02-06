@@ -91,8 +91,7 @@ export function NavBar() {
                     OTOG
                   </Box>
                   <Box display={{ base: 'none', xl: 'inline-block' }}>
-                    OTOG
-                    {/* One Tambon One Grader */}
+                    One Tambon One Grader
                   </Box>
                 </Heading>
               </HStack>
