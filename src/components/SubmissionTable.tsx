@@ -1,4 +1,4 @@
-import { Dispatch, memo, SetStateAction, useCallback, useState } from 'react'
+import { Dispatch, memo, SetStateAction, useState } from 'react'
 import {
   Button,
   Link,
@@ -88,10 +88,10 @@ interface SubmissionRowProps extends ModalSubmissionProps {
 const SubmissionRow = (props: SubmissionRowProps) => {
   const { submission, onOpen, setSubmissionId } = props
 
-  const onCodeModalOpen = useCallback(() => {
+  const onCodeModalOpen = () => {
     onOpen()
     setSubmissionId(submission.id)
-  }, [])
+  }
 
   const {
     isOpen: isErrorModalOpen,

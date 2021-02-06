@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react'
+import { useRef } from 'react'
 import {
   Button,
   Input,
@@ -14,9 +14,7 @@ export interface UploadFileProps extends InputProps {
 export function UploadFile(props: UploadFileProps) {
   const { fileName, ...rest } = props
   const inputRef = useRef<HTMLInputElement>(null)
-  const openFileSelect = useCallback(() => {
-    inputRef.current?.click()
-  }, [inputRef.current])
+  const openFileSelect = () => inputRef.current?.click()
 
   return (
     <InputGroup>

@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import {
   Modal,
   ModalBody,
@@ -25,10 +25,10 @@ export function SubmitModal(props: SubmitModal) {
   const { problem, onClose, isOpen } = props
 
   const [file, setFile] = useState<File>()
-  const onFileSelect = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+  const onFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length === 0) return
     setFile(e.target.files?.[0])
-  }, [])
+  }
   useEffect(() => {
     setFile(undefined)
   }, [problem.id])

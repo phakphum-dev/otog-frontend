@@ -1,4 +1,4 @@
-import { Dispatch, memo, SetStateAction, useCallback, useState } from 'react'
+import { Dispatch, memo, SetStateAction, useState } from 'react'
 import {
   Link,
   Table,
@@ -91,10 +91,10 @@ interface ProblemRowProps extends ModalProblemProps {
 
 function ProblemRow(props: ProblemRowProps) {
   const { problem, onOpen, setModalProblem } = props
-  const onModalOpen = useCallback(() => {
+  const onModalOpen = () => {
     onOpen()
     setModalProblem(problem)
-  }, [])
+  }
 
   return (
     <Tr key={problem.id}>
