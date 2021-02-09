@@ -81,7 +81,7 @@ export function CodeHighlight(props: CodeHighlightProps) {
           style={style}
           padding={4}
           borderRadius={4}
-          overflowY="auto"
+          overflowX="auto"
         >
           {tokens.map((line, i) => (
             <div {...getLineProps({ line, key: i })}>
