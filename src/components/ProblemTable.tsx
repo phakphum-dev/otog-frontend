@@ -39,7 +39,7 @@ export function ProblemTable() {
         <TableCaption>รายการโจทย์</TableCaption>
         <Thead>
           <Tr>
-            <Th isNumeric>#</Th>
+            <Th>#</Th>
             <Th>ชื่อ</Th>
             <Th>ส่ง</Th>
           </Tr>
@@ -98,7 +98,7 @@ function ProblemRow(props: ProblemRowProps) {
 
   return (
     <Tr key={problem.id}>
-      <Td isNumeric>{problem.id}</Td>
+      <Td>{problem.id}</Td>
       <Td>
         <Link color="otog" href="#">
           {problem.name}
