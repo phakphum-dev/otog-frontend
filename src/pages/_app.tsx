@@ -11,9 +11,8 @@ import { NavBar } from '@src/components/NavBar'
 import '@src/styles/nprogress.css'
 import dynamic from 'next/dynamic'
 
-import { SWRConfig } from 'swr'
-import { get } from '@src/utils/api'
 import { InitialDataProvider } from '@src/utils/hooks/useInitialData'
+import { HttpProvider } from '@src/utils/api/HttpProvider'
 
 const TopProgressBar = dynamic(() => import('@src/components/ProgressBar'), {
   ssr: false,
@@ -38,7 +37,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      <SWRConfig value={{ fetcher: get }}>
+      <HttpProvider>
         <InitialDataProvider value={initialData}>
           <ChakraProvider theme={theme} colorModeManager={colorModeManager}>
             <TopProgressBar />
@@ -50,7 +49,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             </Flex>
           </ChakraProvider>
         </InitialDataProvider>
-      </SWRConfig>
+      </HttpProvider>
     </>
   )
 }

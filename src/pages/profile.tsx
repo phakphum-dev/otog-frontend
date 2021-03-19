@@ -9,4 +9,4 @@ export default function ProfilePage() {
   )
 }
 
-export { getServerSideProps } from '@src/theme/ColorMode'
+export { getServerSideColorMode as getServerSideProps } from '@src/theme/ColorMode'
