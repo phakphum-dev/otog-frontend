@@ -22,7 +22,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   const { colorModeCookie, initialData } = pageProps
   const colorModeManager =
     typeof colorModeCookie === 'string'
-      ? cookieStorageManager(colorModeCookie)
+      ? cookieStorageManager(`chakra-ui-color-mode=${colorModeCookie}`)
       : undefined
 
   return (
