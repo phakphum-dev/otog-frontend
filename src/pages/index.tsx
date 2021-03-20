@@ -18,7 +18,7 @@ export default function HomePage() {
           <Text color="gray.500" fontSize="md">
             Code and Create algorithms efficiently.
           </Text>
-          <NextLink href="/register">
+          <NextLink href="/register" passHref>
             <OrangeButton width="150px">{'Sign Up'}</OrangeButton>
           </NextLink>
         </Stack>
