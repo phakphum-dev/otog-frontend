@@ -18,7 +18,7 @@ const initialProblem: ProblemDto = {
   id: 0,
   name: '',
   timeLimit: 0,
-  memory: 0,
+  memoryLimit: 0,
   sname: '',
   score: 0,
   state: 0,
@@ -102,7 +102,7 @@ function ProblemRow(props: ProblemRowProps) {
       <Td>
         <Link color="otog" href="#">
           {problem.name}
-          <br />({problem.timeLimit} วินาที {problem.memory} MB)
+          <br />({problem.timeLimit * 0.001} วินาที {problem.memoryLimit} MB)
         </Link>
       </Td>
       <Td>
