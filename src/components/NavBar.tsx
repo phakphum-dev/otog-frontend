@@ -30,6 +30,7 @@ import {
 import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
 import { ToggleColorModeButton } from './ToggleColorModeButton'
 import { PageContainer } from './PageContainer'
+import { useAuth } from '@src/utils/api/AuthProvider'
 
 const entries = [
   { href: '/problem', title: 'โจทย์' },
@@ -54,7 +55,7 @@ export function NavBar() {
 
   const bg = useColorModeValue('white', 'gray.800')
 
-  const { isLogin } = { isLogin: false }
+  const { isAuthenticated, user, logout } = useAuth()
 
   const navItems = useMemo(
     () =>
@@ -110,7 +111,7 @@ export function NavBar() {
               {navItems.map((item) => (
                 <NavItem key={item.href} {...item} />
               ))}
-              {isLogin ? (
+              {isAuthenticated ? (
                 <Menu>
                   <MenuButton
                     as={Button}
@@ -123,7 +124,9 @@ export function NavBar() {
                     <NextLink href="/profile">
                       <MenuItem>โปรไฟล์</MenuItem>
                     </NextLink>
-                    <MenuItem color="red.500">ออกจากระบบ</MenuItem>
+                    <MenuItem color="red.500" onClick={logout}>
+                      ออกจากระบบ
+                    </MenuItem>
                   </MenuList>
                 </Menu>
               ) : (
@@ -152,9 +155,13 @@ export function NavBar() {
                 {navItems.map((item) => (
                   <DrawerItem key={item.href} {...item} />
                 ))}
-                {isLogin && <DrawerItem href="/profile" title="โปรไฟล์" />}
-                {isLogin ? (
-                  <DrawerButton color="red.500">ออกจากระบบ</DrawerButton>
+                {isAuthenticated && (
+                  <DrawerItem href="/profile" title="โปรไฟล์" />
+                )}
+                {isAuthenticated ? (
+                  <DrawerButton color="red.500" onClick={logout}>
+                    ออกจากระบบ
+                  </DrawerButton>
                 ) : (
                   <DrawerItem href="/login" title="เข้าสู่ระบบ" />
                 )}

@@ -7,39 +7,17 @@ import { useForm } from 'react-hook-form'
 
 import { useRouter } from 'next/router'
 import { AxiosError } from 'axios'
-import nookies from 'nookies'
 import { useError } from '@src/utils/hooks/useError'
-import { useHttp } from '@src/utils/api/HttpProvider'
-
-interface LoginReqDTO {
-  username: string
-  password: string
-}
-
-interface UserAuthDTO {
-  id: number
-  username: string
-  showName: string
-  role: string
-  rating: number
-}
-interface AuthResDTO {
-  user: UserAuthDTO
-  accessToken: string
-}
+import { LoginReqDTO, useAuth } from '@src/utils/api/AuthProvider'
 
 export default function LoginPage() {
   const { register, handleSubmit } = useForm()
   const router = useRouter()
   const [onError, toast] = useError()
-  const { http } = useHttp()
+  const { login } = useAuth()
   const onSubmit = async (credentials: LoginReqDTO) => {
     try {
-      const { accessToken } = await http.post<LoginReqDTO, AuthResDTO>(
-        'auth/login',
-        credentials
-      )
-      nookies.set(null, 'accessToken', accessToken)
+      await login(credentials)
       router.replace('/problem')
     } catch (e) {
       if (e.isAxiosError) {

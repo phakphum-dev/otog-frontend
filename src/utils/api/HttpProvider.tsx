@@ -1,19 +1,16 @@
 import { createContext, PropsWithChildren, useContext, useMemo } from 'react'
 import { SWRConfig } from 'swr'
 import { ApiClient } from '.'
+import { useAuth } from './AuthProvider'
 
-type HttpConstruct = {
-  http: ApiClient
-}
-
-const HttpContext = createContext({} as HttpConstruct)
+const HttpContext = createContext({} as ApiClient)
 const useHttp = () => useContext(HttpContext)
 
 function HttpProvider(props: PropsWithChildren<{}>) {
-  const client = useMemo(() => new ApiClient(null), [])
+  const http = useMemo(() => new ApiClient(null), [])
   return (
-    <SWRConfig value={{ fetcher: client.get }}>
-      <HttpContext.Provider value={{ http: client }} {...props} />
+    <SWRConfig value={{ fetcher: (url) => http.get(url).then((data) => data) }}>
+      <HttpContext.Provider value={http} {...props} />
     </SWRConfig>
   )
 }

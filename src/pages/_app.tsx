@@ -1,7 +1,12 @@
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 
-import { ChakraProvider, cookieStorageManager, Flex } from '@chakra-ui/react'
+import {
+  ChakraProvider,
+  cookieStorageManager,
+  Flex,
+  UseToastOptions,
+} from '@chakra-ui/react'
 import { theme } from '@src/theme'
 import 'focus-visible/dist/focus-visible'
 
@@ -13,17 +18,26 @@ import dynamic from 'next/dynamic'
 
 import { InitialDataProvider } from '@src/utils/hooks/useInitialData'
 import { HttpProvider } from '@src/utils/api/HttpProvider'
+import { AuthProvider, UserAuthDTO } from '@src/utils/api/AuthProvider'
+
+import { useEffect } from 'react'
+import { errorToast } from '@src/utils/hooks/useError'
 
 const TopProgressBar = dynamic(() => import('@src/components/ProgressBar'), {
   ssr: false,
 })
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  const { colorModeCookie, initialData } = pageProps
+  const { colorModeCookie, initialData, user, error, ...props } = pageProps
+
   const colorModeManager =
     typeof colorModeCookie === 'string'
       ? cookieStorageManager(`chakra-ui-color-mode=${colorModeCookie}`)
       : undefined
+
+  useEffect(() => {
+    if (error) errorToast(error as UseToastOptions)
+  }, [error])
 
   return (
     <>
@@ -37,19 +51,21 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      <HttpProvider>
-        <InitialDataProvider value={initialData}>
-          <ChakraProvider theme={theme} colorModeManager={colorModeManager}>
-            <TopProgressBar />
-            <Flex direction="column" minH="100vh">
-              <Flex direction="column" flex={1}>
-                <NavBar />
-                <Component {...pageProps} />
+      <ChakraProvider theme={theme} colorModeManager={colorModeManager}>
+        <HttpProvider>
+          <AuthProvider value={user as UserAuthDTO}>
+            <InitialDataProvider value={initialData}>
+              <TopProgressBar />
+              <Flex direction="column" minH="100vh">
+                <Flex direction="column" flex={1}>
+                  <NavBar />
+                  <Component {...props} />
+                </Flex>
               </Flex>
-            </Flex>
-          </ChakraProvider>
-        </InitialDataProvider>
-      </HttpProvider>
+            </InitialDataProvider>
+          </AuthProvider>
+        </HttpProvider>
+      </ChakraProvider>
     </>
   )
 }

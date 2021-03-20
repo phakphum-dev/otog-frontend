@@ -1,5 +1,4 @@
 import useSWR from 'swr'
-import { useInitialData } from '@src/utils/hooks/useInitialData'
 
 import { Language } from 'prism-react-renderer'
 import { ProblemDto } from './Problem'
@@ -22,8 +21,7 @@ export interface SubmissionDto {
 export type SubmissionWithSourceCodeDto = SubmissionDto & { sourceCode: string }
 
 export function useSubmissions() {
-  const { submissions: initialData } = useInitialData()
-  return useSWR<SubmissionDto[]>('submission', { initialData })
+  return useSWR<SubmissionDto[]>('submission')
 }
 
 export function useSubmission(submissionId: number) {

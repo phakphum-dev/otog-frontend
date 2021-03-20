@@ -16,7 +16,7 @@ export default function RegisterPage() {
   const { register, handleSubmit } = useForm()
   const router = useRouter()
   const [onError, toast] = useError()
-  const { http } = useHttp()
+  const http = useHttp()
   const onSubmit = async (createUser: CreateUserDTO) => {
     try {
       await http.post('auth/register', createUser)
