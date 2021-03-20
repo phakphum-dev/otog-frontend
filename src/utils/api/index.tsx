@@ -42,7 +42,7 @@ class ApiClient {
           request.headers.Authorization = `Bearer ${accessToken}`
         }
         if (refreshToken && context) {
-          request.headers.cookie = `RID=${refreshToken}`
+          request.headers.cookie = `RID=${refreshToken}; HttpOnly`
         }
         // console.log('request :', request.url, request.headers)
         return request
@@ -86,11 +86,13 @@ class ApiClient {
           }
 
           if (err.response?.status === 401) {
-            await this.refreshToken(context)
-            return this.axiosInstance(originalRequest)
+            const { accessToken } = nookies.get(context)
+            if (accessToken) {
+              await this.refreshToken(context)
+              return this.axiosInstance(originalRequest)
+            }
           }
         }
-        onError(error)
         return Promise.reject(error)
       }
     )
