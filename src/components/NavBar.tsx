@@ -1,6 +1,6 @@
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 
 import {
   Avatar,
@@ -26,6 +26,7 @@ import {
   useColorModeValue,
   ButtonProps,
   forwardRef,
+  Text,
 } from '@chakra-ui/react'
 import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
 import { ToggleColorModeButton } from './ToggleColorModeButton'
@@ -66,6 +67,9 @@ export function NavBar() {
     [pathname]
   )
 
+  const headerColor = useColorModeValue('gray.600', 'gray.300')
+  const activeColor = useColorModeValue('gray.700', 'white')
+
   return (
     <>
       <Box bg="transparend" h={14} w="100%" />
@@ -83,19 +87,25 @@ export function NavBar() {
         <PageContainer>
           <HStack>
             <NextLink href="/">
-              <HStack cursor="pointer">
-                <Image src="logo196.png" boxSize={8} my={1} />
-                <Heading size="md" py={2}>
-                  <Box
-                    display={{ base: 'none', md: 'inline-block', xl: 'none' }}
-                  >
-                    OTOG
-                  </Box>
-                  <Box display={{ base: 'none', xl: 'inline-block' }}>
-                    One Tambon One Grader
-                  </Box>
-                </Heading>
-              </HStack>
+              <Button
+                variant="link"
+                color={headerColor}
+                _hover={{ color: activeColor }}
+              >
+                <HStack cursor="pointer">
+                  <Image src="logo196.png" boxSize={8} my={1} />
+                  <Heading size="md" py={2}>
+                    <Box
+                      display={{ base: 'none', md: 'inline-block', xl: 'none' }}
+                    >
+                      OTOG
+                    </Box>
+                    <Box display={{ base: 'none', xl: 'inline-block' }}>
+                      One Tambon One Grader
+                    </Box>
+                  </Heading>
+                </HStack>
+              </Button>
             </NextLink>
             <Spacer />
             <IconButton
@@ -150,14 +160,20 @@ export function NavBar() {
           <DrawerContent>
             <DrawerCloseButton />
             <DrawerBody>
-              <VStack py={2} spacing={3} align="flex-start">
-                <Avatar size="xs" />
+              <VStack mt={2} mr={6} spacing={3} align="flex-start">
+                {isAuthenticated && (
+                  <NextLink href="/profile" passHref>
+                    <DrawerButton>
+                      <HStack py={2}>
+                        <Avatar size="xs" />
+                        <Text isTruncated>{user?.showName}</Text>
+                      </HStack>
+                    </DrawerButton>
+                  </NextLink>
+                )}
                 {navItems.map((item) => (
                   <DrawerItem key={item.href} {...item} />
                 ))}
-                {isAuthenticated && (
-                  <DrawerItem href="/profile" title="โปรไฟล์" />
-                )}
                 {isAuthenticated ? (
                   <DrawerButton color="red.500" onClick={logout}>
                     ออกจากระบบ
@@ -193,7 +209,8 @@ function NavItem(props: ItemProps) {
         variant="link"
         fontWeight="normal"
         color={active ? activeColor : color}
-        _hover={{ color: activeColor, textDecor: 'none' }}
+        textDecor={active ? 'underline' : undefined}
+        _hover={{ color: activeColor }}
         {...rest}
       >
         {title}
@@ -205,25 +222,36 @@ function NavItem(props: ItemProps) {
 function DrawerItem(props: ItemProps) {
   const { pathname } = useRouter()
   const { href, title, active = isActive(href, pathname), ...rest } = props
+
+  const color = useColorModeValue('gray.500', 'gray.400')
+  const activeColor = useColorModeValue('gray.700', 'white')
+
   return (
     <NextLink href={href} key={href} passHref>
-      <DrawerButton disabled={active} {...rest}>
+      <DrawerButton
+        {...rest}
+        fontWeight="normal"
+        color={active ? activeColor : color}
+        textDecor={active ? 'underline' : undefined}
+      >
         {title}
       </DrawerButton>
     </NextLink>
   )
 }
 
-const DrawerButton = forwardRef((props: ButtonProps, ref) => {
-  return (
-    <Button
-      ref={ref}
-      variant="ghost"
-      justifyContent="flex-start"
-      fontWeight="normal"
-      width="100%"
-      px={1}
-      {...props}
-    />
-  )
-})
+const DrawerButton = forwardRef(
+  (props: ButtonProps, ref: React.ForwardedRef<HTMLButtonElement>) => {
+    return (
+      <Button
+        ref={ref}
+        variant="ghost"
+        justifyContent="flex-start"
+        fontWeight="normal"
+        width="100%"
+        px={2}
+        {...props}
+      />
+    )
+  }
+)

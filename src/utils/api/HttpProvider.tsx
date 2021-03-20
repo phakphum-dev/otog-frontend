@@ -1,7 +1,6 @@
 import { createContext, PropsWithChildren, useContext, useMemo } from 'react'
 import { SWRConfig } from 'swr'
 import { ApiClient } from '.'
-import { useAuth } from './AuthProvider'
 
 const HttpContext = createContext({} as ApiClient)
 const useHttp = () => useContext(HttpContext)
