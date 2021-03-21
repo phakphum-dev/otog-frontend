@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosInstance } from 'axios'
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios'
 import nookies from 'nookies'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { ParsedUrlQuery } from 'querystring'
@@ -120,20 +120,20 @@ class ApiClient {
     }
   }
 
-  async get<T>(url: string, params?: any) {
-    return (await this.axiosInstance.get<T>(url, { params })).data
+  async get<T>(url: string, config?: AxiosRequestConfig) {
+    return (await this.axiosInstance.get<T>(url, config)).data
   }
 
-  async post<D, T>(url: string, data?: D) {
-    return (await this.axiosInstance.post<T>(url, data)).data
+  async post<D, T>(url: string, data?: D, config?: AxiosRequestConfig) {
+    return (await this.axiosInstance.post<T>(url, data, config)).data
   }
 
-  async put<D, T>(url: string, data?: D) {
-    return (await this.axiosInstance.put<T>(url, data)).data
+  async put<D, T>(url: string, data?: D, config?: AxiosRequestConfig) {
+    return (await this.axiosInstance.put<T>(url, data, config)).data
   }
 
-  async del(url: string) {
-    await this.axiosInstance.delete(url)
+  async del(url: string, config?: AxiosRequestConfig) {
+    await this.axiosInstance.delete(url, config)
   }
 
   async onLogout() {}
