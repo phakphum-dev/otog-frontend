@@ -13,6 +13,7 @@ import {
 import { SubmitButton } from './SubmitButton'
 import { SubmitModal } from './SubmitModal'
 import { ProblemDto, useProblems } from '@src/utils/api/Problem'
+import { useRouter } from 'next/router'
 
 const initialProblem: ProblemDto = {
   id: 0,
@@ -33,6 +34,11 @@ export function ProblemTable() {
 
   const { data: problems } = useProblems()
 
+  const router = useRouter()
+  const onSubmitSuccess = () => {
+    router.push('/submission')
+  }
+
   return (
     <>
       <Table variant="simple">
@@ -52,7 +58,12 @@ export function ProblemTable() {
           />
         </Tbody>
       </Table>
-      <SubmitModal problem={modalProblem} isOpen={isOpen} onClose={onClose} />
+      <SubmitModal
+        problem={modalProblem}
+        isOpen={isOpen}
+        onClose={onClose}
+        onSuccess={onSubmitSuccess}
+      />
     </>
   )
 }

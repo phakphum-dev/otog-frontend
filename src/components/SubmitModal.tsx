@@ -21,10 +21,11 @@ export interface SubmitModal {
   problem: ProblemDto
   onClose: () => void
   isOpen: boolean
+  onSuccess?: () => void
 }
 
 export function SubmitModal(props: SubmitModal) {
-  const { problem, onClose, isOpen } = props
+  const { problem, onClose, isOpen, onSuccess } = props
 
   const [file, setFile] = useState<File>()
   const onFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
@@ -45,11 +46,13 @@ export function SubmitModal(props: SubmitModal) {
       // console.log(Array.from(formData.entries()))
       try {
         await http.post(`submit/${problem.id}`, formData)
+        onSuccess?.()
       } catch (e) {
         onError(e)
+      } finally {
+        onClose()
       }
     }
-    onClose()
   }
 
   return (
