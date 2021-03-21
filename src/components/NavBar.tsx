@@ -39,8 +39,30 @@ const entries = [
   { href: '/contest', title: 'แข่งขัน' },
 ]
 
-function isActive(href: string, pathname: string) {
-  return href.slice(1) === pathname.split('/')[1]
+interface ColorOptions {
+  normal: {
+    light: string
+    dark: string
+  }
+  active: {
+    light: string
+    dark: string
+  }
+}
+
+function useActiveColor(href: string, options?: ColorOptions) {
+  const normalColor = useColorModeValue(
+    options?.normal.light ?? 'gray.500',
+    options?.normal.dark ?? 'gray.400'
+  )
+  const activeColor = useColorModeValue(
+    options?.active.light ?? 'gray.800',
+    options?.active.dark ?? 'white'
+  )
+  const { pathname } = useRouter()
+  const isActive = href.slice(1) === pathname.split('/')[1]
+  const color = isActive ? activeColor : normalColor
+  return { color, normalColor, activeColor, isActive }
 }
 
 export function NavBar() {
@@ -58,17 +80,10 @@ export function NavBar() {
 
   const { isAuthenticated, user, logout } = useAuth()
 
-  const navItems = useMemo(
-    () =>
-      entries.map((entry) => ({
-        ...entry,
-        active: isActive(entry.href, pathname),
-      })),
-    [pathname]
-  )
-
-  const headerColor = useColorModeValue('gray.600', 'gray.300')
-  const activeColor = useColorModeValue('gray.700', 'white')
+  const { color, activeColor } = useActiveColor('/', {
+    normal: { light: 'gray.600', dark: 'gray.300' },
+    active: { light: 'gray.700', dark: 'white' },
+  })
 
   return (
     <>
@@ -89,7 +104,7 @@ export function NavBar() {
             <NextLink href="/">
               <Button
                 variant="link"
-                color={headerColor}
+                color={color}
                 _hover={{ color: activeColor }}
               >
                 <HStack cursor="pointer">
@@ -118,7 +133,7 @@ export function NavBar() {
               ref={btnRef}
             />
             <HStack hidden={isMobile} spacing={8} p={2}>
-              {navItems.map((item) => (
+              {entries.map((item) => (
                 <NavItem key={item.href} {...item} />
               ))}
               {isAuthenticated ? (
@@ -171,7 +186,7 @@ export function NavBar() {
                     </DrawerButton>
                   </NextLink>
                 )}
-                {navItems.map((item) => (
+                {entries.map((item) => (
                   <DrawerItem key={item.href} {...item} />
                 ))}
                 {isAuthenticated ? (
@@ -197,19 +212,14 @@ interface ItemProps extends ButtonProps {
 }
 
 function NavItem(props: ItemProps) {
-  const { pathname } = useRouter()
-  const { href, title, active = isActive(href, pathname), ...rest } = props
-
-  const color = useColorModeValue('gray.500', 'gray.400')
-  const activeColor = useColorModeValue('gray.700', 'white')
-
+  const { href, title, ...rest } = props
+  const { color, activeColor } = useActiveColor(href)
   return (
     <NextLink href={href} key={href}>
       <Button
         variant="link"
         fontWeight="normal"
-        color={active ? activeColor : color}
-        textDecor={active ? 'underline' : undefined}
+        color={color}
         _hover={{ color: activeColor }}
         {...rest}
       >
@@ -220,20 +230,11 @@ function NavItem(props: ItemProps) {
 }
 
 function DrawerItem(props: ItemProps) {
-  const { pathname } = useRouter()
-  const { href, title, active = isActive(href, pathname), ...rest } = props
-
-  const color = useColorModeValue('gray.500', 'gray.400')
-  const activeColor = useColorModeValue('gray.700', 'white')
-
+  const { href, title, ...rest } = props
+  const { color } = useActiveColor(href)
   return (
     <NextLink href={href} key={href} passHref>
-      <DrawerButton
-        {...rest}
-        fontWeight="normal"
-        color={active ? activeColor : color}
-        textDecor={active ? 'underline' : undefined}
-      >
+      <DrawerButton {...rest} fontWeight="normal" color={color}>
         {title}
       </DrawerButton>
     </NextLink>
