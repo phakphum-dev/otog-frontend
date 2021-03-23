@@ -7,6 +7,7 @@ import {
 } from 'react'
 import nookies from 'nookies'
 import { useHttp } from './HttpProvider'
+import jwtDecode, { JwtPayload } from 'jwt-decode'
 
 export interface LoginReqDTO {
   username: string
@@ -33,32 +34,41 @@ export interface AuthProviderProps {
   logout: () => Promise<void>
 }
 
-export type AuthValueProps = ProviderProps<UserAuthDTO | null>
+export type AuthValueProps = ProviderProps<string | null>
+
+export function getUserData(accessToken: string | null): UserAuthDTO | null {
+  if (accessToken) {
+    const { id, username, showName, role, rating } = jwtDecode<
+      UserAuthDTO & JwtPayload
+    >(accessToken)
+    return { id, username, showName, role, rating }
+  }
+  return null
+}
 
 const AuthContext = createContext({} as AuthProviderProps)
 const useAuth = () => useContext(AuthContext)
 const AuthProvider = (props: AuthValueProps) => {
-  const { value: userValue, children } = props
-  const [user, setUser] = useState(userValue ?? null)
+  const { value: accessToken, children } = props
+  const [token, setToken] = useState(accessToken)
   useEffect(() => {
-    if (userValue === null) {
-      setUser(null)
-    }
-  }, [userValue])
+    setToken(accessToken)
+  }, [accessToken])
+  const user = getUserData(token)
   const isAuthenticated = !!user
 
   const http = useHttp()
   const login = async (credentials: LoginReqDTO) => {
-    const { accessToken, user } = await http.post<LoginReqDTO, AuthResDTO>(
+    const { accessToken } = await http.post<LoginReqDTO, AuthResDTO>(
       `auth/login`,
       credentials
     )
-    setUser(user)
+    setToken(accessToken)
     nookies.set(null, 'accessToken', accessToken)
   }
 
   const logout = async () => {
-    setUser(null)
+    setToken(null)
     nookies.destroy(null, 'accessToken')
   }
 

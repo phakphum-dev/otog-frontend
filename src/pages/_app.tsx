@@ -28,7 +28,13 @@ const TopProgressBar = dynamic(() => import('@src/components/ProgressBar'), {
 })
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  const { colorModeCookie, initialData, user, error, ...props } = pageProps
+  const {
+    colorModeCookie,
+    initialData,
+    accessToken,
+    error,
+    ...props
+  } = pageProps
 
   const colorModeManager =
     typeof colorModeCookie === 'string'
@@ -53,7 +59,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <ChakraProvider theme={theme} colorModeManager={colorModeManager}>
         <HttpProvider>
-          <AuthProvider value={user as UserAuthDTO}>
+          <AuthProvider value={accessToken as string}>
             <InitialDataProvider value={initialData}>
               <TopProgressBar />
               <Flex direction="column" minH="100vh">

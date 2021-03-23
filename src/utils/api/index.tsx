@@ -5,6 +5,7 @@ import { ParsedUrlQuery } from 'querystring'
 import { onError, errorToast } from '../hooks/useError'
 import { getServerSideColorMode } from '@src/theme/ColorMode'
 import { UseToastOptions } from '@chakra-ui/toast'
+import jwtDecode, { JwtPayload } from 'jwt-decode'
 
 const API_HOST = process.env.NEXT_PUBLIC_API_HOST
 
@@ -143,35 +144,39 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   // console.log('before req', context.req.headers)
   // console.log('before res', context.res.getHeader('set-cookie'))
   const colorModeProps = await getServerSideColorMode(context)
-  const client = new ApiClient(context)
-  try {
-    const { accessToken } = nookies.get(context)
-    if (accessToken) {
-      const user = await client.refreshToken(context)
-      return { props: { ...(user && { user }), ...colorModeProps } }
-    }
-  } catch (e) {
-    if (e.isAxiosError) {
-      const error = e as AxiosError
-      // TODO: change to 403
-      if (error.response?.status === 401) {
-        const errorToast: UseToastOptions = {
-          title: 'เซสชันหมดอายุ',
-          description: 'กรุณาลงชื่อเข้าใช้อีกครั้ง',
-          status: 'info',
-          isClosable: true,
-        }
-        return {
-          props: { user: null, error: errorToast, ...colorModeProps },
-        }
-      }
-    }
-    console.log(e)
-  } finally {
-    // console.log('after req', context.req.headers)
-    // console.log('after res', context.res.getHeader('set-cookie'))
-  }
-  return { props: colorModeProps }
+
+  const { accessToken = null } = nookies.get(context)
+  return { props: { accessToken, ...colorModeProps } }
+
+  // const client = new ApiClient(context)
+  // try {
+  //   const { accessToken } = nookies.get(context)
+  //   if (accessToken) {
+  //     const user = await client.refreshToken(context)
+  //     return { props: { ...(user && { user }), ...colorModeProps } }
+  //   }
+  // } catch (e) {
+  //   if (e.isAxiosError) {
+  //     const error = e as AxiosError
+  //     // TODO: change to 403
+  //     if (error.response?.status === 401) {
+  //       const errorToast: UseToastOptions = {
+  //         title: 'เซสชันหมดอายุ',
+  //         description: 'กรุณาลงชื่อเข้าใช้อีกครั้ง',
+  //         status: 'info',
+  //         isClosable: true,
+  //       }
+  //       return {
+  //         props: { user: null, error: errorToast, ...colorModeProps },
+  //       }
+  //     }
+  //   }
+  //   console.log(e)
+  // } finally {
+  //   // console.log('after req', context.req.headers)
+  //   // console.log('after res', context.res.getHeader('set-cookie'))
+  // }
+  // return { props: colorModeProps }
 }
 
 export { API_HOST, ApiClient }
