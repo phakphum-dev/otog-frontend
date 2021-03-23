@@ -1,6 +1,6 @@
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useRef, ForwardedRef } from 'react'
 
 import {
   Avatar,
@@ -242,7 +242,7 @@ function DrawerItem(props: ItemProps) {
 }
 
 const DrawerButton = forwardRef(
-  (props: ButtonProps, ref: React.ForwardedRef<HTMLButtonElement>) => {
+  (props: ButtonProps, ref: ForwardedRef<HTMLButtonElement>) => {
     return (
       <Button
         ref={ref}

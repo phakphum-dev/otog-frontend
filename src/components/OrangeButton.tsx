@@ -5,9 +5,10 @@ import {
   useColorModeValue,
   useTheme,
 } from '@chakra-ui/react'
+import { ForwardedRef } from 'react'
 
 export const OrangeButton = forwardRef(
-  (props: ButtonProps, ref: React.Ref<HTMLButtonElement>) => {
+  (props: ButtonProps, ref: ForwardedRef<HTMLButtonElement>) => {
     const theme = useTheme()
     const styleProps = useColorModeValue(
       {

@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef } from 'react'
+import { forwardRef, useEffect, useRef, ForwardedRef } from 'react'
 import {
   Button,
   Input,
@@ -12,15 +12,16 @@ export interface UploadFileProps extends InputProps {
 }
 
 export const UploadFile = forwardRef(
-  (props: UploadFileProps, ref: React.ForwardedRef<HTMLInputElement>) => {
+  (props: UploadFileProps, ref: ForwardedRef<HTMLInputElement>) => {
     const { fileName, ...rest } = props
     const inputRef = useRef<HTMLInputElement>(null)
-    const openFileSelect = () => {
+    const openFileSelect = () => inputRef.current?.click()
+
+    useEffect(() => {
       if (typeof ref === 'function') {
         ref(inputRef.current)
-        inputRef.current?.click()
       }
-    }
+    }, [ref])
 
     return (
       <InputGroup>
