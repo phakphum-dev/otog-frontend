@@ -30,4 +30,4 @@ export default function HomePage() {
   )
 }
 
-export { getServerSideColorMode as getServerSideProps } from '@src/theme/ColorMode'
+export { getServerSideProps } from '@src/utils/api'

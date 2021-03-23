@@ -50,14 +50,25 @@ interface ColorOptions {
   }
 }
 
-function useActiveColor(href: string, options?: ColorOptions) {
+const defaultOptions: ColorOptions = {
+  normal: {
+    light: 'gray.500',
+    dark: 'gray.400',
+  },
+  active: {
+    light: 'gray.800',
+    dark: 'white',
+  },
+}
+
+function useActiveColor(href: string, options: ColorOptions = defaultOptions) {
   const normalColor = useColorModeValue(
-    options?.normal.light ?? 'gray.500',
-    options?.normal.dark ?? 'gray.400'
+    options?.normal.light,
+    options?.normal.dark
   )
   const activeColor = useColorModeValue(
-    options?.active.light ?? 'gray.800',
-    options?.active.dark ?? 'white'
+    options?.active.light,
+    options?.active.dark
   )
   const { pathname } = useRouter()
   const isActive = href.slice(1) === pathname.split('/')[1]

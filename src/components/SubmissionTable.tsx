@@ -133,7 +133,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
           <code>{submission.result}</code>
         )}
       </Td>
-      <Td>{submission.timeUsed}</Td>
+      <Td>{submission.timeUsed / 1000}</Td>
       {/* <Td>{submission.score}</Td> */}
     </Tr>
   )

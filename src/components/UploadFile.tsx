@@ -20,6 +20,8 @@ export const UploadFile = forwardRef(
     useEffect(() => {
       if (typeof ref === 'function') {
         ref(inputRef.current)
+      } else if (ref) {
+        ref.current = inputRef.current
       }
     }, [ref])
 
