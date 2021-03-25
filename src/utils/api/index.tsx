@@ -75,7 +75,7 @@ class ApiClient {
             err.response?.status === 401 &&
             originalRequest.url === 'auth/refresh/token'
           ) {
-            nookies.set(context, 'accessToken', '', { maxAge: -1, path: '/' })
+            nookies.destroy(context, 'accessToken', { path: '/' })
             this.onLogout()
             errorToast({
               title: 'เซสชันหมดอายุ',
@@ -106,7 +106,7 @@ class ApiClient {
       'auth/refresh/token'
     )
     if (response.status === 200) {
-      const { accessToken, user } = response.data
+      const { accessToken } = response.data
       const { 'set-cookie': refreshToken } = response.headers
       if (context) {
         context.req.headers.cookie = `accessToken=${accessToken}; ${refreshToken}`
@@ -117,7 +117,7 @@ class ApiClient {
       } else {
         nookies.set(null, 'accessToken', accessToken)
       }
-      return user
+      return accessToken
     }
   }
 
@@ -152,8 +152,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   // try {
   //   const { accessToken } = nookies.get(context)
   //   if (accessToken) {
-  //     const user = await client.refreshToken(context)
-  //     return { props: { ...(user && { user }), ...colorModeProps } }
+  //     const newToken = await client.refreshToken(context)
+  //     return {
+  //       props: { accessToken: newToken, ...colorModeProps },
+  //     }
   //   }
   // } catch (e) {
   //   if (e.isAxiosError) {
@@ -167,7 +169,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   //         isClosable: true,
   //       }
   //       return {
-  //         props: { user: null, error: errorToast, ...colorModeProps },
+  //         props: { accessToken: null, error: errorToast, ...colorModeProps },
   //       }
   //     }
   //   }
