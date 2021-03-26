@@ -1,16 +1,17 @@
 import { Dispatch, memo, SetStateAction, useState } from 'react'
 import {
+  Box,
   Button,
   Flex,
   Link,
   Spinner,
   Table,
-  TableCaption,
   Tbody,
   Td,
   Th,
   Thead,
   Tr,
+  useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react'
 
@@ -44,9 +45,8 @@ export function SubmissionTableBase(props: SubmissionTableBaseProps) {
   const [submissionId, setSubmissionId] = useState<number>(0)
 
   return (
-    <>
+    <Box overflowX="auto">
       <Table variant="simple">
-        <TableCaption>ผลตรวจ</TableCaption>
         <Thead>
           <Tr>
             <Th>#</Th>
@@ -70,7 +70,7 @@ export function SubmissionTableBase(props: SubmissionTableBaseProps) {
         isOpen={isOpen}
         onClose={onClose}
       />
-    </>
+    </Box>
   )
 }
 
@@ -108,6 +108,12 @@ interface SubmissionRowProps extends ModalSubmissionProps {
 
 const SubmissionRow = (props: SubmissionRowProps) => {
   const { submission, onOpen, setSubmissionId } = props
+  const status = submission.result
+    .split('')
+    .filter((res) => res !== '[' && res !== ']')
+    .every((res) => res === 'P')
+    ? 'accept'
+    : 'reject'
 
   const onCodeModalOpen = () => {
     onOpen()
@@ -120,8 +126,10 @@ const SubmissionRow = (props: SubmissionRowProps) => {
     onClose: onErrorModalClose,
   } = useDisclosure()
 
+  const acceptColor = useColorModeValue('green.50', 'green.900')
+
   return (
-    <Tr key={submission.id}>
+    <Tr key={submission.id} bg={status === 'accept' ? acceptColor : undefined}>
       <Td inNumeric>
         <Button variant="ghost" onClick={onCodeModalOpen} px={0}>
           {submission.id}

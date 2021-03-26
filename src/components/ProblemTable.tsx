@@ -1,10 +1,10 @@
 import { Dispatch, memo, SetStateAction, useState } from 'react'
 import {
+  Box,
   Flex,
   Link,
   Spinner,
   Table,
-  TableCaption,
   Tbody,
   Td,
   Th,
@@ -16,6 +16,7 @@ import { SubmitButton } from './SubmitButton'
 import { SubmitModal } from './SubmitModal'
 import { ProblemDto, useProblems } from '@src/utils/api/Problem'
 import { useRouter } from 'next/router'
+import { API_HOST } from '@src/utils/api'
 
 const initialProblem: ProblemDto = {
   id: 0,
@@ -42,9 +43,8 @@ export function ProblemTable() {
   }
 
   return problems ? (
-    <>
+    <Box overflowX="auto">
       <Table variant="simple">
-        <TableCaption>รายการโจทย์</TableCaption>
         <Thead>
           <Tr>
             <Th>#</Th>
@@ -66,7 +66,7 @@ export function ProblemTable() {
         onClose={onClose}
         onSuccess={onSubmitSuccess}
       />
-    </>
+    </Box>
   ) : (
     <Flex justify="center" py={16}>
       <Spinner size="xl" />
@@ -88,7 +88,7 @@ const ProblemsRows = memo(
     const { problems, onOpen, setModalProblem } = props
     return (
       <>
-        {problems?.map((problem) => (
+        {problems.map((problem) => (
           <ProblemRow
             key={problem.id}
             problem={problem}
@@ -117,7 +117,11 @@ function ProblemRow(props: ProblemRowProps) {
     <Tr key={problem.id}>
       <Td>{problem.id}</Td>
       <Td>
-        <Link color="otog" href="#">
+        <Link
+          color="otog"
+          href={`${API_HOST}problem/doc/${problem.id}`}
+          target="_blank"
+        >
           {problem.name}
           <br />({problem.timeLimit / 1000} วินาที {problem.memoryLimit} MB)
         </Link>

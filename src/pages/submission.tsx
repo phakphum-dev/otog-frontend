@@ -1,6 +1,7 @@
 import { FormLabel } from '@chakra-ui/form-control'
 import { useDisclosure } from '@chakra-ui/hooks'
-import { Flex, Stack } from '@chakra-ui/layout'
+import Icon from '@chakra-ui/icon'
+import { HStack } from '@chakra-ui/layout'
 import { Switch } from '@chakra-ui/switch'
 import { UseToastOptions } from '@chakra-ui/toast'
 import { LatestSubmission } from '@src/components/LatestSubmission'
@@ -16,7 +17,7 @@ import { SubmissionDto } from '@src/utils/api/Submission'
 import { AxiosError } from 'axios'
 import { GetServerSideProps } from 'next'
 import nookies from 'nookies'
-import { FaPuzzlePiece } from 'react-icons/fa'
+import { FaPuzzlePiece, FaUser, FaUsers } from 'react-icons/fa'
 
 export default function SubmissionPage() {
   const { isAuthenticated, isAdmin } = useAuth()
@@ -27,27 +28,26 @@ export default function SubmissionPage() {
   return (
     <PageContainer>
       <Title icon={FaPuzzlePiece}>ผลตรวจ</Title>
-      <Stack
-        mb={4}
-        justify="space-between"
-        align={{ base: 'flex-end', md: 'center' }}
-        flexDir={{ base: 'column', md: 'row-reverse' }}
-      >
-        <LatestSubmission />
+      <HStack mb={4} justify="space-between" spacing={2}>
         {isAuthenticated && (
-          <Flex alignItems="center" width="auto">
-            <FormLabel htmlFor="only-me" mb="0">
-              แสดงเฉพาะฉัน
+          <HStack alignItems="center" width="auto">
+            <FormLabel htmlFor="only-me" mb={0}>
+              <Icon as={FaUsers} boxSize="1.5rem" />
             </FormLabel>
             <Switch
-              colorScheme="orangeSwitch"
+              mr={2}
+              colorScheme="gray"
               isChecked={isOnlyMe}
               onChange={onToggle}
               id="only-me"
             />
-          </Flex>
+            <FormLabel htmlFor="only-me" mb={0}>
+              <Icon as={FaUser} boxSize="1.25rem" mr={0} />
+            </FormLabel>
+          </HStack>
         )}
-      </Stack>
+        <LatestSubmission />
+      </HStack>
       <SubmissionTable isOnlyMe={isOnlyMe} />
     </PageContainer>
   )

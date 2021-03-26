@@ -1,8 +1,9 @@
 import { useDisclosure } from '@chakra-ui/hooks'
 import { HStack, Text, Link } from '@chakra-ui/layout'
+import { API_HOST } from '@src/utils/api'
 import { useAuth } from '@src/utils/api/AuthProvider'
 import { useLatestSubmission } from '@src/utils/api/Submission'
-import { SubmitButton } from './SubmitButton'
+import { OrangeSubmitButton } from './SubmitButton'
 import { SubmitModal } from './SubmitModal'
 
 export function LatestSubmission() {
@@ -12,13 +13,16 @@ export function LatestSubmission() {
 
   return isAuthenticated && submission ? (
     <HStack spacing={{ base: 2, md: 4 }}>
-      <Text>ส่งข้อล่าสุด:</Text>
+      <Text fontWeight="bold">ส่งข้อล่าสุด:</Text>
       <Text isTruncated>
-        <Link color="otog" href="#">
+        <Link
+          href={`${API_HOST}problem/doc/${submission.problem.id}`}
+          target="_blank"
+        >
           {submission.problem.name}
         </Link>
       </Text>
-      <SubmitButton onClick={onOpen} />
+      <OrangeSubmitButton onClick={onOpen} />
       <SubmitModal
         problem={submission.problem}
         onClose={onClose}
