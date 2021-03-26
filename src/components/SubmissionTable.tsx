@@ -1,7 +1,9 @@
 import { Dispatch, memo, SetStateAction, useState } from 'react'
 import {
   Button,
+  Flex,
   Link,
+  Spinner,
   Table,
   TableCaption,
   Tbody,
@@ -23,11 +25,17 @@ interface SubmissionTableProps {
 export function SubmissionTable(props: SubmissionTableProps) {
   const { isOnlyMe } = props
   const { data: submissions } = useSubmissions(isOnlyMe)
-  return <SubmissionTableBase submissions={submissions} />
+  return submissions ? (
+    <SubmissionTableBase submissions={submissions} />
+  ) : (
+    <Flex justify="center" py={16}>
+      <Spinner size="xl" />
+    </Flex>
+  )
 }
 
 interface SubmissionTableBaseProps {
-  submissions: SubmissionDto[] | undefined
+  submissions: SubmissionDto[]
 }
 
 export function SubmissionTableBase(props: SubmissionTableBaseProps) {
@@ -72,7 +80,7 @@ interface ModalSubmissionProps {
 }
 
 interface SubmissionRowsProps extends ModalSubmissionProps {
-  submissions: SubmissionDto[] | undefined
+  submissions: SubmissionDto[]
 }
 
 const SubmissionRows = memo(
@@ -80,7 +88,7 @@ const SubmissionRows = memo(
     const { submissions, onOpen, setSubmissionId } = props
     return (
       <>
-        {submissions?.map((submission) => (
+        {submissions.map((submission) => (
           <SubmissionRow
             submission={submission}
             key={submission.id}

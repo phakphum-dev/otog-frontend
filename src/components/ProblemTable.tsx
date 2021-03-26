@@ -1,6 +1,8 @@
 import { Dispatch, memo, SetStateAction, useState } from 'react'
 import {
+  Flex,
   Link,
+  Spinner,
   Table,
   TableCaption,
   Tbody,
@@ -39,7 +41,7 @@ export function ProblemTable() {
     router.push('/submission')
   }
 
-  return (
+  return problems ? (
     <>
       <Table variant="simple">
         <TableCaption>รายการโจทย์</TableCaption>
@@ -65,6 +67,10 @@ export function ProblemTable() {
         onSuccess={onSubmitSuccess}
       />
     </>
+  ) : (
+    <Flex justify="center" py={16}>
+      <Spinner size="xl" />
+    </Flex>
   )
 }
 
@@ -74,7 +80,7 @@ interface ModalProblemProps {
 }
 
 interface ProblemRowsProps extends ModalProblemProps {
-  problems: ProblemDto[] | undefined
+  problems: ProblemDto[]
 }
 
 const ProblemsRows = memo(

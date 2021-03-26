@@ -73,9 +73,9 @@ const AuthProvider = (props: AuthValueProps) => {
 
   const router = useRouter()
   const logout = async () => {
+    router.push('/login')
     setToken(null)
     nookies.destroy(null, 'accessToken')
-    router.push('/login')
   }
 
   const refreshToken = (newToken: string) => {
