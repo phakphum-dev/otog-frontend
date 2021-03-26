@@ -62,7 +62,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const { accessToken = null } = nookies.get(context)
     if (accessToken) {
       const initialData = await client.get<SubmissionDto>('submission/latest')
-      const { accessToken } = nookies.get(context)
+      const { accessToken = null } = nookies.get(context)
       return {
         props: { initialData, accessToken, ...props },
       }
