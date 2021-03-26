@@ -18,7 +18,7 @@ const colors = {
     200: '#ff841a',
     500: '#ff841a',
   },
-  red: {
+  reject: {
     50: '#ffebeb',
     100: '#fab5b5',
     200: '#f98483',
@@ -30,7 +30,7 @@ const colors = {
     800: '#4a0503',
     900: '#2c1a1f',
   },
-  green: {
+  accept: {
     50: '#ebffeb',
     100: '#b7febb',
     200: '#86fe94',

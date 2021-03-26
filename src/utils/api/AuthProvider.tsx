@@ -8,7 +8,9 @@ import {
 import nookies from 'nookies'
 import { useHttp } from './HttpProvider'
 import jwtDecode, { JwtPayload } from 'jwt-decode'
-import { useRouter } from 'next/router'
+
+import { LoginModal } from '@src/components/LoginModal'
+import { useDisclosure } from '@chakra-ui/hooks'
 
 export interface LoginReqDTO {
   username: string
@@ -71,11 +73,15 @@ const AuthProvider = (props: AuthValueProps) => {
     nookies.set(null, 'accessToken', accessToken)
   }
 
-  const router = useRouter()
   const logout = async () => {
-    router.push('/login')
     setToken(null)
     nookies.destroy(null, 'accessToken')
+  }
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const onSessionEnd = () => {
+    logout()
+    onOpen()
   }
 
   const refreshToken = (newToken: string) => {
@@ -86,10 +92,16 @@ const AuthProvider = (props: AuthValueProps) => {
   useEffect(() => {
     http.onLogout = logout
     http.onRefreshToken = refreshToken
+    http.onSessionEnd = onSessionEnd
   }, [http])
 
   const value = { login, logout, user, isAuthenticated, isAdmin }
-  return <AuthContext.Provider value={value} children={children} />
+  return (
+    <AuthContext.Provider value={value}>
+      <LoginModal isOpen={isOpen} onClose={onClose} />
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
 export { AuthProvider, useAuth }

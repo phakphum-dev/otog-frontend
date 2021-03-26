@@ -15,8 +15,9 @@ import { UploadFile } from './UploadFile'
 import { ProblemDto } from '@src/utils/api/Problem'
 import { OrangeButton } from './OrangeButton'
 import { useHttp } from '@src/utils/api/HttpProvider'
-import { useError } from '@src/utils/hooks/useError'
 import { useForm } from 'react-hook-form'
+import { AxiosError } from 'axios'
+import { useError } from '@src/utils/hooks/useError'
 
 export interface SubmitModal {
   problem: ProblemDto
@@ -44,8 +45,7 @@ export function SubmitModal(props: SubmitModal) {
   }, [problem.id])
 
   const http = useHttp()
-  const [onError] = useError()
-
+  const [onError, toast] = useError()
   const onSubmit = async (entries: SubmitReq) => {
     if (file) {
       const formData = new FormData()
@@ -56,10 +56,20 @@ export function SubmitModal(props: SubmitModal) {
       try {
         await http.post(`submission/${problem.id}`, formData)
         onSuccess?.()
-      } catch (e) {
-        onError(e)
-      } finally {
         onClose()
+      } catch (e) {
+        if (e.isAxiosError) {
+          const error = e as AxiosError
+          if (error.response?.status === 403) {
+            toast({
+              title: 'กรุณาเข้าสู่ระบบก่อนใช้งาน',
+              status: 'warning',
+              isClosable: true,
+            })
+          }
+          return
+        }
+        onError(e)
       }
     }
   }

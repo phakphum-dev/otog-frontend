@@ -74,6 +74,11 @@ class ApiClient {
           //   originalRequest?.url
           // )
 
+          if (err.response?.status === 403) {
+            this.onSessionEnd()
+            return Promise.reject(err)
+          }
+
           // remove token if failed on refresh token
           if (
             err.response?.status === 401 &&
@@ -147,6 +152,7 @@ class ApiClient {
 
   async onLogout() {}
   onRefreshToken(newToken: string) {}
+  onSessionEnd() {}
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

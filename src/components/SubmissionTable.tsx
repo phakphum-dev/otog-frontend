@@ -126,7 +126,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
     onClose: onErrorModalClose,
   } = useDisclosure()
 
-  const acceptColor = useColorModeValue('green.50', 'green.900')
+  const acceptColor = useColorModeValue('accept.50', 'accept.900')
 
   return (
     <Tr key={submission.id} bg={status === 'accept' ? acceptColor : undefined}>
