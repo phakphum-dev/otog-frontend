@@ -2,10 +2,9 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios'
 import nookies from 'nookies'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { ParsedUrlQuery } from 'querystring'
-import { onError, errorToast } from '../hooks/useError'
+import { errorToast } from '../hooks/useError'
 import { getServerSideColorMode } from '@src/theme/ColorMode'
-import { UseToastOptions } from '@chakra-ui/toast'
-import jwtDecode, { JwtPayload } from 'jwt-decode'
+import { Role } from './User'
 
 const API_HOST = process.env.NEXT_PUBLIC_API_HOST
 
@@ -13,7 +12,7 @@ interface UserAuthDTO {
   id: number
   username: string
   showName: string
-  role: string
+  role: Role
   rating: number
 }
 
@@ -38,11 +37,15 @@ class ApiClient {
 
     this.axiosInstance.interceptors.request.use(
       async (request) => {
+        // always request to server with accessToken if exists
         const { accessToken, RID: refreshToken } = nookies.get(context)
         if (accessToken) {
           request.headers.Authorization = `Bearer ${accessToken}`
         }
+
+        // refreshToken is required for refreshing accessToken on server-side
         if (refreshToken && context) {
+          // TODO: add Secure flag
           request.headers.cookie = `RID=${refreshToken}; HttpOnly`
         }
         // console.log('request :', request.url, request.headers)
@@ -66,17 +69,19 @@ class ApiClient {
           const err = error as AxiosError
           const originalRequest = err.config
           // console.log(
-          //   'error request :',
+          //   'error response :',
           //   err.response?.status,
           //   originalRequest?.url
           // )
-          //  TODO: make thie 403
+
+          // remove token if failed on refresh token
           if (
             err.response?.status === 401 &&
             originalRequest.url === 'auth/refresh/token'
           ) {
-            nookies.destroy(context, 'accessToken', { path: '/' })
-            this.onLogout()
+            nookies.destroy(context, 'accessToken')
+            await this.onLogout()
+            // TODO: move this to global to display only once per page
             errorToast({
               title: 'เซสชันหมดอายุ',
               description: 'กรุณาลงชื่อเข้าใช้อีกครั้ง',
@@ -86,6 +91,7 @@ class ApiClient {
             return Promise.reject(err)
           }
 
+          // try refresh token on every unauthorized response if accessToken exists
           if (err.response?.status === 401) {
             const { accessToken } = nookies.get(context)
             if (accessToken) {
@@ -109,13 +115,15 @@ class ApiClient {
       const { accessToken } = response.data
       const { 'set-cookie': refreshToken } = response.headers
       if (context) {
+        // set request header for retrying on original request
         context.req.headers.cookie = `accessToken=${accessToken}; ${refreshToken}`
-        context.res.setHeader('Set-cookie', [
-          refreshToken,
-          `accessToken=${accessToken}; Path=/`,
-        ])
+
+        // set response header to set new token on client-side
+        context.res.setHeader('Set-cookie', refreshToken)
+        nookies.set(context, 'accessToken', accessToken, { path: '/' })
       } else {
-        nookies.set(null, 'accessToken', accessToken)
+        // set new token on client-side
+        this.onRefreshToken(accessToken)
       }
       return accessToken
     }
@@ -138,47 +146,13 @@ class ApiClient {
   }
 
   async onLogout() {}
+  onRefreshToken(newToken: string) {}
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  // console.log('before req', context.req.headers)
-  // console.log('before res', context.res.getHeader('set-cookie'))
   const colorModeProps = await getServerSideColorMode(context)
-
   const { accessToken = null } = nookies.get(context)
   return { props: { accessToken, ...colorModeProps } }
-
-  // const client = new ApiClient(context)
-  // try {
-  //   const { accessToken } = nookies.get(context)
-  //   if (accessToken) {
-  //     const newToken = await client.refreshToken(context)
-  //     return {
-  //       props: { accessToken: newToken, ...colorModeProps },
-  //     }
-  //   }
-  // } catch (e) {
-  //   if (e.isAxiosError) {
-  //     const error = e as AxiosError
-  //     // TODO: change to 403
-  //     if (error.response?.status === 401) {
-  //       const errorToast: UseToastOptions = {
-  //         title: 'เซสชันหมดอายุ',
-  //         description: 'กรุณาลงชื่อเข้าใช้อีกครั้ง',
-  //         status: 'info',
-  //         isClosable: true,
-  //       }
-  //       return {
-  //         props: { accessToken: null, error: errorToast, ...colorModeProps },
-  //       }
-  //     }
-  //   }
-  //   console.log(e)
-  // } finally {
-  //   // console.log('after req', context.req.headers)
-  //   // console.log('after res', context.res.getHeader('set-cookie'))
-  // }
-  // return { props: colorModeProps }
 }
 
 export { API_HOST, ApiClient }

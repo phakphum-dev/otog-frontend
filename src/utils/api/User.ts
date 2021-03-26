@@ -1,8 +1,10 @@
+export type Role = 'user' | 'admin'
+
 export interface UserDto {
   id: number
   username: string
   showName: string
-  role: string
+  role: Role
   rating: number
   attendedContest: object
 }

@@ -8,6 +8,7 @@ import {
 import nookies from 'nookies'
 import { useHttp } from './HttpProvider'
 import jwtDecode, { JwtPayload } from 'jwt-decode'
+import { useRouter } from 'next/router'
 
 export interface LoginReqDTO {
   username: string
@@ -30,6 +31,7 @@ export interface AuthResDTO {
 export interface AuthProviderProps {
   user: UserAuthDTO | null
   isAuthenticated: boolean
+  isAdmin: boolean
   login: (credentials: LoginReqDTO) => Promise<void>
   logout: () => Promise<void>
 }
@@ -54,8 +56,10 @@ const AuthProvider = (props: AuthValueProps) => {
   useEffect(() => {
     setToken(accessToken)
   }, [accessToken])
+
   const user = getUserData(token)
-  const isAuthenticated = !!user
+  const isAuthenticated = !!token
+  const isAdmin = user?.role === 'admin'
 
   const http = useHttp()
   const login = async (credentials: LoginReqDTO) => {
@@ -67,16 +71,24 @@ const AuthProvider = (props: AuthValueProps) => {
     nookies.set(null, 'accessToken', accessToken)
   }
 
+  const router = useRouter()
   const logout = async () => {
     setToken(null)
     nookies.destroy(null, 'accessToken')
+    router.push('/login')
+  }
+
+  const refreshToken = (newToken: string) => {
+    setToken(newToken)
+    nookies.set(null, 'accessToken', newToken)
   }
 
   useEffect(() => {
     http.onLogout = logout
-  }, [])
+    http.onRefreshToken = refreshToken
+  }, [http])
 
-  const value = { login, logout, user, isAuthenticated }
+  const value = { login, logout, user, isAuthenticated, isAdmin }
   return <AuthContext.Provider value={value} children={children} />
 }
 

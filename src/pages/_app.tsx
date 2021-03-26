@@ -18,7 +18,7 @@ import dynamic from 'next/dynamic'
 
 import { InitialDataProvider } from '@src/utils/hooks/useInitialData'
 import { HttpProvider } from '@src/utils/api/HttpProvider'
-import { AuthProvider, UserAuthDTO } from '@src/utils/api/AuthProvider'
+import { AuthProvider } from '@src/utils/api/AuthProvider'
 
 import { useEffect } from 'react'
 import { errorToast } from '@src/utils/hooks/useError'
