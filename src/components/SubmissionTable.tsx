@@ -16,11 +16,24 @@ import { SubmissionDto, useSubmissions } from '@src/utils/api/Submission'
 import { CodeModal, ErrorModal } from './CodeModal'
 import { API_HOST } from '@src/utils/api'
 
-export function SubmissionTable() {
+interface SubmissionTableProps {
+  isOnlyMe: boolean
+}
+
+export function SubmissionTable(props: SubmissionTableProps) {
+  const { isOnlyMe } = props
+  const { data: submissions } = useSubmissions(isOnlyMe)
+  return <SubmissionTableBase submissions={submissions} />
+}
+
+interface SubmissionTableBaseProps {
+  submissions: SubmissionDto[] | undefined
+}
+
+export function SubmissionTableBase(props: SubmissionTableBaseProps) {
+  const { submissions } = props
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [submissionId, setSubmissionId] = useState<number>(0)
-
-  const { data: submissions } = useSubmissions()
 
   return (
     <>

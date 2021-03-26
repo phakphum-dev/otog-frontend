@@ -14,6 +14,10 @@ const colors = {
     800: '#4f2300',
     900: '#200900',
   },
+  orangeSwitch: {
+    200: '#ff841a',
+    500: '#ff841a',
+  },
 }
 
 const sizes = {
