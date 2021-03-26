@@ -13,7 +13,7 @@ export interface SubmissionDto {
   timeUsed: number
   result: string
   score: number
-  timeSent: number
+  creationDate: string
   errmsg: string | null
   contestId: number | null
   isGrading: boolean

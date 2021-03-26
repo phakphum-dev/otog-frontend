@@ -1,5 +1,6 @@
 import {
   Box,
+  Link,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -8,11 +9,15 @@ import {
   ModalHeader,
   ModalOverlay,
   ModalProps,
+  Spinner,
+  Stack,
+  Text,
 } from '@chakra-ui/react'
 import Highlight, { defaultProps, Language } from 'prism-react-renderer'
 import theme from 'prism-react-renderer/themes/vsDark'
 
 import { useSubmission, SubmissionDto } from '@src/utils/api/Submission'
+import { API_HOST } from '@src/utils/api'
 export interface CodeModalProps extends Omit<ModalProps, 'children'> {
   submissionId: number
 }
@@ -25,13 +30,48 @@ export function CodeModal(props: CodeModalProps) {
     <Modal onClose={onClose} isOpen={isOpen} size="xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>ข้อ {submission?.problem.name}</ModalHeader>
+        <ModalHeader>
+          <Link
+            href={`${API_HOST}problem/doc/${submission?.problem.id}`}
+            target="_blank"
+          >
+            ข้อ {submission?.problem.name}
+          </Link>
+        </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <CodeHighlight
-            code={submission?.sourceCode ?? ''}
-            language={submission?.language ?? 'cpp'}
-          />
+          {submission ? (
+            <Stack>
+              <div>
+                <Text>ผลตรวจ: {submission.result}</Text>
+                <Text>ภาษา: {submission.language}</Text>
+                {!submission.isGrading && (
+                  <Text>เวลารวม: {submission.timeUsed / 1000} วินาที</Text>
+                )}
+                <Text>
+                  เวลาที่ส่ง:{' '}
+                  {new Date(submission.creationDate).toLocaleDateString(
+                    'th-TH',
+                    {
+                      hour: 'numeric',
+                      minute: 'numeric',
+                      second: 'numeric',
+                      year: 'numeric',
+                      month: 'numeric',
+                      day: 'numeric',
+                    }
+                  )}
+                </Text>
+                <Text></Text>
+              </div>
+              <CodeHighlight
+                code={submission.sourceCode}
+                language={submission.language}
+              />
+            </Stack>
+          ) : (
+            <Spinner />
+          )}
         </ModalBody>
         <ModalFooter />
       </ModalContent>
@@ -70,7 +110,7 @@ export function CodeHighlight(props: CodeHighlightProps) {
   return (
     <Highlight
       {...defaultProps}
-      code={props.code}
+      code={props.code ?? ''}
       language={props.language}
       theme={theme}
     >
