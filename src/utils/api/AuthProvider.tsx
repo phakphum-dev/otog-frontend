@@ -13,6 +13,7 @@ import jwtDecode, { JwtPayload } from 'jwt-decode'
 import { LoginModal } from '@src/components/LoginModal'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { storage } from '../firebase'
+import { useRouter } from 'next/router'
 
 export interface LoginReqDTO {
   username: string
@@ -77,14 +78,20 @@ const AuthProvider = (props: AuthValueProps) => {
     nookies.set(null, 'accessToken', accessToken, { path: '/' })
   }
 
-  const logout = async () => {
+  const removeToken = () => {
     setToken(null)
     nookies.destroy(null, 'accessToken')
   }
 
+  const router = useRouter()
+  const logout = async () => {
+    removeToken()
+    router.push('/login')
+  }
+
   const { isOpen, onOpen, onClose } = useDisclosure()
   const onSessionEnd = () => {
-    logout()
+    removeToken()
     onOpen()
   }
 
@@ -114,8 +121,8 @@ const AuthProvider = (props: AuthValueProps) => {
   }, [user])
 
   useEffect(() => {
-    http.onLogout = logout
     http.onRefreshToken = refreshToken
+    http.removeToken = removeToken
     http.onSessionEnd = onSessionEnd
   }, [http])
 

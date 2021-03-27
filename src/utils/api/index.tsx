@@ -85,7 +85,7 @@ class ApiClient {
             originalRequest.url === 'auth/refresh/token'
           ) {
             nookies.destroy(context, 'accessToken')
-            await this.onLogout()
+            this.removeToken()
             // TODO: move this to global to display only once per page
             errorToast({
               title: 'เซสชันหมดอายุ',
@@ -150,7 +150,7 @@ class ApiClient {
     await this.axiosInstance.delete(url, config)
   }
 
-  async onLogout() {}
+  removeToken() {}
   onRefreshToken(newToken: string) {}
   onSessionEnd() {}
 }
