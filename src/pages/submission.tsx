@@ -17,7 +17,7 @@ import { SubmissionDto } from '@src/utils/api/Submission'
 import { AxiosError } from 'axios'
 import { GetServerSideProps } from 'next'
 import nookies from 'nookies'
-import { FaPuzzlePiece, FaUser, FaUsers } from 'react-icons/fa'
+import { FaTasks, FaUser, FaUsers } from 'react-icons/fa'
 
 export default function SubmissionPage() {
   const { isAuthenticated, isAdmin } = useAuth()
@@ -27,7 +27,7 @@ export default function SubmissionPage() {
 
   return (
     <PageContainer>
-      <Title icon={FaPuzzlePiece}>ผลตรวจ</Title>
+      <Title icon={FaTasks}>ผลตรวจ</Title>
       <HStack mb={4} justify="space-between" spacing={2}>
         <LatestSubmission isOnlyMe={isOnlyMe} />
         {isAuthenticated && (
