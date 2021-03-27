@@ -22,7 +22,7 @@ import { AxiosError } from 'axios'
 import { useError } from '@src/utils/hooks/useError'
 import { useRouter } from 'next/router'
 
-export interface SubmitModal {
+export interface SubmitModalProps {
   problem: ProblemDto
   onClose: () => void
   isOpen: boolean
@@ -35,7 +35,7 @@ export interface SubmitReq {
   contestId?: number
 }
 
-export function SubmitModal(props: SubmitModal) {
+export function SubmitModal(props: SubmitModalProps) {
   const { problem, onClose, isOpen, onSuccess } = props
   const { register, handleSubmit } = useForm()
   const [file, setFile] = useState<File>()

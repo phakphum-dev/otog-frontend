@@ -29,7 +29,7 @@ export default function SubmissionPage() {
     <PageContainer>
       <Title icon={FaPuzzlePiece}>ผลตรวจ</Title>
       <HStack mb={4} justify="space-between" spacing={2}>
-        <LatestSubmission />
+        <LatestSubmission isOnlyMe={isOnlyMe} />
         {isAuthenticated && (
           <HStack alignItems="center" width="auto" color="gray.500">
             <FormLabel htmlFor="only-me" mb={0}>
