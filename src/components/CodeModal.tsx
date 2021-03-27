@@ -122,6 +122,7 @@ export function CodeHighlight(props: CodeHighlightProps) {
           padding={4}
           borderRadius={4}
           overflowX="auto"
+          fontSize="12px"
         >
           {tokens.map((line, i) => (
             <div {...getLineProps({ line, key: i })}>

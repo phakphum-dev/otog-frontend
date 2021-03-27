@@ -13,6 +13,10 @@ export interface ProblemDto {
   rating: number
 }
 
+export function useProblem(id: string) {
+  return useSWR<ProblemDto>(id ? `problem/${id}` : null)
+}
+
 export function useProblems() {
   return useSWR<ProblemDto[]>('problem')
 }

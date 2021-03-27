@@ -10,6 +10,8 @@ import {
   FormControl,
   FormLabel,
   Select,
+  HStack,
+  Button,
 } from '@chakra-ui/react'
 import { UploadFile } from './UploadFile'
 import { ProblemDto } from '@src/utils/api/Problem'
@@ -18,6 +20,7 @@ import { useHttp } from '@src/utils/api/HttpProvider'
 import { useForm } from 'react-hook-form'
 import { AxiosError } from 'axios'
 import { useError } from '@src/utils/hooks/useError'
+import { useRouter } from 'next/router'
 
 export interface SubmitModal {
   problem: ProblemDto
@@ -74,6 +77,11 @@ export function SubmitModal(props: SubmitModal) {
     }
   }
 
+  const router = useRouter()
+  const onNew = () => {
+    router.push('problem/[id]', `problem/${problem.id}`)
+  }
+
   return (
     <Modal onClose={onClose} isOpen={isOpen}>
       <ModalOverlay />
@@ -105,7 +113,10 @@ export function SubmitModal(props: SubmitModal) {
           </ModalBody>
 
           <ModalFooter>
-            <OrangeButton type="submit">ส่ง</OrangeButton>
+            <HStack>
+              <Button onClick={onNew}>ใหม่</Button>
+              <OrangeButton type="submit">ส่ง</OrangeButton>
+            </HStack>
           </ModalFooter>
         </ModalContent>
       </form>
