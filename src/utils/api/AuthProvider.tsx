@@ -3,6 +3,7 @@ import {
   ProviderProps,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from 'react'
 import nookies from 'nookies'
@@ -11,6 +12,7 @@ import jwtDecode, { JwtPayload } from 'jwt-decode'
 
 import { LoginModal } from '@src/components/LoginModal'
 import { useDisclosure } from '@chakra-ui/hooks'
+import { storage } from '../firebase'
 
 export interface LoginReqDTO {
   username: string
@@ -34,6 +36,8 @@ export interface AuthProviderProps {
   user: UserAuthDTO | null
   isAuthenticated: boolean
   isAdmin: boolean
+  profileSrc: string | undefined
+  refreshProfilePic: () => Promise<void>
   login: (credentials: LoginReqDTO) => Promise<void>
   logout: () => Promise<void>
 }
@@ -59,7 +63,7 @@ const AuthProvider = (props: AuthValueProps) => {
     setToken(accessToken)
   }, [accessToken])
 
-  const user = getUserData(token)
+  const user = useMemo(() => getUserData(token), [token])
   const isAuthenticated = !!token
   const isAdmin = user?.role === 'admin'
 
@@ -89,13 +93,42 @@ const AuthProvider = (props: AuthValueProps) => {
     nookies.set(null, 'accessToken', newToken, { path: '/' })
   }
 
+  const [profileSrc, setProfileSrc] = useState<string>()
+  const getProfilePic = async () => {
+    if (user) {
+      try {
+        const url = await storage
+          .ref('images')
+          .child(`${user.id}`)
+          .getDownloadURL()
+        setProfileSrc(url)
+      } catch (error) {
+        if (error.code === 'storage/object-not-found') {
+          setProfileSrc(undefined)
+        }
+      }
+    }
+  }
+  useEffect(() => {
+    getProfilePic()
+  }, [user])
+
   useEffect(() => {
     http.onLogout = logout
     http.onRefreshToken = refreshToken
     http.onSessionEnd = onSessionEnd
   }, [http])
 
-  const value = { login, logout, user, isAuthenticated, isAdmin }
+  const value = {
+    login,
+    logout,
+    user,
+    isAuthenticated,
+    isAdmin,
+    profileSrc,
+    refreshProfilePic: getProfilePic,
+  }
+
   return (
     <AuthContext.Provider value={value}>
       <LoginModal isOpen={isOpen} onClose={onClose} />

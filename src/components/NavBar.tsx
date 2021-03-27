@@ -1,6 +1,6 @@
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useRef, ForwardedRef } from 'react'
+import { useEffect, useRef, ForwardedRef, useState } from 'react'
 
 import {
   Avatar,
@@ -89,12 +89,12 @@ export function NavBar() {
 
   const bg = useColorModeValue('white', 'gray.800')
 
-  const { isAuthenticated, user, logout } = useAuth()
-
   const { color, activeColor } = useActiveColor('/', {
     normal: { light: 'gray.600', dark: 'gray.300' },
     active: { light: 'gray.700', dark: 'white' },
   })
+
+  const { isAuthenticated, user, logout, profileSrc } = useAuth()
 
   return (
     <>
@@ -154,7 +154,7 @@ export function NavBar() {
                     variant="link"
                     rightIcon={<ChevronDownIcon />}
                   >
-                    <Avatar size="xs" />
+                    <Avatar size="xs" src={profileSrc} />
                   </MenuButton>
                   <MenuList>
                     <NextLink href="/profile">
@@ -191,7 +191,7 @@ export function NavBar() {
                   <NextLink href="/profile" passHref>
                     <DrawerButton>
                       <HStack py={2}>
-                        <Avatar size="xs" />
+                        <Avatar size="xs" src={profileSrc} />
                         <Text isTruncated>{user?.showName}</Text>
                       </HStack>
                     </DrawerButton>
