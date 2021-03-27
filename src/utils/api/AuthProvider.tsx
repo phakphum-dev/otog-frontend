@@ -70,7 +70,7 @@ const AuthProvider = (props: AuthValueProps) => {
       credentials
     )
     setToken(accessToken)
-    nookies.set(null, 'accessToken', accessToken)
+    nookies.set(null, 'accessToken', accessToken, { path: '/' })
   }
 
   const logout = async () => {
@@ -86,7 +86,7 @@ const AuthProvider = (props: AuthValueProps) => {
 
   const refreshToken = (newToken: string) => {
     setToken(newToken)
-    nookies.set(null, 'accessToken', newToken)
+    nookies.set(null, 'accessToken', newToken, { path: '/' })
   }
 
   useEffect(() => {
