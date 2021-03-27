@@ -53,7 +53,7 @@ export default function WriteProblem() {
             toast({
               title: 'กรุณาเข้าสู่ระบบก่อนใช้งาน',
               status: 'warning',
-              isClosable: true,
+              duration: 2000,
             })
           }
           return

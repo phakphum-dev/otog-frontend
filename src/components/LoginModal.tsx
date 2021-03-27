@@ -1,6 +1,5 @@
 import NextLink from 'next/link'
 import {
-  Box,
   Button,
   Divider,
   Img,
@@ -33,18 +32,18 @@ export function LoginModal(props: LoginModalProps) {
       <ModalContent>
         <ModalCloseButton />
         <ModalBody py={8}>
-          <Login onSuccess={onClose} />
+          <LoginForm onSuccess={onClose} />
         </ModalBody>
       </ModalContent>
     </Modal>
   )
 }
 
-export interface LoginProps {
+export interface LoginFormProps {
   onSuccess?: () => void
 }
 
-export function Login(props: LoginProps) {
+export function LoginForm(props: LoginFormProps) {
   const { onSuccess } = props
   const { register, handleSubmit } = useForm()
   const [onError, toast] = useError()
@@ -54,10 +53,9 @@ export function Login(props: LoginProps) {
       await login(credentials)
       onSuccess?.()
       toast({
-        title: 'ลงชื่อเข้าใช้งานสำเร็จ !',
+        title: 'ลงชื่อเข้าใช้สำเร็จ !',
         status: 'success',
         duration: 2000,
-        isClosable: true,
       })
     } catch (e) {
       if (e.isAxiosError) {

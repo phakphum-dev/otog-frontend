@@ -1,5 +1,7 @@
 import {
   Box,
+  Button,
+  HStack,
   Link,
   Modal,
   ModalBody,
@@ -12,12 +14,15 @@ import {
   Spinner,
   Stack,
   Text,
+  useClipboard,
+  useToast,
 } from '@chakra-ui/react'
 import Highlight, { defaultProps, Language } from 'prism-react-renderer'
 import theme from 'prism-react-renderer/themes/vsDark'
 
 import { useSubmission, SubmissionDto } from '@src/utils/api/Submission'
 import { API_HOST } from '@src/utils/api'
+import { useEffect } from 'react'
 export interface CodeModalProps extends Omit<ModalProps, 'children'> {
   submissionId: number
 }
@@ -25,18 +30,31 @@ export interface CodeModalProps extends Omit<ModalProps, 'children'> {
 export function CodeModal(props: CodeModalProps) {
   const { onClose, isOpen, submissionId } = props
   const { data: submission } = useSubmission(submissionId)
+  const { onCopy, hasCopied } = useClipboard(submission?.sourceCode ?? '')
+  const toast = useToast()
+  useEffect(() => {
+    if (hasCopied) {
+      toast({
+        title: 'คัดลอกสำเร็จ',
+        status: 'success',
+        duration: 2000,
+      })
+    }
+  }, [hasCopied])
 
   return (
     <Modal onClose={onClose} isOpen={isOpen} size="xl">
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          <Link
-            href={`${API_HOST}problem/doc/${submission?.problem.id}`}
-            target="_blank"
-          >
-            ข้อ {submission?.problem.name}
-          </Link>
+          {submission && (
+            <Link
+              href={`${API_HOST}problem/doc/${submission.problem.id}`}
+              target="_blank"
+            >
+              ข้อ {submission.problem.name}
+            </Link>
+          )}
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -48,21 +66,25 @@ export function CodeModal(props: CodeModalProps) {
                 {!submission.isGrading && (
                   <Text>เวลารวม: {submission.timeUsed / 1000} วินาที</Text>
                 )}
-                <Text>
-                  เวลาที่ส่ง:{' '}
-                  {new Date(submission.creationDate).toLocaleDateString(
-                    'th-TH',
-                    {
-                      hour: 'numeric',
-                      minute: 'numeric',
-                      second: 'numeric',
-                      year: 'numeric',
-                      month: 'numeric',
-                      day: 'numeric',
-                    }
-                  )}
-                </Text>
-                <Text></Text>
+                <HStack justify="space-between">
+                  <Text>
+                    เวลาที่ส่ง:{' '}
+                    {new Date(submission.creationDate).toLocaleDateString(
+                      'th-TH',
+                      {
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        second: 'numeric',
+                        year: 'numeric',
+                        month: 'numeric',
+                        day: 'numeric',
+                      }
+                    )}
+                  </Text>
+                  <Button size="xs" onClick={onCopy}>
+                    คัดลอก
+                  </Button>
+                </HStack>
               </div>
               <CodeHighlight
                 code={submission.sourceCode}

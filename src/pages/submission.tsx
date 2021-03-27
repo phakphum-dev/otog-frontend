@@ -29,8 +29,9 @@ export default function SubmissionPage() {
     <PageContainer>
       <Title icon={FaPuzzlePiece}>ผลตรวจ</Title>
       <HStack mb={4} justify="space-between" spacing={2}>
+        <LatestSubmission />
         {isAuthenticated && (
-          <HStack alignItems="center" width="auto">
+          <HStack alignItems="center" width="auto" color="gray.500">
             <FormLabel htmlFor="only-me" mb={0}>
               <Icon as={FaUsers} boxSize="1.5rem" />
             </FormLabel>
@@ -46,7 +47,6 @@ export default function SubmissionPage() {
             </FormLabel>
           </HStack>
         )}
-        <LatestSubmission />
       </HStack>
       <SubmissionTable isOnlyMe={isOnlyMe} />
     </PageContainer>
