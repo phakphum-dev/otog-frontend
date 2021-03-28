@@ -20,7 +20,7 @@ import { useHttp } from '@src/utils/api/HttpProvider'
 import { useForm } from 'react-hook-form'
 import { AxiosError } from 'axios'
 import { useError } from '@src/utils/hooks/useError'
-import { useRouter } from 'next/router'
+import NextLink from 'next/link'
 
 export interface SubmitModalProps {
   problem: ProblemDto
@@ -77,11 +77,6 @@ export function SubmitModal(props: SubmitModalProps) {
     }
   }
 
-  const router = useRouter()
-  const onNew = () => {
-    router.push('problem/[id]', `problem/${problem.id}`)
-  }
-
   return (
     <Modal onClose={onClose} isOpen={isOpen}>
       <ModalOverlay />
@@ -114,7 +109,9 @@ export function SubmitModal(props: SubmitModalProps) {
 
           <ModalFooter>
             <HStack>
-              <Button onClick={onNew}>ใหม่</Button>
+              <NextLink href="problem/[id]" as={`problem/${problem.id}`}>
+                <Button>ใหม่</Button>
+              </NextLink>
               <OrangeButton type="submit">ส่ง</OrangeButton>
             </HStack>
           </ModalFooter>
