@@ -188,7 +188,7 @@ export function NavBar() {
             <DrawerBody>
               <VStack mt={2} mr={6} spacing={3} align="flex-start">
                 {isAuthenticated && (
-                  <NextLink href="/profile" passHref>
+                  <NextLink href="/profile">
                     <DrawerButton>
                       <HStack py={2}>
                         <Avatar size="xs" src={profileSrc} />
@@ -244,7 +244,7 @@ function DrawerItem(props: ItemProps) {
   const { href, title, ...rest } = props
   const { color } = useActiveColor(href)
   return (
-    <NextLink href={href} key={href} passHref>
+    <NextLink href={href} key={href}>
       <DrawerButton {...rest} fontWeight="normal" color={color}>
         {title}
       </DrawerButton>
