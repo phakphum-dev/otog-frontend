@@ -1,7 +1,7 @@
 import {
   Box,
-  Button,
   HStack,
+  IconButton,
   Link,
   Modal,
   ModalBody,
@@ -23,6 +23,7 @@ import theme from 'prism-react-renderer/themes/vsDark'
 import { useSubmission, SubmissionDto } from '@src/utils/api/Submission'
 import { API_HOST } from '@src/utils/api'
 import { useEffect } from 'react'
+import { CopyIcon } from '@chakra-ui/icons'
 export interface CodeModalProps extends Omit<ModalProps, 'children'> {
   submissionId: number
 }
@@ -81,15 +82,23 @@ export function CodeModal(props: CodeModalProps) {
                       }
                     )}
                   </Text>
-                  <Button size="xs" onClick={onCopy}>
-                    คัดลอก
-                  </Button>
                 </HStack>
               </div>
-              <CodeHighlight
-                code={submission.sourceCode}
-                language={submission.language}
-              />
+              <Box position="relative">
+                <CodeHighlight
+                  code={submission.sourceCode}
+                  language={submission.language}
+                />
+                <IconButton
+                  aria-label="copy"
+                  icon={<CopyIcon />}
+                  size="sm"
+                  onClick={onCopy}
+                  position="absolute"
+                  top={2}
+                  right={2}
+                />
+              </Box>
             </Stack>
           ) : (
             <Spinner />
@@ -142,7 +151,7 @@ export function CodeHighlight(props: CodeHighlightProps) {
           className={className}
           style={style}
           padding={4}
-          borderRadius={4}
+          borderRadius="md"
           overflowX="auto"
           fontSize="12px"
         >
