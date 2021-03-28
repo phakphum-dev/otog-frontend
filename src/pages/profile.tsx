@@ -9,6 +9,9 @@ import { Title } from '@src/components/Title'
 import { useAuth } from '@src/utils/api/AuthProvider'
 import { FaUser } from 'react-icons/fa'
 
+import { getServerSideProps as getServerSideCookies } from '@src/utils/api'
+import { GetServerSideProps } from 'next'
+
 export default function ProfilePage() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { profileSrc } = useAuth()
@@ -38,4 +41,15 @@ export default function ProfilePage() {
   )
 }
 
-export { getServerSideProps } from '@src/utils/api'
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const serverSideCookies = await getServerSideCookies(context)
+  if (!serverSideCookies.props.accessToken) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/login',
+      },
+    }
+  }
+  return serverSideCookies
+}

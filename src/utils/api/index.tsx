@@ -3,8 +3,9 @@ import nookies from 'nookies'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import { errorToast } from '../hooks/useError'
-import { getServerSideColorMode } from '@src/theme/ColorMode'
+import { getColorMode } from '@src/theme/ColorMode'
 import { Role } from './User'
+import { ColorModeProps } from '@src/theme/ColorMode'
 
 const API_HOST = process.env.NEXT_PUBLIC_API_HOST
 
@@ -155,10 +156,16 @@ class ApiClient {
   onSessionEnd() {}
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const colorModeProps = await getServerSideColorMode(context)
+export interface CookiesProps extends ColorModeProps {
+  accessToken: string | null
+}
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext<ParsedUrlQuery>
+) => {
+  const colorModeCookie = getColorMode(context)
   const { accessToken = null } = nookies.get(context)
-  return { props: { accessToken, ...colorModeProps } }
+  return { props: { accessToken, colorModeCookie } }
 }
 
 export { API_HOST, ApiClient }

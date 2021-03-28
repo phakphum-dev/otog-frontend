@@ -10,6 +10,8 @@ import {
 } from '@chakra-ui/react'
 import { OrangeButton } from '@src/components/OrangeButton'
 import { PageContainer } from '@src/components/PageContainer'
+import { GetServerSideProps } from 'next'
+import { getServerSideProps as getServerSideCookies } from '@src/utils/api'
 
 export default function HomePage() {
   return (
@@ -45,4 +47,15 @@ export default function HomePage() {
   )
 }
 
-export { getServerSideProps } from '@src/utils/api'
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const serverSideCookies = await getServerSideCookies(context)
+  if (serverSideCookies.props.accessToken) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/problem',
+      },
+    }
+  }
+  return serverSideCookies
+}

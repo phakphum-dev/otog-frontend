@@ -2,6 +2,8 @@ import { Box, Stack } from '@chakra-ui/layout'
 import { LoginForm } from '@src/components/LoginModal'
 import { PageContainer } from '@src/components/PageContainer'
 import { useRouter } from 'next/router'
+import { getServerSideProps as getServerSideCookies } from '@src/utils/api'
+import { GetServerSideProps } from 'next'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -16,4 +18,15 @@ export default function LoginPage() {
   )
 }
 
-export { getServerSideProps } from '@src/utils/api'
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const serverSideCookies = await getServerSideCookies(context)
+  if (serverSideCookies.props.accessToken) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/problem',
+      },
+    }
+  }
+  return serverSideCookies
+}

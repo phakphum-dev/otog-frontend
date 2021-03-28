@@ -1,12 +1,16 @@
-import { GetServerSideProps } from 'next'
+import { GetServerSidePropsContext } from 'next'
 import nookies from 'nookies'
-// for flashing ssr fix
+import { ParsedUrlQuery } from 'querystring'
 
-export const getServerSideColorMode: GetServerSideProps<{
+export interface ColorModeProps {
   colorModeCookie: string | null
-}> = async (context) => {
+}
+
+export const getColorMode = (
+  context: GetServerSidePropsContext<ParsedUrlQuery>
+) => {
   const { 'chakra-ui-color-mode': colorModeCookie = null } = nookies.get(
     context
   )
-  return { props: { colorModeCookie } }
+  return colorModeCookie
 }

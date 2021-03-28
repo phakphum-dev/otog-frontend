@@ -1,6 +1,6 @@
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useRef, ForwardedRef, useState } from 'react'
+import { useEffect, useRef, ForwardedRef } from 'react'
 
 import {
   Avatar,
@@ -88,11 +88,7 @@ export function NavBar() {
   }, [isMobile, pathname])
 
   const bg = useColorModeValue('white', 'gray.800')
-
-  const { color, activeColor } = useActiveColor('/', {
-    normal: { light: 'gray.600', dark: 'gray.300' },
-    active: { light: 'gray.700', dark: 'white' },
-  })
+  const color = useColorModeValue('gray.800', 'white')
 
   const { isAuthenticated, user, logout, profileSrc } = useAuth()
 
@@ -113,11 +109,7 @@ export function NavBar() {
         <PageContainer>
           <HStack>
             <NextLink href="/">
-              <Button
-                variant="link"
-                color={color}
-                _hover={{ color: activeColor }}
-              >
+              <Button variant="link" color={color} _hover={{ color }}>
                 <HStack cursor="pointer">
                   <Image src="logo196.png" boxSize={8} my={1} />
                   <Heading size="md" py={2}>
