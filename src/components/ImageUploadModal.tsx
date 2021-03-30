@@ -1,4 +1,3 @@
-import { Button } from '@chakra-ui/button'
 import { Box, HStack, Stack } from '@chakra-ui/layout'
 import {
   Modal,
@@ -9,15 +8,19 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/modal'
+import {
+  Slider,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderTrack,
+} from '@chakra-ui/slider'
 
-import { UploadFile } from '@src/components/UploadFile'
 import { useAuth } from '@src/utils/api/AuthProvider'
 import { storage } from '@src/utils/firebase'
-import { ChangeEvent, useState } from 'react'
+import { useState } from 'react'
 import Cropper from 'react-easy-crop'
 import { Area } from 'react-easy-crop/types'
 import { OrangeButton } from './OrangeButton'
-import { SubmitButton } from './SubmitButton'
 
 interface ImageUploadModalProps {
   isOpen: boolean
@@ -87,7 +90,7 @@ async function getCroppedImg(imageSrc: string, pixelCrop: Area) {
   }
 }
 
-export function ImageUploadModal(props: ImageUploadModalProps) {
+export function ImageUpdateModal(props: ImageUploadModalProps) {
   const { isOpen, onClose } = props
 
   const { user, profileSrc, refreshProfilePic } = useAuth()
@@ -96,35 +99,6 @@ export function ImageUploadModal(props: ImageUploadModalProps) {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area>()
   const onCropComplete = (croppedArea: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels)
-  }
-
-  const [file, setFile] = useState<File>()
-  const onFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.length === 0) return
-    setFile(e.target.files?.[0])
-  }
-
-  const onUpload = () => {
-    if (user && file) {
-      const uploadTask = storage.ref(`images/${user.id}`).put(file)
-      uploadTask.on(
-        'state_changed',
-        (snapshot) => {
-          // const progress = Math.round(
-          //   (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          // )
-          // setProgress(progress)
-        },
-        (error) => {
-          console.log(error)
-        },
-        () => {
-          refreshProfilePic()
-          setCrop({ x: 0, y: 0 })
-          setZoom(1)
-        }
-      )
-    }
   }
 
   const uploadCroppedImage = async () => {
@@ -161,24 +135,32 @@ export function ImageUploadModal(props: ImageUploadModalProps) {
         <ModalCloseButton />
         <ModalBody>
           <Stack>
-            {profileSrc && (
-              <Box position="relative" width="100%" height="400px">
-                <Cropper
-                  aspect={1}
-                  image={profileSrc}
-                  crop={crop}
-                  onCropChange={setCrop}
-                  zoom={zoom}
-                  onZoomChange={setZoom}
-                  onCropComplete={onCropComplete}
-                  cropShape="round"
-                />
-              </Box>
-            )}
-            <HStack spacing={4}>
-              <UploadFile fileName={file?.name} onChange={onFileSelect} />
-              <SubmitButton onClick={onUpload} />
-            </HStack>
+            <Box position="relative" width="100%" height="400px">
+              <Cropper
+                aspect={1}
+                image={profileSrc}
+                crop={crop}
+                onCropChange={setCrop}
+                zoom={zoom}
+                onZoomChange={setZoom}
+                onCropComplete={onCropComplete}
+                cropShape="round"
+              />
+            </Box>
+            <Slider
+              min={1}
+              max={3}
+              onChange={setZoom}
+              value={zoom}
+              step={0.01}
+              colorScheme="orange"
+              focusThumbOnChange={false}
+            >
+              <SliderTrack>
+                <SliderFilledTrack />
+              </SliderTrack>
+              <SliderThumb boxSize={6} />
+            </Slider>
           </Stack>
         </ModalBody>
 

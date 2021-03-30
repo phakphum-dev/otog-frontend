@@ -13,7 +13,7 @@ import {
   HStack,
   Button,
 } from '@chakra-ui/react'
-import { UploadFile } from './UploadFile'
+import { FileInput } from './FileInput'
 import { ProblemDto } from '@src/utils/api/Problem'
 import { OrangeButton } from './OrangeButton'
 import { useHttp } from '@src/utils/api/HttpProvider'
@@ -87,7 +87,7 @@ export function SubmitModal(props: SubmitModalProps) {
           <ModalBody>
             <FormControl>
               <FormLabel>อัปโหลด</FormLabel>
-              <UploadFile
+              <FileInput
                 name="sourceCode"
                 fileName={file?.name}
                 onChange={onFileSelect}
