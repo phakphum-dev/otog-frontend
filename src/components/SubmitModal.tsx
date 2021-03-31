@@ -52,10 +52,8 @@ export function SubmitModal(props: SubmitModalProps) {
   const onSubmit = async (entries: SubmitReq) => {
     if (file) {
       const formData = new FormData()
-      Object.entries(entries).map(([key, val]) => {
-        formData.append(key, val)
-        // console.log(key, val)
-      })
+      formData.append('language', entries.language)
+      formData.append('sourceCode', file)
       try {
         await http.post(`submission/${problem.id}`, formData)
         onSuccess?.()
