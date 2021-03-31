@@ -149,7 +149,7 @@ export function CodeHighlight(props: CodeHighlightProps) {
         <Box
           as="pre"
           className={className}
-          style={style}
+          style={{ ...style, tabSize: 4 }}
           padding={4}
           borderRadius="md"
           overflowX="auto"
