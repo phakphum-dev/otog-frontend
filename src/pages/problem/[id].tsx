@@ -44,7 +44,7 @@ export default function WriteProblem() {
       formData.append('sourceCode', file)
       formData.append('language', language)
       try {
-        await http.post(`submission/${id}`, formData)
+        await http.post(`submission/problem/${id}`, formData)
         router.push('/submission')
       } catch (e) {
         if (e.isAxiosError) {
