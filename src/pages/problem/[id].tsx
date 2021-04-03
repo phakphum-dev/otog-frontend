@@ -14,7 +14,7 @@ import { Select } from '@chakra-ui/select'
 import { ChangeEvent, useState } from 'react'
 import { API_HOST } from '@src/utils/api'
 
-const defualtValue = `#include <iostream>
+const defaultValue = `#include <iostream>
 
 using namespace std;
 
@@ -80,7 +80,7 @@ export default function WriteProblem() {
           height="70vh"
           language={language}
           theme="vs-dark"
-          defaultValue={defualtValue}
+          defaultValue={defaultValue}
         />
         <SimpleGrid columns={3} alignItems="flex-end">
           <FormControl>
