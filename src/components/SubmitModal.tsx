@@ -121,7 +121,7 @@ export function SubmitModal(props: SubmitModalProps) {
 
           <ModalFooter>
             <HStack>
-              <NextLink href="problem/[id]" as={`problem/${problem.id}`}>
+              <NextLink href={`problem/${problem.id}`}>
                 <Button>ใหม่</Button>
               </NextLink>
               <OrangeButton type="submit">ส่ง</OrangeButton>
