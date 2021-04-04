@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios'
 import nookies from 'nookies'
-import { GetServerSideProps, GetServerSidePropsContext } from 'next'
+import { GetServerSidePropsContext } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import { errorToast } from '../hooks/useError'
 import { getColorMode } from '@src/theme/ColorMode'
@@ -27,8 +27,33 @@ export const Axios = axios.create({
   withCredentials: true,
 })
 
+// Axios.interceptors.request.use(
+//   (request) => {
+//     console.log('request :', request.url, request.headers)
+//     return request
+//   },
+//   (error) => Promise.reject(error)
+// )
+// Axios.interceptors.response.use(
+//   (response) => {
+//     console.log(
+//       'response :',
+//       response.config.url,
+//       response.headers,
+//       response.data
+//     )
+//     return response
+//   },
+//   (error) => Promise.reject(error)
+// )
+
 class ApiClient {
   axiosInstance: AxiosInstance
+  isRefreshing: boolean = false
+  failedQueue: {
+    resolve: (value?: any | PromiseLike<any>) => void
+    reject: (reason?: any) => void
+  }[] = []
 
   constructor(context: GetServerSidePropsContext<ParsedUrlQuery> | null) {
     this.axiosInstance = axios.create({
@@ -39,16 +64,11 @@ class ApiClient {
     this.axiosInstance.interceptors.request.use(
       async (request) => {
         // always request to server with accessToken if exists
-        const { accessToken, RID: refreshToken } = nookies.get(context)
+        const { accessToken } = nookies.get(context)
         if (accessToken) {
           request.headers.Authorization = `Bearer ${accessToken}`
         }
 
-        // refreshToken is required for refreshing accessToken on server-side
-        if (refreshToken && context) {
-          // TODO: add Secure flag
-          request.headers.cookie = `RID=${refreshToken}; HttpOnly`
-        }
         // console.log('request :', request.url, request.headers)
         return request
       },
@@ -75,34 +95,48 @@ class ApiClient {
           //   originalRequest?.url
           // )
 
-          if (err.response?.status === 403) {
-            this.onSessionEnd()
-            return Promise.reject(err)
-          }
-
-          // remove token if failed on refresh token
-          if (
-            err.response?.status === 401 &&
-            originalRequest.url === 'auth/refresh/token'
-          ) {
-            nookies.destroy(context, 'accessToken')
-            this.removeToken()
-            // TODO: move this to global to display only once per page
-            errorToast({
-              title: 'เซสชันหมดอายุ',
-              description: 'กรุณาลงชื่อเข้าใช้อีกครั้ง',
-              status: 'info',
-              isClosable: true,
-            })
-            return Promise.reject(err)
-          }
-
           // try refresh token on every unauthorized response if accessToken exists
           if (err.response?.status === 401) {
-            const { accessToken } = nookies.get(context)
-            if (accessToken) {
+            if (this.isRefreshing) {
+              return new Promise((resolve, reject) => {
+                this.failedQueue.push({ resolve, reject })
+              })
+                .then(() => {
+                  return this.axiosInstance(originalRequest)
+                })
+                .catch((error) => {
+                  return Promise.reject(error)
+                })
+            }
+
+            try {
+              this.isRefreshing = true
               await this.refreshToken(context)
+              this.processQueue(null)
               return this.axiosInstance(originalRequest)
+            } catch (e) {
+              this.processQueue(e)
+              // remove token if failed on refresh token
+              if (e.isAxiosError) {
+                const error = e as AxiosError
+                if (error.response?.status === 401) {
+                  nookies.destroy(context, 'accessToken')
+                  this.removeToken()
+                  // TODO: move this to global to display only once per page
+                  errorToast({
+                    title: 'เซสชันหมดอายุ',
+                    description: 'กรุณาลงชื่อเข้าใช้อีกครั้ง',
+                    status: 'info',
+                    isClosable: true,
+                  })
+                  return Promise.reject(error)
+                }
+              } else if (error.response?.status === 403) {
+                this.onSessionEnd()
+                return Promise.reject(error)
+              }
+            } finally {
+              this.isRefreshing = false
             }
           }
         }
@@ -114,9 +148,14 @@ class ApiClient {
   async refreshToken(
     context: GetServerSidePropsContext<ParsedUrlQuery> | null
   ) {
-    const response = await this.axiosInstance.get<AuthResDTO>(
-      'auth/refresh/token'
-    )
+    const { accessToken, RID: refreshToken } = nookies.get(context)
+    const response = await Axios.get<AuthResDTO>('auth/refresh/token', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        // TODO: add secure flag
+        ...(refreshToken && { cookie: `RID=${refreshToken}; HttpOnly` }),
+      },
+    })
     if (response.status === 200) {
       const { accessToken } = response.data
       const { 'set-cookie': refreshToken } = response.headers
@@ -133,6 +172,17 @@ class ApiClient {
       }
       return accessToken
     }
+  }
+
+  processQueue(error: any) {
+    this.failedQueue.forEach((promise) => {
+      if (error) {
+        promise.reject(error)
+      } else {
+        promise.resolve()
+      }
+    })
+    this.failedQueue = []
   }
 
   async get<T>(url: string, config?: AxiosRequestConfig) {
