@@ -1,6 +1,7 @@
 import { Dispatch, memo, SetStateAction, useState } from 'react'
 import {
   Box,
+  Button,
   Flex,
   Link,
   Spinner,
@@ -17,24 +18,23 @@ import { SubmitModal } from './SubmitModal'
 import { ProblemDto, useProblems } from '@src/utils/api/Problem'
 import { useRouter } from 'next/router'
 import { API_HOST } from '@src/utils/api'
-
-const initialProblem: ProblemDto = {
-  id: 0,
-  name: '',
-  timeLimit: 0,
-  memoryLimit: 0,
-  sname: '',
-  score: 0,
-  state: 0,
-  recentShowTime: 0,
-  case: '',
-  rating: 0,
-}
+import { useStatusColor } from '@src/utils/hooks/useStatusColor'
+import { CodeModal } from './CodeModal'
+import { SubmissionDto } from '@src/utils/api/Submission'
 
 export function ProblemTable() {
-  const [modalProblem, setModalProblem] = useState<ProblemDto>(initialProblem)
-  const { isOpen, onOpen, onClose } = useDisclosure()
-
+  const [modalProblem, setModalProblem] = useState<ProblemDto>()
+  const [modalSubmission, setModalSubmission] = useState<SubmissionDto>()
+  const {
+    isOpen: isSubmitOpen,
+    onOpen: onSubmitOpen,
+    onClose: onSubmitClose,
+  } = useDisclosure()
+  const {
+    isOpen: isCodeOpen,
+    onOpen: onCodeOpen,
+    onClose: onCodeClose,
+  } = useDisclosure()
   const { data: problems } = useProblems()
 
   const router = useRouter()
@@ -47,7 +47,7 @@ export function ProblemTable() {
       <Table variant="simple">
         <Thead>
           <Tr>
-            <Th>#</Th>
+            <Th textAlign="center">#</Th>
             <Th>ชื่อ</Th>
             <Th>ส่ง</Th>
           </Tr>
@@ -55,17 +55,28 @@ export function ProblemTable() {
         <Tbody>
           <ProblemsRows
             problems={problems}
-            onOpen={onOpen}
+            onSubmitOpen={onSubmitOpen}
             setModalProblem={setModalProblem}
+            onCodeOpen={onCodeOpen}
+            setModalSubmission={setModalSubmission}
           />
         </Tbody>
       </Table>
-      <SubmitModal
-        problem={modalProblem}
-        isOpen={isOpen}
-        onClose={onClose}
-        onSuccess={onSubmitSuccess}
-      />
+      {modalProblem && (
+        <SubmitModal
+          problem={modalProblem}
+          isOpen={isSubmitOpen}
+          onClose={onSubmitClose}
+          onSuccess={onSubmitSuccess}
+        />
+      )}
+      {modalSubmission && (
+        <CodeModal
+          isOpen={isCodeOpen}
+          onClose={onCodeClose}
+          submissionId={modalSubmission.id}
+        />
+      )}
     </Box>
   ) : (
     <Flex justify="center" py={16}>
@@ -75,8 +86,10 @@ export function ProblemTable() {
 }
 
 interface ModalProblemProps {
-  onOpen: () => void
-  setModalProblem: Dispatch<SetStateAction<ProblemDto>>
+  onSubmitOpen: () => void
+  setModalProblem: Dispatch<SetStateAction<ProblemDto | undefined>>
+  onCodeOpen: () => void
+  setModalSubmission: Dispatch<SetStateAction<SubmissionDto | undefined>>
 }
 
 interface ProblemRowsProps extends ModalProblemProps {
@@ -85,16 +98,11 @@ interface ProblemRowsProps extends ModalProblemProps {
 
 const ProblemsRows = memo(
   (props: ProblemRowsProps) => {
-    const { problems, onOpen, setModalProblem } = props
+    const { problems, ...rest } = props
     return (
       <>
         {problems.map((problem) => (
-          <ProblemRow
-            key={problem.id}
-            problem={problem}
-            onOpen={onOpen}
-            setModalProblem={setModalProblem}
-          />
+          <ProblemRow key={problem.id} problem={problem} {...rest} />
         ))}
       </>
     )
@@ -107,15 +115,37 @@ interface ProblemRowProps extends ModalProblemProps {
 }
 
 function ProblemRow(props: ProblemRowProps) {
-  const { problem, onOpen, setModalProblem } = props
-  const onModalOpen = () => {
-    onOpen()
+  const {
+    problem,
+    onSubmitOpen,
+    setModalProblem,
+    onCodeOpen,
+    setModalSubmission,
+  } = props
+  const onSubmitModalOpen = () => {
+    onSubmitOpen()
     setModalProblem(problem)
   }
+  const onCodeModalOpen = () => {
+    onCodeOpen()
+    // TODO: add submission
+    setModalSubmission(undefined)
+  }
+  // TODO: add submission status
+  const bg = useStatusColor()
 
   return (
-    <Tr key={problem.id}>
-      <Td>{problem.id}</Td>
+    <Tr bg={bg}>
+      {/* TODO: add latest submission*/}
+      {false ? (
+        <Td>
+          <Button onClick={onCodeModalOpen} variant="ghost" px={1}>
+            {problem.id}
+          </Button>
+        </Td>
+      ) : (
+        <Td textAlign="center">{problem.id}</Td>
+      )}
       <Td>
         <Link
           color="otog"
@@ -127,7 +157,7 @@ function ProblemRow(props: ProblemRowProps) {
         </Link>
       </Td>
       <Td>
-        <SubmitButton onClick={onModalOpen} />
+        <SubmitButton onClick={onSubmitModalOpen} />
       </Td>
     </Tr>
   )

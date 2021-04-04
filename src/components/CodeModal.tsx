@@ -24,6 +24,8 @@ import { useSubmission, SubmissionDto } from '@src/utils/api/Submission'
 import { API_HOST } from '@src/utils/api'
 import { useEffect } from 'react'
 import { CopyIcon } from '@chakra-ui/icons'
+import { isGraded } from '@src/utils/hooks/useStatusColor'
+import { toThDate } from '@src/utils/date'
 export interface CodeModalProps extends Omit<ModalProps, 'children'> {
   submissionId: number
 }
@@ -64,24 +66,11 @@ export function CodeModal(props: CodeModalProps) {
               <div>
                 <Text>ผลตรวจ: {submission.result}</Text>
                 <Text>ภาษา: {submission.language}</Text>
-                {!submission.isGrading && (
+                {isGraded(submission.status) && (
                   <Text>เวลารวม: {submission.timeUsed / 1000} วินาที</Text>
                 )}
                 <HStack justify="space-between">
-                  <Text>
-                    เวลาที่ส่ง:{' '}
-                    {new Date(submission.creationDate).toLocaleDateString(
-                      'th-TH',
-                      {
-                        hour: 'numeric',
-                        minute: 'numeric',
-                        second: 'numeric',
-                        year: 'numeric',
-                        month: 'numeric',
-                        day: 'numeric',
-                      }
-                    )}
-                  </Text>
+                  <Text>เวลาที่ส่ง: {toThDate(submission.creationDate)}</Text>
                 </HStack>
               </div>
               <Box position="relative">

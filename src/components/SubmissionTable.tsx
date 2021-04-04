@@ -10,14 +10,17 @@ import {
   Td,
   Th,
   Thead,
+  Tooltip,
   Tr,
-  useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react'
 
 import { SubmissionDto, useSubmissions } from '@src/utils/api/Submission'
 import { CodeModal, ErrorModal } from './CodeModal'
 import { API_HOST } from '@src/utils/api'
+import { useAuth } from '@src/utils/api/AuthProvider'
+import { isGraded, useStatusColor } from '@src/utils/hooks/useStatusColor'
+import { toThDate } from '@src/utils/date'
 
 interface SubmissionTableProps {
   isOnlyMe: boolean
@@ -49,7 +52,7 @@ export function SubmissionTableBase(props: SubmissionTableBaseProps) {
       <Table variant="simple">
         <Thead>
           <Tr>
-            <Th>#</Th>
+            <Th px={7}>#</Th>
             <Th>ชื่อ</Th>
             <Th>ข้อ</Th>
             <Th>ผลตรวจ</Th>
@@ -108,13 +111,6 @@ interface SubmissionRowProps extends ModalSubmissionProps {
 
 const SubmissionRow = (props: SubmissionRowProps) => {
   const { submission, onOpen, setSubmissionId } = props
-  const status = submission.result
-    .split('')
-    .filter((res) => res !== '[' && res !== ']')
-    .every((res) => res === 'P')
-    ? 'accept'
-    : 'reject'
-
   const onCodeModalOpen = () => {
     onOpen()
     setSubmissionId(submission.id)
@@ -126,15 +122,28 @@ const SubmissionRow = (props: SubmissionRowProps) => {
     onClose: onErrorModalClose,
   } = useDisclosure()
 
-  const acceptColor = useColorModeValue('accept.50', 'accept.900')
+  const { user, isAdmin } = useAuth()
+  const bg = useStatusColor(submission.status, true)
 
   return (
-    <Tr key={submission.id} bg={status === 'accept' ? acceptColor : undefined}>
-      <Td inNumeric>
-        <Button variant="ghost" onClick={onCodeModalOpen} px={0}>
-          {submission.id}
-        </Button>
-      </Td>
+    <Tr bg={bg}>
+      {user?.id === submission.user.id || isAdmin ? (
+        <Td>
+          <Button variant="ghost" onClick={onCodeModalOpen} px={1}>
+            {submission.id}
+          </Button>
+        </Td>
+      ) : (
+        <Td textAlign="center" lineHeight="40px">
+          <Tooltip
+            hasArrow
+            placement="top"
+            label={toThDate(submission.creationDate)}
+          >
+            <div>{submission.id}</div>
+          </Tooltip>
+        </Td>
+      )}
       <Td>{submission.user.showName}</Td>
       <Td>
         <Link
@@ -145,9 +154,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
         </Link>
       </Td>
       <Td>
-        {submission.isGrading ? (
-          submission.result
-        ) : submission.errmsg ? (
+        {submission.errmsg ? (
           <>
             <Button px={1} variant="ghost" onClick={onErrorModalOpen}>
               {submission.result}
@@ -158,8 +165,10 @@ const SubmissionRow = (props: SubmissionRowProps) => {
               submission={submission}
             />
           </>
-        ) : (
+        ) : isGraded(submission.status) ? (
           <code>{submission.result}</code>
+        ) : (
+          submission.result
         )}
       </Td>
       <Td>{submission.timeUsed / 1000}</Td>

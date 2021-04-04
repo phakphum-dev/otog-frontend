@@ -6,6 +6,8 @@ import { UserDto } from './User'
 import { useInitialData } from '../hooks/useInitialData'
 import { useAuth } from './AuthProvider'
 
+export type Status = 'waiting' | 'grading' | 'accept' | 'reject'
+
 export interface SubmissionDto {
   id: number
   problem: ProblemDto
@@ -16,7 +18,7 @@ export interface SubmissionDto {
   creationDate: string
   errmsg: string | null
   contestId: number | null
-  isGrading: boolean
+  status: Status
   language: Language
 }
 

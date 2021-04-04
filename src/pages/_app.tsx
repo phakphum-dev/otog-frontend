@@ -16,7 +16,6 @@ import { NavBar } from '@src/components/NavBar'
 import '@src/styles/nprogress.css'
 import dynamic from 'next/dynamic'
 
-import { InitialDataProvider } from '@src/utils/hooks/useInitialData'
 import { HttpProvider } from '@src/utils/api/HttpProvider'
 import { AuthProvider } from '@src/utils/api/AuthProvider'
 
@@ -28,13 +27,7 @@ const TopProgressBar = dynamic(() => import('@src/components/ProgressBar'), {
 })
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  const {
-    colorModeCookie,
-    initialData,
-    accessToken,
-    error,
-    ...props
-  } = pageProps
+  const { colorModeCookie, accessToken, error, ...props } = pageProps
 
   const colorModeManager =
     typeof colorModeCookie === 'string'
@@ -60,15 +53,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <ChakraProvider theme={theme} colorModeManager={colorModeManager}>
         <HttpProvider>
           <AuthProvider value={accessToken as string}>
-            <InitialDataProvider value={initialData}>
-              <TopProgressBar />
-              <Flex direction="column" minH="100vh">
-                <Flex direction="column" flex={1}>
-                  <NavBar />
-                  <Component {...props} />
-                </Flex>
+            <TopProgressBar />
+            <Flex direction="column" minH="100vh">
+              <Flex direction="column" flex={1}>
+                <NavBar />
+                <Component {...props} />
               </Flex>
-            </InitialDataProvider>
+            </Flex>
           </AuthProvider>
         </HttpProvider>
       </ChakraProvider>

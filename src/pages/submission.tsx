@@ -14,42 +14,50 @@ import {
 } from '@src/utils/api'
 import { useAuth } from '@src/utils/api/AuthProvider'
 import { SubmissionDto } from '@src/utils/api/Submission'
+import { InitialDataProvider } from '@src/utils/hooks/useInitialData'
 import { AxiosError } from 'axios'
 import { GetServerSideProps } from 'next'
 import nookies from 'nookies'
 import { FaTasks, FaUser, FaUsers } from 'react-icons/fa'
 
-export default function SubmissionPage() {
+interface SubmissionPageProps {
+  initialData: SubmissionDto
+}
+
+export default function SubmissionPage(props: SubmissionPageProps) {
+  const { initialData } = props
   const { isAuthenticated, isAdmin } = useAuth()
   const { isOpen: isOnlyMe, onToggle } = useDisclosure({
     defaultIsOpen: !isAdmin,
   })
 
   return (
-    <PageContainer>
-      <Title icon={FaTasks}>ผลตรวจ</Title>
-      <HStack mb={4} justify="space-between" spacing={2}>
-        <LatestSubmission isOnlyMe={isOnlyMe} />
-        {isAuthenticated && (
-          <HStack alignItems="center" width="auto" color="gray.500">
-            <FormLabel htmlFor="only-me" mb={0}>
-              <Icon as={FaUsers} boxSize="1.5rem" />
-            </FormLabel>
-            <Switch
-              mr={2}
-              colorScheme="gray"
-              isChecked={isOnlyMe}
-              onChange={onToggle}
-              id="only-me"
-            />
-            <FormLabel htmlFor="only-me" mb={0}>
-              <Icon as={FaUser} boxSize="1.25rem" mr={0} />
-            </FormLabel>
-          </HStack>
-        )}
-      </HStack>
-      <SubmissionTable isOnlyMe={isOnlyMe} />
-    </PageContainer>
+    <InitialDataProvider value={initialData}>
+      <PageContainer>
+        <Title icon={FaTasks}>ผลตรวจ</Title>
+        <HStack mb={4} justify="space-between" spacing={2}>
+          <LatestSubmission isOnlyMe={isOnlyMe} />
+          {isAuthenticated && (
+            <HStack alignItems="center" width="auto" color="gray.500">
+              <FormLabel htmlFor="only-me" mb={0}>
+                <Icon as={FaUsers} boxSize="1.5rem" />
+              </FormLabel>
+              <Switch
+                mr={2}
+                colorScheme="gray"
+                isChecked={isOnlyMe}
+                onChange={onToggle}
+                id="only-me"
+              />
+              <FormLabel htmlFor="only-me" mb={0}>
+                <Icon as={FaUser} boxSize="1.25rem" mr={0} />
+              </FormLabel>
+            </HStack>
+          )}
+        </HStack>
+        <SubmissionTable isOnlyMe={isOnlyMe} />
+      </PageContainer>
+    </InitialDataProvider>
   )
 }
 
@@ -70,7 +78,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   } catch (e) {
     if (e.isAxiosError) {
       const error = e as AxiosError
-      // TODO: change to 403
       if (error.response?.status === 401) {
         const errorToast: UseToastOptions = {
           title: 'เซสชันหมดอายุ',

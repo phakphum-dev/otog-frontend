@@ -1,4 +1,10 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import {
+  ChangeEvent,
+  ChangeEventHandler,
+  FormEvent,
+  useEffect,
+  useState,
+} from 'react'
 import {
   Modal,
   ModalBody,
@@ -17,7 +23,6 @@ import { FileInput } from './FileInput'
 import { ProblemDto } from '@src/utils/api/Problem'
 import { OrangeButton } from './OrangeButton'
 import { useHttp } from '@src/utils/api/HttpProvider'
-import { useForm } from 'react-hook-form'
 import { AxiosError } from 'axios'
 import { useError } from '@src/utils/hooks/useError'
 import NextLink from 'next/link'
@@ -35,9 +40,15 @@ export interface SubmitReq {
   contestId?: number
 }
 
+const acceptExtension: Record<string, string> = {
+  cpp: '.cpp,.c',
+  c: '.c',
+  python: '.py',
+}
+
 export function SubmitModal(props: SubmitModalProps) {
   const { problem, onClose, isOpen, onSuccess } = props
-  const { register, handleSubmit } = useForm()
+
   const [file, setFile] = useState<File>()
   const onFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length === 0) return
@@ -47,12 +58,18 @@ export function SubmitModal(props: SubmitModalProps) {
     setFile(undefined)
   }, [problem.id])
 
+  const [language, setLanguage] = useState<string>('cpp')
+  const onSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setLanguage(e.target.value)
+  }
+
   const http = useHttp()
   const [onError, toast] = useError()
-  const onSubmit = async (entries: SubmitReq) => {
+  const onSubmit = async (e: FormEvent) => {
+    e.preventDefault()
     if (file) {
       const formData = new FormData()
-      formData.append('language', entries.language)
+      formData.append('language', language)
       formData.append('sourceCode', file)
       try {
         await http.post(`submission/problem/${problem.id}`, formData)
@@ -78,7 +95,7 @@ export function SubmitModal(props: SubmitModalProps) {
   return (
     <Modal onClose={onClose} isOpen={isOpen}>
       <ModalOverlay />
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={onSubmit}>
         <ModalContent>
           <ModalHeader>{problem.name}</ModalHeader>
           <ModalCloseButton />
@@ -89,18 +106,15 @@ export function SubmitModal(props: SubmitModalProps) {
                 name="sourceCode"
                 fileName={file?.name}
                 onChange={onFileSelect}
-                accept=".c,.cpp,.py"
-                ref={register}
+                accept={acceptExtension[language]}
               />
             </FormControl>
             <FormControl>
               <FormLabel>ภาษา</FormLabel>
-              <Select name="language" ref={register}>
+              <Select name="language" onChange={onSelectChange}>
                 <option value="cpp">C++</option>
                 <option value="c">C</option>
-                <option value="python" disabled>
-                  Python
-                </option>
+                <option value="python">Python</option>
               </Select>
             </FormControl>
           </ModalBody>
