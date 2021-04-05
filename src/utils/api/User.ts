@@ -1,6 +1,6 @@
 export type Role = 'user' | 'admin'
 
-export interface UserDto {
+export interface User {
   id: number
   username: string
   showName: string

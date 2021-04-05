@@ -17,7 +17,7 @@ import { useForm } from 'react-hook-form'
 
 import { AxiosError } from 'axios'
 import { useError } from '@src/utils/hooks/useError'
-import { LoginReqDTO, useAuth } from '@src/utils/api/AuthProvider'
+import { LoginReq, useAuth } from '@src/utils/api/AuthProvider'
 
 export interface LoginModalProps {
   isOpen: boolean
@@ -48,7 +48,7 @@ export function LoginForm(props: LoginFormProps) {
   const { register, handleSubmit } = useForm()
   const [onError, toast] = useError()
   const { login } = useAuth()
-  const onSubmit = async (credentials: LoginReqDTO) => {
+  const onSubmit = async (credentials: LoginReq) => {
     try {
       await login(credentials)
       onSuccess?.()

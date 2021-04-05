@@ -2,25 +2,12 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios'
 import nookies from 'nookies'
 import { GetServerSidePropsContext } from 'next'
 import { ParsedUrlQuery } from 'querystring'
-import { errorToast } from '../hooks/useError'
+import { errorToast } from '@src/utils/hooks/useError'
 import { getColorMode } from '@src/theme/ColorMode'
-import { Role } from './User'
 import { ColorModeProps } from '@src/theme/ColorMode'
+import { AuthRes } from './AuthProvider'
 
 const API_HOST = process.env.NEXT_PUBLIC_API_HOST
-
-interface UserAuthDTO {
-  id: number
-  username: string
-  showName: string
-  role: Role
-  rating: number
-}
-
-interface AuthResDTO {
-  user: UserAuthDTO
-  accessToken: string
-}
 
 export const Axios = axios.create({
   baseURL: API_HOST,
@@ -149,7 +136,7 @@ class ApiClient {
     context: GetServerSidePropsContext<ParsedUrlQuery> | null
   ) {
     const { accessToken, RID: refreshToken } = nookies.get(context)
-    const response = await Axios.get<AuthResDTO>('auth/refresh/token', {
+    const response = await Axios.get<AuthRes>('auth/refresh/token', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
         // TODO: add secure flag

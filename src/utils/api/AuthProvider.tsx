@@ -12,43 +12,44 @@ import jwtDecode, { JwtPayload } from 'jwt-decode'
 
 import { LoginModal } from '@src/components/LoginModal'
 import { useDisclosure } from '@chakra-ui/hooks'
-import { storage } from '../firebase'
+import { storage } from '@src/utils/firebase'
 import { useRouter } from 'next/router'
+import { Role } from './User'
 
-export interface LoginReqDTO {
+export interface LoginReq {
   username: string
   password: string
 }
 
-export interface UserAuthDTO {
+export interface UserAuth {
   id: number
   username: string
   showName: string
-  role: string
+  role: Role
   rating: number
 }
 
-export interface AuthResDTO {
-  user: UserAuthDTO
+export interface AuthRes {
+  user: UserAuth
   accessToken: string
 }
 
 export interface AuthProviderProps {
-  user: UserAuthDTO | null
+  user: UserAuth | null
   isAuthenticated: boolean
   isAdmin: boolean
   profileSrc: string | undefined
   refreshProfilePic: () => Promise<void>
-  login: (credentials: LoginReqDTO) => Promise<void>
+  login: (credentials: LoginReq) => Promise<void>
   logout: () => Promise<void>
 }
 
 export type AuthValueProps = ProviderProps<string | null>
 
-export function getUserData(accessToken: string | null): UserAuthDTO | null {
+export function getUserData(accessToken: string | null): UserAuth | null {
   if (accessToken) {
     const { id, username, showName, role, rating } = jwtDecode<
-      UserAuthDTO & JwtPayload
+      UserAuth & JwtPayload
     >(accessToken)
     return { id, username, showName, role, rating }
   }
@@ -69,8 +70,8 @@ const AuthProvider = (props: AuthValueProps) => {
   const isAdmin = user?.role === 'admin'
 
   const http = useHttp()
-  const login = async (credentials: LoginReqDTO) => {
-    const { accessToken } = await http.post<LoginReqDTO, AuthResDTO>(
+  const login = async (credentials: LoginReq) => {
+    const { accessToken } = await http.post<LoginReq, AuthRes>(
       `auth/login`,
       credentials
     )

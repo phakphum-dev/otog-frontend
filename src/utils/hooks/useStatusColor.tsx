@@ -1,5 +1,5 @@
 import { useColorModeValue } from '@chakra-ui/color-mode'
-import { Status } from '../api/Submission'
+import { Status } from '@src/utils/api/Submission'
 
 export function useStatusColor(
   status?: Status | null,

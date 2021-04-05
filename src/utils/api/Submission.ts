@@ -2,15 +2,15 @@ import useSWR from 'swr'
 
 import { Language } from 'prism-react-renderer'
 import { Problem } from './Problem'
-import { UserDto } from './User'
-import { useInitialData } from '../hooks/useInitialData'
+import { User } from './User'
+import { useInitialData } from '@src/utils/hooks/useInitialData'
 import { useAuth } from './AuthProvider'
 
 export type Status = 'waiting' | 'grading' | 'accept' | 'reject'
 
 export interface Submission {
   id: number
-  user: UserDto
+  user: User
   timeUsed: number
   result: string
   score: number
@@ -25,7 +25,7 @@ export type SubmissionWithProblem = Submission & {
   problem: Problem
 }
 
-export type SubmissionWithSourceCodeDto = SubmissionWithProblem & {
+export type SubmissionWithSourceCode = SubmissionWithProblem & {
   sourceCode: string
 }
 
@@ -37,7 +37,7 @@ export function useSubmissions(isOnlyMe: boolean) {
 }
 
 export function useSubmission(submissionId: number) {
-  return useSWR<SubmissionWithSourceCodeDto>(
+  return useSWR<SubmissionWithSourceCode>(
     submissionId === 0 ? null : `submission/${submissionId}`
   )
 }
