@@ -41,7 +41,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>OTOG - </title>
+        <title>One Tambon One Grader | OTOG</title>
         <link rel="manifest" href="/manifest.json" />
         <link rel="icon" href="/logo196.png" type="image/png" />
         <link rel="shortcut icon" href="/logo196.png" />
