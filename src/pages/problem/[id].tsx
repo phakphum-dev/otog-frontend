@@ -22,6 +22,12 @@ int main() {
     return 0;
 }`
 
+const extension: Record<string, string> = {
+  cpp: '.cpp',
+  c: '.c',
+  python: '.py',
+}
+
 export default function WriteProblem() {
   const router = useRouter()
   const { id } = router.query
@@ -38,7 +44,7 @@ export default function WriteProblem() {
     const value = monaco?.editor.getModels()[0].getValue()
     if (value && problem) {
       const blob = new Blob([value])
-      const file = new File([blob], `${problem.id}.${language}`)
+      const file = new File([blob], `${problem.id}${extension[language]}`)
 
       const formData = new FormData()
       formData.append('sourceCode', file)
