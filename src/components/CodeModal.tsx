@@ -20,7 +20,7 @@ import {
 import Highlight, { defaultProps, Language } from 'prism-react-renderer'
 import theme from 'prism-react-renderer/themes/vsDark'
 
-import { useSubmission, SubmissionDto } from '@src/utils/api/Submission'
+import { useSubmission, SubmissionWithProblem } from '@src/utils/api/Submission'
 import { API_HOST } from '@src/utils/api'
 import { useEffect } from 'react'
 import { CopyIcon } from '@chakra-ui/icons'
@@ -100,8 +100,9 @@ export function CodeModal(props: CodeModalProps) {
 }
 
 export interface ErrorModalProp extends Omit<ModalProps, 'children'> {
-  submission: SubmissionDto
+  submission: SubmissionWithProblem
 }
+
 export function ErrorModal(props: ErrorModalProp) {
   const { onClose, isOpen, submission } = props
   return (

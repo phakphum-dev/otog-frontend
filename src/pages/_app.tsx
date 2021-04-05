@@ -43,6 +43,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>OTOG - </title>
         <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/logo196.png" type="image/png" />
         <link rel="shortcut icon" href="/logo196.png" />
         <link rel="apple-touch-icon" href="/logoIOS.png" />
         <meta

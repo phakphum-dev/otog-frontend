@@ -15,16 +15,16 @@ import {
 } from '@chakra-ui/react'
 import { SubmitButton } from './SubmitButton'
 import { SubmitModal } from './SubmitModal'
-import { ProblemDto, useProblems } from '@src/utils/api/Problem'
+import { ProblemWithSubmission, useProblems } from '@src/utils/api/Problem'
 import { useRouter } from 'next/router'
 import { API_HOST } from '@src/utils/api'
 import { useStatusColor } from '@src/utils/hooks/useStatusColor'
 import { CodeModal } from './CodeModal'
-import { SubmissionDto } from '@src/utils/api/Submission'
+import { Submission } from '@src/utils/api/Submission'
 
 export function ProblemTable() {
-  const [modalProblem, setModalProblem] = useState<ProblemDto>()
-  const [modalSubmission, setModalSubmission] = useState<SubmissionDto>()
+  const [modalProblem, setModalProblem] = useState<ProblemWithSubmission>()
+  const [modalSubmission, setModalSubmission] = useState<Submission>()
   const {
     isOpen: isSubmitOpen,
     onOpen: onSubmitOpen,
@@ -87,13 +87,13 @@ export function ProblemTable() {
 
 interface ModalProblemProps {
   onSubmitOpen: () => void
-  setModalProblem: Dispatch<SetStateAction<ProblemDto | undefined>>
+  setModalProblem: Dispatch<SetStateAction<ProblemWithSubmission | undefined>>
   onCodeOpen: () => void
-  setModalSubmission: Dispatch<SetStateAction<SubmissionDto | undefined>>
+  setModalSubmission: Dispatch<SetStateAction<Submission | undefined>>
 }
 
 interface ProblemRowsProps extends ModalProblemProps {
-  problems: ProblemDto[]
+  problems: ProblemWithSubmission[]
 }
 
 const ProblemsRows = memo(
@@ -111,7 +111,7 @@ const ProblemsRows = memo(
 )
 
 interface ProblemRowProps extends ModalProblemProps {
-  problem: ProblemDto
+  problem: ProblemWithSubmission
 }
 
 function ProblemRow(props: ProblemRowProps) {
@@ -127,17 +127,16 @@ function ProblemRow(props: ProblemRowProps) {
     setModalProblem(problem)
   }
   const onCodeModalOpen = () => {
-    onCodeOpen()
-    // TODO: add submission
-    setModalSubmission(undefined)
+    if (problem.submission) {
+      onCodeOpen()
+      setModalSubmission(problem.submission)
+    }
   }
-  // TODO: add submission status
-  const bg = useStatusColor()
+  const bg = useStatusColor(problem.submission?.status)
 
   return (
     <Tr bg={bg}>
-      {/* TODO: add latest submission*/}
-      {false ? (
+      {problem.submission ? (
         <Td>
           <Button onClick={onCodeModalOpen} variant="ghost" px={1}>
             {problem.id}

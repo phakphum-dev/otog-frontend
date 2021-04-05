@@ -1,10 +1,4 @@
-import {
-  ChangeEvent,
-  ChangeEventHandler,
-  FormEvent,
-  useEffect,
-  useState,
-} from 'react'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import {
   Modal,
   ModalBody,
@@ -20,7 +14,7 @@ import {
   Button,
 } from '@chakra-ui/react'
 import { FileInput } from './FileInput'
-import { ProblemDto } from '@src/utils/api/Problem'
+import { Problem } from '@src/utils/api/Problem'
 import { OrangeButton } from './OrangeButton'
 import { useHttp } from '@src/utils/api/HttpProvider'
 import { AxiosError } from 'axios'
@@ -28,7 +22,7 @@ import { useError } from '@src/utils/hooks/useError'
 import NextLink from 'next/link'
 
 export interface SubmitModalProps {
-  problem: ProblemDto
+  problem: Problem
   onClose: () => void
   isOpen: boolean
   onSuccess?: () => void

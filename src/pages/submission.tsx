@@ -13,7 +13,7 @@ import {
   getServerSideProps as getServerSideCookie,
 } from '@src/utils/api'
 import { useAuth } from '@src/utils/api/AuthProvider'
-import { SubmissionDto } from '@src/utils/api/Submission'
+import { SubmissionWithProblem } from '@src/utils/api/Submission'
 import { InitialDataProvider } from '@src/utils/hooks/useInitialData'
 import { AxiosError } from 'axios'
 import { GetServerSideProps } from 'next'
@@ -21,7 +21,7 @@ import nookies from 'nookies'
 import { FaTasks, FaUser, FaUsers } from 'react-icons/fa'
 
 interface SubmissionPageProps {
-  initialData: SubmissionDto
+  initialData: SubmissionWithProblem
 }
 
 export default function SubmissionPage(props: SubmissionPageProps) {
@@ -69,7 +69,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     const { accessToken = null } = nookies.get(context)
     if (accessToken) {
-      const initialData = await client.get<SubmissionDto>('submission/latest')
+      const initialData = await client.get<SubmissionWithProblem>(
+        'submission/latest'
+      )
       const { accessToken = null } = nookies.get(context)
       return {
         props: { initialData, accessToken, ...props },

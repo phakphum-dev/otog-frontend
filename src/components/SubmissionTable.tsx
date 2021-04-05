@@ -15,7 +15,10 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 
-import { SubmissionDto, useSubmissions } from '@src/utils/api/Submission'
+import {
+  SubmissionWithProblem,
+  useSubmissions,
+} from '@src/utils/api/Submission'
 import { CodeModal, ErrorModal } from './CodeModal'
 import { API_HOST } from '@src/utils/api'
 import { useAuth } from '@src/utils/api/AuthProvider'
@@ -39,7 +42,7 @@ export function SubmissionTable(props: SubmissionTableProps) {
 }
 
 interface SubmissionTableBaseProps {
-  submissions: SubmissionDto[]
+  submissions: SubmissionWithProblem[]
 }
 
 export function SubmissionTableBase(props: SubmissionTableBaseProps) {
@@ -83,7 +86,7 @@ interface ModalSubmissionProps {
 }
 
 interface SubmissionRowsProps extends ModalSubmissionProps {
-  submissions: SubmissionDto[]
+  submissions: SubmissionWithProblem[]
 }
 
 const SubmissionRows = memo(
@@ -106,7 +109,7 @@ const SubmissionRows = memo(
 )
 
 interface SubmissionRowProps extends ModalSubmissionProps {
-  submission: SubmissionDto
+  submission: SubmissionWithProblem
 }
 
 const SubmissionRow = (props: SubmissionRowProps) => {

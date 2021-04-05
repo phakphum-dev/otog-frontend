@@ -1,6 +1,7 @@
 import useSWR from 'swr'
+import { Submission } from './Submission'
 
-export interface ProblemDto {
+export interface Problem {
   id: number
   name: string
   timeLimit: number
@@ -12,11 +13,12 @@ export interface ProblemDto {
   case: string
   rating: number
 }
+export type ProblemWithSubmission = Problem & { submission: Submission | null }
 
 export function useProblem(id: string) {
-  return useSWR<ProblemDto>(id ? `problem/${id}` : null)
+  return useSWR<Problem>(id ? `problem/${id}` : null)
 }
 
 export function useProblems() {
-  return useSWR<ProblemDto[]>('problem')
+  return useSWR<ProblemWithSubmission[]>('problem')
 }
