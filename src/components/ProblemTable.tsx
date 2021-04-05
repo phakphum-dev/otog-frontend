@@ -21,6 +21,7 @@ import { API_HOST } from '@src/utils/api'
 import { useStatusColor } from '@src/utils/hooks/useStatusColor'
 import { CodeModal } from './CodeModal'
 import { Submission } from '@src/utils/api/Submission'
+import { RenderLater } from './RenderLater'
 
 export function ProblemTable() {
   const [modalProblem, setModalProblem] = useState<ProblemWithSubmission>()
@@ -101,9 +102,18 @@ const ProblemsRows = memo(
     const { problems, ...rest } = props
     return (
       <>
-        {problems.map((problem) => (
+        {problems.slice(0, 100).map((problem) => (
           <ProblemRow key={problem.id} problem={problem} {...rest} />
         ))}
+        {problems.slice(100).map((problem, index) => (
+          <RenderLater key={problem.id} delay={~~(index / 100)}>
+            <ProblemRow problem={problem} {...rest} />
+          </RenderLater>
+        ))}
+        {/* 
+        {problems.map((problem) => (
+          <ProblemRow key={problem.id} problem={problem} {...rest} />
+        ))} */}
       </>
     )
   },
