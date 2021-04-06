@@ -61,6 +61,7 @@ export function SubmitModal(props: SubmitModalProps) {
       formData.append('sourceCode', file)
       try {
         await http.post(`submission/problem/${problem.id}`, formData)
+        setFile(undefined)
         onSuccess?.()
         onClose()
       } catch (e) {

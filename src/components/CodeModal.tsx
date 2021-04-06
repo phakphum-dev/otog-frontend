@@ -66,7 +66,7 @@ export function CodeModal(props: CodeModalProps) {
               <div>
                 <Text>ผลตรวจ: {submission.result}</Text>
                 <Text>ภาษา: {submission.language}</Text>
-                {isGraded(submission.status) && (
+                {isGraded(submission) && (
                   <Text>เวลารวม: {submission.timeUsed / 1000} วินาที</Text>
                 )}
                 <HStack justify="space-between">

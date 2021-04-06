@@ -3,11 +3,13 @@ import {
   Box,
   Button,
   Flex,
+  HStack,
   Link,
   Spinner,
   Table,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tooltip,
@@ -23,8 +25,13 @@ import {
 import { CodeModal, ErrorModal } from './CodeModal'
 import { API_HOST } from '@src/utils/api'
 import { useAuth } from '@src/utils/api/AuthProvider'
-import { isGraded, useStatusColor } from '@src/utils/hooks/useStatusColor'
+import {
+  isGraded,
+  isGrading,
+  useStatusColor,
+} from '@src/utils/hooks/useStatusColor'
 import { toThDate } from '@src/utils/date'
+import useSWR, { mutate } from 'swr'
 
 export function SubmissionTable() {
   const { data: submissions } = useSubmissions()
@@ -98,15 +105,14 @@ interface SubmissionRowsProps extends ModalSubmissionProps {
 
 const SubmissionRows = memo(
   (props: SubmissionRowsProps) => {
-    const { submissions, onOpen, setSubmissionId } = props
+    const { submissions, ...rest } = props
     return (
       <>
         {submissions.map((submission) => (
           <SubmissionRow
             submission={submission}
             key={submission.id}
-            onOpen={onOpen}
-            setSubmissionId={setSubmissionId}
+            {...rest}
           />
         ))}
       </>
@@ -120,10 +126,23 @@ interface SubmissionRowProps extends ModalSubmissionProps {
 }
 
 const SubmissionRow = (props: SubmissionRowProps) => {
-  const { submission, onOpen, setSubmissionId } = props
+  const { submission: initialData, onOpen, setSubmissionId } = props
+  const { data: submission } = useSWR<SubmissionWithProblem>(
+    isGrading(initialData) ? `/submission/${initialData.id}` : null,
+    {
+      initialData,
+      revalidateOnMount: true,
+      onSuccess: (data, key) => {
+        if (isGrading(data)) {
+          setTimeout(() => mutate(key), 1000)
+        }
+      },
+    }
+  )
+
   const onCodeModalOpen = () => {
     onOpen()
-    setSubmissionId(submission.id)
+    setSubmissionId(submission?.id ?? 0)
   }
 
   const {
@@ -133,14 +152,17 @@ const SubmissionRow = (props: SubmissionRowProps) => {
   } = useDisclosure()
 
   const { user, isAdmin } = useAuth()
-  const bg = useStatusColor(submission.status, true)
+  const bg = useStatusColor(submission, true)
 
+  if (!submission) {
+    return null
+  }
   return (
     <Tr bg={bg}>
-      {user?.id === submission.user.id || isAdmin ? (
+      {user?.id === submission?.user.id || isAdmin ? (
         <Td>
           <Button variant="ghost" onClick={onCodeModalOpen} px={1}>
-            {submission.id}
+            {submission?.id}
           </Button>
         </Td>
       ) : (
@@ -175,7 +197,12 @@ const SubmissionRow = (props: SubmissionRowProps) => {
               submission={submission}
             />
           </>
-        ) : isGraded(submission.status) ? (
+        ) : isGrading(submission) ? (
+          <HStack>
+            <Spinner size="xs" />
+            <Text>{submission.result}</Text>
+          </HStack>
+        ) : isGraded(submission) ? (
           <code>{submission.result}</code>
         ) : (
           submission.result

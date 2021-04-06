@@ -142,7 +142,7 @@ function ProblemRow(props: ProblemRowProps) {
       setModalSubmission(problem.submission)
     }
   }
-  const bg = useStatusColor(problem.submission?.status)
+  const bg = useStatusColor(problem.submission)
 
   return (
     <Tr bg={bg}>
