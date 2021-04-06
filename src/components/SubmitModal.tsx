@@ -34,12 +34,6 @@ export interface SubmitReq {
   contestId?: number
 }
 
-const acceptExtension: Record<string, string> = {
-  cpp: '.cpp,.c',
-  c: '.c',
-  python: '.py',
-}
-
 export function SubmitModal(props: SubmitModalProps) {
   const { problem, onClose, isOpen, onSuccess } = props
 
@@ -100,7 +94,7 @@ export function SubmitModal(props: SubmitModalProps) {
                 name="sourceCode"
                 fileName={file?.name}
                 onChange={onFileSelect}
-                accept={acceptExtension[language]}
+                accept=".c,.cpp,.py"
               />
             </FormControl>
             <FormControl>
