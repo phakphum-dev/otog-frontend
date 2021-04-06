@@ -96,34 +96,37 @@ class ApiClient {
                 })
             }
 
-            try {
-              this.isRefreshing = true
-              await this.refreshToken(context)
-              this.processQueue(null)
-              return this.axiosInstance(originalRequest)
-            } catch (e) {
-              this.processQueue(e)
-              // remove token if failed on refresh token
-              if (e.isAxiosError) {
-                const error = e as AxiosError
-                if (error.response?.status === 401) {
-                  nookies.destroy(context, 'accessToken')
-                  this.removeToken()
-                  // TODO: move this to global to display only once per page
-                  errorToast({
-                    title: 'เซสชันหมดอายุ',
-                    description: 'กรุณาลงชื่อเข้าใช้อีกครั้ง',
-                    status: 'info',
-                    isClosable: true,
-                  })
+            const { accessToken } = nookies.get(context)
+            if (accessToken) {
+              try {
+                this.isRefreshing = true
+                await this.refreshToken(context)
+                this.processQueue(null)
+                return this.axiosInstance(originalRequest)
+              } catch (e) {
+                this.processQueue(e)
+                // remove token if failed on refresh token
+                if (e.isAxiosError) {
+                  const error = e as AxiosError
+                  if (error.response?.status === 401) {
+                    nookies.destroy(context, 'accessToken')
+                    this.removeToken()
+                    // TODO: move this to global to display only once per page
+                    errorToast({
+                      title: 'เซสชันหมดอายุ',
+                      description: 'กรุณาลงชื่อเข้าใช้อีกครั้ง',
+                      status: 'info',
+                      isClosable: true,
+                    })
+                    return Promise.reject(error)
+                  }
+                } else if (error.response?.status === 403) {
+                  this.onSessionEnd()
                   return Promise.reject(error)
                 }
-              } else if (error.response?.status === 403) {
-                this.onSessionEnd()
-                return Promise.reject(error)
+              } finally {
+                this.isRefreshing = false
               }
-            } finally {
-              this.isRefreshing = false
             }
           }
         }
