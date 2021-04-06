@@ -33,12 +33,6 @@ import { ToggleColorModeButton } from './ToggleColorModeButton'
 import { PageContainer } from './PageContainer'
 import { useAuth } from '@src/utils/api/AuthProvider'
 
-const entries = [
-  { href: '/problem', title: 'โจทย์' },
-  { href: '/submission', title: 'ผลตรวจ' },
-  { href: '/contest', title: 'แข่งขัน' },
-]
-
 interface ColorOptions {
   normal: {
     light: string
@@ -71,7 +65,7 @@ function useActiveColor(href: string, options: ColorOptions = defaultOptions) {
     options?.active.dark
   )
   const { pathname } = useRouter()
-  const isActive = href.slice(1) === pathname.split('/')[1]
+  const isActive = href.split('/')[1] === pathname.split('/')[1]
   const color = isActive ? activeColor : normalColor
   return { color, normalColor, activeColor, isActive }
 }
@@ -90,7 +84,13 @@ export function NavBar() {
   const bg = useColorModeValue('white', 'gray.800')
   const color = useColorModeValue('gray.800', 'white')
 
-  const { isAuthenticated, user, logout, profileSrc } = useAuth()
+  const { isAuthenticated, user, logout, profileSrc, isAdmin } = useAuth()
+
+  const entries = [
+    { href: '/problem', title: 'โจทย์' },
+    { href: isAdmin ? '/submission/all' : '/submission', title: 'ผลตรวจ' },
+    { href: '/contest', title: 'แข่งขัน' },
+  ]
 
   return (
     <>

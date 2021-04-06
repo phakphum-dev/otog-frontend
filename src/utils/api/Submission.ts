@@ -29,11 +29,13 @@ export type SubmissionWithSourceCode = SubmissionWithProblem & {
   sourceCode: string
 }
 
-export function useSubmissions(isOnlyMe: boolean) {
+export function useAllSubmissions() {
+  return useSWR<SubmissionWithProblem[]>('submission')
+}
+
+export function useSubmissions() {
   const { user } = useAuth()
-  return useSWR<SubmissionWithProblem[]>(
-    isOnlyMe && user ? `submission/user/${user.id}` : 'submission'
-  )
+  return useSWR<SubmissionWithProblem[]>(user && `submission/user/${user.id}`)
 }
 
 export function useSubmission(submissionId: number) {

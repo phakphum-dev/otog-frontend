@@ -1,8 +1,5 @@
-import { FormLabel } from '@chakra-ui/form-control'
-import { useDisclosure } from '@chakra-ui/hooks'
-import Icon from '@chakra-ui/icon'
+import { Button } from '@chakra-ui/button'
 import { HStack } from '@chakra-ui/layout'
-import { Switch } from '@chakra-ui/switch'
 import { UseToastOptions } from '@chakra-ui/toast'
 import { LatestSubmission } from '@src/components/LatestSubmission'
 import { PageContainer } from '@src/components/PageContainer'
@@ -12,13 +9,13 @@ import {
   ApiClient,
   getServerSideProps as getServerSideCookie,
 } from '@src/utils/api'
-import { useAuth } from '@src/utils/api/AuthProvider'
 import { SubmissionWithProblem } from '@src/utils/api/Submission'
 import { InitialDataProvider } from '@src/utils/hooks/useInitialData'
 import { AxiosError } from 'axios'
 import { GetServerSideProps } from 'next'
+import Link from 'next/link'
 import nookies from 'nookies'
-import { FaTasks, FaUser, FaUsers } from 'react-icons/fa'
+import { FaTasks } from 'react-icons/fa'
 
 interface SubmissionPageProps {
   initialData: SubmissionWithProblem
@@ -26,36 +23,20 @@ interface SubmissionPageProps {
 
 export default function SubmissionPage(props: SubmissionPageProps) {
   const { initialData } = props
-  const { isAuthenticated, isAdmin } = useAuth()
-  const { isOpen: isOnlyMe, onToggle } = useDisclosure({
-    defaultIsOpen: !isAdmin,
-  })
 
   return (
     <InitialDataProvider value={initialData}>
       <PageContainer>
-        <Title icon={FaTasks}>ผลตรวจ</Title>
-        <HStack mb={4} justify="space-between" spacing={2}>
-          <LatestSubmission isOnlyMe={isOnlyMe} />
-          {isAuthenticated && (
-            <HStack alignItems="center" width="auto" color="gray.500">
-              <FormLabel htmlFor="only-me" mb={0}>
-                <Icon as={FaUsers} boxSize="1.5rem" />
-              </FormLabel>
-              <Switch
-                mr={2}
-                colorScheme="gray"
-                isChecked={isOnlyMe}
-                onChange={onToggle}
-                id="only-me"
-              />
-              <FormLabel htmlFor="only-me" mb={0}>
-                <Icon as={FaUser} boxSize="1.25rem" mr={0} />
-              </FormLabel>
-            </HStack>
-          )}
+        <HStack justify="space-between">
+          <Title icon={FaTasks}>ผลตรวจ</Title>
+          <Link href="/submission/all">
+            <Button>ผลตรวจรวม</Button>
+          </Link>
         </HStack>
-        <SubmissionTable isOnlyMe={isOnlyMe} />
+        <HStack mb={4}>
+          <LatestSubmission />
+        </HStack>
+        <SubmissionTable />
       </PageContainer>
     </InitialDataProvider>
   )
@@ -75,6 +56,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       const { accessToken = null } = nookies.get(context)
       return {
         props: { initialData, accessToken, ...props },
+      }
+    } else {
+      return {
+        redirect: {
+          permanent: false,
+          destination: '/submission/all',
+        },
       }
     }
   } catch (e) {

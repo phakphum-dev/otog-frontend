@@ -6,16 +6,11 @@ import { useLatestSubmission, useSubmissions } from '@src/utils/api/Submission'
 import { SubmitButton } from './SubmitButton'
 import { SubmitModal } from './SubmitModal'
 
-interface LatestSubmissionProps {
-  isOnlyMe: boolean
-}
-
-export function LatestSubmission(props: LatestSubmissionProps) {
-  const { isOnlyMe } = props
+export function LatestSubmission() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { isAuthenticated } = useAuth()
   const { data: submission } = useLatestSubmission()
-  const { mutate } = useSubmissions(isOnlyMe)
+  const { mutate } = useSubmissions()
 
   return isAuthenticated && submission ? (
     <HStack spacing={{ base: 2, md: 4 }}>

@@ -17,6 +17,7 @@ import {
 
 import {
   SubmissionWithProblem,
+  useAllSubmissions,
   useSubmissions,
 } from '@src/utils/api/Submission'
 import { CodeModal, ErrorModal } from './CodeModal'
@@ -25,13 +26,19 @@ import { useAuth } from '@src/utils/api/AuthProvider'
 import { isGraded, useStatusColor } from '@src/utils/hooks/useStatusColor'
 import { toThDate } from '@src/utils/date'
 
-interface SubmissionTableProps {
-  isOnlyMe: boolean
+export function SubmissionTable() {
+  const { data: submissions } = useSubmissions()
+  return submissions ? (
+    <SubmissionTableBase submissions={submissions} />
+  ) : (
+    <Flex justify="center" py={16}>
+      <Spinner size="xl" />
+    </Flex>
+  )
 }
 
-export function SubmissionTable(props: SubmissionTableProps) {
-  const { isOnlyMe } = props
-  const { data: submissions } = useSubmissions(isOnlyMe)
+export function AllSubmissionTable() {
+  const { data: submissions } = useAllSubmissions()
   return submissions ? (
     <SubmissionTableBase submissions={submissions} />
   ) : (
