@@ -1,4 +1,4 @@
-import { Dispatch, memo, SetStateAction, useState } from 'react'
+import { Dispatch, memo, SetStateAction, useEffect, useState } from 'react'
 import {
   Box,
   Button,
@@ -32,6 +32,7 @@ import {
 } from '@src/utils/hooks/useStatusColor'
 import { toThDate } from '@src/utils/date'
 import useSWR, { mutate } from 'swr'
+import { useOnScreen } from '@src/utils/hooks/useOnScreen'
 
 export function SubmissionTable() {
   const { data: submissions } = useSubmissions()
@@ -63,6 +64,11 @@ export function SubmissionTableBase(props: SubmissionTableBaseProps) {
   const { submissions } = props
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [submissionId, setSubmissionId] = useState<number>(0)
+  const { ref, isIntersecting } = useOnScreen()
+  useEffect(() => {
+    if (isIntersecting) {
+    }
+  }, [isIntersecting])
 
   return (
     <Box overflowX="auto">
@@ -85,6 +91,9 @@ export function SubmissionTableBase(props: SubmissionTableBaseProps) {
           />
         </Tbody>
       </Table>
+      <Flex justify="center" py={6}>
+        <Spinner size="lg" ref={ref} />
+      </Flex>
       <CodeModal
         submissionId={submissionId}
         isOpen={isOpen}
