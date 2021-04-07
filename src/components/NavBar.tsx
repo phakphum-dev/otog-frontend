@@ -111,7 +111,7 @@ export function NavBar() {
             <NextLink href="/">
               <Button variant="link" color={color} _hover={{ color }}>
                 <HStack cursor="pointer">
-                  <Image src="logo196.png" boxSize={8} my={1} />
+                  <Image src="/logo196.png" boxSize={8} my={1} />
                   <Heading size="md" py={2}>
                     <Box
                       display={{ base: 'none', md: 'inline-block', xl: 'none' }}
