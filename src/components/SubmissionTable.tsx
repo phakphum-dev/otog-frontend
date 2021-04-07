@@ -1,4 +1,11 @@
-import { Dispatch, memo, SetStateAction, useEffect, useState } from 'react'
+import {
+  Dispatch,
+  memo,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import {
   Box,
   Button,
@@ -35,9 +42,28 @@ import useSWR, { mutate } from 'swr'
 import { useOnScreen } from '@src/utils/hooks/useOnScreen'
 
 export function SubmissionTable() {
-  const { data: submissions } = useSubmissions()
+  const {
+    data: submissionsList,
+    setSize,
+    size,
+    isValidating,
+  } = useSubmissions()
+  const submissions = useMemo(
+    () => submissionsList?.flatMap((submissions) => submissions),
+    [submissionsList]
+  )
+  const hasMore =
+    isValidating || (submissionsList && submissionsList.length === size)
+  const loadMore = () => {
+    setSize((size) => size + 1)
+  }
+
   return submissions ? (
-    <SubmissionTableBase submissions={submissions} />
+    <SubmissionTableBase
+      submissions={submissions}
+      loadMore={loadMore}
+      hasMore={hasMore}
+    />
   ) : (
     <Flex justify="center" py={16}>
       <Spinner size="xl" />
@@ -46,9 +72,28 @@ export function SubmissionTable() {
 }
 
 export function AllSubmissionTable() {
-  const { data: submissions } = useAllSubmissions()
+  const {
+    data: submissionsList,
+    setSize,
+    size,
+    isValidating,
+  } = useAllSubmissions()
+  const submissions = useMemo(
+    () => submissionsList?.flatMap((submissions) => submissions),
+    [submissionsList]
+  )
+  const hasMore =
+    isValidating || (submissionsList && submissionsList.length === size)
+  const loadMore = () => {
+    setSize((size) => size + 1)
+  }
+
   return submissions ? (
-    <SubmissionTableBase submissions={submissions} />
+    <SubmissionTableBase
+      submissions={submissions}
+      loadMore={loadMore}
+      hasMore={hasMore}
+    />
   ) : (
     <Flex justify="center" py={16}>
       <Spinner size="xl" />
@@ -58,15 +103,20 @@ export function AllSubmissionTable() {
 
 interface SubmissionTableBaseProps {
   submissions: SubmissionWithProblem[]
+  loadMore?: () => void
+  hasMore?: boolean
 }
 
 export function SubmissionTableBase(props: SubmissionTableBaseProps) {
-  const { submissions } = props
+  const { submissions, loadMore, hasMore } = props
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [submissionId, setSubmissionId] = useState<number>(0)
   const { ref, isIntersecting } = useOnScreen()
   useEffect(() => {
     if (isIntersecting) {
+      if (hasMore) {
+        loadMore?.()
+      }
     }
   }, [isIntersecting])
 
@@ -91,9 +141,11 @@ export function SubmissionTableBase(props: SubmissionTableBaseProps) {
           />
         </Tbody>
       </Table>
-      <Flex justify="center" py={6}>
-        <Spinner size="lg" ref={ref} />
-      </Flex>
+      {hasMore && (
+        <Flex justify="center" py={6}>
+          <Spinner size="lg" ref={ref} />
+        </Flex>
+      )}
       <CodeModal
         submissionId={submissionId}
         isOpen={isOpen}

@@ -1,4 +1,4 @@
-import useSWR from 'swr'
+import useSWR, { useSWRInfinite } from 'swr'
 
 import { Language } from 'prism-react-renderer'
 import { Problem } from './Problem'
@@ -30,12 +30,41 @@ export type SubmissionWithSourceCode = SubmissionWithProblem & {
 }
 
 export function useAllSubmissions() {
-  return useSWR<SubmissionWithProblem[]>('submission')
+  return useSWRInfinite<SubmissionWithProblem[]>(
+    (pageIndex, previousPageData) => {
+      // reached the end
+      if (previousPageData && !previousPageData.length) return null
+
+      // first page, we don't have `previousPageData`
+      if (pageIndex === 0 || !previousPageData) return 'submission'
+
+      // add the cursor to the API endpoint
+      return `submission?offset=${
+        previousPageData[previousPageData?.length - 1].id
+      }`
+    }
+  )
 }
 
 export function useSubmissions() {
   const { user } = useAuth()
-  return useSWR<SubmissionWithProblem[]>(user && `submission/user/${user.id}`)
+  return useSWRInfinite<SubmissionWithProblem[]>(
+    (pageIndex, previousPageData) => {
+      if (!user) return null
+
+      // reached the end
+      if (previousPageData && !previousPageData.length) return null
+
+      // first page, we don't have `previousPageData`
+      if (pageIndex === 0 || !previousPageData)
+        return `submission/user/${user.id}`
+
+      // add the cursor to the API endpoint
+      return `submission/user/${user.id}?offset=${
+        previousPageData[previousPageData?.length - 1].id
+      }`
+    }
+  )
 }
 
 export function useSubmission(submissionId: number) {
