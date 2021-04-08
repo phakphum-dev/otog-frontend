@@ -13,6 +13,7 @@ import { FormControl, FormLabel } from '@chakra-ui/form-control'
 import { Select } from '@chakra-ui/select'
 import { ChangeEvent, useState } from 'react'
 import { API_HOST } from '@src/utils/api'
+import { useToken } from '@chakra-ui/system'
 
 const defaultValue = `#include <iostream>
 
@@ -69,8 +70,10 @@ export default function WriteProblem() {
     }
   }
 
+  const maxWidth = useToken('sizes', 'container')
+
   return (
-    <PageContainer maxWidth="640px">
+    <PageContainer maxWidth={maxWidth.sm}>
       <Title icon={FaLightbulb}>
         <Link href={`${API_HOST}problem/doc/${id}`} target="_blank">
           {problem?.name}
