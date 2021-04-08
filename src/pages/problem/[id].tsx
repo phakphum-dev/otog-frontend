@@ -7,7 +7,7 @@ import { Button } from '@chakra-ui/button'
 import { useHttp } from '@src/utils/api/HttpProvider'
 import { AxiosError } from 'axios'
 import { useError } from '@src/utils/hooks/useError'
-import { Container, Link, SimpleGrid, Spacer } from '@chakra-ui/layout'
+import { Link, SimpleGrid, Spacer } from '@chakra-ui/layout'
 import { useProblem } from '@src/utils/api/Problem'
 import { FormControl, FormLabel } from '@chakra-ui/form-control'
 import { Select } from '@chakra-ui/select'
@@ -70,37 +70,35 @@ export default function WriteProblem() {
   }
 
   return (
-    <PageContainer>
-      <Container>
-        <Title icon={FaLightbulb}>
-          <Link href={`${API_HOST}problem/doc/${id}`} target="_blank">
-            {problem?.name}
-          </Link>
-        </Title>
-        {/* {problem && (
+    <PageContainer maxWidth="640px">
+      <Title icon={FaLightbulb}>
+        <Link href={`${API_HOST}problem/doc/${id}`} target="_blank">
+          {problem?.name}
+        </Link>
+      </Title>
+      {/* {problem && (
           <Text>
             ({problem.timeLimit / 1000} วินาที {problem.memoryLimit} MB)
           </Text>
         )} */}
-        <Editor
-          height="70vh"
-          language={language}
-          theme="vs-dark"
-          defaultValue={defaultValue}
-        />
-        <SimpleGrid columns={3} alignItems="flex-end">
-          <FormControl>
-            <FormLabel>ภาษา</FormLabel>
-            <Select onChange={onChange}>
-              <option value="cpp">C++</option>
-              <option value="c">C</option>
-              <option value="python">Python</option>
-            </Select>
-          </FormControl>
-          <Spacer />
-          <Button onClick={onSubmit}>ส่ง</Button>
-        </SimpleGrid>
-      </Container>
+      <Editor
+        height="70vh"
+        language={language}
+        theme="vs-dark"
+        defaultValue={defaultValue}
+      />
+      <SimpleGrid columns={3} alignItems="flex-end">
+        <FormControl>
+          <FormLabel>ภาษา</FormLabel>
+          <Select onChange={onChange}>
+            <option value="cpp">C++</option>
+            <option value="c">C</option>
+            <option value="python">Python</option>
+          </Select>
+        </FormControl>
+        <Spacer />
+        <Button onClick={onSubmit}>ส่ง</Button>
+      </SimpleGrid>
     </PageContainer>
   )
 }
