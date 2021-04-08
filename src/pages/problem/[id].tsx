@@ -9,11 +9,9 @@ import { AxiosError } from 'axios'
 import { useError } from '@src/utils/hooks/useError'
 import { Link, SimpleGrid, Spacer } from '@chakra-ui/layout'
 import { useProblem } from '@src/utils/api/Problem'
-import { FormControl, FormLabel } from '@chakra-ui/form-control'
 import { Select } from '@chakra-ui/select'
 import { ChangeEvent, useState } from 'react'
 import { API_HOST } from '@src/utils/api'
-import { useToken } from '@chakra-ui/system'
 
 const defaultValue = `#include <iostream>
 
@@ -70,10 +68,8 @@ export default function WriteProblem() {
     }
   }
 
-  const maxWidth = useToken('sizes', 'container')
-
   return (
-    <PageContainer maxWidth={maxWidth.sm}>
+    <PageContainer dense>
       <Title icon={FaLightbulb}>
         <Link href={`${API_HOST}problem/doc/${id}`} target="_blank">
           {problem?.name}
@@ -85,20 +81,17 @@ export default function WriteProblem() {
           </Text>
         )} */}
       <Editor
-        height="70vh"
+        height="75vh"
         language={language}
         theme="vs-dark"
         defaultValue={defaultValue}
       />
-      <SimpleGrid columns={3} alignItems="flex-end">
-        <FormControl>
-          <FormLabel>ภาษา</FormLabel>
-          <Select onChange={onChange}>
-            <option value="cpp">C++</option>
-            <option value="c">C</option>
-            <option value="python">Python</option>
-          </Select>
-        </FormControl>
+      <SimpleGrid columns={3} alignItems="flex-end" mt={2}>
+        <Select onChange={onChange}>
+          <option value="cpp">C++</option>
+          <option value="c">C</option>
+          <option value="python">Python</option>
+        </Select>
         <Spacer />
         <Button onClick={onSubmit}>ส่ง</Button>
       </SimpleGrid>

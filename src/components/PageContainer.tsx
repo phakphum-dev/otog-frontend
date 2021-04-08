@@ -1,6 +1,10 @@
 import { Container, ContainerProps, useToken } from '@chakra-ui/react'
 
-export function PageContainer(props: ContainerProps) {
+export type PageContainerProps = ContainerProps & { dense?: boolean }
+
+export function PageContainer({ dense = false, ...props }: PageContainerProps) {
   const maxWidth = useToken('sizes', 'container')
-  return <Container maxWidth={maxWidth} flex={1} {...props} />
+  return (
+    <Container maxWidth={dense ? maxWidth.sm : maxWidth} flex={1} {...props} />
+  )
 }

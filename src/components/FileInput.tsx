@@ -28,10 +28,10 @@ export function useInput(ref: ForwardedRef<HTMLInputElement>) {
 
 export const FileInput = forwardRef(
   (props: UploadFileProps, ref: ForwardedRef<HTMLInputElement>) => {
-    const { fileName, ...rest } = props
+    const { fileName, size, ...rest } = props
     const { inputRef, onClick } = useInput(ref)
     return (
-      <InputGroup>
+      <InputGroup size={size}>
         <Input type="file" ref={inputRef} display="none" {...rest} />
         <Input
           value={fileName ?? 'ยังไม่ได้เลือกไฟล์'}

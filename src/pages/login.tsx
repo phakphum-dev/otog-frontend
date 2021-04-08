@@ -10,7 +10,7 @@ export default function LoginPage() {
   return (
     <PageContainer>
       <Stack mt={16}>
-        <Box boxShadow="md" borderRadius="md" p={4} mx="auto">
+        <Box boxShadow="md" borderRadius="md" p={4} mx="auto" borderWidth="1px">
           <LoginForm onSuccess={() => router.replace('/problem')} />
         </Box>
       </Stack>
