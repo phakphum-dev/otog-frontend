@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react'
 import {
   Modal,
   ModalBody,
@@ -37,6 +37,7 @@ export interface SubmitReq {
 export function SubmitModal(props: SubmitModalProps) {
   const { problem, onClose, isOpen, onSuccess } = props
 
+  const inputRef = useRef<HTMLInputElement>(null)
   const [file, setFile] = useState<File>()
   const onFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length === 0) return
@@ -62,6 +63,9 @@ export function SubmitModal(props: SubmitModalProps) {
       try {
         await http.post(`submission/problem/${problem.id}`, formData)
         setFile(undefined)
+        if (inputRef.current) {
+          inputRef.current.value = ''
+        }
         onSuccess?.()
         onClose()
       } catch (e) {

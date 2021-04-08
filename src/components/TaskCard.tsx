@@ -23,13 +23,20 @@ import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 import { Collapse } from '@chakra-ui/transition'
 import Editor from '@monaco-editor/react'
 import { API_HOST } from '@src/utils/api'
+import { useHttp } from '@src/utils/api/HttpProvider'
 import { Problem } from '@src/utils/api/Problem'
-import { SubmissionWithProblem, useSubmission } from '@src/utils/api/Submission'
+import {
+  SubmissionWithProblem,
+  useProblemSubmission,
+} from '@src/utils/api/Submission'
+import { useError } from '@src/utils/hooks/useError'
 import {
   isGraded,
   isGrading,
   useStatusColor,
 } from '@src/utils/hooks/useStatusColor'
+import { AxiosError } from 'axios'
+import { ChangeEvent, FormEvent, useRef, useState } from 'react'
 
 import { CodeModal, ErrorModal } from './CodeModal'
 import { FileInput } from './FileInput'
@@ -45,14 +52,57 @@ int main() {
 
 export interface TaskCardProps {
   problem: Problem
-  // contestId: number
+  contestId: number
 }
 
 export function TaskCard(props: TaskCardProps) {
-  const { problem } = props
+  const { problem, contestId } = props
+  const { data: submission, mutate } = useProblemSubmission(problem.id)
   const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: true })
-  const { data: submission } = useSubmission(14241)
   const { isOpen: isEditorOpen, onToggle: onEditorToggle } = useDisclosure()
+
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [file, setFile] = useState<File>()
+  const onFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.length === 0) return
+    setFile(e.target.files?.[0])
+  }
+
+  const [language, setLanguage] = useState<string>('cpp')
+  const onSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setLanguage(e.target.value)
+  }
+
+  const http = useHttp()
+  const [onError, toast] = useError()
+  const onFileSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+    if (file) {
+      const formData = new FormData()
+      formData.append('contestId', `${contestId}`)
+      formData.append('language', language)
+      formData.append('sourceCode', file)
+      try {
+        await http.post(`submission/problem/${problem.id}`, formData)
+        mutate()
+        setFile(undefined)
+        if (inputRef.current) inputRef.current.value = ''
+      } catch (e) {
+        if (e.isAxiosError) {
+          const error = e as AxiosError
+          if (error.response?.status === 403) {
+            toast({
+              title: 'กรุณาเข้าสู่ระบบก่อนใช้งาน',
+              status: 'warning',
+              isClosable: true,
+            })
+          }
+          return
+        }
+        onError(e)
+      }
+    }
+  }
 
   return (
     <Box rounded="lg" boxShadow="sm" borderWidth="1px">
@@ -110,7 +160,12 @@ export function TaskCard(props: TaskCardProps) {
             direction={{ base: isEditorOpen ? 'row' : 'column', sm: 'row' }}
             spacing={{ base: 2, sm: 8 }}
           >
-            <Select name="language" size="sm" flex={1}>
+            <Select
+              name="language"
+              size="sm"
+              flex={1}
+              onChange={onSelectChange}
+            >
               <option value="cpp">C++</option>
               <option value="c">C</option>
               <option value="python">Python</option>
@@ -126,8 +181,17 @@ export function TaskCard(props: TaskCardProps) {
               </>
             ) : (
               <HStack justify="flex-end">
-                <FileInput size="sm" />
-                <OrangeButton size="sm">ส่ง</OrangeButton>
+                <FileInput
+                  ref={inputRef}
+                  size="sm"
+                  name="sourceCode"
+                  fileName={file?.name}
+                  onChange={onFileSelect}
+                  accept=".c,.cpp,.py"
+                />
+                <OrangeButton size="sm" onClick={onFileSubmit}>
+                  ส่ง
+                </OrangeButton>
               </HStack>
             )}
           </Stack>
@@ -186,7 +250,12 @@ export function TaskSubmissionTable(props: TaskSubmissionTableProps) {
             <Td>
               {submission.errmsg ? (
                 <>
-                  <Button px={1} variant="ghost" onClick={onErrorOpen}>
+                  <Button
+                    px={1}
+                    variant="ghost"
+                    onClick={onErrorOpen}
+                    size="sm"
+                  >
                     {submission.result}
                   </Button>
                   <ErrorModal

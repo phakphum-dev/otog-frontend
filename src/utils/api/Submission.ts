@@ -1,10 +1,11 @@
-import useSWR, { useSWRInfinite } from 'swr'
+import useSWR, { mutate, useSWRInfinite } from 'swr'
 
 import { Language } from 'prism-react-renderer'
 import { Problem } from './Problem'
 import { User } from './User'
 import { useInitialData } from '@src/utils/hooks/useInitialData'
 import { useAuth } from './AuthProvider'
+import { isGrading } from '../hooks/useStatusColor'
 
 export type Status = 'waiting' | 'grading' | 'accept' | 'reject'
 
@@ -80,6 +81,20 @@ export function useLatestSubmission() {
     isAuthenticated ? 'submission/latest' : null,
     {
       initialData,
+    }
+  )
+}
+
+export function useProblemSubmission(problemId: number) {
+  return useSWR<SubmissionWithSourceCode>(
+    problemId ? `submission/problem/${problemId}/latest` : null,
+    {
+      revalidateOnFocus: false,
+      onSuccess: (data, key) => {
+        if (isGrading(data)) {
+          setTimeout(() => mutate(key), 1000)
+        }
+      },
     }
   )
 }

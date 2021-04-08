@@ -38,7 +38,7 @@ export const FileInput = forwardRef(
           display="none"
           name={name}
           onChange={onChange}
-          accep={accept}
+          accept={accept}
         />
         <Input
           value={fileName ?? 'ยังไม่ได้เลือกไฟล์'}
