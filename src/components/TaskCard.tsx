@@ -77,8 +77,8 @@ export function TaskCard(props: TaskCardProps) {
       <Collapse in={isOpen}>
         <Divider />
         <Stack p={{ base: 2, sm: 6 }} pt={{ sm: 4 }} spacing={4}>
-          <HStack align="flex-end">
-            <Box flex={1} fontSize="sm">
+          <HStack>
+            <Box flex={1}>
               <Link
                 href={`${API_HOST}problem/doc/${problem.id}`}
                 target="_blank"
@@ -86,7 +86,7 @@ export function TaskCard(props: TaskCardProps) {
               >
                 [ดาวน์โหลด]
               </Link>
-              <Text>
+              <Text fontSize="sm">
                 ({problem.timeLimit / 1000} วินาที {problem.memoryLimit} MB)
               </Text>
             </Box>
@@ -118,12 +118,14 @@ export function TaskCard(props: TaskCardProps) {
             {isEditorOpen ? (
               <>
                 <Spacer />
-                <OrangeButton size="sm" flex={1}>
-                  ส่ง
-                </OrangeButton>
+                <Box flex={1}>
+                  <OrangeButton size="sm" width="100%">
+                    ส่ง
+                  </OrangeButton>
+                </Box>
               </>
             ) : (
-              <HStack flex={2}>
+              <HStack justify="flex-end">
                 <FileInput size="sm" />
                 <OrangeButton size="sm">ส่ง</OrangeButton>
               </HStack>
@@ -163,7 +165,7 @@ export function TaskSubmissionTable(props: TaskSubmissionTableProps) {
       <Table size="sm">
         <Thead>
           <Tr>
-            <Th px={7}>#</Th>
+            <Th px={5}>#</Th>
             <Th>ผลตรวจ</Th>
             <Th>เวลารวม</Th>
             <Th>คะแนน</Th>
@@ -173,7 +175,7 @@ export function TaskSubmissionTable(props: TaskSubmissionTableProps) {
           <Tr bg={bg}>
             <Td>
               <Button variant="ghost" onClick={onCodeOpen} px={1} size="sm">
-                {submission.id}
+                ล่าสุด
               </Button>
               <CodeModal
                 submissionId={submission.id}
@@ -204,7 +206,7 @@ export function TaskSubmissionTable(props: TaskSubmissionTableProps) {
                 submission.result
               )}
             </Td>
-            <Td>{submission.timeUsed / 1000}</Td>
+            <Td>{submission.timeUsed / 1000} s</Td>
             <Td>{submission.score}</Td>
           </Tr>
         </Tbody>

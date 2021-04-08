@@ -9,7 +9,7 @@ interface TitleProps extends TextProps {
 export function Title(props: TitleProps) {
   const { icon, ...rest } = props
   return (
-    <Heading my={4}>
+    <Heading mt={8} mb={6}>
       <HStack>
         <Icon as={icon} />
         <Text {...rest} />

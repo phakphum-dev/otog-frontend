@@ -281,7 +281,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
           submission.result
         )}
       </Td>
-      <Td>{submission.timeUsed / 1000}</Td>
+      <Td whiteSpace="nowrap">{submission.timeUsed / 1000} s</Td>
       {/* <Td>{submission.score}</Td> */}
     </Tr>
   )
