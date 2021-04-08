@@ -48,6 +48,12 @@ export function SubmissionTable() {
     size,
     isValidating,
   } = useSubmissions()
+  useEffect(
+    () => () => {
+      setSize(1)
+    },
+    []
+  )
   const submissions = useMemo(
     () => submissionsList?.flatMap((submissions) => submissions),
     [submissionsList]
@@ -78,6 +84,12 @@ export function AllSubmissionTable() {
     size,
     isValidating,
   } = useAllSubmissions()
+  useEffect(
+    () => () => {
+      setSize(1)
+    },
+    []
+  )
   const submissions = useMemo(
     () => submissionsList?.flatMap((submissions) => submissions),
     [submissionsList]
