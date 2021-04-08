@@ -86,7 +86,7 @@ const AuthProvider = (props: AuthValueProps) => {
 
   const router = useRouter()
   const logout = async () => {
-    removeToken()
+    await removeToken()
     router.push('/login')
   }
 
