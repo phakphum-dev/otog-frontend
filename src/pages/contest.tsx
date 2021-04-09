@@ -23,12 +23,12 @@ export default function ContestPage(props: ContestPageProps) {
   const { initialData } = props
   return (
     <InitialDataProvider value={initialData}>
-      <PageContainer dense>{initialData && <ContestProblems />}</PageContainer>
+      <PageContainer dense>{initialData && <ContestTasks />}</PageContainer>
     </InitialDataProvider>
   )
 }
 
-function ContestProblems() {
+function ContestTasks() {
   const { data: currentContest } = useCurrentContest()
   return currentContest ? (
     <>

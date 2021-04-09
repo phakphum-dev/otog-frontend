@@ -36,7 +36,7 @@ import {
   useStatusColor,
 } from '@src/utils/hooks/useStatusColor'
 import { AxiosError } from 'axios'
-import { ChangeEvent, FormEvent, useRef, useState } from 'react'
+import { ChangeEvent, useRef, useState } from 'react'
 
 import { CodeModal, ErrorModal } from './CodeModal'
 import { FileInput } from './FileInput'
@@ -56,53 +56,10 @@ export interface TaskCardProps {
 }
 
 export function TaskCard(props: TaskCardProps) {
-  const { problem, contestId } = props
-  const { data: submission, mutate } = useProblemSubmission(problem.id)
+  const { problem } = props
   const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: true })
   const { isOpen: isEditorOpen, onToggle: onEditorToggle } = useDisclosure()
-
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [file, setFile] = useState<File>()
-  const onFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.length === 0) return
-    setFile(e.target.files?.[0])
-  }
-
-  const [language, setLanguage] = useState<string>('cpp')
-  const onSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setLanguage(e.target.value)
-  }
-
-  const http = useHttp()
-  const [onError, toast] = useError()
-  const onFileSubmit = async (e: FormEvent) => {
-    e.preventDefault()
-    if (file) {
-      const formData = new FormData()
-      formData.append('contestId', `${contestId}`)
-      formData.append('language', language)
-      formData.append('sourceCode', file)
-      try {
-        await http.post(`submission/problem/${problem.id}`, formData)
-        mutate()
-        setFile(undefined)
-        if (inputRef.current) inputRef.current.value = ''
-      } catch (e) {
-        if (e.isAxiosError) {
-          const error = e as AxiosError
-          if (error.response?.status === 403) {
-            toast({
-              title: 'กรุณาเข้าสู่ระบบก่อนใช้งาน',
-              status: 'warning',
-              isClosable: true,
-            })
-          }
-          return
-        }
-        onError(e)
-      }
-    }
-  }
+  const { data: submission } = useProblemSubmission(problem.id)
 
   return (
     <Box rounded="lg" boxShadow="sm" borderWidth="1px">
@@ -149,58 +106,170 @@ export function TaskCard(props: TaskCardProps) {
             />
           </HStack>
           <Collapse in={isEditorOpen}>
-            <Editor
-              height="60vh"
-              language="cpp"
-              theme="vs-dark"
-              defaultValue={defaultValue}
-            />
+            <ContestEditorForm {...props} />
           </Collapse>
-          <Stack
-            direction={{ base: isEditorOpen ? 'row' : 'column', sm: 'row' }}
-            spacing={{ base: 2, sm: 8 }}
-          >
-            <Select
-              name="language"
-              size="sm"
-              flex={1}
-              onChange={onSelectChange}
-            >
-              <option value="cpp">C++</option>
-              <option value="c">C</option>
-              <option value="python">Python</option>
-            </Select>
-            {isEditorOpen ? (
-              <>
-                <Spacer />
-                <Box flex={1}>
-                  <OrangeButton size="sm" width="100%">
-                    ส่ง
-                  </OrangeButton>
-                </Box>
-              </>
-            ) : (
-              <HStack justify="flex-end">
-                <FileInput
-                  ref={inputRef}
-                  size="sm"
-                  name="sourceCode"
-                  fileName={file?.name}
-                  onChange={onFileSelect}
-                  accept=".c,.cpp,.py"
-                />
-                <OrangeButton size="sm" onClick={onFileSubmit}>
-                  ส่ง
-                </OrangeButton>
-              </HStack>
-            )}
-          </Stack>
+          <Collapse in={!isEditorOpen}>
+            <ContestFileForm {...props} />
+          </Collapse>
           <Collapse in={!!submission}>
             {submission && <TaskSubmissionTable submission={submission} />}
           </Collapse>
         </Stack>
       </Collapse>
     </Box>
+  )
+}
+
+export type ContestFileFormProps = TaskCardProps
+
+export function ContestFileForm(props: ContestFileFormProps) {
+  const { problem, contestId } = props
+
+  const { mutate } = useProblemSubmission(problem.id)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [file, setFile] = useState<File>()
+  const onFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.length === 0) return
+    setFile(e.target.files?.[0])
+  }
+
+  const [language, setLanguage] = useState<string>('cpp')
+  const onSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setLanguage(e.target.value)
+  }
+
+  const http = useHttp()
+  const [onError, toast] = useError()
+  const onFileSubmit = async () => {
+    if (file) {
+      const formData = new FormData()
+      formData.append('contestId', `${contestId}`)
+      formData.append('language', language)
+      formData.append('sourceCode', file)
+      try {
+        await http.post(`submission/problem/${problem.id}`, formData)
+        mutate()
+        setFile(undefined)
+        if (inputRef.current) inputRef.current.value = ''
+      } catch (e) {
+        if (e.isAxiosError) {
+          const error = e as AxiosError
+          if (error.response?.status === 403) {
+            toast({
+              title: 'กรุณาเข้าสู่ระบบก่อนใช้งาน',
+              status: 'warning',
+              isClosable: true,
+            })
+          }
+          return
+        }
+        onError(e)
+      }
+    }
+  }
+  return (
+    <Stack
+      direction={{ base: 'column', sm: 'row' }}
+      spacing={{ base: 2, sm: 8 }}
+    >
+      <Select name="language" size="sm" flex={1} onChange={onSelectChange}>
+        <option value="cpp">C++</option>
+        <option value="c">C</option>
+        <option value="python">Python</option>
+      </Select>
+      <HStack justify="flex-end">
+        <FileInput
+          ref={inputRef}
+          size="sm"
+          name="sourceCode"
+          fileName={file?.name}
+          onChange={onFileSelect}
+          accept=".c,.cpp,.py"
+        />
+        <OrangeButton size="sm" onClick={onFileSubmit}>
+          ส่ง
+        </OrangeButton>
+      </HStack>
+    </Stack>
+  )
+}
+
+const extension: Record<string, string> = {
+  cpp: '.cpp',
+  c: '.c',
+  python: '.py',
+}
+
+export type ContestEditorFormProps = TaskCardProps
+
+export function ContestEditorForm(props: ContestEditorFormProps) {
+  const { problem, contestId } = props
+  const { mutate } = useProblemSubmission(problem.id)
+
+  const [language, setLanguage] = useState<string>('cpp')
+  const onSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setLanguage(e.target.value)
+  }
+
+  const [value, setValue] = useState<string>()
+  const onEditorChange = (value: string | undefined) => {
+    setValue(value)
+  }
+
+  const http = useHttp()
+  const [onError, toast] = useError()
+  const onSubmit = async () => {
+    if (value) {
+      const blob = new Blob([value])
+      const file = new File([blob], `${problem.id}${extension[language]}`)
+
+      const formData = new FormData()
+      formData.append('contestId', `${contestId}`)
+      formData.append('sourceCode', file)
+      formData.append('language', language)
+      try {
+        await http.post(`submission/problem/${problem.id}`, formData)
+        mutate()
+      } catch (e) {
+        if (e.isAxiosError) {
+          const error = e as AxiosError
+          if (error.response?.status === 403) {
+            toast({
+              title: 'กรุณาเข้าสู่ระบบก่อนใช้งาน',
+              status: 'warning',
+              duration: 2000,
+            })
+          }
+          return
+        }
+        onError(e)
+      }
+    }
+  }
+
+  return (
+    <Stack>
+      <Editor
+        height="60vh"
+        language={language}
+        theme="vs-dark"
+        defaultValue={defaultValue}
+        onChange={onEditorChange}
+      />
+      <Stack direction="row" spacing={{ base: 2, sm: 8 }}>
+        <Select name="language" size="sm" flex={1} onChange={onSelectChange}>
+          <option value="cpp">C++</option>
+          <option value="c">C</option>
+          <option value="python">Python</option>
+        </Select>
+        <Spacer />
+        <Box flex={1}>
+          <OrangeButton size="sm" width="100%" onClick={onSubmit}>
+            ส่ง
+          </OrangeButton>
+        </Box>
+      </Stack>
+    </Stack>
   )
 }
 
