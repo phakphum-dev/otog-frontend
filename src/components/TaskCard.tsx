@@ -29,13 +29,12 @@ import {
   SubmissionWithProblem,
   useProblemSubmission,
 } from '@src/utils/api/Submission'
-import { useError } from '@src/utils/hooks/useError'
+import { useToastError } from '@src/utils/error'
 import {
   isGraded,
   isGrading,
   useStatusColor,
 } from '@src/utils/hooks/useStatusColor'
-import { AxiosError } from 'axios'
 import { ChangeEvent, useRef, useState } from 'react'
 
 import { CodeModal, ErrorModal } from './CodeModal'
@@ -139,7 +138,7 @@ export function ContestFileForm(props: ContestFileFormProps) {
   }
 
   const http = useHttp()
-  const [onError, toast] = useError()
+  const { onError } = useToastError()
   const onFileSubmit = async () => {
     if (file) {
       const formData = new FormData()
@@ -152,17 +151,6 @@ export function ContestFileForm(props: ContestFileFormProps) {
         setFile(undefined)
         if (inputRef.current) inputRef.current.value = ''
       } catch (e) {
-        if (e.isAxiosError) {
-          const error = e as AxiosError
-          if (error.response?.status === 403) {
-            toast({
-              title: 'กรุณาเข้าสู่ระบบก่อนใช้งาน',
-              status: 'warning',
-              isClosable: true,
-            })
-          }
-          return
-        }
         onError(e)
       }
     }
@@ -217,7 +205,7 @@ export function ContestEditorForm(props: ContestEditorFormProps) {
   }
 
   const http = useHttp()
-  const [onError, toast] = useError()
+  const { onError } = useToastError()
   const onSubmit = async () => {
     if (value) {
       const blob = new Blob([value])
@@ -231,17 +219,6 @@ export function ContestEditorForm(props: ContestEditorFormProps) {
         await http.post(`submission/problem/${problem.id}`, formData)
         mutate()
       } catch (e) {
-        if (e.isAxiosError) {
-          const error = e as AxiosError
-          if (error.response?.status === 403) {
-            toast({
-              title: 'กรุณาเข้าสู่ระบบก่อนใช้งาน',
-              status: 'warning',
-              duration: 2000,
-            })
-          }
-          return
-        }
         onError(e)
       }
     }

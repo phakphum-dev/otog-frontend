@@ -1,6 +1,5 @@
 import { Button } from '@chakra-ui/button'
 import { HStack } from '@chakra-ui/layout'
-import { UseToastOptions } from '@chakra-ui/toast'
 import { LatestSubmission } from '@src/components/LatestSubmission'
 import { PageContainer } from '@src/components/PageContainer'
 import { SubmissionTable } from '@src/components/SubmissionTable'
@@ -10,6 +9,7 @@ import {
   getServerSideProps as getServerSideCookie,
 } from '@src/utils/api'
 import { SubmissionWithProblem } from '@src/utils/api/Submission'
+import { getErrorToast } from '@src/utils/error'
 import { InitialDataProvider } from '@src/utils/hooks/useInitialData'
 import { AxiosError } from 'axios'
 import { GetServerSideProps } from 'next'
@@ -69,23 +69,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     if (e.isAxiosError) {
       const error = e as AxiosError
       if (error.response?.status === 401) {
-        const errorToast: UseToastOptions = {
-          title: 'เซสชันหมดอายุ',
-          description: 'กรุณาลงชื่อเข้าใช้อีกครั้ง',
-          status: 'info',
-          isClosable: true,
-        }
+        const errorToast = getErrorToast(error)
         return {
           props: { accessToken: null, error: errorToast, ...props },
         }
       }
 
       if (error.response === undefined) {
-        const errorToast: UseToastOptions = {
-          title: 'เซิฟเวอร์ยังไม่เปิด',
-          duration: null,
-          status: 'error',
-        }
+        const errorToast = getErrorToast(error)
         return {
           props: { error: errorToast, ...props },
         }

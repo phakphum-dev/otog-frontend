@@ -15,8 +15,7 @@ import { OrangeButton } from '@src/components/OrangeButton'
 
 import { useForm } from 'react-hook-form'
 
-import { AxiosError } from 'axios'
-import { useError } from '@src/utils/hooks/useError'
+import { useToastError } from '@src/utils/error'
 import { LoginReq, useAuth } from '@src/utils/api/AuthProvider'
 
 export interface LoginModalProps {
@@ -46,7 +45,7 @@ export interface LoginFormProps {
 export function LoginForm(props: LoginFormProps) {
   const { onSuccess } = props
   const { register, handleSubmit } = useForm()
-  const [onError, toast] = useError()
+  const { onError, toast } = useToastError()
   const { login } = useAuth()
   const onSubmit = async (credentials: LoginReq) => {
     try {
@@ -58,18 +57,6 @@ export function LoginForm(props: LoginFormProps) {
         duration: 2000,
       })
     } catch (e) {
-      if (e.isAxiosError) {
-        const error = e as AxiosError
-        if (error.response?.status === 401) {
-          toast({
-            title: 'ลงชื่อเข้าใช้งานไม่สำเร็จ !',
-            description: 'ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง',
-            status: 'error',
-            isClosable: true,
-          })
-        }
-        return
-      }
       onError(e)
     }
   }

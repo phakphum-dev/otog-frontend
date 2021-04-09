@@ -11,9 +11,9 @@ import {
 import { GetServerSideProps } from 'next'
 import nookies from 'nookies'
 import { AxiosError } from 'axios'
-import { UseToastOptions } from '@chakra-ui/toast'
 import { Contest, useCurrentContest } from '@src/utils/api/Contest'
 import { InitialDataProvider } from '@src/utils/hooks/useInitialData'
+import { getErrorToast } from '@src/utils/error'
 
 export interface ContestPageProps {
   initialData: Contest | null
@@ -61,23 +61,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     if (e.isAxiosError) {
       const error = e as AxiosError
       if (error.response?.status === 401) {
-        const errorToast: UseToastOptions = {
-          title: 'เซสชันหมดอายุ',
-          description: 'กรุณาลงชื่อเข้าใช้อีกครั้ง',
-          status: 'info',
-          isClosable: true,
-        }
+        const errorToast = getErrorToast(error)
         return {
           props: { accessToken: null, error: errorToast, ...props },
         }
       }
 
       if (error.response === undefined) {
-        const errorToast: UseToastOptions = {
-          title: 'เซิฟเวอร์ยังไม่เปิด',
-          duration: null,
-          status: 'error',
-        }
+        const errorToast = getErrorToast(error)
         return {
           props: { error: errorToast, ...props },
         }

@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios'
 import nookies from 'nookies'
 import { GetServerSidePropsContext } from 'next'
 import { ParsedUrlQuery } from 'querystring'
-import { errorToast } from '@src/utils/hooks/useError'
+import { errorToast, getErrorToast } from '@src/utils/error'
 import { getColorMode } from '@src/theme/ColorMode'
 import { ColorModeProps } from '@src/theme/ColorMode'
 import { AuthRes } from './AuthProvider'
@@ -112,12 +112,7 @@ class ApiClient {
                     nookies.destroy(context, 'accessToken')
                     this.removeToken()
                     // TODO: move this to global to display only once per page
-                    errorToast({
-                      title: 'เซสชันหมดอายุ',
-                      description: 'กรุณาลงชื่อเข้าใช้อีกครั้ง',
-                      status: 'info',
-                      isClosable: true,
-                    })
+                    errorToast(getErrorToast(error))
                     return Promise.reject(error)
                   }
                 } else if (error.response?.status === 403) {

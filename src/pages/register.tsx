@@ -2,8 +2,7 @@ import { Box, Img, Input, Stack } from '@chakra-ui/react'
 import { OrangeButton } from '@src/components/OrangeButton'
 import { PageContainer } from '@src/components/PageContainer'
 import { useHttp } from '@src/utils/api/HttpProvider'
-import { useError } from '@src/utils/hooks/useError'
-import { AxiosError } from 'axios'
+import { useToastError } from '@src/utils/error'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 interface CreateUserDTO {
@@ -15,7 +14,7 @@ interface CreateUserDTO {
 export default function RegisterPage() {
   const { register, handleSubmit } = useForm()
   const router = useRouter()
-  const [onError, toast] = useError()
+  const { onError, toast } = useToastError()
   const http = useHttp()
   const onSubmit = async (createUser: CreateUserDTO) => {
     try {
@@ -28,28 +27,6 @@ export default function RegisterPage() {
         isClosable: true,
       })
     } catch (e) {
-      if (e.isAxiosError) {
-        const error = e as AxiosError
-        if (error.response?.status === 409) {
-          const message = error.response.data.message
-          if (message === 'username was taken.') {
-            toast({
-              title: 'ลงทะเบียนไม่สำเร็จ !',
-              description: 'ชื่อผู้ใช้นี้ ได้ถูกใช้ไปแล้ว',
-              status: 'error',
-              isClosable: true,
-            })
-          } else if (message === 'showName was taken.') {
-            toast({
-              title: 'ลงทะเบียนไม่สำเร็จ !',
-              description: 'ชื่อที่ใช้แสดงนี้ ได้ถูกใช้ไปแล้ว',
-              status: 'error',
-              isClosable: true,
-            })
-          }
-          return
-        }
-      }
       onError(e)
     }
   }

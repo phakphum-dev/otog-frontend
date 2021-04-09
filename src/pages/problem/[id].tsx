@@ -5,8 +5,7 @@ import { FaLightbulb } from 'react-icons/fa'
 import Editor, { useMonaco } from '@monaco-editor/react'
 import { Button } from '@chakra-ui/button'
 import { useHttp } from '@src/utils/api/HttpProvider'
-import { AxiosError } from 'axios'
-import { useError } from '@src/utils/hooks/useError'
+import { useToastError } from '@src/utils/error'
 import { Link, SimpleGrid, Spacer } from '@chakra-ui/layout'
 import { useProblem } from '@src/utils/api/Problem'
 import { Select } from '@chakra-ui/select'
@@ -38,7 +37,7 @@ export default function WriteProblem() {
 
   const monaco = useMonaco()
   const http = useHttp()
-  const [onError, toast] = useError()
+  const { onError } = useToastError()
   const onSubmit = async () => {
     const value = monaco?.editor.getModels()[0].getValue()
     if (value && problem) {
@@ -52,17 +51,6 @@ export default function WriteProblem() {
         await http.post(`submission/problem/${id}`, formData)
         router.push('/submission')
       } catch (e) {
-        if (e.isAxiosError) {
-          const error = e as AxiosError
-          if (error.response?.status === 403) {
-            toast({
-              title: 'กรุณาเข้าสู่ระบบก่อนใช้งาน',
-              status: 'warning',
-              duration: 2000,
-            })
-          }
-          return
-        }
         onError(e)
       }
     }

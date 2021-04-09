@@ -17,8 +17,7 @@ import { FileInput } from './FileInput'
 import { Problem } from '@src/utils/api/Problem'
 import { OrangeButton } from './OrangeButton'
 import { useHttp } from '@src/utils/api/HttpProvider'
-import { AxiosError } from 'axios'
-import { useError } from '@src/utils/hooks/useError'
+import { useToastError } from '@src/utils/error'
 import NextLink from 'next/link'
 
 export interface SubmitModalProps {
@@ -53,7 +52,7 @@ export function SubmitModal(props: SubmitModalProps) {
   }
 
   const http = useHttp()
-  const [onError, toast] = useError()
+  const { onError } = useToastError()
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
     if (file) {
@@ -69,17 +68,6 @@ export function SubmitModal(props: SubmitModalProps) {
         onSuccess?.()
         onClose()
       } catch (e) {
-        if (e.isAxiosError) {
-          const error = e as AxiosError
-          if (error.response?.status === 403) {
-            toast({
-              title: 'กรุณาเข้าสู่ระบบก่อนใช้งาน',
-              status: 'warning',
-              isClosable: true,
-            })
-          }
-          return
-        }
         onError(e)
       }
     }
