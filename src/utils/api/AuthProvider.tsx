@@ -10,7 +10,7 @@ import nookies from 'nookies'
 import { useHttp } from './HttpProvider'
 import jwtDecode, { JwtPayload } from 'jwt-decode'
 
-import { LoginModal } from '@src/components/LoginModal'
+import { LoginModal } from '@src/components/Login'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { storage } from '@src/utils/firebase'
 import { useRouter } from 'next/router'

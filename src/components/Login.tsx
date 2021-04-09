@@ -1,5 +1,7 @@
 import NextLink from 'next/link'
 import {
+  Box,
+  BoxProps,
   Button,
   Divider,
   Img,
@@ -61,32 +63,45 @@ export function LoginForm(props: LoginFormProps) {
     }
   }
   return (
-    <Stack align="center" spacing={4}>
-      <Img src="logo512.png" boxSize="100px" />
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Stack spacing={4}>
-          <Input
-            type="text"
-            name="username"
-            placeholder="ชื่อผู้ใช้"
-            ref={register}
-            autoFocus
-            required
-          />
-          <Input
-            type="password"
-            name="password"
-            placeholder="รหัสผ่าน"
-            ref={register}
-            required
-          />
-          <OrangeButton type="submit">เข้าสู่ระบบ</OrangeButton>
-          <Divider />
-          <NextLink href="/register">
-            <Button>ลงทะเบียน</Button>
-          </NextLink>
-        </Stack>
-      </form>
-    </Stack>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Stack spacing={4}>
+        <Img src="logo512.png" boxSize="100px" mx="auto" />
+        <Input
+          type="text"
+          name="username"
+          placeholder="ชื่อผู้ใช้"
+          ref={register}
+          autoFocus
+          required
+        />
+        <Input
+          type="password"
+          name="password"
+          placeholder="รหัสผ่าน"
+          ref={register}
+          required
+        />
+        <OrangeButton type="submit">เข้าสู่ระบบ</OrangeButton>
+        <Divider />
+        <NextLink href="/register">
+          <Button>ลงทะเบียน</Button>
+        </NextLink>
+      </Stack>
+    </form>
+  )
+}
+
+export function CenteredCard(props: BoxProps) {
+  return (
+    <Box
+      p={4}
+      my={16}
+      mx="auto"
+      w="max-content"
+      boxShadow="md"
+      borderWidth="1px"
+      borderRadius="md"
+      {...props}
+    />
   )
 }

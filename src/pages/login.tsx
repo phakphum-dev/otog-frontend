@@ -1,5 +1,4 @@
-import { Box, Stack } from '@chakra-ui/layout'
-import { LoginForm } from '@src/components/LoginModal'
+import { CenteredCard, LoginForm } from '@src/components/Login'
 import { PageContainer } from '@src/components/PageContainer'
 import { useRouter } from 'next/router'
 import { getServerSideProps as getServerSideCookies } from '@src/utils/api'
@@ -8,12 +7,10 @@ import { GetServerSideProps } from 'next'
 export default function LoginPage() {
   const router = useRouter()
   return (
-    <PageContainer>
-      <Stack mt={16}>
-        <Box boxShadow="md" borderRadius="md" p={4} mx="auto" borderWidth="1px">
-          <LoginForm onSuccess={() => router.replace('/problem')} />
-        </Box>
-      </Stack>
+    <PageContainer display="flex" alignItems="flex-start">
+      <CenteredCard>
+        <LoginForm onSuccess={() => router.replace('/problem')} />
+      </CenteredCard>
     </PageContainer>
   )
 }
