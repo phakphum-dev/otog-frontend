@@ -68,6 +68,21 @@ export function useSubmissions() {
   )
 }
 
+export function useSubmissionRow(initialSubmission: SubmissionWithProblem) {
+  return useSWR<SubmissionWithProblem>(
+    isGrading(initialSubmission) ? `/submission/${initialSubmission.id}` : null,
+    {
+      initialData: initialSubmission,
+      revalidateOnMount: true,
+      onSuccess: (data, key) => {
+        if (isGrading(data)) {
+          setTimeout(() => mutate(key), 1000)
+        }
+      },
+    }
+  )
+}
+
 export function useSubmission(submissionId: number) {
   return useSWR<SubmissionWithSourceCode>(
     submissionId === 0 ? null : `submission/${submissionId}`

@@ -12,7 +12,6 @@ import { GetServerSideProps } from 'next'
 import nookies from 'nookies'
 import { AxiosError } from 'axios'
 import { Contest, useCurrentContest } from '@src/utils/api/Contest'
-import { InitialDataProvider } from '@src/utils/hooks/useInitialData'
 import { getErrorToast } from '@src/utils/error'
 
 export interface ContestPageProps {
@@ -21,29 +20,25 @@ export interface ContestPageProps {
 
 export default function ContestPage(props: ContestPageProps) {
   const { initialData } = props
+  const { data: currentContest } = useCurrentContest(initialData)
   return (
-    <InitialDataProvider value={initialData}>
-      <PageContainer dense>{initialData && <ContestTasks />}</PageContainer>
-    </InitialDataProvider>
+    <PageContainer dense>
+      {currentContest && (
+        <>
+          <Title icon={FaTrophy}>แข่งขัน</Title>
+          <Stack spacing={6}>
+            {currentContest.problems?.map((prob) => (
+              <TaskCard
+                contestId={currentContest.id}
+                key={prob.id}
+                problem={prob}
+              />
+            ))}
+          </Stack>
+        </>
+      )}
+    </PageContainer>
   )
-}
-
-function ContestTasks() {
-  const { data: currentContest } = useCurrentContest()
-  return currentContest ? (
-    <>
-      <Title icon={FaTrophy}>แข่งขัน</Title>
-      <Stack spacing={6}>
-        {currentContest.problems?.map((prob) => (
-          <TaskCard
-            contestId={currentContest.id}
-            key={prob.id}
-            problem={prob}
-          />
-        ))}
-      </Stack>
-    </>
-  ) : null
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

@@ -27,6 +27,7 @@ import {
 import {
   SubmissionWithProblem,
   useAllSubmissions,
+  useSubmissionRow,
   useSubmissions,
 } from '@src/utils/api/Submission'
 import { CodeModal, ErrorModal } from './CodeModal'
@@ -200,18 +201,7 @@ interface SubmissionRowProps extends ModalSubmissionProps {
 
 const SubmissionRow = (props: SubmissionRowProps) => {
   const { submission: initialData, onOpen, setSubmissionId } = props
-  const { data: submission } = useSWR<SubmissionWithProblem>(
-    isGrading(initialData) ? `/submission/${initialData.id}` : null,
-    {
-      initialData,
-      revalidateOnMount: true,
-      onSuccess: (data, key) => {
-        if (isGrading(data)) {
-          setTimeout(() => mutate(key), 1000)
-        }
-      },
-    }
-  )
+  const { data: submission } = useSubmissionRow(initialData)
 
   const onCodeModalOpen = () => {
     onOpen()

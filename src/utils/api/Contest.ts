@@ -12,7 +12,6 @@ export interface Contest {
   problems: Problem[]
 }
 
-export function useCurrentContest() {
-  const initialData = useInitialData()
-  return useSWR<Contest>('contest/now', { initialData })
+export function useCurrentContest(initialContest?: Contest | null) {
+  return useSWR<Contest | null>('contest/now', { initialData: initialContest })
 }
