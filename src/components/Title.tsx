@@ -7,12 +7,12 @@ interface TitleProps extends TextProps {
 }
 
 export function Title(props: TitleProps) {
-  const { icon, ...rest } = props
+  const { icon, children, ...rest } = props
   return (
-    <Heading mt={8} mb={6}>
+    <Heading mt={8} mb={6} {...rest}>
       <HStack>
         <Icon as={icon} />
-        <Text {...rest} />
+        <Text children={children} />
       </HStack>
     </Heading>
   )
