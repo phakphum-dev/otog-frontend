@@ -50,3 +50,5 @@ export default function ContestHistoryPage() {
     </PageContainer>
   )
 }
+
+export { getServerSideProps } from '@src/utils/api'
