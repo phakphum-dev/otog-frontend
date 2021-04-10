@@ -5,7 +5,7 @@ import { FaLightbulb } from 'react-icons/fa'
 import Editor, { useMonaco } from '@monaco-editor/react'
 import { Button } from '@chakra-ui/button'
 import { useHttp } from '@src/utils/api/HttpProvider'
-import { getErrorToast, useToastError } from '@src/utils/error'
+import { useToastError } from '@src/utils/error'
 import {
   Link,
   SimpleGrid,
@@ -17,12 +17,9 @@ import {
 import { useProblem } from '@src/utils/api/Problem'
 import { Select } from '@chakra-ui/select'
 import { ChangeEvent, useState } from 'react'
-import { ApiClient, API_HOST } from '@src/utils/api'
+import { API_HOST, getServerSideFetch, getCookies } from '@src/utils/api'
 import { GetServerSideProps } from 'next'
-import { getServerSideProps as getServerSideCookie } from '@src/utils/api'
-import nookies from 'nookies'
 import { SubmissionWithSourceCode } from '@src/utils/api/Submission'
-import { AxiosError } from 'axios'
 
 const defaultValue = `#include <iostream>
 
@@ -120,51 +117,18 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  // console.log('before req', context.req.headers)
-  // console.log('before res', context.res.getHeader('set-cookie'))
-  const props = await getServerSideCookie(context)
-  const client = new ApiClient(context)
-  try {
-    const { accessToken = null } = nookies.get(context)
-    if (accessToken) {
-      const { id } = context.query
-      const initialData = await client.get<SubmissionWithSourceCode | null>(
-        `submission/problem/${id}/latest`
-      )
-      const { accessToken = null } = nookies.get(context)
-      return {
-        props: { initialData, accessToken, ...props },
-      }
-    } else {
-      return {
-        redirect: {
-          permanent: false,
-          destination: '/submission/all',
-        },
-      }
-    }
-  } catch (e) {
-    if (e.isAxiosError) {
-      const error = e as AxiosError
-      if (error.response?.status === 401) {
-        const errorToast = getErrorToast(error)
-        return {
-          props: { accessToken: null, error: errorToast, ...props },
-        }
-      }
-
-      if (error.response === undefined) {
-        const errorToast = getErrorToast(error)
-        return {
-          props: { error: errorToast, ...props },
-        }
-      }
-    }
-    console.log(e)
-  } finally {
-    // console.log('after req', context.req.headers)
-    // console.log('after res', context.res.getHeader('set-cookie'))
+  const { accessToken = null } = getCookies(context)
+  if (accessToken) {
+    const id = context.query.id
+    return getServerSideFetch<SubmissionWithSourceCode | null>(
+      `submission/problem/${id}/latest`,
+      context
+    )
   }
-
-  return { props }
+  return {
+    redirect: {
+      permanent: false,
+      destination: '/submission/all',
+    },
+  }
 }

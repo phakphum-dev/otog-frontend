@@ -18,20 +18,10 @@ import { Title } from '@src/components/Title'
 import { FaTrophy } from 'react-icons/fa'
 import { Box, Stack } from '@chakra-ui/layout'
 import { CgDetailsLess, CgDetailsMore } from 'react-icons/cg'
-import {
-  Contest,
-  ContestScoreboard,
-  UserWithSubmission,
-} from '@src/utils/api/Contest'
-import nookies from 'nookies'
+import { ContestScoreboard, UserWithSubmission } from '@src/utils/api/Contest'
 
-import {
-  ApiClient,
-  getServerSideProps as getServerSideCookie,
-} from '@src/utils/api'
+import { getServerSideFetch } from '@src/utils/api'
 import { GetServerSideProps } from 'next'
-import { AxiosError } from 'axios'
-import { getErrorToast } from '@src/utils/error'
 import { sum } from '@src/utils'
 import { Tooltip } from '@chakra-ui/tooltip'
 
@@ -166,40 +156,15 @@ export default function ContestHistory(props: ContestHistoryProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  // console.log('before req', context.req.headers)
-  // console.log('before res', context.res.getHeader('set-cookie'))
-  const props = await getServerSideCookie(context)
-  const client = new ApiClient(context)
-  try {
-    const initialData = await client.get<Contest | null>(
-      `contest/${context.query.id}/scoreboard`
-    )
-    const { accessToken = null } = nookies.get(context)
+  const id = context.query.id
+  const { props } = await getServerSideFetch(
+    `contest/${id}/scoreboard`,
+    context
+  )
+  if (!props.initialData) {
     return {
-      props: { initialData, accessToken, ...props },
+      notFound: true,
     }
-  } catch (e) {
-    if (e.isAxiosError) {
-      const error = e as AxiosError
-      if (error.response?.status === 401) {
-        const errorToast = getErrorToast(error)
-        return {
-          props: { accessToken: null, error: errorToast, ...props },
-        }
-      }
-
-      if (error.response === undefined) {
-        const errorToast = getErrorToast(error)
-        return {
-          props: { error: errorToast, ...props },
-        }
-      }
-    }
-    console.log(e)
-  } finally {
-    // console.log('after req', context.req.headers)
-    // console.log('after res', context.res.getHeader('set-cookie'))
   }
-
   return { props }
 }

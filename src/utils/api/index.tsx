@@ -6,6 +6,7 @@ import { errorToast, getErrorToast } from '@src/utils/error'
 import { getColorMode } from '@src/theme/ColorMode'
 import { ColorModeProps } from '@src/theme/ColorMode'
 import { AuthRes } from './AuthProvider'
+import { UseToastOptions } from '@chakra-ui/toast'
 
 const API_HOST = process.env.NEXT_PUBLIC_API_HOST
 
@@ -195,13 +196,52 @@ class ApiClient {
   onSessionEnd() {}
 }
 
+export type Context = GetServerSidePropsContext<ParsedUrlQuery>
+
+export const getCookies = (context: Context) => nookies.get(context)
+
+export async function getServerSideFetch<T = any>(
+  url: string,
+  context: Context
+): Promise<{
+  props: CookiesProps & {
+    initialData?: any
+    error?: UseToastOptions
+  }
+}> {
+  const { props } = await getServerSideProps(context)
+  const api = new ApiClient(context)
+  try {
+    const initialData = await api.get<T>(url)
+    const { accessToken = null } = nookies.get(context)
+    return {
+      props: { ...props, initialData, accessToken },
+    }
+  } catch (e) {
+    if (e.isAxiosError) {
+      const error = e as AxiosError
+      if (error.response?.status === 401) {
+        const errorToast = getErrorToast(error)
+        return {
+          props: {
+            ...props,
+            accessToken: null,
+            error: errorToast,
+          },
+        }
+      }
+    }
+    const errorToast = getErrorToast(e)
+    return {
+      props: { ...props, error: errorToast },
+    }
+  }
+}
 export interface CookiesProps extends ColorModeProps {
   accessToken: string | null
 }
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext<ParsedUrlQuery>
-) => {
+export const getServerSideProps = async (context: Context) => {
   const colorModeCookie = getColorMode(context)
   const { accessToken = null } = nookies.get(context)
   return { props: { accessToken, colorModeCookie } }

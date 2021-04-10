@@ -4,17 +4,11 @@ import { LatestSubmission } from '@src/components/LatestSubmission'
 import { PageContainer } from '@src/components/PageContainer'
 import { SubmissionTable } from '@src/components/SubmissionTable'
 import { Title } from '@src/components/Title'
-import {
-  ApiClient,
-  getServerSideProps as getServerSideCookie,
-} from '@src/utils/api'
+import { getServerSideFetch, getCookies } from '@src/utils/api'
 import { SubmissionWithProblem } from '@src/utils/api/Submission'
-import { getErrorToast } from '@src/utils/error'
 import { InitialDataProvider } from '@src/utils/hooks/useInitialData'
-import { AxiosError } from 'axios'
 import { GetServerSideProps } from 'next'
-import Link from 'next/link'
-import nookies from 'nookies'
+import NextLink from 'next/link'
 import { FaTasks } from 'react-icons/fa'
 
 interface SubmissionPageProps {
@@ -29,9 +23,9 @@ export default function SubmissionPage(props: SubmissionPageProps) {
       <PageContainer>
         <HStack justify="space-between">
           <Title icon={FaTasks}>ผลตรวจ</Title>
-          <Link href="/submission/all">
+          <NextLink href="/submission/all">
             <Button>ผลตรวจรวม</Button>
-          </Link>
+          </NextLink>
         </HStack>
         <HStack mb={4}>
           <LatestSubmission />
@@ -43,50 +37,17 @@ export default function SubmissionPage(props: SubmissionPageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  // console.log('before req', context.req.headers)
-  // console.log('before res', context.res.getHeader('set-cookie'))
-  const props = await getServerSideCookie(context)
-  const client = new ApiClient(context)
-  try {
-    const { accessToken = null } = nookies.get(context)
-    if (accessToken) {
-      const initialData = await client.get<SubmissionWithProblem>(
-        'submission/latest'
-      )
-      const { accessToken = null } = nookies.get(context)
-      return {
-        props: { initialData, accessToken, ...props },
-      }
-    } else {
-      return {
-        redirect: {
-          permanent: false,
-          destination: '/submission/all',
-        },
-      }
-    }
-  } catch (e) {
-    if (e.isAxiosError) {
-      const error = e as AxiosError
-      if (error.response?.status === 401) {
-        const errorToast = getErrorToast(error)
-        return {
-          props: { accessToken: null, error: errorToast, ...props },
-        }
-      }
-
-      if (error.response === undefined) {
-        const errorToast = getErrorToast(error)
-        return {
-          props: { error: errorToast, ...props },
-        }
-      }
-    }
-    console.log(e)
-  } finally {
-    // console.log('after req', context.req.headers)
-    // console.log('after res', context.res.getHeader('set-cookie'))
+  const { accessToken = null } = getCookies(context)
+  if (accessToken) {
+    return getServerSideFetch<SubmissionWithProblem>(
+      'submission/latest',
+      context
+    )
   }
-
-  return { props }
+  return {
+    redirect: {
+      permanent: false,
+      destination: '/submission/all',
+    },
+  }
 }
