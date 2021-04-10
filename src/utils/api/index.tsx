@@ -7,8 +7,7 @@ import { getColorMode } from '@src/theme/ColorMode'
 import { ColorModeProps } from '@src/theme/ColorMode'
 import { AuthRes } from './AuthProvider'
 import { UseToastOptions } from '@chakra-ui/toast'
-
-const API_HOST = process.env.NEXT_PUBLIC_API_HOST
+import { API_HOST } from '@src/utils/config'
 
 export const Axios = axios.create({
   baseURL: API_HOST,

@@ -11,6 +11,7 @@ import { theme } from '@src/theme'
 import 'focus-visible/dist/focus-visible'
 
 import { NavBar } from '@src/components/NavBar'
+import { Footer } from '@src/components/Footer'
 import '../styles/globals.css'
 
 import '@src/styles/nprogress.css'
@@ -56,9 +57,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           <AuthProvider value={accessToken as string}>
             <TopProgressBar />
             <Flex direction="column" minH="100vh">
-              <Flex direction="column" flex={1}>
+              <Flex direction="column" flex={1} justify="space-between">
                 <NavBar />
                 <Component {...props} />
+                <Footer />
               </Flex>
             </Flex>
           </AuthProvider>

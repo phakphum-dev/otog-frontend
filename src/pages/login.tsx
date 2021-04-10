@@ -7,7 +7,7 @@ import { GetServerSideProps } from 'next'
 export default function LoginPage() {
   const router = useRouter()
   return (
-    <PageContainer display="flex" alignItems="flex-start">
+    <PageContainer>
       <CenteredCard>
         <LoginForm onSuccess={() => router.replace('/problem')} />
       </CenteredCard>
