@@ -4,7 +4,7 @@ import { PageContainer } from './PageContainer'
 
 export function Footer() {
   return (
-    <PageContainer h={16} maxH={16} mt={8}>
+    <PageContainer h={14} maxH={14} mt={8}>
       <Divider mb={2} />
       <Flex direction={{ base: 'column', sm: 'row' }} justify="space-between">
         <Text>
