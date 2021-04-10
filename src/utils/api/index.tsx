@@ -7,7 +7,7 @@ import { getColorMode } from '@src/theme/ColorMode'
 import { ColorModeProps } from '@src/theme/ColorMode'
 import { AuthRes } from './AuthProvider'
 import { UseToastOptions } from '@chakra-ui/toast'
-import { API_HOST } from '@src/utils/config'
+import { API_HOST, isProduction } from '@src/utils/config'
 
 export const Axios = axios.create({
   baseURL: API_HOST,
@@ -140,8 +140,11 @@ class ApiClient {
     const response = await Axios.get<AuthRes>('auth/refresh/token', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
-        // TODO: add secure flag
-        ...(refreshToken && { cookie: `RID=${refreshToken}; HttpOnly` }),
+        ...(refreshToken && {
+          cookie: `RID=${refreshToken}; HttpOnly ${
+            isProduction ? '; Secure' : ''
+          }`,
+        }),
       },
     })
     if (response.status === 200) {
