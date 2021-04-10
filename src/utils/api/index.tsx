@@ -182,6 +182,10 @@ class ApiClient {
     return (await this.axiosInstance.put<T>(url, data, config)).data
   }
 
+  async patch<D, T>(url: string, data?: D, config?: AxiosRequestConfig) {
+    return (await this.axiosInstance.patch<T>(url, data, config)).data
+  }
+
   async del(url: string, config?: AxiosRequestConfig) {
     await this.axiosInstance.delete(url, config)
   }
