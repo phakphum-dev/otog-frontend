@@ -228,19 +228,6 @@ export async function getServerSideFetch<T = any>(
       props: { ...props, initialData, accessToken },
     }
   } catch (e) {
-    if (e.isAxiosError) {
-      const error = e as AxiosError
-      if (error.response?.status === 401) {
-        const errorToast = getErrorToast(error)
-        return {
-          props: {
-            ...props,
-            accessToken: null,
-            error: errorToast,
-          },
-        }
-      }
-    }
     const errorToast = getErrorToast(e)
     return {
       props: { ...props, error: errorToast },
