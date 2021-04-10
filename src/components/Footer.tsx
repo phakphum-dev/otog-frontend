@@ -4,8 +4,8 @@ import { PageContainer } from './PageContainer'
 
 export function Footer() {
   return (
-    <PageContainer maxH={16}>
-      <Divider my={2} />
+    <PageContainer h={16} maxH={16} mt={8}>
+      <Divider mb={2} />
       <Flex direction={{ base: 'column', sm: 'row' }} justify="space-between">
         <Text>
           หากมีข้อแนะนำ หรือข้อสงสัย{' '}
