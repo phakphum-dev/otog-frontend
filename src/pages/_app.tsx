@@ -11,7 +11,7 @@ import { theme } from '@src/theme'
 import 'focus-visible/dist/focus-visible'
 
 import { NavBar } from '@src/components/NavBar'
-// import '../styles/globals.css'
+import '../styles/globals.css'
 
 import '@src/styles/nprogress.css'
 import dynamic from 'next/dynamic'
