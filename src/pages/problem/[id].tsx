@@ -17,7 +17,12 @@ import {
 import { useProblem } from '@src/utils/api/Problem'
 import { Select } from '@chakra-ui/select'
 import { ChangeEvent, useState } from 'react'
-import { API_HOST, getServerSideFetch, getCookies } from '@src/utils/api'
+import {
+  API_HOST,
+  getServerSideFetch,
+  getCookies,
+  getServerSideProps as getServerSideCookies,
+} from '@src/utils/api'
 import { GetServerSideProps } from 'next'
 import { SubmissionWithSourceCode } from '@src/utils/api/Submission'
 
@@ -125,10 +130,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       context
     )
   }
-  return {
-    redirect: {
-      permanent: false,
-      destination: '/submission/all',
-    },
-  }
+  return getServerSideCookies(context)
 }

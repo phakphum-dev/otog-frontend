@@ -64,7 +64,8 @@ export function useSubmissions() {
       return `submission/user/${user.id}?offset=${
         previousPageData[previousPageData?.length - 1].id
       }`
-    }
+    },
+    { revalidateOnMount: true, revalidateAll: true }
   )
 }
 

@@ -32,16 +32,23 @@ export function getErrorToast(e: any): UseToastOptions {
           }
         }
         return {
-          title: 'เซสชันหมดอายุ',
-          description: 'กรุณาลงชื่อเข้าใช้อีกครั้ง',
-          status: 'info',
-          isClosable: true,
-        }
-      case 403:
-        return {
           title: 'กรุณาเข้าสู่ระบบก่อนใช้งาน',
           status: 'warning',
-          isClosable: true,
+          duration: 2000,
+        }
+      case 403:
+        if (url === 'auth/refresh/token') {
+          return {
+            title: 'เซสชันหมดอายุ',
+            description: 'กรุณาลงชื่อเข้าใช้อีกครั้ง',
+            status: 'info',
+            isClosable: true,
+          }
+        }
+        return {
+          title: 'คุณไม่มีสิทธิ์ในการใช้งานส่วนนี้',
+          status: 'error',
+          duration: 2000,
         }
       case 409:
         const message = error.response.data.message

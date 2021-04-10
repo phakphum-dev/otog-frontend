@@ -41,7 +41,7 @@ export interface AuthProviderProps {
   profileSrc: string | undefined
   refreshProfilePic: () => Promise<void>
   login: (credentials: LoginReq) => Promise<void>
-  logout: () => Promise<void>
+  logout: () => void
 }
 
 export type AuthValueProps = ProviderProps<string | null>
@@ -80,25 +80,21 @@ const AuthProvider = (props: AuthValueProps) => {
   }
 
   const removeToken = () => {
+    nookies.destroy(null, 'accessToken', { path: '/' })
     setToken(null)
-    nookies.destroy(null, 'accessToken')
   }
 
   const router = useRouter()
-  const logout = async () => {
-    await removeToken()
+  const logout = () => {
+    removeToken()
     router.push('/login')
   }
 
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const onSessionEnd = () => {
-    removeToken()
-    onOpen()
-  }
 
-  const refreshToken = (newToken: string) => {
-    setToken(newToken)
+  const setNewToken = (newToken: string) => {
     nookies.set(null, 'accessToken', newToken, { path: '/' })
+    setToken(newToken)
   }
 
   const [profileSrc, setProfileSrc] = useState<string>()
@@ -122,9 +118,9 @@ const AuthProvider = (props: AuthValueProps) => {
   }, [user])
 
   useEffect(() => {
-    http.onRefreshToken = refreshToken
+    http.setNewToken = setNewToken
     http.removeToken = removeToken
-    http.onSessionEnd = onSessionEnd
+    http.openLoginModal = onOpen
   }, [http])
 
   const value = {

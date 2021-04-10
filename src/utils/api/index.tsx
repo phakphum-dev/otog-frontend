@@ -75,16 +75,15 @@ class ApiClient {
       },
       async (error) => {
         if (error.isAxiosError) {
-          const err = error as AxiosError
-          const originalRequest = err.config
+          const axiosError = error as AxiosError
+          const originalRequest = axiosError.config
           // console.log(
           //   'error response :',
           //   err.response?.status,
           //   originalRequest?.url
           // )
 
-          // try refresh token on every unauthorized response if accessToken exists
-          if (err.response?.status === 401) {
+          if (axiosError.response?.status === 401) {
             if (this.isRefreshing) {
               return new Promise((resolve, reject) => {
                 this.failedQueue.push({ resolve, reject })
@@ -97,6 +96,7 @@ class ApiClient {
                 })
             }
 
+            // try refresh token on every unauthorized response if accessToken exists
             const { accessToken } = nookies.get(context)
             if (accessToken) {
               try {
@@ -106,23 +106,26 @@ class ApiClient {
                 return this.axiosInstance(originalRequest)
               } catch (e) {
                 this.processQueue(e)
-                // remove token if failed on refresh token
+                // remove token if failed to refresh token
                 if (e.isAxiosError) {
                   const error = e as AxiosError
-                  if (error.response?.status === 401) {
-                    nookies.destroy(context, 'accessToken')
+                  if (error.response?.status === 403) {
+                    nookies.destroy(context, 'accessToken', { path: '/' })
                     this.removeToken()
                     // TODO: move this to global to display only once per page
                     errorToast(getErrorToast(error))
                     return Promise.reject(error)
                   }
-                } else if (error.response?.status === 403) {
-                  this.onSessionEnd()
-                  return Promise.reject(error)
                 }
               } finally {
                 this.isRefreshing = false
               }
+            }
+            // if token doesn't exists and not logging in then open up login modal
+            else if (axiosError.config.url !== 'auth/login') {
+              this.removeToken()
+              this.openLoginModal()
+              return Promise.reject(error)
             }
           }
         }
@@ -154,7 +157,7 @@ class ApiClient {
         nookies.set(context, 'accessToken', accessToken, { path: '/' })
       } else {
         // set new token on client-side
-        this.onRefreshToken(accessToken)
+        this.setNewToken(accessToken)
       }
       return accessToken
     }
@@ -192,8 +195,8 @@ class ApiClient {
   }
 
   removeToken() {}
-  onRefreshToken(newToken: string) {}
-  onSessionEnd() {}
+  setNewToken(newToken: string) {}
+  openLoginModal() {}
 }
 
 export type Context = GetServerSidePropsContext<ParsedUrlQuery>
