@@ -25,7 +25,7 @@ import { API_HOST } from '@src/utils/api'
 import { useEffect } from 'react'
 import { CopyIcon } from '@chakra-ui/icons'
 import { isGraded } from '@src/utils/hooks/useStatusColor'
-import { toThDate } from '@src/utils/date'
+import { toThDate } from '@src/utils/hooks/useTimer'
 export interface CodeModalProps extends Omit<ModalProps, 'children'> {
   submissionId: number
 }

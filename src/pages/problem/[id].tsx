@@ -5,7 +5,7 @@ import { FaLightbulb } from 'react-icons/fa'
 import Editor, { useMonaco } from '@monaco-editor/react'
 import { Button } from '@chakra-ui/button'
 import { useHttp } from '@src/utils/api/HttpProvider'
-import { useToastError } from '@src/utils/error'
+import { useToastError } from '@src/utils/hooks/useError'
 import {
   Link,
   SimpleGrid,

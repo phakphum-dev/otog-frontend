@@ -29,7 +29,7 @@ import {
   SubmissionWithProblem,
   useProblemSubmission,
 } from '@src/utils/api/Submission'
-import { useToastError } from '@src/utils/error'
+import { useToastError } from '@src/utils/hooks/useError'
 import {
   isGraded,
   isGrading,

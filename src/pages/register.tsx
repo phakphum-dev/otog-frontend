@@ -3,7 +3,7 @@ import { CenteredCard } from '@src/components/Login'
 import { OrangeButton } from '@src/components/OrangeButton'
 import { PageContainer } from '@src/components/PageContainer'
 import { useHttp } from '@src/utils/api/HttpProvider'
-import { useToastError } from '@src/utils/error'
+import { useToastError } from '@src/utils/hooks/useError'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 interface CreateUserDTO {

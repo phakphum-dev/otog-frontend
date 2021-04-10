@@ -17,7 +17,7 @@ import { FileInput } from './FileInput'
 import { Problem } from '@src/utils/api/Problem'
 import { OrangeButton } from './OrangeButton'
 import { useHttp } from '@src/utils/api/HttpProvider'
-import { useToastError } from '@src/utils/error'
+import { useToastError } from '@src/utils/hooks/useError'
 import NextLink from 'next/link'
 
 export interface SubmitModalProps {

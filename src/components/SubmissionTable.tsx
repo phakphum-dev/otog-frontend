@@ -38,7 +38,7 @@ import {
   isGrading,
   useStatusColor,
 } from '@src/utils/hooks/useStatusColor'
-import { toThDate } from '@src/utils/date'
+import { toThDate } from '@src/utils/hooks/useTimer'
 import useSWR, { mutate } from 'swr'
 import { useOnScreen } from '@src/utils/hooks/useOnScreen'
 

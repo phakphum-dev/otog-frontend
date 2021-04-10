@@ -20,7 +20,7 @@ import { HttpProvider } from '@src/utils/api/HttpProvider'
 import { AuthProvider } from '@src/utils/api/AuthProvider'
 
 import { useEffect } from 'react'
-import { errorToast } from '@src/utils/error'
+import { errorToast } from '@src/utils/hooks/useError'
 
 const TopProgressBar = dynamic(() => import('@src/components/ProgressBar'), {
   ssr: false,

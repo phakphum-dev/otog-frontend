@@ -17,7 +17,7 @@ import { OrangeButton } from '@src/components/OrangeButton'
 
 import { useForm } from 'react-hook-form'
 
-import { useToastError } from '@src/utils/error'
+import { useToastError } from '@src/utils/hooks/useError'
 import { LoginReq, useAuth } from '@src/utils/api/AuthProvider'
 
 export interface LoginModalProps {
