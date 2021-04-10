@@ -25,7 +25,7 @@ export function toTimerFormat(ms: number) {
 
 export function toLengthFormat(ms: number) {
   const [h, m, s] = getHMS(ms)
-  return [h && `${h} ชั่วโมง`, m && `${m} นาที`, s && `${s} นาที`]
+  return [h && `${h} ชั่วโมง`, m && `${m} นาที`, s && `${s} วินาที`]
     .filter((str) => str)
     .join(' ')
 }
