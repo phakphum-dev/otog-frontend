@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import useSWR from 'swr'
 
 export function toThDate(date: string) {
   return new Date(date).toLocaleDateString('th-TH', {
@@ -20,22 +21,44 @@ export function getHMS(ms: number) {
 
 export function toTimerFormat(ms: number) {
   const [h, m, s] = getHMS(ms)
-  return `${h}:${m}:${s}`
+  return `${h} : ${m < 10 ? '0' + m : m} : ${s < 10 ? '0' + s : s}`
 }
 
-export function toLengthFormat(ms: number) {
+export function toThTimeFormat(ms: number) {
   const [h, m, s] = getHMS(ms)
   return [h && `${h} ชั่วโมง`, m && `${m} นาที`, s && `${s} วินาที`]
     .filter((str) => str)
     .join(' ')
 }
 
-export function useTimer(start: Date, end: Date) {
-  const [current, setCurrent] = useState(end.getTime() - start.getTime())
+export function useTimer(start: string, end: string) {
+  const getRemaining = (start: string, end: string) =>
+    new Date(end).getTime() - new Date(start).getTime()
+
+  const [remaining, setRemaining] = useState(() => getRemaining(start, end))
+
   useEffect(() => {
-    setInterval(() => {
-      setCurrent((current) => current - 1000)
-    }, 1000)
-  }, [])
-  return [toTimerFormat(current), current]
+    if (start && end) {
+      setRemaining(getRemaining(start, end))
+    }
+  }, [start, end])
+
+  useEffect(() => {
+    if (remaining > 0) {
+      const interval = setInterval(() => {
+        setRemaining((current) => current - 1000)
+      }, 1000)
+      return () => {
+        clearInterval(interval)
+      }
+    }
+  }, [remaining > 0])
+  return remaining
+}
+
+export function useServerTime(intialTime?: string) {
+  return useSWR<string>('time', {
+    initialData: intialTime,
+    revalidateOnMount: true,
+  })
 }

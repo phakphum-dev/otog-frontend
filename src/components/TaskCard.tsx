@@ -35,7 +35,7 @@ import {
   isGrading,
   useStatusColor,
 } from '@src/utils/hooks/useStatusColor'
-import { ChangeEvent, useRef, useState } from 'react'
+import { ChangeEvent, memo, useRef, useState } from 'react'
 
 import { CodeModal, ErrorModal } from './CodeModal'
 import { FileInput } from './FileInput'
@@ -54,7 +54,7 @@ export interface TaskCardProps {
   contestId: number
 }
 
-export function TaskCard(props: TaskCardProps) {
+export const TaskCard = memo((props: TaskCardProps) => {
   const { problem } = props
   const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: true })
   const { isOpen: isEditorOpen, onToggle: onEditorToggle } = useDisclosure()
@@ -117,7 +117,7 @@ export function TaskCard(props: TaskCardProps) {
       </Collapse>
     </Box>
   )
-}
+})
 
 export type ContestFileFormProps = TaskCardProps
 

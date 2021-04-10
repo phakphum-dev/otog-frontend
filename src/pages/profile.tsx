@@ -82,7 +82,7 @@ export default function ProfilePage() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const serverSideCookies = await getServerSideCookies(context)
+  const serverSideCookies = getServerSideCookies(context)
   if (!serverSideCookies.props.accessToken) {
     return {
       redirect: {

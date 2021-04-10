@@ -4,7 +4,7 @@ import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 import { PageContainer } from '@src/components/PageContainer'
 import { Title } from '@src/components/Title'
 import { useContests } from '@src/utils/api/Contest'
-import { toLengthFormat, toThDate } from '@src/utils/hooks/useTimer'
+import { toThTimeFormat, toThDate } from '@src/utils/hooks/useTimer'
 import NextLink from 'next/link'
 import { FaTrophy } from 'react-icons/fa'
 
@@ -18,7 +18,7 @@ export default function ContestHistoryPage() {
         <Thead>
           <Tr>
             <Th>#</Th>
-            <Th px={7}>การแข่งขัน</Th>
+            <Th>การแข่งขัน</Th>
             <Th>โหมด</Th>
             <Th>ระยะเวลา</Th>
             <Th>จัดเมื่อ</Th>
@@ -39,7 +39,7 @@ export default function ContestHistoryPage() {
                 <Text casing="capitalize">{contest.mode}</Text>
               </Td>
               <Td>
-                {toLengthFormat(
+                {toThTimeFormat(
                   new Date(contest.timeEnd).getTime() -
                     new Date(contest.timeStart).getTime()
                 )}

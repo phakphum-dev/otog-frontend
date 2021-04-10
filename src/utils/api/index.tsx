@@ -201,18 +201,23 @@ export type Context = GetServerSidePropsContext<ParsedUrlQuery>
 export const getCookies = (context: Context) => nookies.get(context)
 
 export async function getServerSideFetch<T = any>(
-  url: string,
+  key: string | ((apiClient: ApiClient) => Promise<T>),
   context: Context
 ): Promise<{
   props: CookiesProps & {
-    initialData?: any
+    initialData?: T
     error?: UseToastOptions
   }
 }> {
   const { props } = await getServerSideProps(context)
   const api = new ApiClient(context)
   try {
-    const initialData = await api.get<T>(url)
+    var initialData: T
+    if (typeof key === 'string') {
+      initialData = await api.get<T>(key)
+    } else {
+      initialData = await key(api)
+    }
     const { accessToken = null } = nookies.get(context)
     return {
       props: { ...props, initialData, accessToken },
@@ -241,7 +246,7 @@ export interface CookiesProps extends ColorModeProps {
   accessToken: string | null
 }
 
-export const getServerSideProps = async (context: Context) => {
+export const getServerSideProps = (context: Context) => {
   const colorModeCookie = getColorMode(context)
   const { accessToken = null } = nookies.get(context)
   return { props: { accessToken, colorModeCookie } }
