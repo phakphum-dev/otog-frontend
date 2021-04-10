@@ -8,10 +8,10 @@ export interface Problem {
   memoryLimit: number
   sname: string
   score: number
-  state: number
-  recentShowTime: number
+  show: boolean
+  recentShowTime: string
   case: string
-  rating: number
+  rating: number | null
 }
 export type ProblemWithSubmission = Problem & { submission: Submission | null }
 
