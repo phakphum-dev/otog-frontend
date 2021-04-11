@@ -15,7 +15,7 @@ export interface Problem {
 }
 export type ProblemWithSubmission = Problem & { submission: Submission | null }
 
-export function useProblem(id: string) {
+export function useProblem(id: number) {
   return useSWR<Problem>(id ? `problem/${id}` : null)
 }
 

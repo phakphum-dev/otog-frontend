@@ -25,7 +25,7 @@ import {
 } from '@src/utils/api'
 import { GetServerSideProps } from 'next'
 import { SubmissionWithSourceCode } from '@src/utils/api/Submission'
-import { ONE_DAY } from '@src/utils/hooks/useTimer'
+import { ONE_SECOND } from '@src/utils/hooks/useTimer'
 
 const defaultValue = `#include <iostream>
 
@@ -48,8 +48,8 @@ export interface WriteSolutionPageProps {
 export default function WriteSolutionPage(props: WriteSolutionPageProps) {
   const { initialData: submission } = props
   const router = useRouter()
-  const { id } = router.query
-  const { data: problem } = useProblem(id as string)
+  const id = Number(router.query.id)
+  const { data: problem } = useProblem(id)
   const [language, setLanguage] = useState<string>(
     submission?.language ?? 'cpp'
   )
@@ -70,7 +70,7 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
       formData.append('sourceCode', file)
       formData.append('language', language)
       try {
-        await http.post(`submission/problem/${id}`, formData)
+        await http.post(`submission/problem/${problem.id}`, formData)
         router.push('/submission')
       } catch (e) {
         onError(e)
@@ -95,7 +95,8 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
                 [ดาวน์โหลด]
               </Link>
               <Text fontSize="sm">
-                ({problem.timeLimit / ONE_DAY} วินาที {problem.memoryLimit} MB)
+                ({problem.timeLimit / ONE_SECOND} วินาที {problem.memoryLimit}{' '}
+                MB)
               </Text>
             </VStack>
           )}
@@ -123,9 +124,12 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const id = Number(context.query.id)
+  if (Number.isNaN(id)) {
+    return { notFound: true }
+  }
   const { accessToken = null } = getCookies(context)
   if (accessToken) {
-    const id = context.query.id
     return getServerSideFetch<SubmissionWithSourceCode | null>(
       `submission/problem/${id}/latest`,
       context

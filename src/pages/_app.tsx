@@ -21,14 +21,15 @@ import { HttpProvider } from '@src/utils/api/HttpProvider'
 import { AuthProvider } from '@src/utils/api/AuthProvider'
 
 import { useEffect } from 'react'
-import { errorToast } from '@src/utils/hooks/useError'
+import { errorToast as toast } from '@src/utils/hooks/useError'
+import Error from 'next/error'
 
 const TopProgressBar = dynamic(() => import('@src/components/ProgressBar'), {
   ssr: false,
 })
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  const { colorModeCookie, accessToken, error, ...props } = pageProps
+  const { colorModeCookie, accessToken, errorToast, ...props } = pageProps
 
   const colorModeManager =
     typeof colorModeCookie === 'string'
@@ -36,8 +37,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       : undefined
 
   useEffect(() => {
-    if (error) errorToast(error as UseToastOptions)
-  }, [error])
+    if (errorToast) {
+      toast(errorToast as UseToastOptions)
+    }
+  }, [errorToast])
 
   return (
     <>
@@ -59,7 +62,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             <Flex direction="column" minH="100vh">
               <Flex direction="column" flex={1} justify="space-between">
                 <NavBar />
-                <Component {...props} />
+                {errorToast ? (
+                  <Error statusCode={404} title="something went wrong" />
+                ) : (
+                  <Component {...props} />
+                )}
                 <Footer />
               </Flex>
             </Flex>

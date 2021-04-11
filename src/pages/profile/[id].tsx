@@ -37,6 +37,9 @@ export default function ProfilePage(props: ProfilePageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { id } = context.query
+  const id = Number(context.query.id)
+  if (Number.isNaN(id)) {
+    return { notFound: true }
+  }
   return getServerSideFetch(`user/${id}/profile`, context)
 }

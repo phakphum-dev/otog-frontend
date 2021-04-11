@@ -157,15 +157,9 @@ export default function ContestHistory(props: ContestHistoryProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const id = context.query.id
-  const { props } = await getServerSideFetch(
-    `contest/${id}/scoreboard`,
-    context
-  )
-  if (!props.initialData) {
-    return {
-      notFound: true,
-    }
+  const id = Number(context.query.id)
+  if (Number.isNaN(id)) {
+    return { notFound: true }
   }
-  return { props }
+  return getServerSideFetch(`contest/${id}/scoreboard`, context)
 }

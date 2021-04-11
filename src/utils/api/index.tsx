@@ -1,6 +1,10 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios'
 import nookies from 'nookies'
-import { GetServerSidePropsContext } from 'next'
+import {
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  GetServerSidePropsResult,
+} from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import { errorToast, getErrorToast } from '@src/utils/hooks/useError'
 import { getColorMode } from '@src/theme/ColorMode'
@@ -74,15 +78,15 @@ class ApiClient {
       },
       async (error) => {
         if (error.isAxiosError) {
-          const axiosError = error as AxiosError
-          const originalRequest = axiosError.config
+          error = error as AxiosError
+          const originalRequest = error.config
           // console.log(
           //   'error response :',
           //   err.response?.status,
           //   originalRequest?.url
           // )
 
-          if (axiosError.response?.status === 401) {
+          if (error.response?.status === 401) {
             if (this.isRefreshing) {
               return new Promise((resolve, reject) => {
                 this.failedQueue.push({ resolve, reject })
@@ -90,8 +94,8 @@ class ApiClient {
                 .then(() => {
                   return this.axiosInstance(originalRequest)
                 })
-                .catch((error) => {
-                  return Promise.reject(error)
+                .catch((e) => {
+                  return Promise.reject(e)
                 })
             }
 
@@ -107,13 +111,13 @@ class ApiClient {
                 this.processQueue(e)
                 // remove token if failed to refresh token
                 if (e.isAxiosError) {
-                  const error = e as AxiosError
-                  if (error.response?.status === 403) {
+                  e = e as AxiosError
+                  if (e.response?.status === 403) {
                     nookies.destroy(context, 'accessToken', { path: '/' })
                     this.removeToken()
                     // TODO: move this to global to display only once per page
-                    errorToast(getErrorToast(error))
-                    return Promise.reject(error)
+                    errorToast(getErrorToast(e))
+                    return Promise.reject(e)
                   }
                 }
               } finally {
@@ -121,7 +125,7 @@ class ApiClient {
               }
             }
             // if token doesn't exists and not logging in then open up login modal
-            else if (axiosError.config.url !== 'auth/login') {
+            else if (error.config.url !== 'auth/login') {
               this.removeToken()
               this.openLoginModal()
               return Promise.reject(error)
@@ -205,15 +209,15 @@ export type Context = GetServerSidePropsContext<ParsedUrlQuery>
 
 export const getCookies = (context: Context) => nookies.get(context)
 
+export type ServerSideProps<T> = CookiesProps & {
+  initialData?: T
+  errorToast?: UseToastOptions
+}
+
 export async function getServerSideFetch<T = any>(
   key: string | ((apiClient: ApiClient) => Promise<T>),
   context: Context
-): Promise<{
-  props: CookiesProps & {
-    initialData?: T
-    error?: UseToastOptions
-  }
-}> {
+): Promise<GetServerSidePropsResult<ServerSideProps<T>>> {
   const { props } = await getServerSideProps(context)
   const api = new ApiClient(context)
   try {
@@ -224,16 +228,21 @@ export async function getServerSideFetch<T = any>(
       initialData = await key(api)
     }
     const { accessToken = null } = nookies.get(context)
+    if (!initialData) {
+      return { notFound: true }
+    }
     return {
       props: { ...props, initialData, accessToken },
     }
-  } catch (e) {
-    const errorToast = getErrorToast(e)
+  } catch (error) {
+    const errorToast = getErrorToast(error)
+    console.log(error)
     return {
-      props: { ...props, error: errorToast },
+      props: { ...props, errorToast },
     }
   }
 }
+
 export interface CookiesProps extends ColorModeProps {
   accessToken: string | null
 }
