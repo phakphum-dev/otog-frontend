@@ -105,8 +105,8 @@ const maxX = (points: Point[]) =>
 
 const changeUnit = (points: Point[]) => {
   if (points.length <= 1) return 'day'
-  const mx = points[0].x
-  const mn = points[points.length - 1].x
+  const mn = points[0].x
+  const mx = points[points.length - 1].x
   const d = mx - mn
   if (d < ONE_WEEK) return 'day'
   else if (d < ONE_MONTH) return 'week'
