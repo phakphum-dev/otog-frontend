@@ -55,7 +55,11 @@ export function Buttons(props: ButtonsProps) {
   return display ? (
     <Stack direction="row" mb={4}>
       {filterButton.map(({ filter, ...props }) => (
-        <OtogButton {...props} onClick={() => setFilter(() => filter)}>
+        <OtogButton
+          key={props.colorScheme}
+          onClick={() => setFilter(() => filter)}
+          {...props}
+        >
           {problems.filter(filter).length}
         </OtogButton>
       ))}
