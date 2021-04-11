@@ -4,11 +4,12 @@ import { LatestSubmission } from '@src/components/LatestSubmission'
 import { PageContainer } from '@src/components/PageContainer'
 import { SubmissionTable } from '@src/components/SubmissionTable'
 import { Title } from '@src/components/Title'
-import { getServerSideFetch, getCookies } from '@src/utils/api'
+import { getServerSideFetch } from '@src/utils/api'
 import { SubmissionWithProblem } from '@src/utils/api/Submission'
 import { InitialDataProvider } from '@src/utils/hooks/useInitialData'
 import { GetServerSideProps } from 'next'
 import NextLink from 'next/link'
+import { parseCookies } from 'nookies'
 import { FaTasks } from 'react-icons/fa'
 
 interface SubmissionPageProps {
@@ -37,7 +38,7 @@ export default function SubmissionPage(props: SubmissionPageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { accessToken = null } = getCookies(context)
+  const { accessToken = null } = parseCookies(context)
   if (accessToken) {
     return getServerSideFetch<SubmissionWithProblem>(
       'submission/latest',

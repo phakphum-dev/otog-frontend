@@ -1,10 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios'
 import nookies from 'nookies'
-import {
-  GetServerSideProps,
-  GetServerSidePropsContext,
-  GetServerSidePropsResult,
-} from 'next'
+import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import { errorToast, getErrorToast } from '@src/utils/hooks/useError'
 import { getColorMode } from '@src/theme/ColorMode'
@@ -207,8 +203,6 @@ class ApiClient {
 
 export type Context = GetServerSidePropsContext<ParsedUrlQuery>
 
-export const getCookies = (context: Context) => nookies.get(context)
-
 export type ServerSideProps<T> = CookiesProps & {
   initialData?: T
   errorToast?: UseToastOptions
@@ -218,7 +212,7 @@ export async function getServerSideFetch<T = any>(
   key: string | ((apiClient: ApiClient) => Promise<T>),
   context: Context
 ): Promise<GetServerSidePropsResult<ServerSideProps<T>>> {
-  const { props } = await getServerSideProps(context)
+  const { props } = await getServerSideCookies(context)
   const api = new ApiClient(context)
   try {
     var initialData: T
@@ -247,7 +241,7 @@ export interface CookiesProps extends ColorModeProps {
   accessToken: string | null
 }
 
-export const getServerSideProps = (context: Context) => {
+export const getServerSideCookies = (context: Context) => {
   const colorModeCookie = getColorMode(context)
   const { accessToken = null } = nookies.get(context)
   return { props: { accessToken, colorModeCookie } }

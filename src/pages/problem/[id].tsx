@@ -20,12 +20,12 @@ import { ChangeEvent, useState } from 'react'
 import {
   API_HOST,
   getServerSideFetch,
-  getCookies,
-  getServerSideProps as getServerSideCookies,
+  getServerSideCookies,
 } from '@src/utils/api'
 import { GetServerSideProps } from 'next'
 import { SubmissionWithSourceCode } from '@src/utils/api/Submission'
 import { ONE_SECOND } from '@src/utils/hooks/useTimer'
+import { parseCookies } from 'nookies'
 
 const defaultValue = `#include <iostream>
 
@@ -128,7 +128,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (Number.isNaN(id)) {
     return { notFound: true }
   }
-  const { accessToken = null } = getCookies(context)
+  const { accessToken = null } = parseCookies(context)
   if (accessToken) {
     return getServerSideFetch<SubmissionWithSourceCode | null>(
       `submission/problem/${id}/latest`,

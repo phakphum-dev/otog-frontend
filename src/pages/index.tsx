@@ -11,7 +11,7 @@ import {
 import { OrangeButton } from '@src/components/OrangeButton'
 import { PageContainer } from '@src/components/PageContainer'
 import { GetServerSideProps } from 'next'
-import { getServerSideProps as getServerSideCookies } from '@src/utils/api'
+import { getServerSideCookies } from '@src/utils/api'
 
 export default function HomePage() {
   return (

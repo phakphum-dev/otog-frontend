@@ -24,4 +24,4 @@ export default function SubmissionPage() {
   )
 }
 
-export { getServerSideProps } from '@src/utils/api'
+export { getServerSideCookies as getServerSideProps } from '@src/utils/api'
