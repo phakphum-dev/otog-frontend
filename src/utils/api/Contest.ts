@@ -21,7 +21,7 @@ export interface ContestSubmission {
   problemId: number
 }
 
-export type UserWithSubmission = Omit<User, 'attendedContest'> & {
+export type UserWithSubmission = User & {
   submissions: ContestSubmission[]
 }
 

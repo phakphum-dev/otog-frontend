@@ -46,8 +46,8 @@ export function useTimer(start: string, end: string) {
   useEffect(() => {
     if (remaining > 0) {
       const interval = setInterval(() => {
-        setRemaining((current) => current - 1000)
-      }, 1000)
+        setRemaining((current) => current - ONE_SECOND)
+      }, ONE_SECOND)
       return () => {
         clearInterval(interval)
       }
@@ -62,3 +62,12 @@ export function useServerTime(intialTime?: string) {
     revalidateOnMount: true,
   })
 }
+
+export const ONE_SECOND = 1000
+export const ONE_MINUTE = 60 * ONE_SECOND
+export const ONE_HOUR = 60 * ONE_MINUTE
+export const ONE_DAY = 24 * ONE_MINUTE
+export const ONE_WEEK = 7 * ONE_DAY
+// approximately
+export const ONE_MONTH = 30 * ONE_DAY
+export const ONE_YEAR = 365 * ONE_DAY

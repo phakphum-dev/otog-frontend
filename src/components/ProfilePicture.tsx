@@ -3,19 +3,16 @@ import { useDisclosure } from '@chakra-ui/hooks'
 import { Image } from '@chakra-ui/image'
 import { Box, HStack } from '@chakra-ui/layout'
 import { ImageUpdateModal } from '@src/components/ImageUploadModal'
-import { PageContainer } from '@src/components/PageContainer'
-import { Title } from '@src/components/Title'
-import { useAuth } from '@src/utils/api/AuthProvider'
-import { FaEdit, FaUser, FaUserCircle } from 'react-icons/fa'
 
-import { getServerSideProps as getServerSideCookies } from '@src/utils/api'
-import { GetServerSideProps } from 'next'
-import { ChangeEvent } from 'react'
+import { useAuth } from '@src/utils/api/AuthProvider'
+import { FaEdit, FaUserCircle } from 'react-icons/fa'
+
+import { ChangeEvent, useEffect, useState } from 'react'
 import { storage } from '@src/utils/firebase'
 import { UploadFileButton } from '@src/components/FileInput'
 import Icon from '@chakra-ui/icon'
 
-export default function ProfilePage() {
+export function ProfileUpload() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { user, profileSrc, refreshProfilePic } = useAuth()
 
@@ -47,23 +44,10 @@ export default function ProfilePage() {
       )
     }
   }
-
   return (
-    <PageContainer>
-      <Title icon={FaUser}>โปรไฟล์</Title>
-      <Box position="relative" boxSize="xs">
-        {profileSrc ? (
-          <Image
-            width="100%"
-            src={profileSrc}
-            objectFit="cover"
-            borderRadius="md"
-            bg="gray.300"
-            boxSize="xs"
-          />
-        ) : (
-          <Icon as={FaUserCircle} boxSize="xs" color="gray.300" />
-        )}
+    <div>
+      <Box position="relative" boxSize="xs" flex={1}>
+        <Picture url={profileSrc} />
         <HStack position="absolute" top={2} right={2}>
           <UploadFileButton accept=".png,.jpg,.jpeg" onChange={onFileSelect} />
           {profileSrc && (
@@ -77,19 +61,52 @@ export default function ProfilePage() {
         </HStack>
       </Box>
       <ImageUpdateModal isOpen={isOpen} onClose={onClose} />
-    </PageContainer>
+    </div>
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const serverSideCookies = getServerSideCookies(context)
-  if (!serverSideCookies.props.accessToken) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/login',
-      },
+export interface ProfilePictureProps {
+  userId: number
+}
+
+export function ProfilePicture(props: ProfilePictureProps) {
+  const { userId } = props
+  const [url, setUrl] = useState<string>()
+  const getProfileUrl = async (userId: number) => {
+    try {
+      const url = await storage
+        .ref('images')
+        .child(`${userId}`)
+        .getDownloadURL()
+      setUrl(url)
+    } catch (error) {
+      if (error.code === 'storage/object-not-found') {
+        setUrl(undefined)
+      }
     }
   }
-  return serverSideCookies
+  useEffect(() => {
+    getProfileUrl(userId)
+  }, [])
+  return <Picture url={url} />
+}
+
+export interface PictureProps {
+  url: string | undefined
+}
+
+export function Picture(props: PictureProps) {
+  const { url } = props
+  return url ? (
+    <Image
+      width="100%"
+      src={url}
+      objectFit="cover"
+      borderRadius="md"
+      bg="gray.300"
+      boxSize="xs"
+    />
+  ) : (
+    <Icon as={FaUserCircle} boxSize="xs" color="gray.300" />
+  )
 }

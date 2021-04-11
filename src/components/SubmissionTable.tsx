@@ -38,7 +38,7 @@ import {
   isGrading,
   useStatusColor,
 } from '@src/utils/hooks/useStatusColor'
-import { toThDate } from '@src/utils/hooks/useTimer'
+import { ONE_SECOND, toThDate } from '@src/utils/hooks/useTimer'
 import useSWR, { mutate } from 'swr'
 import { useOnScreen } from '@src/utils/hooks/useOnScreen'
 
@@ -271,7 +271,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
           submission.result
         )}
       </Td>
-      <Td whiteSpace="nowrap">{submission.timeUsed / 1000} s</Td>
+      <Td whiteSpace="nowrap">{submission.timeUsed / ONE_SECOND} s</Td>
       {/* <Td>{submission.score}</Td> */}
     </Tr>
   )

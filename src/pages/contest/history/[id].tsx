@@ -24,6 +24,7 @@ import { getServerSideFetch } from '@src/utils/api'
 import { GetServerSideProps } from 'next'
 import { sum } from '@src/utils'
 import { Tooltip } from '@chakra-ui/tooltip'
+import { ONE_SECOND } from '@src/utils/hooks/useTimer'
 
 const Th = (props: TableColumnHeaderProps) => (
   <THead textAlign="center" {...props} />
@@ -144,7 +145,7 @@ export default function ContestHistory(props: ContestHistoryProps) {
                 <Td>
                   {sum(
                     user.submissions.map((submission) => submission.timeUsed)
-                  ) / 1000}
+                  ) / ONE_SECOND}
                 </Td>
               </MotionTr>
             ))}

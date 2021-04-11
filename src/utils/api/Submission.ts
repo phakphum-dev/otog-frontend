@@ -6,6 +6,7 @@ import { User } from './User'
 import { useInitialData } from '@src/utils/hooks/useInitialData'
 import { useAuth } from './AuthProvider'
 import { isGrading } from '../hooks/useStatusColor'
+import { ONE_SECOND } from '../hooks/useTimer'
 
 export type Status = 'waiting' | 'grading' | 'accept' | 'reject'
 
@@ -77,7 +78,7 @@ export function useSubmissionRow(initialSubmission: SubmissionWithProblem) {
       revalidateOnMount: true,
       onSuccess: (data, key) => {
         if (isGrading(data)) {
-          setTimeout(() => mutate(key), 1000)
+          setTimeout(() => mutate(key), ONE_SECOND)
         }
       },
     }
@@ -108,7 +109,7 @@ export function useProblemSubmission(problemId: number) {
       revalidateOnFocus: false,
       onSuccess: (data, key) => {
         if (isGrading(data)) {
-          setTimeout(() => mutate(key), 1000)
+          setTimeout(() => mutate(key), ONE_SECOND)
         }
       },
     }

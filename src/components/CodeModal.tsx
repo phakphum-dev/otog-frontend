@@ -25,7 +25,7 @@ import { API_HOST } from '@src/utils/api'
 import { useEffect } from 'react'
 import { CopyIcon } from '@chakra-ui/icons'
 import { isGraded } from '@src/utils/hooks/useStatusColor'
-import { toThDate } from '@src/utils/hooks/useTimer'
+import { ONE_SECOND, toThDate } from '@src/utils/hooks/useTimer'
 export interface CodeModalProps extends Omit<ModalProps, 'children'> {
   submissionId: number
 }
@@ -67,7 +67,9 @@ export function CodeModal(props: CodeModalProps) {
                 <Text>ผลตรวจ: {submission.result}</Text>
                 <Text>ภาษา: {submission.language}</Text>
                 {isGraded(submission) && (
-                  <Text>เวลารวม: {submission.timeUsed / 1000} วินาที</Text>
+                  <Text>
+                    เวลารวม: {submission.timeUsed / ONE_SECOND} วินาที
+                  </Text>
                 )}
                 <HStack justify="space-between">
                   <Text>เวลาที่ส่ง: {toThDate(submission.creationDate)}</Text>

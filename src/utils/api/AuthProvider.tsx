@@ -14,28 +14,10 @@ import { LoginModal } from '@src/components/Login'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { storage } from '@src/utils/firebase'
 import { useRouter } from 'next/router'
-import { Role } from './User'
-
-export interface LoginReq {
-  username: string
-  password: string
-}
-
-export interface UserAuth {
-  id: number
-  username: string
-  showName: string
-  role: Role
-  rating: number
-}
-
-export interface AuthRes {
-  user: UserAuth
-  accessToken: string
-}
+import { AuthRes, LoginReq, User } from './User'
 
 export interface AuthProviderProps {
-  user: UserAuth | null
+  user: User | null
   isAuthenticated: boolean
   isAdmin: boolean
   profileSrc: string | undefined
@@ -46,10 +28,10 @@ export interface AuthProviderProps {
 
 export type AuthValueProps = ProviderProps<string | null>
 
-export function getUserData(accessToken: string | null): UserAuth | null {
+export function getUserData(accessToken: string | null): User | null {
   if (accessToken) {
     const { id, username, showName, role, rating } = jwtDecode<
-      UserAuth & JwtPayload
+      User & JwtPayload
     >(accessToken)
     return { id, username, showName, role, rating }
   }

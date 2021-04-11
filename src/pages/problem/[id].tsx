@@ -25,6 +25,7 @@ import {
 } from '@src/utils/api'
 import { GetServerSideProps } from 'next'
 import { SubmissionWithSourceCode } from '@src/utils/api/Submission'
+import { ONE_DAY } from '@src/utils/hooks/useTimer'
 
 const defaultValue = `#include <iostream>
 
@@ -94,7 +95,7 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
                 [ดาวน์โหลด]
               </Link>
               <Text fontSize="sm">
-                ({problem.timeLimit / 1000} วินาที {problem.memoryLimit} MB)
+                ({problem.timeLimit / ONE_DAY} วินาที {problem.memoryLimit} MB)
               </Text>
             </VStack>
           )}

@@ -139,7 +139,7 @@ export function NavBar() {
               {entries.map((item) => (
                 <NavItem key={item.href} {...item} />
               ))}
-              {isAuthenticated ? (
+              {user ? (
                 <Menu>
                   <MenuButton
                     as={Button}
@@ -149,7 +149,7 @@ export function NavBar() {
                     <Avatar size="xs" src={profileSrc} />
                   </MenuButton>
                   <MenuList>
-                    <NextLink href="/profile">
+                    <NextLink href={`/profile/${user.id}`}>
                       <MenuItem>โปรไฟล์</MenuItem>
                     </NextLink>
                     <MenuItem color="red.500" onClick={logout}>
@@ -179,12 +179,12 @@ export function NavBar() {
             <DrawerCloseButton />
             <DrawerBody>
               <VStack mt={2} mr={6} spacing={3} align="flex-start">
-                {isAuthenticated && (
-                  <NextLink href="/profile">
+                {user && (
+                  <NextLink href={`/profile/${user.id}`}>
                     <DrawerButton>
                       <HStack py={2}>
                         <Avatar size="xs" src={profileSrc} />
-                        <Text isTruncated>{user?.showName}</Text>
+                        <Text isTruncated>{user.showName}</Text>
                       </HStack>
                     </DrawerButton>
                   </NextLink>

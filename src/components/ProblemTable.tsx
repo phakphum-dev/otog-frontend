@@ -22,6 +22,7 @@ import { useStatusColor } from '@src/utils/hooks/useStatusColor'
 import { CodeModal } from './CodeModal'
 import { Submission } from '@src/utils/api/Submission'
 import { RenderLater } from './RenderLater'
+import { ONE_SECOND } from '@src/utils/hooks/useTimer'
 
 export type FilterFunction = (problem: ProblemWithSubmission) => boolean
 export interface ProblemTableProps {
@@ -171,7 +172,8 @@ function ProblemRow(props: ProblemRowProps) {
           target="_blank"
         >
           {problem.name}
-          <br />({problem.timeLimit / 1000} วินาที {problem.memoryLimit} MB)
+          <br />({problem.timeLimit / ONE_SECOND} วินาที {problem.memoryLimit}{' '}
+          MB)
         </Link>
       </Td>
       <Td>

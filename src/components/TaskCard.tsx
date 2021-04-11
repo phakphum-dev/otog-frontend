@@ -35,6 +35,7 @@ import {
   isGrading,
   useStatusColor,
 } from '@src/utils/hooks/useStatusColor'
+import { ONE_SECOND } from '@src/utils/hooks/useTimer'
 import { ChangeEvent, memo, useRef, useState } from 'react'
 
 import { CodeModal, ErrorModal } from './CodeModal'
@@ -93,7 +94,8 @@ export const TaskCard = memo((props: TaskCardProps) => {
                 [ดาวน์โหลด]
               </Link>
               <Text fontSize="sm">
-                ({problem.timeLimit / 1000} วินาที {problem.memoryLimit} MB)
+                ({problem.timeLimit / ONE_SECOND} วินาที {problem.memoryLimit}{' '}
+                MB)
               </Text>
             </Box>
             <IconButton

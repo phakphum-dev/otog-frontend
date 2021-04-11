@@ -6,6 +6,7 @@ import { ProblemTable, FilterFunction } from '@src/components/ProblemTable'
 import { Title } from '@src/components/Title'
 import { useAuth } from '@src/utils/api/AuthProvider'
 import { ProblemWithSubmission, useProblems } from '@src/utils/api/Problem'
+import { ONE_DAY } from '@src/utils/hooks/useTimer'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { FaPuzzlePiece } from 'react-icons/fa'
 
@@ -67,7 +68,6 @@ export function Buttons(props: ButtonsProps) {
   ) : null
 }
 
-const aDay = 24 * 60 * 60 * 1000
 const filterButton: {
   filter: FilterFunction
   colorScheme: string
@@ -95,7 +95,7 @@ const filterButton: {
   },
   {
     filter: (problem) =>
-      Date.now() - new Date(problem.recentShowTime).getTime() < aDay,
+      Date.now() - new Date(problem.recentShowTime).getTime() < ONE_DAY,
     colorScheme: 'btn_blue',
     label: 'โจทย์วันนี้',
   },
