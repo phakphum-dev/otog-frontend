@@ -1,4 +1,4 @@
-import { Dispatch, memo, SetStateAction, useState } from 'react'
+import { Dispatch, memo, SetStateAction, useMemo, useState } from 'react'
 import {
   Box,
   Button,
@@ -23,7 +23,13 @@ import { CodeModal } from './CodeModal'
 import { Submission } from '@src/utils/api/Submission'
 import { RenderLater } from './RenderLater'
 
-export function ProblemTable() {
+export type FilterFunction = (problem: ProblemWithSubmission) => boolean
+export interface ProblemTableProps {
+  filter: FilterFunction
+}
+
+export function ProblemTable(props: ProblemTableProps) {
+  const { filter } = props
   const [modalProblem, setModalProblem] = useState<ProblemWithSubmission>()
   const [modalSubmission, setModalSubmission] = useState<Submission>()
   const {
@@ -37,25 +43,28 @@ export function ProblemTable() {
     onClose: onCodeClose,
   } = useDisclosure()
   const { data: problems } = useProblems()
+  const filteredProblems = useMemo(() => {
+    return problems?.filter(filter)
+  }, [problems, filter])
 
   const router = useRouter()
   const onSubmitSuccess = () => {
     router.push('/submission')
   }
 
-  return problems ? (
+  return filteredProblems ? (
     <Box overflowX="auto">
       <Table variant="simple">
         <Thead>
           <Tr>
-            <Th textAlign="center">#</Th>
+            <Th px={7}>#</Th>
             <Th>ชื่อ</Th>
             <Th>ส่ง</Th>
           </Tr>
         </Thead>
         <Tbody>
           <ProblemsRows
-            problems={problems}
+            problems={filteredProblems}
             onSubmitOpen={onSubmitOpen}
             setModalProblem={setModalProblem}
             onCodeOpen={onCodeOpen}
@@ -153,7 +162,7 @@ function ProblemRow(props: ProblemRowProps) {
           </Button>
         </Td>
       ) : (
-        <Td textAlign="center">{problem.id}</Td>
+        <Td>{problem.id}</Td>
       )}
       <Td>
         <Link

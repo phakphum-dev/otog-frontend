@@ -19,7 +19,7 @@ export default function HomePage() {
       <Stack
         direction={{ base: 'column', md: 'row' }}
         spacing={16}
-        mt={{ base: 16, md: 48 }}
+        mt={{ base: 16, md: 32 }}
       >
         <Stack spacing={6} flex={1}>
           <Heading as="h1" size="2xl">
