@@ -13,7 +13,7 @@ export function Footer() {
             ติดต่อเรา
           </Link>
         </Text>
-        <Text>© 2019 Phakphum Dev Team</Text>
+        <Text>© 2021 Phakphum Dev Team</Text>
       </Flex>
     </PageContainer>
   )

@@ -20,8 +20,8 @@ export function getHMS(ms: number) {
 }
 
 export function toTimerFormat(ms: number) {
-  const [h, m, s] = getHMS(ms)
-  return `${h} : ${m < 10 ? '0' + m : m} : ${s < 10 ? '0' + s : s}`
+  const twoDigit = (x: number) => (x < 10 ? '0' + x : x)
+  return getHMS(ms).map(twoDigit).join(' : ')
 }
 
 export function toThTimeFormat(ms: number) {
