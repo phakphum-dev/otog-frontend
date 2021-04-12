@@ -58,9 +58,11 @@ export function ProblemTable(props: ProblemTableProps) {
       <Table variant="simple">
         <Thead>
           <Tr>
-            <Th px={7}>#</Th>
+            <Th px={7} w={88}>
+              #
+            </Th>
             <Th>ชื่อ</Th>
-            <Th>ส่ง</Th>
+            <Th w={88}>ส่ง</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -156,15 +158,15 @@ function ProblemRow(props: ProblemRowProps) {
 
   return (
     <Tr bg={bg}>
-      {problem.submission ? (
-        <Td>
+      <Td textAlign="center" w={88}>
+        {problem.submission ? (
           <Button onClick={onCodeModalOpen} variant="ghost" px={1}>
             {problem.id}
           </Button>
-        </Td>
-      ) : (
-        <Td>{problem.id}</Td>
-      )}
+        ) : (
+          problem.id
+        )}
+      </Td>
       <Td>
         <Link
           color="otog"
@@ -176,7 +178,7 @@ function ProblemRow(props: ProblemRowProps) {
           MB)
         </Link>
       </Td>
-      <Td>
+      <Td w={88}>
         <SubmitButton onClick={onSubmitModalOpen} />
       </Td>
     </Tr>
