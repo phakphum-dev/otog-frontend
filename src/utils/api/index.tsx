@@ -42,7 +42,7 @@ class ApiClient {
     reject: (reason?: any) => void
   }[] = []
 
-  constructor(context: GetServerSidePropsContext<ParsedUrlQuery> | null) {
+  constructor(context: Context | null) {
     this.axiosInstance = axios.create({
       baseURL: API_HOST,
       withCredentials: true,
@@ -109,8 +109,7 @@ class ApiClient {
                 if (e.isAxiosError) {
                   e = e as AxiosError
                   if (e.response?.status === 403) {
-                    nookies.destroy(context, 'accessToken', { path: '/' })
-                    this.removeToken()
+                    this.removeToken(context)
                     // TODO: move this to global to display only once per page
                     errorToast(getErrorToast(e))
                     return Promise.reject(e)
@@ -122,7 +121,7 @@ class ApiClient {
             }
             // if token doesn't exists and not logging in then open up login modal
             else if (error.config.url !== 'auth/login') {
-              this.removeToken()
+              this.removeToken(context)
               this.openLoginModal()
               return Promise.reject(error)
             }
@@ -150,19 +149,24 @@ class ApiClient {
     if (response.status === 200) {
       const { accessToken } = response.data
       const { 'set-cookie': refreshToken } = response.headers
+      this.setNewToken(accessToken, context)
       if (context) {
         // set request header for retrying on original request
         context.req.headers.cookie = `accessToken=${accessToken}; ${refreshToken}`
 
         // set response header to set new token on client-side
         context.res.setHeader('Set-cookie', refreshToken)
-        nookies.set(context, 'accessToken', accessToken, { path: '/' })
-      } else {
-        // set new token on client-side
-        this.setNewToken(accessToken)
       }
       return accessToken
     }
+  }
+
+  setNewToken(accessToken: string, context: Context | null = null) {
+    nookies.set(context, 'accessToken', accessToken, { path: '/' })
+  }
+
+  removeToken(context: Context | null = null) {
+    nookies.destroy(context, 'accessToken', { path: '/' })
   }
 
   processQueue(error: any) {
@@ -196,8 +200,7 @@ class ApiClient {
     await this.axiosInstance.delete(url, config)
   }
 
-  removeToken() {}
-  setNewToken(newToken: string) {}
+  // this will be set only on client
   openLoginModal() {}
 }
 

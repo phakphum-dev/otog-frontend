@@ -15,6 +15,7 @@ import { useDisclosure } from '@chakra-ui/hooks'
 import { storage } from '@src/utils/firebase'
 import { useRouter } from 'next/router'
 import { AuthRes, LoginReq, User } from './User'
+import { cache } from 'swr'
 
 export interface AuthProviderProps {
   user: User | null
@@ -42,39 +43,26 @@ const AuthContext = createContext({} as AuthProviderProps)
 const useAuth = () => useContext(AuthContext)
 const AuthProvider = (props: AuthValueProps) => {
   const { value: accessToken, children } = props
-  const [token, setToken] = useState(accessToken)
-  useEffect(() => {
-    setToken(accessToken)
-  }, [accessToken])
 
-  const user = useMemo(() => getUserData(token), [token])
-  const isAuthenticated = !!token
+  const user = getUserData(accessToken)
+  const isAuthenticated = !!user
   const isAdmin = user?.role === 'admin'
 
   const http = useHttp()
   const login = async (credentials: LoginReq) => {
     const { accessToken } = await http.post<AuthRes>(`auth/login`, credentials)
-    setToken(accessToken)
-    nookies.set(null, 'accessToken', accessToken, { path: '/' })
-  }
-
-  const removeToken = () => {
-    nookies.destroy(null, 'accessToken', { path: '/' })
-    setToken(null)
+    http.setNewToken(accessToken)
+    cache.clear()
   }
 
   const router = useRouter()
   const logout = () => {
-    removeToken()
+    http.removeToken()
+    cache.clear()
     router.push('/login')
   }
 
   const { isOpen, onOpen, onClose } = useDisclosure()
-
-  const setNewToken = (newToken: string) => {
-    nookies.set(null, 'accessToken', newToken, { path: '/' })
-    setToken(newToken)
-  }
 
   const [profileSrc, setProfileSrc] = useState<string>()
   const getProfilePic = async () => {
@@ -92,13 +80,12 @@ const AuthProvider = (props: AuthValueProps) => {
       }
     }
   }
-  useEffect(() => {
-    getProfilePic()
-  }, [user])
 
   useEffect(() => {
-    http.setNewToken = setNewToken
-    http.removeToken = removeToken
+    getProfilePic()
+  }, [isAuthenticated])
+
+  useEffect(() => {
     http.openLoginModal = onOpen
   }, [http])
 
