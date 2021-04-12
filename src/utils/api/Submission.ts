@@ -103,8 +103,11 @@ export function useLatestSubmission() {
 }
 
 export function useProblemSubmission(problemId: number) {
+  const { isAuthenticated } = useAuth()
   return useSWR<SubmissionWithSourceCode>(
-    problemId ? `submission/problem/${problemId}/latest` : null,
+    isAuthenticated && problemId
+      ? `submission/problem/${problemId}/latest`
+      : null,
     {
       revalidateOnFocus: false,
       onSuccess: (data, key) => {
