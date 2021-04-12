@@ -1,4 +1,3 @@
-import React, { HTMLAttributes } from 'react'
 import ReactDatePicker from 'react-datepicker'
 import { Box, useColorMode } from '@chakra-ui/react'
 
@@ -70,6 +69,7 @@ export const DatePicker = ({
           font-family: unset;
           font-size: 0.9rem;
           border-color: var(--light-gray);
+          background-color: var(--blue100);
         }
 
         .react-datepicker-wrapper,
@@ -197,6 +197,11 @@ export const DatePicker = ({
           background: var(--blue600);
           font-weight: normal;
           color: var(--negative-text);
+        }
+
+        .react-datepicker__time-list-item {
+          background-color: var(--monthBackground);
+          color: var(--text);
         }
 
         .react-datepicker__time-container

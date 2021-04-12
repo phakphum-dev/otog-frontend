@@ -63,7 +63,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               <Flex direction="column" flex={1} justify="space-between">
                 <NavBar />
                 {errorToast ? (
-                  <Error statusCode={404} title="something went wrong" />
+                  <Error statusCode={404} title="Not found" />
                 ) : (
                   <Component {...props} />
                 )}

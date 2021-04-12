@@ -3,13 +3,18 @@ import { Problem } from './Problem'
 import { Status } from './Submission'
 import { User } from './User'
 
-export interface Contest {
-  id: number
+export type ContestMode = 'rated' | 'unrated'
+export type GradingMode = 'acm' | 'classic'
+
+export interface CreateContest {
   name: string
-  mode: 'rated' | 'unrated'
-  gradingMode: 'acm' | 'classic'
+  mode: ContestMode
+  gradingMode: GradingMode
   timeStart: string
   timeEnd: string
+}
+export interface Contest extends CreateContest {
+  id: number
   announce: object
   problems: Problem[]
 }
@@ -31,6 +36,10 @@ export type ContestScoreboard = Contest & {
 
 export function useCurrentContest(initialContest?: Contest | null) {
   return useSWR<Contest | null>('contest/now', { initialData: initialContest })
+}
+
+export function useContest(contestId: number | undefined) {
+  return useSWR<Contest>(contestId ? `contest/${contestId}` : null)
 }
 
 export function useContests() {

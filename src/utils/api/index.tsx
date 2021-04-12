@@ -180,15 +180,15 @@ class ApiClient {
     return (await this.axiosInstance.get<T>(url, config)).data
   }
 
-  async post<D, T>(url: string, data?: D, config?: AxiosRequestConfig) {
+  async post<T, D = any>(url: string, data?: D, config?: AxiosRequestConfig) {
     return (await this.axiosInstance.post<T>(url, data, config)).data
   }
 
-  async put<D, T>(url: string, data?: D, config?: AxiosRequestConfig) {
+  async put<T, D = any>(url: string, data?: D, config?: AxiosRequestConfig) {
     return (await this.axiosInstance.put<T>(url, data, config)).data
   }
 
-  async patch<D, T>(url: string, data?: D, config?: AxiosRequestConfig) {
+  async patch<T, D = any>(url: string, data?: D, config?: AxiosRequestConfig) {
     return (await this.axiosInstance.patch<T>(url, data, config)).data
   }
 
@@ -203,30 +203,25 @@ class ApiClient {
 
 export type Context = GetServerSidePropsContext<ParsedUrlQuery>
 
-export type ServerSideProps<T> = CookiesProps & {
-  initialData?: T
-  errorToast?: UseToastOptions
-}
+export type ServerSideProps<T> = CookiesProps &
+  (
+    | {
+        errorToast?: UseToastOptions
+      }
+    | T
+  )
 
 export async function getServerSideFetch<T = any>(
-  key: string | ((apiClient: ApiClient) => Promise<T>),
-  context: Context
+  context: Context,
+  callback: (apiClient: ApiClient) => Promise<T>
 ): Promise<GetServerSidePropsResult<ServerSideProps<T>>> {
   const { props } = await getServerSideCookies(context)
   const api = new ApiClient(context)
   try {
-    var initialData: T
-    if (typeof key === 'string') {
-      initialData = await api.get<T>(key)
-    } else {
-      initialData = await key(api)
-    }
+    const initialData = await callback(api)
     const { accessToken = null } = nookies.get(context)
-    if (!initialData) {
-      return { notFound: true }
-    }
     return {
-      props: { ...props, initialData, accessToken },
+      props: { ...props, ...initialData, accessToken },
     }
   } catch (error) {
     const errorToast = getErrorToast(error)

@@ -53,10 +53,7 @@ const AuthProvider = (props: AuthValueProps) => {
 
   const http = useHttp()
   const login = async (credentials: LoginReq) => {
-    const { accessToken } = await http.post<LoginReq, AuthRes>(
-      `auth/login`,
-      credentials
-    )
+    const { accessToken } = await http.post<AuthRes>(`auth/login`, credentials)
     setToken(accessToken)
     nookies.set(null, 'accessToken', accessToken, { path: '/' })
   }

@@ -21,16 +21,12 @@ import { OrangeButton } from '@src/components/OrangeButton'
 import { mutate } from 'swr'
 
 export interface ContestPageProps {
-  initialData: {
-    contest: Contest | null
-    serverTime: string
-  }
+  contest: Contest | null
+  serverTime: string
 }
 
 export default function ContestPage(props: ContestPageProps) {
-  const {
-    initialData: { contest, serverTime },
-  } = props
+  const { contest, serverTime } = props
   const { data: currentContest } = useCurrentContest(contest)
 
   return currentContest ? (
@@ -134,12 +130,9 @@ export function PostContest(props: ContestProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  return getServerSideFetch<{
-    contest: Contest | null
-    serverTime: string
-  }>(async (api) => {
+  return getServerSideFetch<ContestPageProps>(context, async (api) => {
     const contest = await api.get<Contest | null>('contest/now')
     const serverTime = await api.get<string>('time')
     return { contest, serverTime }
-  }, context)
+  })
 }

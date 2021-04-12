@@ -42,11 +42,11 @@ const extension: Record<string, string> = {
 }
 
 export interface WriteSolutionPageProps {
-  initialData: SubmissionWithSourceCode | null
+  submission: SubmissionWithSourceCode | null
 }
 
 export default function WriteSolutionPage(props: WriteSolutionPageProps) {
-  const { initialData: submission } = props
+  const { submission } = props
   const router = useRouter()
   const id = Number(router.query.id)
   const { data: problem } = useProblem(id)
@@ -130,10 +130,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
   const { accessToken = null } = parseCookies(context)
   if (accessToken) {
-    return getServerSideFetch<SubmissionWithSourceCode | null>(
-      `submission/problem/${id}/latest`,
-      context
-    )
+    return getServerSideFetch<WriteSolutionPageProps>(context, async (api) => ({
+      submission: await api.get(`submission/problem/${id}/latest`),
+    }))
   }
   return getServerSideCookies(context)
 }

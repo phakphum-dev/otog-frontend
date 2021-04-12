@@ -46,11 +46,11 @@ const fontSize: Record<number, string> = {
 }
 
 export interface ContestHistoryProps {
-  initialData: ContestScoreboard
+  scoreboard: ContestScoreboard
 }
 
 export default function ContestHistory(props: ContestHistoryProps) {
-  const { initialData: scoreboard } = props
+  const { scoreboard } = props
 
   const getTotalScore = (user: UserWithSubmission) =>
     sum(user.submissions.map((submission) => submission.score))
@@ -161,5 +161,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (Number.isNaN(id)) {
     return { notFound: true }
   }
-  return getServerSideFetch(`contest/${id}/scoreboard`, context)
+  return getServerSideFetch<ContestHistoryProps>(context, async (api) => {
+    const scoreboard = await api.get<ContestScoreboard>(
+      `contest/${id}/scoreboard`
+    )
+    if (!scoreboard) {
+      throw new Error('404 Not found')
+    }
+    return { scoreboard }
+  })
 }

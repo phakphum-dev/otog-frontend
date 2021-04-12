@@ -13,11 +13,11 @@ import { useRouter } from 'next/router'
 import { useAuth } from '@src/utils/api/AuthProvider'
 
 export interface ProfilePageProps {
-  initialData: UserProfile
+  userData: UserProfile
 }
 
 export default function ProfilePage(props: ProfilePageProps) {
-  const { initialData: userData } = props
+  const { userData } = props
   const router = useRouter()
   const id = Number(router.query.id)
   const { user } = useAuth()
@@ -41,5 +41,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (Number.isNaN(id)) {
     return { notFound: true }
   }
-  return getServerSideFetch(`user/${id}/profile`, context)
+  return getServerSideFetch<ProfilePageProps>(context, async (api) => {
+    const userData = await api.get<UserProfile>(`user/${id}/profile`)
+    if (!userData) {
+      throw new Error('404 Not found')
+    }
+    return { userData }
+  })
 }

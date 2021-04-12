@@ -13,14 +13,14 @@ import { parseCookies } from 'nookies'
 import { FaTasks } from 'react-icons/fa'
 
 interface SubmissionPageProps {
-  initialData: SubmissionWithProblem
+  latestSubmission: SubmissionWithProblem
 }
 
 export default function SubmissionPage(props: SubmissionPageProps) {
-  const { initialData } = props
+  const { latestSubmission } = props
 
   return (
-    <InitialDataProvider value={initialData}>
+    <InitialDataProvider value={latestSubmission}>
       <PageContainer>
         <HStack justify="space-between">
           <Title icon={FaTasks}>ผลตรวจ</Title>
@@ -40,10 +40,9 @@ export default function SubmissionPage(props: SubmissionPageProps) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { accessToken = null } = parseCookies(context)
   if (accessToken) {
-    return getServerSideFetch<SubmissionWithProblem>(
-      'submission/latest',
-      context
-    )
+    return getServerSideFetch<SubmissionPageProps>(context, async (api) => ({
+      latestSubmission: await api.get('submission/latest'),
+    }))
   }
   return {
     redirect: {

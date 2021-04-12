@@ -108,7 +108,7 @@ export function NavBar() {
       >
         <PageContainer>
           <HStack>
-            <NextLink href="/">
+            <NextLink href={isAdmin ? '/admin/contest' : '/'}>
               <Button variant="link" color={color} _hover={{ color }}>
                 <HStack cursor="pointer">
                   <Image src="/logo196.png" boxSize={8} my={1} />
