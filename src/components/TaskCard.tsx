@@ -201,7 +201,7 @@ export function ContestEditorForm(props: ContestEditorFormProps) {
     setLanguage(e.target.value)
   }
 
-  const [value, setValue] = useState<string>()
+  const [value, setValue] = useState<string | undefined>(defaultValue)
   const onEditorChange = (value: string | undefined) => {
     setValue(value)
   }
