@@ -39,6 +39,7 @@ import { useToastError } from '@src/utils/hooks/useError'
 import { FileInput } from '@src/components/FileInput'
 import { mutate } from 'swr'
 import { Spinner } from '@chakra-ui/spinner'
+import { RenderLater } from '@src/components/RenderLater'
 
 export default function AdminProblemPage() {
   return (
@@ -169,8 +170,13 @@ const ProblemAdminTable = () => {
         </Tr>
       </Thead>
       <Tbody>
-        {problems.map((problem) => (
+        {problems.slice(0, 100).map((problem) => (
           <ProblemAdminRow key={problem.id} problem={problem} />
+        ))}
+        {problems.slice(100).map((problem, index) => (
+          <RenderLater key={problem.id} delay={~~(index / 100)}>
+            <ProblemAdminRow problem={problem} />
+          </RenderLater>
         ))}
       </Tbody>
     </Table>

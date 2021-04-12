@@ -38,6 +38,7 @@ import { useHttp } from '@src/utils/api/HttpProvider'
 import { useForm } from 'react-hook-form'
 import { useToastError } from '@src/utils/hooks/useError'
 import { Spinner } from '@chakra-ui/spinner'
+import { RenderLater } from '@src/components/RenderLater'
 
 export default function AdminContestPage() {
   const [contestId, setContestId] = useState<number>()
@@ -197,13 +198,22 @@ const ContestTable = memo(
           </Tr>
         </Thead>
         <Tbody>
-          {problems.map((problem) => (
+          {problems.slice(0, 100).map((problem) => (
             <ContestProblemRow
               isOpen={openProblemIds.includes(problem.id)}
               contestId={contest.id}
               problem={problem}
               key={problem.id}
             />
+          ))}
+          {problems.slice(1000).map((problem, index) => (
+            <RenderLater key={problem.id} delay={~~(index / 100)}>
+              <ContestProblemRow
+                isOpen={openProblemIds.includes(problem.id)}
+                contestId={contest.id}
+                problem={problem}
+              />
+            </RenderLater>
           ))}
         </Tbody>
       </Table>
