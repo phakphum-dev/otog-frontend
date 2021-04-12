@@ -79,7 +79,7 @@ interface CreateContestModalButtonProps {
 }
 
 function CreateContestModalButton(props: CreateContestModalButtonProps) {
-  const { setContestId: setContest } = props
+  const { setContestId } = props
   const { isOpen, onClose, onOpen } = useDisclosure()
   const [startDate, setStartDate] = useState<Date>(new Date())
   const [endDate, setEndDate] = useState<Date>(new Date())
@@ -100,7 +100,7 @@ function CreateContestModalButton(props: CreateContestModalButtonProps) {
     try {
       // TODO: get response data
       const { id } = await http.post<Contest, CreateContest>('contest', body)
-      setContest(id)
+      setContestId(id)
       onClose()
     } catch (e) {
       onError(e)

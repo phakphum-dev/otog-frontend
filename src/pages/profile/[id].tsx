@@ -41,11 +41,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (Number.isNaN(id)) {
     return { notFound: true }
   }
-  return getServerSideFetch<ProfilePageProps>(context, async (api) => {
-    const userData = await api.get<UserProfile>(`user/${id}/profile`)
-    if (!userData) {
-      throw new Error('404 Not found')
-    }
-    return { userData }
-  })
+  return getServerSideFetch<ProfilePageProps>(context, async (api) => ({
+    userData: await api.get<UserProfile>(`user/${id}/profile`),
+  }))
 }

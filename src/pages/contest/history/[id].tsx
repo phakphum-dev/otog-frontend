@@ -161,13 +161,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (Number.isNaN(id)) {
     return { notFound: true }
   }
-  return getServerSideFetch<ContestHistoryProps>(context, async (api) => {
-    const scoreboard = await api.get<ContestScoreboard>(
-      `contest/${id}/scoreboard`
-    )
-    if (!scoreboard) {
-      throw new Error('404 Not found')
-    }
-    return { scoreboard }
-  })
+  return getServerSideFetch<ContestHistoryProps>(context, async (api) => ({
+    scoreboard: await api.get<ContestScoreboard>(`contest/${id}/scoreboard`),
+  }))
 }

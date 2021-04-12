@@ -19,7 +19,11 @@ import { PageContainer } from '@src/components/PageContainer'
 import { Title } from '@src/components/Title'
 import { getServerSideCookies } from '@src/utils/api'
 import { getUserData } from '@src/utils/api/AuthProvider'
-import { ProblemWithSubmission, useProblems } from '@src/utils/api/Problem'
+import {
+  Problem,
+  ProblemWithSubmission,
+  useProblems,
+} from '@src/utils/api/Problem'
 import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
 import { useState } from 'react'
@@ -199,12 +203,9 @@ const ProblemAdminRow = (props: ProblemAdminProps) => {
   const onToggle = async () => {
     setOpen((isOpen) => !isOpen)
     try {
-      const { show } = await http.patch<{ show: boolean }>(
-        `problem/${problem.id}`,
-        {
-          show: !isOpen,
-        }
-      )
+      const { show } = await http.patch<Problem>(`problem/${problem.id}`, {
+        show: !isOpen,
+      })
       setOpen(show)
     } catch (e) {
       onError(e)
