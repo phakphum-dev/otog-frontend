@@ -30,6 +30,12 @@ export interface CodeModalProps extends Omit<ModalProps, 'children'> {
   submissionId: number
 }
 
+const language: Record<string, string> = {
+  cpp: 'C++',
+  c: 'C',
+  python: 'Python',
+}
+
 export function CodeModal(props: CodeModalProps) {
   const { onClose, isOpen, submissionId } = props
   const { data: submission } = useSubmission(submissionId)
@@ -64,8 +70,10 @@ export function CodeModal(props: CodeModalProps) {
           {submission ? (
             <Stack>
               <div>
-                <Text>ผลตรวจ: {submission.result}</Text>
-                <Text>ภาษา: {submission.language}</Text>
+                <Text>
+                  ผลตรวจ: <code>{submission.result}</code>
+                </Text>
+                <Text>ภาษา: {language[submission.language]}</Text>
                 {isGraded(submission) && (
                   <Text>
                     เวลารวม: {submission.timeUsed / ONE_SECOND} วินาที
