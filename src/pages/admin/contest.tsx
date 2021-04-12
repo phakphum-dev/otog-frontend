@@ -39,6 +39,7 @@ import { useForm } from 'react-hook-form'
 import { useToastError } from '@src/utils/hooks/useError'
 import { Spinner } from '@chakra-ui/spinner'
 import { RenderLater } from '@src/components/RenderLater'
+import { mutate } from 'swr'
 
 export default function AdminContestPage() {
   const [contestId, setContestId] = useState<number>()
@@ -98,9 +99,9 @@ function CreateContestModalButton(props: CreateContestModalButtonProps) {
       timeEnd: endDate.toISOString(),
     }
     try {
-      // TODO: get response data
       const { id } = await http.post<Contest, CreateContest>('contest', body)
       setContestId(id)
+      mutate('contest')
       onClose()
     } catch (e) {
       onError(e)
@@ -183,48 +184,45 @@ interface ContestTableProps {
   contest: Contest
 }
 
-const ContestTable = memo(
-  (props: ContestTableProps) => {
-    const { contest } = props
-    const { data: problems } = useProblems()
-    const openProblemIds = contest.problems.map((problem) => problem.id)
-    return problems ? (
-      <Table>
-        <Thead>
-          <Tr>
-            <Th>#</Th>
-            <Th>ชื่อ</Th>
-            <Th>แก้ไข</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {problems.slice(0, 100).map((problem) => (
+const ContestTable = memo((props: ContestTableProps) => {
+  const { contest } = props
+  const { data: problems } = useProblems()
+  const openProblemIds = contest.problems.map((problem) => problem.id)
+  return problems ? (
+    <Table>
+      <Thead>
+        <Tr>
+          <Th>#</Th>
+          <Th>ชื่อ</Th>
+          <Th>แก้ไข</Th>
+        </Tr>
+      </Thead>
+      <Tbody>
+        {problems.slice(0, 100).map((problem) => (
+          <ContestProblemRow
+            isOpen={openProblemIds.includes(problem.id)}
+            contestId={contest.id}
+            problem={problem}
+            key={problem.id}
+          />
+        ))}
+        {problems.slice(1000).map((problem, index) => (
+          <RenderLater key={problem.id} delay={~~(index / 100)}>
             <ContestProblemRow
               isOpen={openProblemIds.includes(problem.id)}
               contestId={contest.id}
               problem={problem}
-              key={problem.id}
             />
-          ))}
-          {problems.slice(1000).map((problem, index) => (
-            <RenderLater key={problem.id} delay={~~(index / 100)}>
-              <ContestProblemRow
-                isOpen={openProblemIds.includes(problem.id)}
-                contestId={contest.id}
-                problem={problem}
-              />
-            </RenderLater>
-          ))}
-        </Tbody>
-      </Table>
-    ) : (
-      <Flex justify="center" py={16}>
-        <Spinner size="xl" />
-      </Flex>
-    )
-  },
-  (prevProps, nextProps) => prevProps.contest.id === nextProps.contest.id
-)
+          </RenderLater>
+        ))}
+      </Tbody>
+    </Table>
+  ) : (
+    <Flex justify="center" py={16}>
+      <Spinner size="xl" />
+    </Flex>
+  )
+})
 
 interface ContestProblemRowProps {
   contestId: number
