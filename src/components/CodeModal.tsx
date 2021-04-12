@@ -21,7 +21,7 @@ import Highlight, { defaultProps, Language } from 'prism-react-renderer'
 import theme from 'prism-react-renderer/themes/vsDark'
 
 import { useSubmission, SubmissionWithProblem } from '@src/utils/api/Submission'
-import { API_HOST } from '@src/utils/api'
+import NextLink from 'next/link'
 import { useEffect } from 'react'
 import { CopyIcon } from '@chakra-ui/icons'
 import { isGraded } from '@src/utils/hooks/useStatusColor'
@@ -56,23 +56,16 @@ export function CodeModal(props: CodeModalProps) {
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          {submission && (
-            <Link
-              href={`${API_HOST}problem/doc/${submission.problem.id}`}
-              target="_blank"
-            >
-              ข้อ {submission.problem.name}
-            </Link>
-          )}
+          <NextLink href={`/problem/${submission?.problem.id}`} passHref>
+            <Link>ข้อ {submission?.problem.name}</Link>
+          </NextLink>
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           {submission ? (
             <Stack>
               <div>
-                <Text>
-                  ผลตรวจ: <code>{submission.result}</code>
-                </Text>
+                <Text>ผลตรวจ: {submission.result}</Text>
                 <Text>ภาษา: {language[submission.language]}</Text>
                 {isGraded(submission) && (
                   <Text>

@@ -31,7 +31,6 @@ import {
   useSubmissions,
 } from '@src/utils/api/Submission'
 import { CodeModal, ErrorModal } from './CodeModal'
-import { API_HOST } from '@src/utils/api'
 import { useAuth } from '@src/utils/api/AuthProvider'
 import {
   isGraded,
@@ -40,6 +39,7 @@ import {
 } from '@src/utils/hooks/useStatusColor'
 import { ONE_SECOND, toThDate } from '@src/utils/hooks/useTimer'
 import { useOnScreen } from '@src/utils/hooks/useOnScreen'
+import NextLink from 'next/link'
 
 export function SubmissionTable() {
   const {
@@ -240,12 +240,9 @@ const SubmissionRow = (props: SubmissionRowProps) => {
       )}
       <Td>{submission.user.showName}</Td>
       <Td>
-        <Link
-          href={`${API_HOST}problem/doc/${submission.problem.id}`}
-          target="_blank"
-        >
-          {submission.problem.name}
-        </Link>
+        <NextLink href={`/problem/${submission.problem.id}`} passHref>
+          <Link>{submission.problem.name}</Link>
+        </NextLink>
       </Td>
       <Td>
         {submission.errmsg && (isAdmin || user?.id === submission.user.id) ? (
