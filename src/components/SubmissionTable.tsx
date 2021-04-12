@@ -39,7 +39,6 @@ import {
   useStatusColor,
 } from '@src/utils/hooks/useStatusColor'
 import { ONE_SECOND, toThDate } from '@src/utils/hooks/useTimer'
-import useSWR, { mutate } from 'swr'
 import { useOnScreen } from '@src/utils/hooks/useOnScreen'
 
 export function SubmissionTable() {
@@ -249,7 +248,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
         </Link>
       </Td>
       <Td>
-        {submission.errmsg ? (
+        {submission.errmsg && (isAdmin || user?.id === submission.user.id) ? (
           <>
             <Button px={1} variant="ghost" onClick={onErrorModalOpen}>
               {submission.result}
@@ -265,7 +264,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
             <Spinner size="xs" />
             <Text>{submission.result}</Text>
           </HStack>
-        ) : isGraded(submission) ? (
+        ) : isGraded(submission) && !submission.errmsg ? (
           <code>{submission.result}</code>
         ) : (
           submission.result
