@@ -2,7 +2,7 @@ import { Button, IconButton } from '@chakra-ui/button'
 import { FormControl, FormLabel } from '@chakra-ui/form-control'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Input } from '@chakra-ui/input'
-import { Flex, Heading, HStack, Stack, Text } from '@chakra-ui/layout'
+import { Box, Flex, Heading, HStack, Stack, Text } from '@chakra-ui/layout'
 import {
   Modal,
   ModalBody,
@@ -189,34 +189,36 @@ const ContestTable = memo((props: ContestTableProps) => {
   const { data: problems } = useProblems()
   const openProblemIds = contest.problems.map((problem) => problem.id)
   return problems ? (
-    <Table>
-      <Thead>
-        <Tr>
-          <Th>#</Th>
-          <Th>ชื่อ</Th>
-          <Th>แก้ไข</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        {problems.slice(0, 100).map((problem) => (
-          <ContestProblemRow
-            isOpen={openProblemIds.includes(problem.id)}
-            contestId={contest.id}
-            problem={problem}
-            key={problem.id}
-          />
-        ))}
-        {problems.slice(1000).map((problem, index) => (
-          <RenderLater key={problem.id} delay={~~(index / 100)}>
+    <Box overflowX="auto">
+      <Table>
+        <Thead>
+          <Tr>
+            <Th>#</Th>
+            <Th>ชื่อ</Th>
+            <Th>แก้ไข</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {problems.slice(0, 100).map((problem) => (
             <ContestProblemRow
               isOpen={openProblemIds.includes(problem.id)}
               contestId={contest.id}
               problem={problem}
+              key={problem.id}
             />
-          </RenderLater>
-        ))}
-      </Tbody>
-    </Table>
+          ))}
+          {problems.slice(1000).map((problem, index) => (
+            <RenderLater key={problem.id} delay={~~(index / 100)}>
+              <ContestProblemRow
+                isOpen={openProblemIds.includes(problem.id)}
+                contestId={contest.id}
+                problem={problem}
+              />
+            </RenderLater>
+          ))}
+        </Tbody>
+      </Table>
+    </Box>
   ) : (
     <Flex justify="center" py={16}>
       <Spinner size="xl" />
