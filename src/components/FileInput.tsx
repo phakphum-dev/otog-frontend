@@ -41,12 +41,14 @@ export const FileInput = forwardRef(
           accept={accept}
         />
         <Input
-          value={fileName ?? 'ยังไม่ได้เลือกไฟล์'}
+          value={fileName}
+          placeholder="ยังไม่ได้เลือกไฟล์"
           isReadOnly
           onClick={onClick}
         />
         <InputRightAddon
           as={Button}
+          color="gray.600"
           fontWeight="normal"
           children="ค้นหาไฟล์"
           onClick={onClick}

@@ -12,6 +12,7 @@ import {
   Select,
   HStack,
   Button,
+  Stack,
 } from '@chakra-ui/react'
 import { FileInput } from './FileInput'
 import { Problem } from '@src/utils/api/Problem'
@@ -81,23 +82,25 @@ export function SubmitModal(props: SubmitModalProps) {
           <ModalHeader>{problem.name}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <FormControl>
-              <FormLabel>อัปโหลด</FormLabel>
-              <FileInput
-                name="sourceCode"
-                fileName={file?.name}
-                onChange={onFileSelect}
-                accept=".c,.cpp,.py"
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>ภาษา</FormLabel>
-              <Select name="language" onChange={onSelectChange}>
-                <option value="cpp">C++</option>
-                <option value="c">C</option>
-                <option value="python">Python</option>
-              </Select>
-            </FormControl>
+            <Stack>
+              <FormControl>
+                <FormLabel>อัปโหลด</FormLabel>
+                <FileInput
+                  name="sourceCode"
+                  fileName={file?.name}
+                  onChange={onFileSelect}
+                  accept=".c,.cpp,.py"
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>ภาษา</FormLabel>
+                <Select name="language" onChange={onSelectChange}>
+                  <option value="cpp">C++</option>
+                  <option value="c">C</option>
+                  <option value="python">Python</option>
+                </Select>
+              </FormControl>
+            </Stack>
           </ModalBody>
 
           <ModalFooter>
