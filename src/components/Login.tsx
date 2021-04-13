@@ -66,7 +66,7 @@ export function LoginForm(props: LoginFormProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={4}>
-        <Img src="logo512.png" boxSize="100px" mx="auto" />
+        <Img src="/logo512.png" boxSize={100} mx="auto" />
         <Input
           type="text"
           name="username"

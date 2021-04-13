@@ -36,7 +36,7 @@ export default function RegisterPage() {
       <CenteredCard>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={4}>
-            <Img src="logo512.png" boxSize="100px" mx="auto" />
+            <Img src="/logo512.png" boxSize={100} mx="auto" />
             <Input
               name="username"
               type="username"
