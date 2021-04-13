@@ -149,7 +149,6 @@ class ApiClient {
     if (response.status === 200) {
       const { accessToken } = response.data
       const { 'set-cookie': refreshToken } = response.headers
-      this.setNewToken(accessToken, context)
       if (context) {
         // set request header for retrying on original request
         context.req.headers.cookie = `accessToken=${accessToken}; ${refreshToken}`
@@ -157,6 +156,7 @@ class ApiClient {
         // set response header to set new token on client-side
         context.res.setHeader('Set-cookie', refreshToken)
       }
+      this.setNewToken(accessToken, context)
       return accessToken
     }
   }
