@@ -17,6 +17,7 @@ import {
 
 import { useAuth } from '@src/utils/api/AuthProvider'
 import { storage } from '@src/utils/firebase'
+import { useToastError } from '@src/utils/hooks/useError'
 import { useState } from 'react'
 import Cropper from 'react-easy-crop'
 import { Area } from 'react-easy-crop/types'
@@ -28,7 +29,7 @@ interface ImageUploadModalProps {
 }
 
 // ref: https://codesandbox.io/s/q8q1mnr01w
-const createImage = (url: string) =>
+export const createImage = (url: string) =>
   new Promise<HTMLImageElement>((resolve, reject) => {
     const image = new Image()
     image.addEventListener('load', () => resolve(image))
@@ -37,60 +38,68 @@ const createImage = (url: string) =>
     image.src = url
   })
 
+export const createImageFromFile = (file: File) =>
+  new Promise<HTMLImageElement>((resolve, reject) => {
+    const image = new Image()
+    const fileReader = new FileReader()
+    fileReader.onload = (event) => {
+      image.src = event.target?.result as string
+    }
+    image.addEventListener('load', () => resolve(image))
+    image.addEventListener('error', (error) => reject(error))
+    fileReader.readAsDataURL(file)
+  })
+
 /**
  * This function was adapted from the one in the ReadMe of https://github.com/DominicTobias/react-image-crop
  * @param {File} image - Image File url
  * @param {Object} pixelCrop - pixelCrop Object provided by react-easy-crop
  * @param {number} rotation - optional rotation parameter
  */
-async function getCroppedImg(imageSrc: string, pixelCrop: Area) {
-  const image = await createImage(imageSrc)
+const BOX_SIZE = 320
+export async function getCroppedImage(
+  image: HTMLImageElement,
+  sourceArea?: Area
+) {
   const canvas = document.createElement('canvas')
-  const ctx = canvas.getContext('2d')
-
-  if (ctx) {
-    const maxSize = Math.max(image.width, image.height)
-    const safeArea = 2 * ((maxSize / 2) * Math.sqrt(2))
-
-    // set each dimensions to double largest dimension to allow for a safe area for the
-    // image to rotate in without being clipped by canvas context
-    canvas.width = safeArea
-    canvas.height = safeArea
-
-    // translate canvas context to a central location on image to allow rotating around the center.
-    ctx.translate(safeArea / 2, safeArea / 2)
-    ctx.translate(-safeArea / 2, -safeArea / 2)
-
-    // draw rotated image and store data.
-    ctx.drawImage(
-      image,
-      safeArea / 2 - image.width * 0.5,
-      safeArea / 2 - image.height * 0.5
-    )
-    const data = ctx.getImageData(0, 0, safeArea, safeArea)
-
-    // set canvas width to final desired crop size - this will clear existing context
-    canvas.width = pixelCrop.width
-    canvas.height = pixelCrop.height
-
-    // paste generated rotate image with correct offsets for x,y crop values.
-    ctx.putImageData(
-      data,
-      Math.round(0 - safeArea / 2 + image.width * 0.5 - pixelCrop.x),
-      Math.round(0 - safeArea / 2 + image.height * 0.5 - pixelCrop.y)
-    )
+  const context = canvas.getContext('2d')
+  if (context) {
+    if (sourceArea) {
+      canvas.width = BOX_SIZE
+      canvas.height = BOX_SIZE
+      context.drawImage(
+        image,
+        sourceArea.x,
+        sourceArea.y,
+        sourceArea.width,
+        sourceArea.height,
+        0,
+        0,
+        BOX_SIZE,
+        BOX_SIZE
+      )
+    } else {
+      const sWidth = image.naturalWidth
+      const sHeight = image.naturalHeight
+      const size = Math.min(sWidth, sHeight)
+      const dWidth = (sWidth / size) * BOX_SIZE
+      const dHeight = (sHeight / size) * BOX_SIZE
+      canvas.width = dWidth
+      canvas.height = dHeight
+      context.drawImage(image, 0, 0, sWidth, sHeight, 0, 0, dWidth, dHeight)
+    }
 
     // As a blob
     return new Promise<File | null>((resolve) => {
       canvas.toBlob((blob) => {
-        // TODO: convert to png maybe
-        resolve(blob && new File([blob], 'tmp.jpg'))
-      }, 'image/jpeg')
+        resolve(blob && new File([blob], 'tmp.png'))
+      }, 'image/png')
     })
   }
+  throw new Error(`This browser doesn't support 2D Context`)
 }
 
-export function ImageUpdateModal(props: ImageUploadModalProps) {
+export function ImageCropModal(props: ImageUploadModalProps) {
   const { isOpen, onClose } = props
 
   const { user, profileSrc, refreshProfilePic } = useAuth()
@@ -101,12 +110,16 @@ export function ImageUpdateModal(props: ImageUploadModalProps) {
     setCroppedAreaPixels(croppedAreaPixels)
   }
 
+  const { onError } = useToastError()
   const uploadCroppedImage = async () => {
     if (user && profileSrc && croppedAreaPixels) {
-      const imageCropped = await getCroppedImg(profileSrc, croppedAreaPixels)
+      const image = await createImage(profileSrc)
+      const croppedImage = await getCroppedImage(image, croppedAreaPixels)
       //   console.log(imageCropped)
-      if (imageCropped) {
-        const uploadTask = storage.ref(`images/${user.id}`).put(imageCropped)
+      if (croppedImage) {
+        const uploadTask = storage
+          .ref(`images/${user.id}.png`)
+          .put(croppedImage)
         uploadTask.on(
           'state_changed',
           (snapshot) => {
@@ -116,7 +129,7 @@ export function ImageUpdateModal(props: ImageUploadModalProps) {
             // setProgress(progress)
           },
           (error) => {
-            console.log(error)
+            onError(error)
           },
           () => {
             refreshProfilePic()

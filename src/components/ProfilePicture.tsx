@@ -2,30 +2,44 @@ import { IconButton } from '@chakra-ui/button'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Image } from '@chakra-ui/image'
 import { Box, HStack } from '@chakra-ui/layout'
-import { ImageUpdateModal } from '@src/components/ImageUploadModal'
+import {
+  ImageCropModal,
+  createImageFromFile,
+  getCroppedImage,
+} from '@src/components/ImageCropModal'
 
 import { useAuth } from '@src/utils/api/AuthProvider'
-import { FaEdit, FaUserCircle } from 'react-icons/fa'
+import { FaCropAlt, FaUserCircle } from 'react-icons/fa'
 
 import { ChangeEvent, useEffect, useState } from 'react'
 import { storage } from '@src/utils/firebase'
 import { UploadFileButton } from '@src/components/FileInput'
 import Icon from '@chakra-ui/icon'
+import { useToastError } from '@src/utils/hooks/useError'
 
 export function ProfileUpload() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { user, profileSrc, refreshProfilePic } = useAuth()
 
-  const onFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
+  const { onError } = useToastError()
+  const onFileSelect = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length === 0) return
     const file = e.target.files?.[0]
     if (file) {
-      onUpload(file)
+      try {
+        const image = await createImageFromFile(file)
+        const croppedImage = await getCroppedImage(image)
+        if (croppedImage) {
+          onUpload(croppedImage)
+        }
+      } catch (e) {
+        onError(e)
+      }
     }
   }
 
   const onUpload = (file: File) => {
-    if (user && file) {
+    if (user) {
       const uploadTask = storage.ref(`images/${user.id}`).put(file)
       uploadTask.on(
         'state_changed',
@@ -35,9 +49,7 @@ export function ProfileUpload() {
           // )
           // setProgress(progress)
         },
-        (error) => {
-          console.log(error)
-        },
+        (error) => onError(error),
         () => {
           refreshProfilePic()
         }
@@ -51,16 +63,18 @@ export function ProfileUpload() {
         <HStack position="absolute" top={2} right={2}>
           <UploadFileButton accept=".png,.jpg,.jpeg" onChange={onFileSelect} />
           {profileSrc && (
-            <IconButton
-              size="xs"
-              aria-label="edit-profile-image"
-              icon={<FaEdit />}
-              onClick={onOpen}
-            />
+            <>
+              <IconButton
+                size="xs"
+                aria-label="edit-profile-image"
+                icon={<FaCropAlt />}
+                onClick={onOpen}
+              />
+              <ImageCropModal isOpen={isOpen} onClose={onClose} />
+            </>
           )}
         </HStack>
       </Box>
-      <ImageUpdateModal isOpen={isOpen} onClose={onClose} />
     </div>
   )
 }
