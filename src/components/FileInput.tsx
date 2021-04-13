@@ -6,6 +6,7 @@ import {
   InputGroup,
   InputProps,
   InputRightAddon,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { FaUpload } from 'react-icons/fa'
 
@@ -48,7 +49,7 @@ export const FileInput = forwardRef(
         />
         <InputRightAddon
           as={Button}
-          color="gray.600"
+          color={useColorModeValue('gray.600', 'white')}
           fontWeight="normal"
           children="ค้นหาไฟล์"
           onClick={onClick}
