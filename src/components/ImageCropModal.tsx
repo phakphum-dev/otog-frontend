@@ -113,29 +113,33 @@ export function ImageCropModal(props: ImageUploadModalProps) {
   const { onError } = useToastError()
   const uploadCroppedImage = async () => {
     if (user && profileSrc && croppedAreaPixels) {
-      const image = await createImage(profileSrc)
-      const croppedImage = await getCroppedImage(image, croppedAreaPixels)
-      //   console.log(imageCropped)
-      if (croppedImage) {
-        const uploadTask = storage
-          .ref(`images/${user.id}.png`)
-          .put(croppedImage)
-        uploadTask.on(
-          'state_changed',
-          (snapshot) => {
-            // const progress = Math.round(
-            //   (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-            // )
-            // setProgress(progress)
-          },
-          (error) => {
-            onError(error)
-          },
-          () => {
-            refreshProfilePic()
-            onClose()
-          }
-        )
+      try {
+        const image = await createImage(profileSrc)
+        const croppedImage = await getCroppedImage(image, croppedAreaPixels)
+        //   console.log(imageCropped)
+        if (croppedImage) {
+          const uploadTask = storage
+            .ref(`images/${user.id}.png`)
+            .put(croppedImage)
+          uploadTask.on(
+            'state_changed',
+            (snapshot) => {
+              // const progress = Math.round(
+              //   (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+              // )
+              // setProgress(progress)
+            },
+            (error) => {
+              onError(error)
+            },
+            () => {
+              refreshProfilePic()
+              onClose()
+            }
+          )
+        }
+      } catch (e) {
+        onError(e)
       }
     }
   }
