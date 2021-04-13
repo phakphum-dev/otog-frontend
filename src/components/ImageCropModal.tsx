@@ -67,6 +67,8 @@ export async function getCroppedImage(
     if (sourceArea) {
       canvas.width = BOX_SIZE
       canvas.height = BOX_SIZE
+      console.log(sourceArea)
+
       context.drawImage(
         image,
         sourceArea.x,
@@ -116,11 +118,8 @@ export function ImageCropModal(props: ImageUploadModalProps) {
       try {
         const image = await createImage(profileSrc)
         const croppedImage = await getCroppedImage(image, croppedAreaPixels)
-        //   console.log(imageCropped)
         if (croppedImage) {
-          const uploadTask = storage
-            .ref(`images/${user.id}.png`)
-            .put(croppedImage)
+          const uploadTask = storage.ref(`images/${user.id}`).put(croppedImage)
           uploadTask.on(
             'state_changed',
             (snapshot) => {
@@ -135,6 +134,8 @@ export function ImageCropModal(props: ImageUploadModalProps) {
             () => {
               refreshProfilePic()
               onClose()
+              setZoom(1)
+              setCrop({ x: 0, y: 0 })
             }
           )
         }
