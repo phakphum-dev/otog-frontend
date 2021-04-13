@@ -1,6 +1,6 @@
 import { IconButton } from '@chakra-ui/button'
 import { useDisclosure } from '@chakra-ui/hooks'
-import { Image } from '@chakra-ui/image'
+import { Img } from '@chakra-ui/image'
 import { Box, HStack } from '@chakra-ui/layout'
 import {
   ImageCropModal,
@@ -112,7 +112,7 @@ export interface PictureProps {
 export function Picture(props: PictureProps) {
   const { url } = props
   return url ? (
-    <Image
+    <Img
       width="100%"
       src={url}
       objectFit="cover"

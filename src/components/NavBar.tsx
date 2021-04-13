@@ -7,7 +7,6 @@ import {
   Box,
   Heading,
   HStack,
-  Image,
   Menu,
   MenuItem,
   MenuButton,
@@ -27,6 +26,7 @@ import {
   ButtonProps,
   forwardRef,
   Text,
+  Img,
 } from '@chakra-ui/react'
 import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
 import { ToggleColorModeButton } from './ToggleColorModeButton'
@@ -111,7 +111,7 @@ export function NavBar() {
             <NextLink href={isAdmin ? '/admin/contest' : '/'}>
               <Button variant="link" color={color} _hover={{ color }}>
                 <HStack cursor="pointer">
-                  <Image src="/logo196.png" boxSize={8} my={1} />
+                  <Img src="/logo196.png" width="32px" height="32px" />
                   <Heading size="md" py={2}>
                     <Box
                       display={{ base: 'none', md: 'inline-block', xl: 'none' }}
