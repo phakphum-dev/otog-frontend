@@ -1,17 +1,17 @@
 import { Button, ButtonProps } from '@chakra-ui/button'
 import { AspectRatio, Heading, Stack, VStack } from '@chakra-ui/layout'
 import { useBreakpointValue } from '@chakra-ui/media-query'
+import { Skeleton } from '@chakra-ui/skeleton'
 import { PageContainer } from '@src/components/PageContainer'
 import { ProblemTable, FilterFunction } from '@src/components/ProblemTable'
 import { Title } from '@src/components/Title'
 import { useAuth } from '@src/utils/api/AuthProvider'
-import { ProblemWithSubmission, useProblems } from '@src/utils/api/Problem'
+import { useProblems } from '@src/utils/api/Problem'
 import { ONE_DAY } from '@src/utils/hooks/useTimer'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { FaPuzzlePiece } from 'react-icons/fa'
 
 export default function ProblemPage() {
-  const { data: problems } = useProblems()
   const { isAuthenticated } = useAuth()
   const [filter, setFilter] = useState<FilterFunction>(
     () => filterButton[0].filter
@@ -20,21 +20,19 @@ export default function ProblemPage() {
   return (
     <PageContainer dense>
       <Title icon={FaPuzzlePiece}>โจทย์</Title>
-      {isAuthenticated && problems && (
-        <Buttons setFilter={setFilter} problems={problems} />
-      )}
+      {isAuthenticated && <Buttons setFilter={setFilter} />}
       <ProblemTable filter={filter} />
     </PageContainer>
   )
 }
 
 export interface ButtonsProps {
-  problems: ProblemWithSubmission[]
   setFilter: Dispatch<SetStateAction<FilterFunction>>
 }
 
 export function Buttons(props: ButtonsProps) {
-  const { problems, setFilter } = props
+  const { setFilter } = props
+  const { data: problems } = useProblems()
   const display = useBreakpointValue({ base: false, sm: true })
   const OtogButton = ({
     label,
@@ -56,13 +54,20 @@ export function Buttons(props: ButtonsProps) {
   return display ? (
     <Stack direction="row" mb={4}>
       {filterButton.map(({ filter, ...props }) => (
-        <OtogButton
+        <Skeleton
+          flex={1}
+          rounded="lg"
+          isLoaded={!!problems}
           key={props.colorScheme}
-          onClick={() => setFilter(() => filter)}
-          {...props}
         >
-          {problems.filter(filter).length}
-        </OtogButton>
+          <OtogButton
+            key={props.colorScheme}
+            onClick={() => setFilter(() => filter)}
+            {...props}
+          >
+            {problems?.filter(filter).length}
+          </OtogButton>
+        </Skeleton>
       ))}
     </Stack>
   ) : null
