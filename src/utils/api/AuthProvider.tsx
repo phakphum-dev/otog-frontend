@@ -70,7 +70,7 @@ const AuthProvider = (props: AuthValueProps) => {
       try {
         const url = await storage
           .ref('images')
-          .child(`${user.id}`)
+          .child(`${user.id}.png`)
           .getDownloadURL()
         setProfileSrc(url)
       } catch (error) {

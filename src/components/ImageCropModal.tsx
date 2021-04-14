@@ -119,7 +119,9 @@ export function ImageCropModal(props: ImageUploadModalProps) {
         const image = await createImage(profileSrc)
         const croppedImage = await getCroppedImage(image, croppedAreaPixels)
         if (croppedImage) {
-          const uploadTask = storage.ref(`images/${user.id}`).put(croppedImage)
+          const uploadTask = storage
+            .ref(`images/${user.id}.png`)
+            .put(croppedImage)
           uploadTask.on(
             'state_changed',
             (snapshot) => {

@@ -40,7 +40,7 @@ export function ProfileUpload() {
 
   const onUpload = (file: File) => {
     if (user) {
-      const uploadTask = storage.ref(`images/${user.id}`).put(file)
+      const uploadTask = storage.ref(`images/${user.id}.png`).put(file)
       uploadTask.on(
         'state_changed',
         (snapshot) => {
@@ -90,7 +90,7 @@ export function ProfilePicture(props: ProfilePictureProps) {
     try {
       const url = await storage
         .ref('images')
-        .child(`${userId}`)
+        .child(`${userId}.png`)
         .getDownloadURL()
       setUrl(url)
     } catch (error) {
