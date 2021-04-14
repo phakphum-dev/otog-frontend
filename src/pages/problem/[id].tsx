@@ -7,6 +7,7 @@ import { Button } from '@chakra-ui/button'
 import { useHttp } from '@src/utils/api/HttpProvider'
 import { useToastError } from '@src/utils/hooks/useError'
 import {
+  Flex,
   Link,
   SimpleGrid,
   Spacer,
@@ -26,6 +27,7 @@ import { GetServerSideProps } from 'next'
 import { SubmissionWithSourceCode } from '@src/utils/api/Submission'
 import { ONE_SECOND } from '@src/utils/hooks/useTimer'
 import { parseCookies } from 'nookies'
+import { space } from '@chakra-ui/styled-system'
 
 const defaultValue = `#include <iostream>
 
@@ -81,10 +83,11 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
   return (
     <PageContainer dense>
       <Stack spacing={4}>
-        <Stack direction="row" justify="space-between" align="flex-end">
+        <Flex align="flex-end">
           <Title mb={1} icon={FaLightbulb}>
             {problem?.name}
           </Title>
+          <Spacer />
           {problem && (
             <VStack align="flex-end" spacing={0}>
               <Link
@@ -100,7 +103,7 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
               </Text>
             </VStack>
           )}
-        </Stack>
+        </Flex>
 
         <Editor
           height="75vh"

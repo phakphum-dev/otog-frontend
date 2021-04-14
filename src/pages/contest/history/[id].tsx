@@ -16,7 +16,7 @@ import { HTMLMotionProps, motion } from 'framer-motion'
 import { HTMLChakraProps, useTheme } from '@chakra-ui/system'
 import { Title } from '@src/components/Title'
 import { FaTrophy } from 'react-icons/fa'
-import { Box, Stack } from '@chakra-ui/layout'
+import { Box, Flex, Spacer, Stack } from '@chakra-ui/layout'
 import { CgDetailsLess, CgDetailsMore } from 'react-icons/cg'
 import { ContestScoreboard, UserWithSubmission } from '@src/utils/api/Contest'
 
@@ -78,8 +78,9 @@ export default function ContestHistory(props: ContestHistoryProps) {
 
   return (
     <PageContainer>
-      <Stack direction="row" justify="space-between" align="center">
+      <Flex align="center">
         <Title icon={FaTrophy}>{scoreboard.name}</Title>
+        <Spacer />
         <ButtonGroup isAttached variant="outline">
           <IconButton
             aria-label="less-detail"
@@ -94,7 +95,7 @@ export default function ContestHistory(props: ContestHistoryProps) {
             icon={<CgDetailsMore />}
           />
         </ButtonGroup>
-      </Stack>
+      </Flex>
       <Box overflowX="auto">
         <Table variant={isOpen ? 'simple' : 'unstyled'}>
           <Thead>

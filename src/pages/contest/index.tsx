@@ -1,4 +1,4 @@
-import { Center, Heading, Stack, VStack } from '@chakra-ui/layout'
+import { Center, Flex, Heading, Spacer, Stack, VStack } from '@chakra-ui/layout'
 import { PageContainer } from '@src/components/PageContainer'
 import { TaskCard } from '@src/components/TaskCard'
 import { Title } from '@src/components/Title'
@@ -99,10 +99,11 @@ export function MidContest(props: ContestProps) {
   }, [remaining])
   return (
     <PageContainer dense>
-      <Stack direction="row" justify="space-between" align="baseline">
+      <Flex align="baseline">
         <Title icon={FaTrophy}>แข่งขัน</Title>
+        <Spacer />
         <Heading as="h2">{toTimerFormat(remaining)}</Heading>
-      </Stack>
+      </Flex>
 
       <Stack spacing={6}>
         {contest.problems.map((prob) => (
@@ -119,7 +120,7 @@ export function PostContest(props: ContestProps) {
     <PageContainer display="flex">
       <Center flex={1}>
         <VStack spacing={4}>
-          <Heading>การแข่งขันจบลงแล้ว</Heading>
+          <Heading>การแข่งขัน {contest.name} จบลงแล้ว</Heading>
           <NextLink href={`/contest/history/${contest.id}`}>
             <OrangeButton>สรุปผลการแข่งขัน</OrangeButton>
           </NextLink>
