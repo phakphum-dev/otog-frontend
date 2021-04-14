@@ -211,7 +211,7 @@ const ContestTable = memo((props: ContestTableProps) => {
               key={problem.id}
             />
           ))}
-          {problems.slice(1000).map((problem, index) => (
+          {problems.slice(100).map((problem, index) => (
             <RenderLater key={problem.id} delay={~~(index / 100)}>
               <ContestProblemRow
                 isOpen={openProblemIds.includes(problem.id)}
