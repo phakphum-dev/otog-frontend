@@ -16,7 +16,11 @@ import { getServerSideCookies } from '@src/utils/api'
 export default function HomePage() {
   return (
     <PageContainer as={Center}>
-      <Stack direction={{ base: 'column', md: 'row' }} spacing={16} pb={16}>
+      <Stack
+        direction={{ base: 'column', md: 'row' }}
+        spacing={16}
+        pb={{ base: 0, md: 16 }}
+      >
         <Stack spacing={6} flex={1}>
           <Heading as="h1" size="2xl">
             Become a god of Competitive Programming
