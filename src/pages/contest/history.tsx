@@ -6,6 +6,7 @@ import { PageContainer } from '@src/components/PageContainer'
 import { Title } from '@src/components/Title'
 import { useContests } from '@src/utils/api/Contest'
 import { toThTimeFormat, toThDate } from '@src/utils/hooks/useTimer'
+import Head from 'next/head'
 import NextLink from 'next/link'
 import { FaTrophy } from 'react-icons/fa'
 
@@ -14,6 +15,9 @@ export default function ContestHistoryPage() {
 
   return (
     <PageContainer>
+      <Head>
+        <title>Contest History | OTOG</title>
+      </Head>
       <Title icon={FaTrophy}>ประวัติการแข่งขัน</Title>
       {contests ? (
         <Box overflowX="auto">

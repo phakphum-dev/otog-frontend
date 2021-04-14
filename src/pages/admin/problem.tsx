@@ -44,10 +44,14 @@ import { FileInput } from '@src/components/FileInput'
 import { mutate } from 'swr'
 import { Spinner } from '@chakra-ui/spinner'
 import { RenderLater } from '@src/components/RenderLater'
+import Head from 'next/head'
 
 export default function AdminProblemPage() {
   return (
     <PageContainer dense>
+      <Head>
+        <title>Admin Problem | OTOG</title>
+      </Head>
       <Flex dir="row" justify="space-between" align="center">
         <Title icon={FaTools}>ระบบ GOTO</Title>
         <Text>

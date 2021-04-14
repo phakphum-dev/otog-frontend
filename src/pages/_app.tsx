@@ -46,6 +46,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <title>One Tambon One Grader | OTOG</title>
+        <meta
+          name="description"
+          content="Become a god of competitive programming. Code and create algorithms efficiently."
+        />
         <link rel="manifest" href="/manifest.json" />
         <link rel="icon" href="/logo196.png" type="image/png" />
         <link rel="shortcut icon" href="/logo196.png" />

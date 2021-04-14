@@ -8,6 +8,7 @@ import { Title } from '@src/components/Title'
 import { useAuth } from '@src/utils/api/AuthProvider'
 import { useProblems } from '@src/utils/api/Problem'
 import { ONE_DAY } from '@src/utils/hooks/useTimer'
+import Head from 'next/head'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { FaPuzzlePiece } from 'react-icons/fa'
 
@@ -19,6 +20,9 @@ export default function ProblemPage() {
 
   return (
     <PageContainer dense>
+      <Head>
+        <title>Problem | OTOG</title>
+      </Head>
       <Title icon={FaPuzzlePiece}>โจทย์</Title>
       {isAuthenticated && <Buttons setFilter={setFilter} />}
       <ProblemTable filter={filter} />

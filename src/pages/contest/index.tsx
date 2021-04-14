@@ -19,6 +19,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { OrangeButton } from '@src/components/OrangeButton'
 import { mutate } from 'swr'
+import Head from 'next/head'
 
 export interface ContestPageProps {
   contest: Contest | null
@@ -29,19 +30,26 @@ export default function ContestPage(props: ContestPageProps) {
   const { contest, serverTime } = props
   const { data: currentContest } = useCurrentContest(contest)
 
-  return currentContest ? (
-    <ContestRouter contest={currentContest} time={serverTime} />
-  ) : (
-    <PageContainer display="flex">
-      <Center flex={1}>
-        <VStack spacing={4}>
-          <Heading>ยังไม่มีการแข่งขัน</Heading>
-          <NextLink href="/contest/history">
-            <Button>ประวัติการแข่งขัน</Button>
-          </NextLink>
-        </VStack>
-      </Center>
-    </PageContainer>
+  return (
+    <>
+      <Head>
+        <title>Contest | OTOG</title>
+      </Head>
+      {currentContest ? (
+        <ContestRouter contest={currentContest} time={serverTime} />
+      ) : (
+        <PageContainer display="flex">
+          <Center flex={1}>
+            <VStack spacing={4}>
+              <Heading>ยังไม่มีการแข่งขัน</Heading>
+              <NextLink href="/contest/history">
+                <Button>ประวัติการแข่งขัน</Button>
+              </NextLink>
+            </VStack>
+          </Center>
+        </PageContainer>
+      )}
+    </>
   )
 }
 export interface ContestProps {

@@ -40,6 +40,7 @@ import { useToastError } from '@src/utils/hooks/useError'
 import { Spinner } from '@chakra-ui/spinner'
 import { RenderLater } from '@src/components/RenderLater'
 import { mutate } from 'swr'
+import Head from 'next/head'
 
 export default function AdminContestPage() {
   const [contestId, setContestId] = useState<number>()
@@ -49,6 +50,9 @@ export default function AdminContestPage() {
   }
   return (
     <PageContainer dense>
+      <Head>
+        <title>Admin Contest | OTOG</title>
+      </Head>
       <Flex dir="row" justify="space-between" align="center">
         <Title icon={FaTools}>ระบบ GOTO</Title>
         <Text>

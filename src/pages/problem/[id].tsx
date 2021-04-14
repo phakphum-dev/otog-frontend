@@ -28,6 +28,7 @@ import { SubmissionWithSourceCode } from '@src/utils/api/Submission'
 import { ONE_SECOND } from '@src/utils/hooks/useTimer'
 import { parseCookies } from 'nookies'
 import { space } from '@chakra-ui/styled-system'
+import Head from 'next/head'
 
 const defaultValue = `#include <iostream>
 
@@ -82,6 +83,9 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
 
   return (
     <PageContainer dense>
+      <Head>
+        <title>Problem {id} | OTOG</title>
+      </Head>
       <Stack spacing={4}>
         <Flex align="flex-end">
           <Title mb={1} icon={FaLightbulb}>

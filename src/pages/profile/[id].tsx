@@ -11,6 +11,7 @@ import { ProfilePicture, ProfileUpload } from '@src/components/ProfilePicture'
 import { UserProfile } from '@src/utils/api/User'
 import { useRouter } from 'next/router'
 import { useAuth } from '@src/utils/api/AuthProvider'
+import Head from 'next/head'
 
 export interface ProfilePageProps {
   userData: UserProfile
@@ -23,6 +24,9 @@ export default function ProfilePage(props: ProfilePageProps) {
   const { user } = useAuth()
   return (
     <PageContainer>
+      <Head>
+        <title>Profile #{id} | OTOG</title>
+      </Head>
       <Title icon={FaUser}>{userData?.showName}</Title>
       <Stack direction={{ base: 'column', md: 'row' }} spacing={8}>
         {user?.id === Number(id) ? (

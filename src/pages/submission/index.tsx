@@ -8,6 +8,7 @@ import { getServerSideFetch } from '@src/utils/api'
 import { SubmissionWithProblem } from '@src/utils/api/Submission'
 import { InitialDataProvider } from '@src/utils/hooks/useInitialData'
 import { GetServerSideProps } from 'next'
+import Head from 'next/head'
 import NextLink from 'next/link'
 import { parseCookies } from 'nookies'
 import { FaTasks } from 'react-icons/fa'
@@ -22,6 +23,9 @@ export default function SubmissionPage(props: SubmissionPageProps) {
   return (
     <InitialDataProvider value={latestSubmission}>
       <PageContainer>
+        <Head>
+          <title>Submission | OTOG</title>
+        </Head>
         <HStack justify="space-between">
           <Title icon={FaTasks}>ผลตรวจ</Title>
           <NextLink href="/submission/all">

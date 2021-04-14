@@ -25,6 +25,7 @@ import { GetServerSideProps } from 'next'
 import { sum } from '@src/utils'
 import { Tooltip } from '@chakra-ui/tooltip'
 import { ONE_SECOND } from '@src/utils/hooks/useTimer'
+import Head from 'next/head'
 
 const Th = (props: TableColumnHeaderProps) => (
   <THead textAlign="center" {...props} />
@@ -78,6 +79,9 @@ export default function ContestHistory(props: ContestHistoryProps) {
 
   return (
     <PageContainer>
+      <Head>
+        <title>Contest History #{scoreboard.id} | OTOG</title>
+      </Head>
       <Flex align="center">
         <Title icon={FaTrophy}>{scoreboard.name}</Title>
         <Spacer />
