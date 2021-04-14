@@ -62,15 +62,16 @@ export default function ContestHistory(props: ContestHistoryProps) {
       totalScore: getTotalScore(user),
     }))
     const sorted = scored.sort((a, b) => b.totalScore - a.totalScore)
-    var rank = 1
+    var latestRank = 0
     return sorted.map((user, index) => {
-      if (index === 0) {
-        return { ...user, rank }
+      if (
+        index > 0 &&
+        sorted[index - 1].totalScore === sorted[index].totalScore
+      ) {
+        return { ...user, rank: latestRank }
       }
-      if (sorted[index - 1].totalScore === sorted[index].totalScore) {
-        return { ...user, rank }
-      }
-      return { ...user, rank: ++rank }
+      latestRank = index + 1
+      return { ...user, rank: latestRank }
     })
   }, [])
 
