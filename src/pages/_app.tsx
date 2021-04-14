@@ -60,15 +60,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           <AuthProvider value={accessToken as string}>
             <TopProgressBar />
             <Flex direction="column" minH="100vh">
-              <Flex direction="column" flex={1} justify="space-between">
-                <NavBar />
-                {errorToast ? (
-                  <Error statusCode={404} title="Not found" />
-                ) : (
-                  <Component {...props} />
-                )}
-                <Footer />
-              </Flex>
+              <NavBar />
+              {errorToast ? (
+                <Error statusCode={404} title="Not found" />
+              ) : (
+                <Component {...props} />
+              )}
+              <Footer />
             </Flex>
           </AuthProvider>
         </HttpProvider>

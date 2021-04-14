@@ -1,20 +1,22 @@
-import { Divider, Flex, Link, Text } from '@chakra-ui/layout'
+import { Divider, Flex, Link, Spacer, Text, Container } from '@chakra-ui/layout'
+import { useToken } from '@chakra-ui/system'
 import { CONTACT_LINK } from '@src/utils/config'
-import { PageContainer } from './PageContainer'
 
 export function Footer() {
+  const maxWidth = useToken('sizes', 'container')
   return (
-    <PageContainer h={14} maxH={14} mt={8}>
+    <Container maxWidth={maxWidth} mt={8} pb={4}>
       <Divider mb={2} />
-      <Flex direction={{ base: 'column', sm: 'row' }} justify="space-between">
+      <Flex direction={{ base: 'column', sm: 'row' }}>
         <Text>
           หากมีข้อแนะนำ หรือข้อสงสัย{' '}
           <Link color="otog" href={CONTACT_LINK} target="_blank">
             ติดต่อเรา
           </Link>
         </Text>
+        <Spacer />
         <Text>© 2021 Phakphum Dev Team</Text>
       </Flex>
-    </PageContainer>
+    </Container>
   )
 }
