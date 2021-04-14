@@ -1,4 +1,4 @@
-import { extendTheme } from '@chakra-ui/react'
+import { ColorModeOptions, extendTheme } from '@chakra-ui/react'
 
 const colors = {
   otog: '#ff851b',
@@ -91,4 +91,9 @@ const sizes = {
   },
 }
 
-export const theme = extendTheme({ colors, sizes })
+const config: ColorModeOptions = {
+  initialColorMode: 'light',
+  useSystemColorMode: true,
+}
+
+export const theme = extendTheme({ colors, sizes, config })

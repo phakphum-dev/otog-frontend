@@ -27,6 +27,7 @@ import {
   forwardRef,
   Text,
   Img,
+  Flex,
 } from '@chakra-ui/react'
 import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
 import { ToggleColorModeButton } from './ToggleColorModeButton'
@@ -94,7 +95,6 @@ export function NavBar() {
 
   return (
     <>
-      <Box bg="transparend" h={14} w="100%" />
       <Box
         zIndex={10}
         position="fixed"
@@ -107,7 +107,7 @@ export function NavBar() {
         boxShadow="base"
       >
         <PageContainer>
-          <HStack>
+          <Flex>
             <NextLink href={isAdmin ? '/admin/contest' : '/'}>
               <Button variant="link" color={color} _hover={{ color }}>
                 <HStack cursor="pointer">
@@ -135,7 +135,7 @@ export function NavBar() {
               icon={<HamburgerIcon />}
               ref={btnRef}
             />
-            <HStack hidden={isMobile} spacing={8} p={2}>
+            <HStack hidden={isMobile} spacing={4}>
               {entries.map((item) => (
                 <NavItem key={item.href} {...item} />
               ))}
@@ -160,12 +160,12 @@ export function NavBar() {
               ) : (
                 <NavItem href="/login" title="เข้าสู่ระบบ" />
               )}
+              <ToggleColorModeButton
+                variant="link"
+                display={{ base: 'none', md: 'inline-flex' }}
+              />
             </HStack>
-            <ToggleColorModeButton
-              variant="link"
-              display={{ base: 'none', md: 'inline-flex' }}
-            />
-          </HStack>
+          </Flex>
         </PageContainer>
       </Box>
       <Drawer
@@ -205,6 +205,7 @@ export function NavBar() {
           </DrawerContent>
         </DrawerOverlay>
       </Drawer>
+      <Box bg="transparend" h={14} w="100%" />
     </>
   )
 }
@@ -220,6 +221,7 @@ function NavItem(props: ItemProps) {
   return (
     <NextLink href={href} key={href}>
       <Button
+        p={2}
         variant="link"
         fontWeight="normal"
         color={color}

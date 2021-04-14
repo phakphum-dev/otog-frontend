@@ -5,6 +5,7 @@ import {
   ChakraProvider,
   cookieStorageManager,
   Flex,
+  localStorageManager,
   UseToastOptions,
 } from '@chakra-ui/react'
 import { theme } from '@src/theme'
@@ -34,7 +35,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   const colorModeManager =
     typeof colorModeCookie === 'string'
       ? cookieStorageManager(`chakra-ui-color-mode=${colorModeCookie}`)
-      : undefined
+      : localStorageManager
 
   useEffect(() => {
     if (errorToast) {
