@@ -149,16 +149,21 @@ export function NavBar() {
                     <Avatar size="xs" src={profileSrc} />
                   </MenuButton>
                   {/* fix render menulist on ssr */}
-                  {typeof window !== 'undefined' && (
-                    <MenuList>
-                      <NextLink href={`/profile/${user.id}`}>
-                        <MenuItem>โปรไฟล์</MenuItem>
-                      </NextLink>
-                      <MenuItem color="red.500" onClick={logout}>
-                        ออกจากระบบ
-                      </MenuItem>
-                    </MenuList>
-                  )}
+                  <div
+                    suppressHydrationWarning={true}
+                    style={{ display: 'none' }}
+                  >
+                    {typeof window !== 'undefined' && (
+                      <MenuList>
+                        <NextLink href={`/profile/${user.id}`}>
+                          <MenuItem>โปรไฟล์</MenuItem>
+                        </NextLink>
+                        <MenuItem color="red.500" onClick={logout}>
+                          ออกจากระบบ
+                        </MenuItem>
+                      </MenuList>
+                    )}
+                  </div>
                 </Menu>
               ) : (
                 <NavItem href="/login" title="เข้าสู่ระบบ" />
