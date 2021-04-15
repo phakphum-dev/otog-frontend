@@ -77,7 +77,7 @@ export function CodeModal(props: CodeModalProps) {
                 )}
               </Skeleton>
               <Skeleton isLoaded={isLoaded} w={isLoaded ? 'auto' : 36} h={6}>
-                {submission && isGraded(submission) && (
+                {submission && (
                   <Text>
                     เวลารวม: {submission.timeUsed / ONE_SECOND} วินาที
                   </Text>
