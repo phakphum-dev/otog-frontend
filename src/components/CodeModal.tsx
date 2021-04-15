@@ -39,6 +39,8 @@ const language: Record<string, string> = {
 export function CodeModal(props: CodeModalProps) {
   const { onClose, isOpen, submissionId } = props
   const { data: submission } = useSubmission(submissionId)
+  const isLoaded = !!submission
+
   const { onCopy, hasCopied } = useClipboard(submission?.sourceCode ?? '')
   const toast = useToast()
   useEffect(() => {
@@ -56,58 +58,60 @@ export function CodeModal(props: CodeModalProps) {
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          {submission ? (
+          <Skeleton isLoaded={isLoaded} w={isLoaded ? 'auto' : 80} h={6}>
             <NextLink href={`/problem/${submission?.problem.id}`} passHref>
               <Link>ข้อ {submission?.problem.name}</Link>
             </NextLink>
-          ) : (
-            <Skeleton w={80} h={6} />
-          )}
+          </Skeleton>
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Stack>
-            {submission ? (
-              <>
-                <div>
-                  <Text>ผลตรวจ: {submission.result}</Text>
+            <div>
+              <Skeleton isLoaded={isLoaded} w={isLoaded ? 'auto' : 40} h={6}>
+                {submission && <Text>ผลตรวจ: {submission.result}</Text>}
+              </Skeleton>
+              <Skeleton isLoaded={isLoaded} w={isLoaded ? 'auto' : 20} h={6}>
+                {submission && (
                   <Text>ภาษา: {language[submission.language]}</Text>
-                  {isGraded(submission) && (
-                    <Text>
-                      เวลารวม: {submission.timeUsed / ONE_SECOND} วินาที
-                    </Text>
-                  )}
-                  <HStack justify="space-between">
-                    <Text>เวลาที่ส่ง: {toThDate(submission.creationDate)}</Text>
-                  </HStack>
-                </div>
-                <Box position="relative">
+                )}
+              </Skeleton>
+              <Skeleton isLoaded={isLoaded} w={isLoaded ? 'auto' : 36} h={6}>
+                {submission && isGraded(submission) && (
+                  <Text>
+                    เวลารวม: {submission.timeUsed / ONE_SECOND} วินาที
+                  </Text>
+                )}
+              </Skeleton>
+              <Skeleton isLoaded={isLoaded} w={isLoaded ? 'auto' : 48} h={6}>
+                {submission && (
+                  <Text>เวลาที่ส่ง: {toThDate(submission.creationDate)}</Text>
+                )}
+              </Skeleton>
+            </div>
+            <Box position="relative">
+              <Skeleton
+                isLoaded={isLoaded}
+                h={isLoaded ? 'auto' : 80}
+                rounded="lg"
+              >
+                {submission && (
                   <CodeHighlight
                     code={submission.sourceCode}
                     language={submission.language}
                   />
-                  <IconButton
-                    aria-label="copy"
-                    icon={<CopyIcon />}
-                    size="sm"
-                    onClick={onCopy}
-                    position="absolute"
-                    top={2}
-                    right={2}
-                  />
-                </Box>
-              </>
-            ) : (
-              <>
-                <Stack mt={3}>
-                  <Skeleton w={60} h={4} />
-                  <Skeleton w={20} h={4} />
-                  <Skeleton w={40} h={4} />
-                  <Skeleton w={60} h={4} />
-                </Stack>
-                <Skeleton h={80} />
-              </>
-            )}
+                )}
+              </Skeleton>
+              <IconButton
+                aria-label="copy"
+                icon={<CopyIcon />}
+                size="sm"
+                onClick={onCopy}
+                position="absolute"
+                top={2}
+                right={2}
+              />
+            </Box>
           </Stack>
         </ModalBody>
         <ModalFooter />
@@ -158,7 +162,7 @@ export function CodeHighlight(props: CodeHighlightProps) {
           className={className}
           style={{ ...style, tabSize: 4 }}
           padding={4}
-          borderRadius="md"
+          rounded="md"
           overflowX="auto"
           fontSize="12px"
         >
