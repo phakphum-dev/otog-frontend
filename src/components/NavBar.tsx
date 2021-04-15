@@ -1,6 +1,6 @@
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useRef, ForwardedRef } from 'react'
+import { useEffect, useRef, ForwardedRef, useState } from 'react'
 
 import {
   Avatar,
@@ -33,6 +33,7 @@ import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
 import { ToggleColorModeButton } from './ToggleColorModeButton'
 import { PageContainer } from './PageContainer'
 import { useAuth } from '@src/utils/api/AuthProvider'
+import { User } from '@src/utils/api/User'
 
 interface ColorOptions {
   normal: {
@@ -140,31 +141,7 @@ export function NavBar() {
                 <NavItem key={item.href} {...item} />
               ))}
               {user ? (
-                <Menu>
-                  <MenuButton
-                    as={Button}
-                    variant="link"
-                    rightIcon={<ChevronDownIcon />}
-                  >
-                    <Avatar size="xs" src={profileSrc} />
-                  </MenuButton>
-                  {/* fix render menulist on ssr */}
-                  <div
-                    suppressHydrationWarning={true}
-                    style={{ display: 'none' }}
-                  >
-                    {typeof window !== 'undefined' && (
-                      <MenuList>
-                        <NextLink href={`/profile/${user.id}`}>
-                          <MenuItem>โปรไฟล์</MenuItem>
-                        </NextLink>
-                        <MenuItem color="red.500" onClick={logout}>
-                          ออกจากระบบ
-                        </MenuItem>
-                      </MenuList>
-                    )}
-                  </div>
-                </Menu>
+                <AvatarMenu />
               ) : (
                 <NavItem href="/login" title="เข้าสู่ระบบ" />
               )}
@@ -269,3 +246,29 @@ const DrawerButton = forwardRef(
     )
   }
 )
+
+const AvatarMenu = () => {
+  const { user, logout, profileSrc } = useAuth()
+  const [isClient, setClient] = useState(false)
+  useEffect(() => {
+    setClient(true)
+  }, [])
+  return (
+    <Menu>
+      <MenuButton as={Button} variant="link" rightIcon={<ChevronDownIcon />}>
+        <Avatar size="xs" src={profileSrc} />
+      </MenuButton>
+      {/* fix render menulist on ssr */}
+      {isClient && (
+        <MenuList>
+          <NextLink href={`/profile/${user?.id}`}>
+            <MenuItem>โปรไฟล์</MenuItem>
+          </NextLink>
+          <MenuItem color="red.500" onClick={logout}>
+            ออกจากระบบ
+          </MenuItem>
+        </MenuList>
+      )}
+    </Menu>
+  )
+}
