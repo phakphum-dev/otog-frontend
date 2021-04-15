@@ -11,6 +11,7 @@ import {
   ModalHeader,
   ModalOverlay,
   ModalProps,
+  Skeleton,
   Spinner,
   Stack,
   Text,
@@ -52,49 +53,63 @@ export function CodeModal(props: CodeModalProps) {
   }, [hasCopied])
 
   return (
-    <Modal onClose={onClose} isOpen={isOpen} size="xl">
+    <Modal onClose={onClose} isOpen={isOpen} size="xl" preserveScrollBarGap>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          <NextLink href={`/problem/${submission?.problem.id}`} passHref>
-            <Link>ข้อ {submission?.problem.name}</Link>
-          </NextLink>
+          {submission ? (
+            <NextLink href={`/problem/${submission?.problem.id}`} passHref>
+              <Link>ข้อ {submission?.problem.name}</Link>
+            </NextLink>
+          ) : (
+            <Skeleton w={80} h={6} />
+          )}
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          {submission ? (
-            <Stack>
-              <div>
-                <Text>ผลตรวจ: {submission.result}</Text>
-                <Text>ภาษา: {language[submission.language]}</Text>
-                {isGraded(submission) && (
-                  <Text>
-                    เวลารวม: {submission.timeUsed / ONE_SECOND} วินาที
-                  </Text>
-                )}
-                <HStack justify="space-between">
-                  <Text>เวลาที่ส่ง: {toThDate(submission.creationDate)}</Text>
-                </HStack>
-              </div>
-              <Box position="relative">
-                <CodeHighlight
-                  code={submission.sourceCode}
-                  language={submission.language}
-                />
-                <IconButton
-                  aria-label="copy"
-                  icon={<CopyIcon />}
-                  size="sm"
-                  onClick={onCopy}
-                  position="absolute"
-                  top={2}
-                  right={2}
-                />
-              </Box>
-            </Stack>
-          ) : (
-            <Spinner />
-          )}
+          <Stack>
+            {submission ? (
+              <>
+                <div>
+                  <Text>ผลตรวจ: {submission.result}</Text>
+                  <Text>ภาษา: {language[submission.language]}</Text>
+                  {isGraded(submission) && (
+                    <Text>
+                      เวลารวม: {submission.timeUsed / ONE_SECOND} วินาที
+                    </Text>
+                  )}
+                  <HStack justify="space-between">
+                    <Text>เวลาที่ส่ง: {toThDate(submission.creationDate)}</Text>
+                  </HStack>
+                </div>
+                <Box position="relative">
+                  <CodeHighlight
+                    code={submission.sourceCode}
+                    language={submission.language}
+                  />
+                  <IconButton
+                    aria-label="copy"
+                    icon={<CopyIcon />}
+                    size="sm"
+                    onClick={onCopy}
+                    position="absolute"
+                    top={2}
+                    right={2}
+                  />
+                </Box>
+              </>
+            ) : (
+              <>
+                <Stack mt={3}>
+                  <Skeleton w={60} h={4} />
+                  <Skeleton w={20} h={4} />
+                  <Skeleton w={40} h={4} />
+                  <Skeleton w={60} h={4} />
+                </Stack>
+                <Skeleton h={80} />
+              </>
+            )}
+          </Stack>
         </ModalBody>
         <ModalFooter />
       </ModalContent>
