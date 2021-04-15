@@ -148,14 +148,17 @@ export function NavBar() {
                   >
                     <Avatar size="xs" src={profileSrc} />
                   </MenuButton>
-                  <MenuList>
-                    <NextLink href={`/profile/${user.id}`}>
-                      <MenuItem>โปรไฟล์</MenuItem>
-                    </NextLink>
-                    <MenuItem color="red.500" onClick={logout}>
-                      ออกจากระบบ
-                    </MenuItem>
-                  </MenuList>
+                  {/* fix render menulist on ssr */}
+                  {typeof window !== 'undefined' && (
+                    <MenuList>
+                      <NextLink href={`/profile/${user.id}`}>
+                        <MenuItem>โปรไฟล์</MenuItem>
+                      </NextLink>
+                      <MenuItem color="red.500" onClick={logout}>
+                        ออกจากระบบ
+                      </MenuItem>
+                    </MenuList>
+                  )}
                 </Menu>
               ) : (
                 <NavItem href="/login" title="เข้าสู่ระบบ" />
