@@ -1,4 +1,4 @@
-import { ColorModeOptions, extendTheme } from '@chakra-ui/react'
+import { extendTheme } from '@chakra-ui/react'
 
 const colors = {
   otog: '#ff851b',
