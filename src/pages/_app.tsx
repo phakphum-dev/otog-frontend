@@ -32,11 +32,6 @@ const TopProgressBar = dynamic(() => import('@src/components/ProgressBar'), {
 export default function MyApp({ Component, pageProps }: AppProps) {
   const { colorModeCookie, accessToken, errorToast, ...props } = pageProps
 
-  const colorModeManager =
-    typeof colorModeCookie === 'string'
-      ? cookieStorageManager(`chakra-ui-color-mode=${colorModeCookie}`)
-      : localStorageManager
-
   useEffect(() => {
     if (errorToast) {
       toast(errorToast as UseToastOptions)
@@ -60,7 +55,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      <ChakraProvider theme={theme} colorModeManager={colorModeManager}>
+      <ChakraProvider
+        theme={theme}
+        colorModeManager={cookieStorageManager(colorModeCookie as string)}
+      >
         <HttpProvider>
           <AuthProvider value={accessToken as string}>
             <TopProgressBar />

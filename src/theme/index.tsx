@@ -91,9 +91,4 @@ const sizes = {
   },
 }
 
-const config: ColorModeOptions = {
-  initialColorMode: 'light',
-  useSystemColorMode: true,
-}
-
-export const theme = extendTheme({ colors, sizes, config })
+export const theme = extendTheme({ colors, sizes })

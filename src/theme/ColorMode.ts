@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext } from 'next'
-import nookies from 'nookies'
+import { parseCookies } from 'nookies'
 import { ParsedUrlQuery } from 'querystring'
 
 export interface ColorModeProps {
@@ -9,8 +9,8 @@ export interface ColorModeProps {
 export const getColorMode = (
   context: GetServerSidePropsContext<ParsedUrlQuery>
 ) => {
-  const { 'chakra-ui-color-mode': colorModeCookie = null } = nookies.get(
+  const { 'chakra-ui-color-mode': colorModeCookie = null } = parseCookies(
     context
   )
-  return colorModeCookie
+  return colorModeCookie ? `chakra-ui-color-mode=${colorModeCookie}` : ''
 }
