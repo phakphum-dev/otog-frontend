@@ -28,13 +28,18 @@ export interface LoginModalProps {
 
 export function LoginModal(props: LoginModalProps) {
   const { isOpen, onClose } = props
+  const { refresh } = useAuth()
+  const onSuccess = () => {
+    onClose()
+    refresh()
+  }
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xs">
       <ModalOverlay />
       <ModalContent>
         <ModalCloseButton />
         <ModalBody py={8}>
-          <LoginForm onSuccess={onClose} />
+          <LoginForm onSuccess={onSuccess} />
         </ModalBody>
       </ModalContent>
     </Modal>

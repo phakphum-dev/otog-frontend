@@ -3,15 +3,13 @@ import {
   ProviderProps,
   useContext,
   useEffect,
-  useMemo,
   useState,
 } from 'react'
-import nookies from 'nookies'
 import { useHttp } from './HttpProvider'
 import jwtDecode, { JwtPayload } from 'jwt-decode'
 
 import { LoginModal } from '@src/components/Login'
-import { useDisclosure } from '@chakra-ui/hooks'
+import { useDisclosure, useForceUpdate } from '@chakra-ui/hooks'
 import { storage } from '@src/utils/firebase'
 import { useRouter } from 'next/router'
 import { AuthRes, LoginReq, User } from './User'
@@ -25,6 +23,7 @@ export interface AuthProviderProps {
   refreshProfilePic: () => Promise<void>
   login: (credentials: LoginReq) => Promise<void>
   logout: () => void
+  refresh: () => void
 }
 
 export type AuthValueProps = ProviderProps<string | null>
@@ -47,6 +46,8 @@ const AuthProvider = (props: AuthValueProps) => {
   const user = getUserData(accessToken)
   const isAuthenticated = !!user
   const isAdmin = user?.role === 'admin'
+
+  const forceUpdate = useForceUpdate()
 
   const http = useHttp()
   const login = async (credentials: LoginReq) => {
@@ -87,6 +88,7 @@ const AuthProvider = (props: AuthValueProps) => {
 
   useEffect(() => {
     http.openLoginModal = onOpen
+    http.refresh = forceUpdate
   }, [http])
 
   const value = {
@@ -97,6 +99,7 @@ const AuthProvider = (props: AuthValueProps) => {
     isAdmin,
     profileSrc,
     refreshProfilePic: getProfilePic,
+    refresh: forceUpdate,
   }
 
   return (

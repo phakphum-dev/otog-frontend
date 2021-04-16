@@ -112,6 +112,7 @@ class ApiClient {
                     this.removeToken(context)
                     // TODO: move this to global to display only once per page
                     errorToast(getErrorToast(e))
+                    this.refresh()
                     return Promise.reject(e)
                   }
                 }
@@ -202,6 +203,7 @@ class ApiClient {
 
   // this will be set only on client
   openLoginModal() {}
+  refresh() {}
 }
 
 export type Context = GetServerSidePropsContext<ParsedUrlQuery>
