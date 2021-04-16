@@ -30,13 +30,14 @@ import {
   useProblemSubmission,
 } from '@src/utils/api/Submission'
 import { useToastError } from '@src/utils/hooks/useError'
+import { useFileInput } from '@src/utils/hooks/useInput'
 import {
   isGraded,
   isGrading,
   useStatusColor,
 } from '@src/utils/hooks/useStatusColor'
 import { ONE_SECOND } from '@src/utils/hooks/useTimer'
-import { ChangeEvent, memo, useRef, useState } from 'react'
+import { ChangeEvent, FormEvent, memo, useState } from 'react'
 
 import { CodeModal, ErrorModal } from './CodeModal'
 import { FileInput } from './FileInput'
@@ -127,60 +128,47 @@ export function ContestFileForm(props: ContestFileFormProps) {
   const { problem, contestId } = props
 
   const { mutate } = useProblemSubmission(problem.id)
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [file, setFile] = useState<File>()
-  const onFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.length === 0) return
-    setFile(e.target.files?.[0])
-  }
-
-  const [language, setLanguage] = useState<string>('cpp')
-  const onSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setLanguage(e.target.value)
-  }
+  const { file, resetFileInput, fileProps } = useFileInput()
 
   const http = useHttp()
   const { onError } = useToastError()
-  const onFileSubmit = async () => {
-    if (file) {
-      const formData = new FormData()
-      formData.append('contestId', `${contestId}`)
-      formData.append('language', language)
-      formData.append('sourceCode', file)
-      try {
-        await http.post(`submission/problem/${problem.id}`, formData)
-        mutate()
-        setFile(undefined)
-        if (inputRef.current) inputRef.current.value = ''
-      } catch (e) {
-        onError(e)
-      }
+  const onFileSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    formData.append('contestId', `${contestId}`)
+    try {
+      await http.post(`submission/problem/${problem.id}`, formData)
+      mutate()
+      resetFileInput()
+    } catch (e) {
+      onError(e)
     }
   }
   return (
-    <Stack
-      direction={{ base: 'column', sm: 'row' }}
-      spacing={{ base: 2, sm: 8 }}
-    >
-      <Select name="language" size="sm" flex={1} onChange={onSelectChange}>
-        <option value="cpp">C++</option>
-        <option value="c">C</option>
-        <option value="python">Python</option>
-      </Select>
-      <HStack justify="flex-end">
-        <FileInput
-          ref={inputRef}
-          size="sm"
-          name="sourceCode"
-          fileName={file?.name}
-          onChange={onFileSelect}
-          accept=".c,.cpp,.py"
-        />
-        <OrangeButton size="sm" onClick={onFileSubmit}>
-          ส่ง
-        </OrangeButton>
-      </HStack>
-    </Stack>
+    <form onSubmit={onFileSubmit}>
+      <Stack
+        direction={{ base: 'column', sm: 'row' }}
+        spacing={{ base: 2, sm: 8 }}
+      >
+        <Select name="language" size="sm" flex={1}>
+          <option value="cpp">C++</option>
+          <option value="c">C</option>
+          <option value="python">Python</option>
+        </Select>
+        <HStack justify="flex-end">
+          <FileInput
+            isRequired
+            size="sm"
+            name="sourceCode"
+            accept=".c,.cpp,.py"
+            {...fileProps}
+          />
+          <OrangeButton size="sm" type="submit">
+            ส่ง
+          </OrangeButton>
+        </HStack>
+      </Stack>
+    </form>
   )
 }
 

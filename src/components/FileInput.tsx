@@ -14,7 +14,7 @@ export interface UploadFileProps extends InputProps {
   fileName?: string
 }
 
-export function useInput(ref: ForwardedRef<HTMLInputElement>) {
+export function useInputRef(ref: ForwardedRef<HTMLInputElement>) {
   const inputRef = useRef<HTMLInputElement>(null)
   const onClick = () => inputRef.current?.click()
   useEffect(() => {
@@ -29,8 +29,8 @@ export function useInput(ref: ForwardedRef<HTMLInputElement>) {
 
 export const FileInput = forwardRef(
   (props: UploadFileProps, ref: ForwardedRef<HTMLInputElement>) => {
-    const { fileName, name, onChange, accept, ...rest } = props
-    const { inputRef, onClick } = useInput(ref)
+    const { isRequired, fileName, name, onChange, accept, ...rest } = props
+    const { inputRef, onClick } = useInputRef(ref)
     return (
       <InputGroup {...rest}>
         <Input
@@ -40,9 +40,10 @@ export const FileInput = forwardRef(
           name={name}
           onChange={onChange}
           accept={accept}
+          isRequired={isRequired}
         />
         <Input
-          value={fileName}
+          value={fileName ?? ''}
           placeholder="ยังไม่ได้เลือกไฟล์"
           isReadOnly
           onClick={onClick}
@@ -61,7 +62,7 @@ export const FileInput = forwardRef(
 
 export const UploadFileButton = forwardRef(
   (props: InputProps, ref: ForwardedRef<HTMLInputElement>) => {
-    const { inputRef, onClick } = useInput(ref)
+    const { inputRef, onClick } = useInputRef(ref)
     return (
       <>
         <IconButton

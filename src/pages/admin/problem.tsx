@@ -1,5 +1,5 @@
 import { Button, ButtonGroup, IconButton } from '@chakra-ui/button'
-import { FormControl, FormLabel } from '@chakra-ui/form-control'
+import { FormControl, FormHelperText, FormLabel } from '@chakra-ui/form-control'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Input } from '@chakra-ui/input'
 import { Box, Flex, Stack, Text } from '@chakra-ui/layout'
@@ -26,7 +26,7 @@ import {
 } from '@src/utils/api/Problem'
 import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 import {
   FaEye,
   FaEyeSlash,
@@ -37,7 +37,6 @@ import {
   FaTrash,
 } from 'react-icons/fa'
 import NextLink from 'next/link'
-import { useForm } from 'react-hook-form'
 import { useHttp } from '@src/utils/api/HttpProvider'
 import { useToastError } from '@src/utils/hooks/useError'
 import { FileInput } from '@src/components/FileInput'
@@ -45,6 +44,7 @@ import { mutate } from 'swr'
 import { Spinner } from '@chakra-ui/spinner'
 import { RenderLater } from '@src/components/RenderLater'
 import Head from 'next/head'
+import { useFileInput } from '@src/utils/hooks/useInput'
 
 export default function AdminProblemPage() {
   return (
@@ -68,15 +68,20 @@ export default function AdminProblemPage() {
 
 function CreateProblemModalButton() {
   const { isOpen, onClose, onOpen } = useDisclosure()
-  const { register, handleSubmit } = useForm()
+
+  const { resetFileInput: resetPdfInput, fileProps: pdfProps } = useFileInput()
+  const { resetFileInput: resetZipInput, fileProps: zipProps } = useFileInput()
+
   const http = useHttp()
   const { onError } = useToastError()
-  const onSubmit = async (value: any) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     try {
-      // TODO: get response data
-      await http.post('problem', value)
+      await http.post('problem', new FormData(e.currentTarget))
       mutate('problem')
       onClose()
+      resetPdfInput()
+      resetZipInput()
     } catch (e) {
       onError(e)
     }
@@ -93,7 +98,7 @@ function CreateProblemModalButton() {
       </Button>
       <Modal onClose={onClose} isOpen={isOpen} size="sm">
         <ModalOverlay />
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={onSubmit}>
           <ModalContent>
             <ModalHeader>เพิ่มโจทย์</ModalHeader>
             <ModalCloseButton />
@@ -101,62 +106,74 @@ function CreateProblemModalButton() {
               <Stack>
                 <FormControl>
                   <FormLabel>ชื่อโจทย์</FormLabel>
-                  <Input
-                    ref={register}
-                    isRequired
-                    name="name"
-                    placeholder="ชื่อโจทย์"
-                  />
+                  <Input isRequired name="name" placeholder="ชื่อโจทย์" />
                 </FormControl>
                 <FormControl>
-                  <FormLabel>เวลา (s)</FormLabel>
+                  <FormLabel>เวลา (ms)</FormLabel>
                   <Input
-                    ref={register}
                     isRequired
                     name="timeLimit"
                     placeholder="เวลา"
+                    type="number"
+                    defaultValue={1000}
                   />
                 </FormControl>
                 <FormControl>
                   <FormLabel>หน่วยความจำ (MB)</FormLabel>
                   <Input
-                    ref={register}
                     isRequired
                     name="memoryLimit"
                     placeholder="หน่วยความจำ"
+                    type="number"
+                    defaultValue={32}
                   />
                 </FormControl>
                 <FormControl>
                   <FormLabel>คะแนน</FormLabel>
                   <Input
-                    ref={register}
                     isRequired
                     name="score"
+                    type="number"
+                    defaultValue={100}
                     placeholder="คะแนน"
                   />
                 </FormControl>
                 <FormControl>
-                  <FormLabel>เทสต์เคส</FormLabel>
+                  <FormLabel>จำนวนเทสต์เคส</FormLabel>
                   <Input
-                    ref={register}
                     isRequired
-                    name="testcase"
+                    name="case"
+                    type="number"
+                    defaultValue={10}
                     placeholder="เทสต์เคส"
                   />
                 </FormControl>
                 <FormControl>
-                  <FormLabel>โจทย์</FormLabel>
-                  <FileInput isRequired name="pdf" />
+                  <FormLabel>โจทย์ (PDF)</FormLabel>
+                  <FileInput
+                    isRequired
+                    name="pdf"
+                    accept=".pdf"
+                    {...pdfProps}
+                  />
                 </FormControl>
                 <FormControl>
                   <FormLabel>เทสต์เคส (ZIP)</FormLabel>
-                  <FileInput isRequired name="zip" />
+                  <FileInput
+                    isRequired
+                    name="zip"
+                    accept=".zip,.zpi"
+                    {...zipProps}
+                  />
+                  <FormHelperText>
+                    ไฟล์เทสต์เคสอยู่ในรูปแบบ x.in, x.sol โดยที่ x เริ่มที่ 1
+                  </FormHelperText>
                 </FormControl>
               </Stack>
             </ModalBody>
             <ModalFooter>
-              <Button colorScheme="green" type="submit" disabled>
-                สร้าง
+              <Button colorScheme="green" type="submit">
+                เพิ่ม
               </Button>
             </ModalFooter>
           </ModalContent>
