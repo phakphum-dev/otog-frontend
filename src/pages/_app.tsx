@@ -5,7 +5,6 @@ import {
   ChakraProvider,
   cookieStorageManager,
   Flex,
-  localStorageManager,
   UseToastOptions,
 } from '@chakra-ui/react'
 import { theme } from '@src/theme'

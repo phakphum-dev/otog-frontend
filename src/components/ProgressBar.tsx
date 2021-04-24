@@ -2,9 +2,8 @@ import NProgress from 'nprogress'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-const EXPECT_LOAD_TIME = 5
-const UPDATE_FREQUENCY = 350
-const FREEZE_PERSENT = 80
+const TIMEOUT_DELAY = 100
+const UPDATE_FREQUENCY = 400
 
 const ProgressBar: React.FC = () => {
   const router = useRouter()
@@ -32,15 +31,12 @@ const ProgressBar: React.FC = () => {
 
   useEffect(() => {
     if (loading) {
-      //   NProgress.start()
-      //   let n = 0
-      //   const interval = setInterval(() => {
-      //     n += 1
-      //     NProgress.set((n * UPDATE_FREQUENCY) / (EXPECT_LOAD_TIME * 1000))
-      //   }, UPDATE_FREQUENCY)
-      const timeout = setTimeout(() => NProgress.start(), 100)
+      const timeout = setTimeout(() => NProgress.start(), TIMEOUT_DELAY)
+      const interval = setInterval(() => {
+        NProgress.inc()
+      }, UPDATE_FREQUENCY)
       return () => {
-        // clearInterval(interval)
+        clearInterval(interval)
         clearTimeout(timeout)
         NProgress.done()
       }
