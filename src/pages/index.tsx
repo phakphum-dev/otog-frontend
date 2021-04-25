@@ -33,7 +33,7 @@ export default function HomePage() {
               <OrangeButton width="100px">Sign Up</OrangeButton>
             </NextLink>
             <NextLink href="/login">
-              <Button width="100px" variant="ghost">
+              <Button width="100px" variant="outline">
                 Sign in
               </Button>
             </NextLink>
