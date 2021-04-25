@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios'
 import nookies from 'nookies'
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
 import { ParsedUrlQuery } from 'querystring'
-import { errorToast, getErrorToast } from '@src/utils/hooks/useError'
+import { getErrorToast } from '@src/utils/hooks/useError'
 import { getColorMode } from '@src/theme/ColorMode'
 import { ColorModeProps } from '@src/theme/ColorMode'
 import { UseToastOptions } from '@chakra-ui/toast'
@@ -110,8 +110,6 @@ class ApiClient {
                   e = e as AxiosError
                   if (e.response?.status === 403) {
                     this.removeToken(context)
-                    // TODO: move this to global to display only once per page
-                    errorToast(getErrorToast(e))
                     this.refresh()
                     return Promise.reject(e)
                   }

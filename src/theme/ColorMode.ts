@@ -3,7 +3,7 @@ import { parseCookies } from 'nookies'
 import { ParsedUrlQuery } from 'querystring'
 
 export interface ColorModeProps {
-  colorModeCookie: string | null
+  colorModeCookie: string
 }
 
 export const getColorMode = (

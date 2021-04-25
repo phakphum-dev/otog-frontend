@@ -17,7 +17,7 @@ import {
 
 import { useAuth } from '@src/utils/api/AuthProvider'
 import { storage } from '@src/utils/firebase'
-import { useToastError } from '@src/utils/hooks/useError'
+import { useErrorToast } from '@src/utils/hooks/useError'
 import { useState } from 'react'
 import Cropper from 'react-easy-crop'
 import { Area } from 'react-easy-crop/types'
@@ -112,7 +112,7 @@ export function ImageCropModal(props: ImageUploadModalProps) {
     setCroppedAreaPixels(croppedAreaPixels)
   }
 
-  const { onError } = useToastError()
+  const { onError } = useErrorToast()
   const uploadCroppedImage = async () => {
     if (user && profileSrc && croppedAreaPixels) {
       try {

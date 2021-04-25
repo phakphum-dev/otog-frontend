@@ -29,7 +29,7 @@ import {
   SubmissionWithProblem,
   useProblemSubmission,
 } from '@src/utils/api/Submission'
-import { useToastError } from '@src/utils/hooks/useError'
+import { useErrorToast } from '@src/utils/hooks/useError'
 import { useFileInput } from '@src/utils/hooks/useInput'
 import {
   isGraded,
@@ -131,7 +131,7 @@ export function ContestFileForm(props: ContestFileFormProps) {
   const { file, resetFileInput, fileProps } = useFileInput()
 
   const http = useHttp()
-  const { onError } = useToastError()
+  const { onError } = useErrorToast()
   const onFileSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
@@ -195,7 +195,7 @@ export function ContestEditorForm(props: ContestEditorFormProps) {
   }
 
   const http = useHttp()
-  const { onError } = useToastError()
+  const { onError } = useErrorToast()
   const onSubmit = async () => {
     if (value) {
       const blob = new Blob([value])

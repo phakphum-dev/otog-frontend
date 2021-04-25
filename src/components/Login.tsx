@@ -17,7 +17,7 @@ import { OrangeButton } from '@src/components/OrangeButton'
 
 import { useForm } from 'react-hook-form'
 
-import { useToastError } from '@src/utils/hooks/useError'
+import { useErrorToast } from '@src/utils/hooks/useError'
 import { useAuth } from '@src/utils/api/AuthProvider'
 import { LoginReq } from '@src/utils/api/User'
 
@@ -53,7 +53,7 @@ export interface LoginFormProps {
 export function LoginForm(props: LoginFormProps) {
   const { onSuccess } = props
   const { register, handleSubmit } = useForm()
-  const { onError, toast } = useToastError()
+  const { onError, toast } = useErrorToast()
   const { login } = useAuth()
   const onSubmit = async (credentials: LoginReq) => {
     try {

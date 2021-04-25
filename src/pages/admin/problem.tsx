@@ -38,7 +38,7 @@ import {
 } from 'react-icons/fa'
 import NextLink from 'next/link'
 import { useHttp } from '@src/utils/api/HttpProvider'
-import { useToastError } from '@src/utils/hooks/useError'
+import { useErrorToast } from '@src/utils/hooks/useError'
 import { FileInput } from '@src/components/FileInput'
 import { mutate } from 'swr'
 import { Spinner } from '@chakra-ui/spinner'
@@ -74,7 +74,7 @@ function CreateProblemModalButton() {
   const { resetFileInput: resetZipInput, fileProps: zipProps } = useFileInput()
 
   const http = useHttp()
-  const { onError } = useToastError()
+  const { onError } = useErrorToast()
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
@@ -223,7 +223,7 @@ const ProblemAdminRow = (props: ProblemAdminProps) => {
   const { problem } = props
   const [isOpen, setOpen] = useState(problem.show)
   const http = useHttp()
-  const { onError } = useToastError()
+  const { onError } = useErrorToast()
   const onToggle = async () => {
     setOpen((isOpen) => !isOpen)
     try {

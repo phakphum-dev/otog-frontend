@@ -5,7 +5,7 @@ import { FaLightbulb } from 'react-icons/fa'
 import Editor, { useMonaco } from '@monaco-editor/react'
 import { Button } from '@chakra-ui/button'
 import { useHttp } from '@src/utils/api/HttpProvider'
-import { useToastError } from '@src/utils/hooks/useError'
+import { useErrorToast } from '@src/utils/hooks/useError'
 import {
   Link,
   SimpleGrid,
@@ -61,7 +61,7 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
 
   const monaco = useMonaco()
   const http = useHttp()
-  const { onError } = useToastError()
+  const { onError } = useErrorToast()
   const onSubmit = async () => {
     const value = monaco?.editor.getModels()[0].getValue()
     if (value && problem) {

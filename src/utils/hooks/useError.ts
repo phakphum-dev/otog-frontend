@@ -1,23 +1,19 @@
-import {
-  createStandaloneToast,
-  useToast,
-  UseToastOptions,
-} from '@chakra-ui/toast'
+import { useToast, UseToastOptions } from '@chakra-ui/toast'
 import { AxiosError } from 'axios'
 
-export const errorToast = createStandaloneToast()
-
-export function onError(e: any) {
-  const error = new Error(e)
-  errorToast({
-    title: error.name,
-    description: error.message,
-    status: 'error',
-    isClosable: true,
-  })
+export type ErrorToastOptions = UseToastOptions & {
+  code: number | null
 }
 
-export function getErrorToast(e: any): UseToastOptions {
+export function useErrorToast() {
+  const toast = useToast()
+  const onError = (e: any) => {
+    toast(getErrorToast(e))
+  }
+  return { onError, toast }
+}
+
+export function getErrorToast(e: any): ErrorToastOptions {
   if (e.isAxiosError) {
     const error = e as AxiosError
     const url = error.config.url
@@ -29,12 +25,14 @@ export function getErrorToast(e: any): UseToastOptions {
             description: 'ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง',
             status: 'error',
             isClosable: true,
+            code: 401,
           }
         }
         return {
           title: 'กรุณาเข้าสู่ระบบก่อนใช้งาน',
           status: 'warning',
           duration: 2000,
+          code: 401,
         }
       case 403:
         if (url === 'auth/refresh/token') {
@@ -43,12 +41,14 @@ export function getErrorToast(e: any): UseToastOptions {
             description: 'กรุณาลงชื่อเข้าใช้อีกครั้ง',
             status: 'info',
             isClosable: true,
+            code: 403,
           }
         }
         return {
           title: 'คุณไม่มีสิทธิ์ในการใช้งานส่วนนี้',
           status: 'error',
           duration: 2000,
+          code: 403,
         }
       case 409:
         const message = error.response.data.message
@@ -58,6 +58,7 @@ export function getErrorToast(e: any): UseToastOptions {
             description: 'ชื่อผู้ใช้นี้ ได้ถูกใช้ไปแล้ว',
             status: 'error',
             isClosable: true,
+            code: 409,
           }
         }
         if (message === 'showName was taken.') {
@@ -66,16 +67,24 @@ export function getErrorToast(e: any): UseToastOptions {
             description: 'ชื่อที่ใช้แสดงนี้ ได้ถูกใช้ไปแล้ว',
             status: 'error',
             isClosable: true,
+            code: 409,
           }
         }
         break
       case undefined: {
         return {
           title: 'เซิฟเวอร์ยังไม่เปิด',
-          duration: null,
           status: 'error',
+          code: 503,
         }
       }
+    }
+    return {
+      title: error.name,
+      description: error.message,
+      status: 'error',
+      isClosable: true,
+      code: error.response?.status ?? null,
     }
   }
   const error = new Error(e)
@@ -84,13 +93,6 @@ export function getErrorToast(e: any): UseToastOptions {
     description: error.message,
     status: 'error',
     isClosable: true,
+    code: null,
   }
-}
-
-export function useToastError() {
-  const toast = useToast()
-  const onError = (e: any) => {
-    toast(getErrorToast(e))
-  }
-  return { onError, toast }
 }

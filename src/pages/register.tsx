@@ -3,7 +3,7 @@ import { CenteredCard } from '@src/components/Login'
 import { OrangeButton } from '@src/components/OrangeButton'
 import { PageContainer } from '@src/components/PageContainer'
 import { useHttp } from '@src/utils/api/HttpProvider'
-import { useToastError } from '@src/utils/hooks/useError'
+import { useErrorToast } from '@src/utils/hooks/useError'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 interface CreateUserDTO {
@@ -15,7 +15,7 @@ interface CreateUserDTO {
 export default function RegisterPage() {
   const { register, handleSubmit } = useForm()
   const router = useRouter()
-  const { onError, toast } = useToastError()
+  const { onError, toast } = useErrorToast()
   const http = useHttp()
   const onSubmit = async (createUser: CreateUserDTO) => {
     try {

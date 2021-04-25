@@ -15,13 +15,13 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { storage } from '@src/utils/firebase'
 import { UploadFileButton } from '@src/components/FileInput'
 import Icon from '@chakra-ui/icon'
-import { useToastError } from '@src/utils/hooks/useError'
+import { useErrorToast } from '@src/utils/hooks/useError'
 
 export function ProfileUpload() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { user, profileSrc, refreshProfilePic } = useAuth()
 
-  const { onError } = useToastError()
+  const { onError } = useErrorToast()
   const onFileSelect = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length === 0) return
     const file = e.target.files?.[0]

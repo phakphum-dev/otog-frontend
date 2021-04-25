@@ -18,7 +18,7 @@ import { FileInput } from './FileInput'
 import { Problem } from '@src/utils/api/Problem'
 import { OrangeButton } from './OrangeButton'
 import { useHttp } from '@src/utils/api/HttpProvider'
-import { useToastError } from '@src/utils/hooks/useError'
+import { useErrorToast } from '@src/utils/hooks/useError'
 import NextLink from 'next/link'
 import { useFileInput } from '@src/utils/hooks/useInput'
 
@@ -44,7 +44,7 @@ export function SubmitModal(props: SubmitModalProps) {
   }, [problem])
 
   const http = useHttp()
-  const { onError } = useToastError()
+  const { onError } = useErrorToast()
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {

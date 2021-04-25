@@ -36,7 +36,7 @@ import { FaEye, FaEyeSlash, FaPlusCircle, FaTools } from 'react-icons/fa'
 import NextLink from 'next/link'
 import { useHttp } from '@src/utils/api/HttpProvider'
 import { useForm } from 'react-hook-form'
-import { useToastError } from '@src/utils/hooks/useError'
+import { useErrorToast } from '@src/utils/hooks/useError'
 import { Spinner } from '@chakra-ui/spinner'
 import { RenderLater } from '@src/components/RenderLater'
 import { mutate } from 'swr'
@@ -91,7 +91,7 @@ function CreateContestModalButton(props: CreateContestModalButtonProps) {
 
   const { register, handleSubmit } = useForm()
   const http = useHttp()
-  const { onError } = useToastError()
+  const { onError } = useErrorToast()
   const onSubmit = async (value: {
     name: string
     gradingMode: GradingMode
@@ -240,7 +240,7 @@ function ContestProblemRow(props: ContestProblemRowProps) {
   const { problem, isOpen: initialValue, contestId } = props
   const [isOpen, setOpen] = useState(initialValue)
   const http = useHttp()
-  const { onError } = useToastError()
+  const { onError } = useErrorToast()
 
   const onClick = async () => {
     setOpen((isOpen) => !isOpen)
