@@ -9,7 +9,7 @@ import { useAuth } from '@src/utils/api/AuthProvider'
 import { useProblems } from '@src/utils/api/Problem'
 import { ONE_DAY } from '@src/utils/hooks/useTimer'
 import Head from 'next/head'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, memo, SetStateAction, useState } from 'react'
 import { FaPuzzlePiece } from 'react-icons/fa'
 
 export default function ProblemPage() {
@@ -34,7 +34,7 @@ export interface ButtonsProps {
   setFilter: Dispatch<SetStateAction<FilterFunction>>
 }
 
-export function Buttons(props: ButtonsProps) {
+export const Buttons = memo((props: ButtonsProps) => {
   const { setFilter } = props
   const { data: problems } = useProblems()
   const display = useBreakpointValue({ base: false, sm: true })
@@ -75,7 +75,7 @@ export function Buttons(props: ButtonsProps) {
       ))}
     </Stack>
   ) : null
-}
+})
 
 const filterButton: {
   filter: FilterFunction
