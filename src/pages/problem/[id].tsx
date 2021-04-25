@@ -1,5 +1,5 @@
 import { PageContainer } from '@src/components/PageContainer'
-import { Title } from '@src/components/Title'
+import { Title, TitleLayout } from '@src/components/Title'
 import { useRouter } from 'next/router'
 import { FaLightbulb } from 'react-icons/fa'
 import Editor, { useMonaco } from '@monaco-editor/react'
@@ -7,7 +7,6 @@ import { Button } from '@chakra-ui/button'
 import { useHttp } from '@src/utils/api/HttpProvider'
 import { useToastError } from '@src/utils/hooks/useError'
 import {
-  Flex,
   Link,
   SimpleGrid,
   Spacer,
@@ -27,8 +26,8 @@ import { GetServerSideProps } from 'next'
 import { SubmissionWithSourceCode } from '@src/utils/api/Submission'
 import { ONE_SECOND } from '@src/utils/hooks/useTimer'
 import { parseCookies } from 'nookies'
-import { space } from '@chakra-ui/styled-system'
 import Head from 'next/head'
+import { Tooltip } from '@chakra-ui/tooltip'
 
 const defaultValue = `#include <iostream>
 
@@ -86,12 +85,11 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
       <Head>
         <title>Problem {id} | OTOG</title>
       </Head>
-      <Stack spacing={4}>
-        <Flex align="flex-end">
-          <Title mb={1} icon={FaLightbulb}>
-            {problem?.name}
-          </Title>
-          <Spacer />
+      <Stack>
+        <TitleLayout>
+          <Tooltip label={problem?.name} hasArrow placement="top">
+            <Title icon={FaLightbulb}>ข้อที่ {id}</Title>
+          </Tooltip>
           {problem && (
             <VStack align="flex-end" spacing={0}>
               <Link
@@ -107,7 +105,7 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
               </Text>
             </VStack>
           )}
-        </Flex>
+        </TitleLayout>
 
         <Editor
           height="75vh"

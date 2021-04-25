@@ -4,7 +4,7 @@ import { useBreakpointValue } from '@chakra-ui/media-query'
 import { Skeleton } from '@chakra-ui/skeleton'
 import { PageContainer } from '@src/components/PageContainer'
 import { ProblemTable, FilterFunction } from '@src/components/ProblemTable'
-import { Title } from '@src/components/Title'
+import { Title, TitleLayout } from '@src/components/Title'
 import { useAuth } from '@src/utils/api/AuthProvider'
 import { useProblems } from '@src/utils/api/Problem'
 import { ONE_DAY } from '@src/utils/hooks/useTimer'
@@ -23,7 +23,9 @@ export default function ProblemPage() {
       <Head>
         <title>Problem | OTOG</title>
       </Head>
-      <Title icon={FaPuzzlePiece}>โจทย์</Title>
+      <TitleLayout>
+        <Title icon={FaPuzzlePiece}>โจทย์</Title>
+      </TitleLayout>
       {isAuthenticated && <Buttons setFilter={setFilter} />}
       <ProblemTable filter={filter} />
     </PageContainer>

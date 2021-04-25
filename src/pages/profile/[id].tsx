@@ -1,6 +1,6 @@
 import { Stack } from '@chakra-ui/layout'
 import { PageContainer } from '@src/components/PageContainer'
-import { Title } from '@src/components/Title'
+import { Title, TitleLayout } from '@src/components/Title'
 import { FaUser } from 'react-icons/fa'
 
 import { getServerSideFetch } from '@src/utils/api'
@@ -27,7 +27,9 @@ export default function ProfilePage(props: ProfilePageProps) {
       <Head>
         <title>Profile #{id} | OTOG</title>
       </Head>
-      <Title icon={FaUser}>{userData?.showName}</Title>
+      <TitleLayout>
+        <Title icon={FaUser}>{userData?.showName}</Title>
+      </TitleLayout>
       <Stack direction={{ base: 'column', md: 'row' }} spacing={8}>
         {user?.id === Number(id) ? (
           <ProfileUpload />

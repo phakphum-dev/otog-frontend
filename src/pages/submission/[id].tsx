@@ -1,6 +1,6 @@
 import { CodeSubmission } from '@src/components/Code'
 import { PageContainer } from '@src/components/PageContainer'
-import { Title } from '@src/components/Title'
+import { Title, TitleLayout } from '@src/components/Title'
 import { getServerSideFetch } from '@src/utils/api'
 import { SubmissionWithSourceCode } from '@src/utils/api/Submission'
 
@@ -19,7 +19,9 @@ export default function SubmissionPage(props: SubmissionIdPageProps) {
       <Head>
         <title>Submission #{submission.id} | OTOG</title>
       </Head>
-      <Title icon={FaTasks}>ผลตรวจที่ {submission.id}</Title>
+      <TitleLayout>
+        <Title icon={FaTasks}>ผลตรวจที่ {submission.id}</Title>
+      </TitleLayout>
       <CodeSubmission submission={submission} />
     </PageContainer>
   )

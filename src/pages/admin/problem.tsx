@@ -16,7 +16,7 @@ import {
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 import { PageContainer } from '@src/components/PageContainer'
 
-import { Title } from '@src/components/Title'
+import { Title, TitleLayout } from '@src/components/Title'
 import { getServerSideCookies } from '@src/utils/api'
 import { getUserData } from '@src/utils/api/AuthProvider'
 import {
@@ -52,14 +52,15 @@ export default function AdminProblemPage() {
       <Head>
         <title>Admin Problem | OTOG</title>
       </Head>
-      <Flex dir="row" justify="space-between" align="center">
+      <TitleLayout>
         <Title icon={FaTools}>ระบบ GOTO</Title>
         <Text>
           <NextLink href="/admin/contest">
             <Button>แข่งขัน</Button>
           </NextLink>
         </Text>
-      </Flex>
+      </TitleLayout>
+
       <CreateProblemModalButton />
       <ProblemAdminTable />
     </PageContainer>

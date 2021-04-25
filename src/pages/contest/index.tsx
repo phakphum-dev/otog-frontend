@@ -1,7 +1,7 @@
-import { Center, Flex, Heading, Spacer, Stack, VStack } from '@chakra-ui/layout'
+import { Center, Heading, Stack, VStack } from '@chakra-ui/layout'
 import { PageContainer } from '@src/components/PageContainer'
 import { TaskCard } from '@src/components/TaskCard'
-import { Title } from '@src/components/Title'
+import { Title, TitleLayout } from '@src/components/Title'
 import { FaTrophy } from 'react-icons/fa'
 
 import { getServerSideFetch } from '@src/utils/api'
@@ -109,11 +109,10 @@ export function MidContest(props: ContestProps) {
   }, [remaining])
   return (
     <PageContainer dense>
-      <Flex align="baseline">
+      <TitleLayout>
         <Title icon={FaTrophy}>แข่งขัน</Title>
-        <Spacer />
         <Heading as="h2">{toTimerFormat(remaining)}</Heading>
-      </Flex>
+      </TitleLayout>
 
       <Stack spacing={6}>
         {contest.problems.map((prob) => (

@@ -221,23 +221,21 @@ const SubmissionRow = (props: SubmissionRowProps) => {
   }
   return (
     <Tr bg={bg}>
-      {user?.id === submission?.user.id || isAdmin ? (
-        <Td>
+      <Td lineHeight="40px">
+        {user?.id === submission?.user.id || isAdmin ? (
           <Button variant="ghost" onClick={onCodeModalOpen} px={1}>
             {submission?.id}
           </Button>
-        </Td>
-      ) : (
-        <Td textAlign="center" lineHeight="40px">
+        ) : (
           <Tooltip
             hasArrow
             placement="top"
             label={toThDate(submission.creationDate)}
           >
-            <div>{submission.id}</div>
+            <Box px={1}>{submission.id}</Box>
           </Tooltip>
-        </Td>
-      )}
+        )}
+      </Td>
       <Td>{submission.user.showName}</Td>
       <Td>
         <NextLink href={`/problem/${submission.problem.id}`} passHref>

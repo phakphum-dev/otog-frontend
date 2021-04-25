@@ -14,7 +14,7 @@ import { ButtonGroup, IconButton } from '@chakra-ui/button'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { HTMLMotionProps, motion } from 'framer-motion'
 import { HTMLChakraProps, useTheme } from '@chakra-ui/system'
-import { Title } from '@src/components/Title'
+import { Title, TitleLayout } from '@src/components/Title'
 import { FaTrophy } from 'react-icons/fa'
 import { Box, Flex, Spacer, Stack } from '@chakra-ui/layout'
 import { CgDetailsLess, CgDetailsMore } from 'react-icons/cg'
@@ -83,9 +83,8 @@ export default function ContestHistory(props: ContestHistoryProps) {
       <Head>
         <title>Contest History #{scoreboard.id} | OTOG</title>
       </Head>
-      <Flex align="center">
+      <TitleLayout>
         <Title icon={FaTrophy}>{scoreboard.name}</Title>
-        <Spacer />
         <ButtonGroup isAttached variant="outline">
           <IconButton
             aria-label="less-detail"
@@ -100,7 +99,7 @@ export default function ContestHistory(props: ContestHistoryProps) {
             icon={<CgDetailsMore />}
           />
         </ButtonGroup>
-      </Flex>
+      </TitleLayout>
       <Box overflowX="auto">
         <Table variant={isOpen ? 'simple' : 'unstyled'}>
           <Thead>

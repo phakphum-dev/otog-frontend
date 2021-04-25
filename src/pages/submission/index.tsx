@@ -3,7 +3,7 @@ import { HStack } from '@chakra-ui/layout'
 import { LatestSubmission } from '@src/components/LatestSubmission'
 import { PageContainer } from '@src/components/PageContainer'
 import { SubmissionTable } from '@src/components/SubmissionTable'
-import { Title } from '@src/components/Title'
+import { Title, TitleLayout } from '@src/components/Title'
 import { getServerSideFetch } from '@src/utils/api'
 import { SubmissionWithProblem } from '@src/utils/api/Submission'
 import { InitialDataProvider } from '@src/utils/hooks/useInitialData'
@@ -26,12 +26,12 @@ export default function SubmissionPage(props: SubmissionPageProps) {
         <Head>
           <title>Submission | OTOG</title>
         </Head>
-        <HStack justify="space-between">
+        <TitleLayout>
           <Title icon={FaTasks}>ผลตรวจ</Title>
           <NextLink href="/submission/all">
             <Button>ผลตรวจรวม</Button>
           </NextLink>
-        </HStack>
+        </TitleLayout>
         <HStack mb={4}>
           <LatestSubmission />
         </HStack>

@@ -3,7 +3,7 @@ import { Box, Flex, Text } from '@chakra-ui/layout'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 import { PageContainer } from '@src/components/PageContainer'
-import { Title } from '@src/components/Title'
+import { Title, TitleLayout } from '@src/components/Title'
 import { useContests } from '@src/utils/api/Contest'
 import { toThTimeFormat, toThDate } from '@src/utils/hooks/useTimer'
 import Head from 'next/head'
@@ -18,7 +18,9 @@ export default function ContestHistoryPage() {
       <Head>
         <title>Contest History | OTOG</title>
       </Head>
-      <Title icon={FaTrophy}>ประวัติการแข่งขัน</Title>
+      <TitleLayout>
+        <Title icon={FaTrophy}>ประวัติการแข่งขัน</Title>
+      </TitleLayout>
       {contests ? (
         <Box overflowX="auto">
           <Table>

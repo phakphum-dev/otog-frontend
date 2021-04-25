@@ -1,19 +1,43 @@
 import Icon from '@chakra-ui/icon'
-import { Heading, HStack, Text, TextProps } from '@chakra-ui/layout'
+import {
+  Flex,
+  FlexProps,
+  Heading,
+  HStack,
+  Text,
+  TextProps,
+} from '@chakra-ui/layout'
+import { forwardRef } from '@chakra-ui/system'
+import { ForwardedRef } from 'react'
 import { IconType } from 'react-icons'
 
 interface TitleProps extends TextProps {
   icon: IconType
 }
 
-export function Title(props: TitleProps) {
-  const { icon, children, ...rest } = props
+export const Title = forwardRef(
+  (props: TitleProps, ref: ForwardedRef<HTMLHeadingElement>) => {
+    const { icon, children, ...rest } = props
+    return (
+      <Heading {...rest} ref={ref}>
+        <HStack>
+          <Icon as={icon} />
+          <Text children={children} />
+        </HStack>
+      </Heading>
+    )
+  }
+)
+
+export function TitleLayout(props: FlexProps) {
   return (
-    <Heading mt={8} mb={6} {...rest}>
-      <HStack>
-        <Icon as={icon} />
-        <Text children={children} />
-      </HStack>
-    </Heading>
+    <Flex
+      dir="row"
+      justify="space-between"
+      align="flex-end"
+      mt={8}
+      mb={6}
+      {...props}
+    />
   )
 }
