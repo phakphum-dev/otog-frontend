@@ -39,7 +39,7 @@ import {
 import { ONE_SECOND } from '@src/utils/hooks/useTimer'
 import { ChangeEvent, FormEvent, memo, useState } from 'react'
 
-import { CodeModal, ErrorModal } from './CodeModal'
+import { CodeModal, ErrorModal } from './Code'
 import { FileInput } from './FileInput'
 import { OrangeButton } from './OrangeButton'
 

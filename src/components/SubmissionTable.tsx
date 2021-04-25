@@ -30,7 +30,7 @@ import {
   useSubmissionRow,
   useSubmissions,
 } from '@src/utils/api/Submission'
-import { CodeModal, ErrorModal } from './CodeModal'
+import { CodeModal, ErrorModal } from './Code'
 import { useAuth } from '@src/utils/api/AuthProvider'
 import {
   isGraded,
