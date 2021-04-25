@@ -14,7 +14,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/layout'
-import { useProblem } from '@src/utils/api/Problem'
+import { Problem } from '@src/utils/api/Problem'
 import { Select } from '@chakra-ui/select'
 import { ChangeEvent, useState } from 'react'
 import {
@@ -45,13 +45,13 @@ const extension: Record<string, string> = {
 
 export interface WriteSolutionPageProps {
   submission: SubmissionWithSourceCode | null
+  problem: Problem
 }
 
 export default function WriteSolutionPage(props: WriteSolutionPageProps) {
-  const { submission } = props
+  const { submission, problem } = props
   const router = useRouter()
   const id = Number(router.query.id)
-  const { data: problem } = useProblem(id)
   const [language, setLanguage] = useState<string>(
     submission?.language ?? 'cpp'
   )
@@ -64,7 +64,7 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
   const { onError } = useErrorToast()
   const onSubmit = async () => {
     const value = monaco?.editor.getModels()[0].getValue()
-    if (value && problem) {
+    if (value) {
       const blob = new Blob([value])
       const file = new File([blob], `${problem.id}${extension[language]}`)
 
@@ -87,24 +87,21 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
       </Head>
       <Stack>
         <TitleLayout>
-          <Tooltip label={problem?.name} hasArrow placement="top">
-            <Title icon={FaLightbulb}>ข้อที่ {id}</Title>
+          <Tooltip label={problem.name} hasArrow placement="top">
+            <Title icon={FaLightbulb}>{problem.name}</Title>
           </Tooltip>
-          {problem && (
-            <VStack align="flex-end" spacing={0}>
-              <Link
-                href={`${API_HOST}problem/doc/${problem.id}`}
-                target="_blank"
-                color="otog"
-              >
-                [ดาวน์โหลด]
-              </Link>
-              <Text fontSize="sm">
-                ({problem.timeLimit / ONE_SECOND} วินาที {problem.memoryLimit}{' '}
-                MB)
-              </Text>
-            </VStack>
-          )}
+          <VStack align="flex-end" spacing={0}>
+            <Link
+              href={`${API_HOST}problem/doc/${problem.id}`}
+              target="_blank"
+              color="otog"
+            >
+              [ดาวน์โหลด]
+            </Link>
+            <Text fontSize="sm" whiteSpace="nowrap">
+              ({problem.timeLimit / ONE_SECOND} วินาที {problem.memoryLimit} MB)
+            </Text>
+          </VStack>
         </TitleLayout>
 
         <Editor
@@ -136,6 +133,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { accessToken = null } = parseCookies(context)
   if (accessToken) {
     return getServerSideFetch<WriteSolutionPageProps>(context, async (api) => ({
+      problem: await api.get(`problem/${id}`),
       submission: await api.get(`submission/problem/${id}/latest`),
     }))
   }

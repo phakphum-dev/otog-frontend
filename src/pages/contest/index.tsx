@@ -20,6 +20,7 @@ import { useRouter } from 'next/router'
 import { OrangeButton } from '@src/components/OrangeButton'
 import { mutate } from 'swr'
 import Head from 'next/head'
+import { Tooltip } from '@chakra-ui/tooltip'
 
 export interface ContestPageProps {
   contest: Contest | null
@@ -110,8 +111,12 @@ export function MidContest(props: ContestProps) {
   return (
     <PageContainer dense>
       <TitleLayout>
-        <Title icon={FaTrophy}>แข่งขัน</Title>
-        <Heading as="h2">{toTimerFormat(remaining)}</Heading>
+        <Tooltip label={contest.name} hasArrow placement="top">
+          <Title icon={FaTrophy}>{contest.name}</Title>
+        </Tooltip>
+        <Heading as="h2" whiteSpace="nowrap">
+          {toTimerFormat(remaining)}
+        </Heading>
       </TitleLayout>
 
       <Stack spacing={6}>
