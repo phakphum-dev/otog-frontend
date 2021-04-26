@@ -16,7 +16,7 @@ import { HTMLMotionProps, motion } from 'framer-motion'
 import { HTMLChakraProps, useTheme } from '@chakra-ui/system'
 import { Title, TitleLayout } from '@src/components/Title'
 import { FaTrophy } from 'react-icons/fa'
-import { Box, Flex, Spacer, Stack } from '@chakra-ui/layout'
+import { Box, Link } from '@chakra-ui/layout'
 import { CgDetailsLess, CgDetailsMore } from 'react-icons/cg'
 import { ContestScoreboard, UserWithSubmission } from '@src/utils/api/Contest'
 
@@ -26,6 +26,7 @@ import { sum } from '@src/utils'
 import { Tooltip } from '@chakra-ui/tooltip'
 import { ONE_SECOND } from '@src/utils/hooks/useTimer'
 import Head from 'next/head'
+import NextLink from 'next/link'
 
 const Th = (props: TableColumnHeaderProps) => (
   <THead textAlign="center" {...props} />
@@ -110,8 +111,16 @@ export default function ContestHistory(props: ContestHistoryProps) {
               {isOpen &&
                 scoreboard.problems.map((problem, index) => (
                   <Th key={problem.id}>
-                    <Tooltip hasArrow label={problem.name} placement="top">
-                      <div>ข้อที่ {index + 1}</div>
+                    <Tooltip
+                      hasArrow
+                      label={problem.name}
+                      placement="top"
+                      closeOnClick={false}
+                      shouldWrapChildren
+                    >
+                      <NextLink href={`/problem/${problem.id}`}>
+                        <Link>ข้อที่ {index + 1}</Link>
+                      </NextLink>
                     </Tooltip>
                   </Th>
                 ))}
