@@ -88,7 +88,9 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
       <Stack>
         <TitleLayout>
           <Tooltip label={problem.name} hasArrow placement="top">
-            <Title icon={FaLightbulb}>{problem.name}</Title>
+            <Title icon={FaLightbulb} noOfLines={1}>
+              {problem.name}
+            </Title>
           </Tooltip>
           <VStack align="flex-end" spacing={0}>
             <Link

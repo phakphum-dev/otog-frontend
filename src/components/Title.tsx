@@ -17,12 +17,12 @@ interface TitleProps extends TextProps {
 
 export const Title = forwardRef(
   (props: TitleProps, ref: ForwardedRef<HTMLHeadingElement>) => {
-    const { icon, children, ...rest } = props
+    const { icon, children, noOfLines, ...rest } = props
     return (
       <Heading {...rest} ref={ref}>
         <HStack>
           <Icon as={icon} />
-          <Text children={children} noOfLines={1} />
+          <Text noOfLines={noOfLines}>{children}</Text>
         </HStack>
       </Heading>
     )
@@ -31,6 +31,6 @@ export const Title = forwardRef(
 
 export function TitleLayout(props: FlexProps) {
   return (
-    <Flex justify="space-between" align="flex-end" mt={8} mb={6} {...props} />
+    <Flex justify="space-between" align="flex-end" mt={8} mb={4} {...props} />
   )
 }

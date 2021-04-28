@@ -28,7 +28,9 @@ export default function ProfilePage(props: ProfilePageProps) {
         <title>Profile #{id} | OTOG</title>
       </Head>
       <TitleLayout>
-        <Title icon={FaUser}>{userData?.showName}</Title>
+        <Title icon={FaUser} noOfLines={1}>
+          {userData?.showName}
+        </Title>
       </TitleLayout>
       <Stack direction={{ base: 'column', md: 'row' }} spacing={8}>
         {user?.id === Number(id) ? (

@@ -112,7 +112,9 @@ export function MidContest(props: ContestProps) {
     <PageContainer dense>
       <TitleLayout>
         <Tooltip label={contest.name} hasArrow placement="top">
-          <Title icon={FaTrophy}>{contest.name}</Title>
+          <Title icon={FaTrophy} noOfLines={1}>
+            {contest.name}
+          </Title>
         </Tooltip>
         <Heading as="h2" whiteSpace="nowrap">
           {toTimerFormat(remaining)}

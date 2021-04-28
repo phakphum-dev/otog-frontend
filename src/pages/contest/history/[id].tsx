@@ -85,7 +85,9 @@ export default function ContestHistory(props: ContestHistoryProps) {
         <title>Contest History #{scoreboard.id} | OTOG</title>
       </Head>
       <TitleLayout>
-        <Title icon={FaTrophy}>{scoreboard.name}</Title>
+        <Title icon={FaTrophy} noOfLines={1}>
+          {scoreboard.name}
+        </Title>
         <ButtonGroup isAttached variant="outline">
           <IconButton
             aria-label="less-detail"
