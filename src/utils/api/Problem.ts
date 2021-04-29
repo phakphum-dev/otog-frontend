@@ -1,5 +1,6 @@
 import useSWR from 'swr'
 import { Submission } from './Submission'
+import { User } from './User'
 
 export interface Problem {
   id: number
@@ -13,7 +14,14 @@ export interface Problem {
   case: string
   rating: number | null
 }
-export type ProblemWithSubmission = Problem & { submission: Submission | null }
+export type ProblemWithSubmission = Problem & {
+  submission: Submission | null
+  passed: number
+}
+
+export function usePassedUsers(problemId: number) {
+  return useSWR<User[]>(`problem/${problemId}/user`)
+}
 
 export function useProblem(id: number) {
   return useSWR<Problem>(id ? `problem/${id}` : null)

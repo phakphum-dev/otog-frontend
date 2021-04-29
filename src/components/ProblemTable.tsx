@@ -1,21 +1,35 @@
-import { Dispatch, memo, SetStateAction, useMemo, useState } from 'react'
+import { memo, useMemo, useState } from 'react'
 import {
   Box,
   Button,
   Flex,
   Link,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Spinner,
+  Stack,
   Table,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
   useDisclosure,
+  UseDisclosureReturn,
 } from '@chakra-ui/react'
 import { SubmitButton } from './SubmitButton'
 import { SubmitModal } from './SubmitModal'
-import { ProblemWithSubmission, useProblems } from '@src/utils/api/Problem'
+import {
+  ProblemWithSubmission,
+  usePassedUsers,
+  useProblems,
+} from '@src/utils/api/Problem'
 import { useRouter } from 'next/router'
 import { API_HOST } from '@src/utils/api'
 import { useStatusColor } from '@src/utils/hooks/useStatusColor'
@@ -29,20 +43,17 @@ export interface ProblemTableProps {
   filter: FilterFunction
 }
 
-export function ProblemTable(props: ProblemTableProps) {
+export const ProblemTable = (props: ProblemTableProps) => {
   const { filter } = props
+
   const [modalProblem, setModalProblem] = useState<ProblemWithSubmission>()
   const [modalSubmission, setModalSubmission] = useState<Submission>()
-  const {
-    isOpen: isSubmitOpen,
-    onOpen: onSubmitOpen,
-    onClose: onSubmitClose,
-  } = useDisclosure()
-  const {
-    isOpen: isCodeOpen,
-    onOpen: onCodeOpen,
-    onClose: onCodeClose,
-  } = useDisclosure()
+  const [modalPassed, setModalPassed] = useState<number>()
+
+  const submitModal = useDisclosure()
+  const codeModal = useDisclosure()
+  const passedModal = useDisclosure()
+
   const { data: problems } = useProblems()
   const filteredProblems = useMemo(() => {
     return problems?.filter(filter)
@@ -58,37 +69,42 @@ export function ProblemTable(props: ProblemTableProps) {
       <Table variant="simple">
         <Thead>
           <Tr>
-            <Th px={7} w={88}>
+            <Th px={7} w={22}>
               #
             </Th>
             <Th>ชื่อ</Th>
-            <Th w={88}>ส่ง</Th>
+            <Th px={7} w={22} textAlign="center">
+              ผ่าน
+            </Th>
+            <Th w={22} textAlign="center">
+              ส่ง
+            </Th>
           </Tr>
         </Thead>
         <Tbody>
           <ProblemsRows
             problems={filteredProblems}
-            onSubmitOpen={onSubmitOpen}
+            onSubmitOpen={submitModal.onOpen}
             setModalProblem={setModalProblem}
-            onCodeOpen={onCodeOpen}
+            onCodeOpen={codeModal.onOpen}
             setModalSubmission={setModalSubmission}
+            onPassedOpen={passedModal.onOpen}
+            setModalPassed={setModalPassed}
           />
         </Tbody>
       </Table>
       {modalProblem && (
         <SubmitModal
           problem={modalProblem}
-          isOpen={isSubmitOpen}
-          onClose={onSubmitClose}
           onSuccess={onSubmitSuccess}
+          {...submitModal}
         />
       )}
       {modalSubmission && (
-        <CodeModal
-          isOpen={isCodeOpen}
-          onClose={onCodeClose}
-          submissionId={modalSubmission.id}
-        />
+        <CodeModal {...codeModal} submissionId={modalSubmission.id} />
+      )}
+      {modalPassed && (
+        <PassedModal {...passedModal} modalPassed={modalPassed} />
       )}
     </Box>
   ) : (
@@ -100,9 +116,11 @@ export function ProblemTable(props: ProblemTableProps) {
 
 interface ModalProblemProps {
   onSubmitOpen: () => void
-  setModalProblem: Dispatch<SetStateAction<ProblemWithSubmission | undefined>>
+  setModalProblem: (problem: ProblemWithSubmission | undefined) => void
   onCodeOpen: () => void
-  setModalSubmission: Dispatch<SetStateAction<Submission | undefined>>
+  setModalSubmission: (submission: Submission | undefined) => void
+  onPassedOpen: () => void
+  setModalPassed: (problemId: number) => void
 }
 
 interface ProblemRowsProps extends ModalProblemProps {
@@ -112,6 +130,7 @@ interface ProblemRowsProps extends ModalProblemProps {
 const ProblemsRows = memo(
   (props: ProblemRowsProps) => {
     const { problems, ...rest } = props
+
     return (
       <>
         {problems.slice(0, 100).map((problem) => (
@@ -136,13 +155,15 @@ interface ProblemRowProps extends ModalProblemProps {
   problem: ProblemWithSubmission
 }
 
-function ProblemRow(props: ProblemRowProps) {
+const ProblemRow = (props: ProblemRowProps) => {
   const {
     problem,
     onSubmitOpen,
     setModalProblem,
     onCodeOpen,
     setModalSubmission,
+    onPassedOpen,
+    setModalPassed,
   } = props
   const onSubmitModalOpen = () => {
     onSubmitOpen()
@@ -154,11 +175,15 @@ function ProblemRow(props: ProblemRowProps) {
       setModalSubmission(problem.submission)
     }
   }
+  const onPassedModalOpen = () => {
+    onPassedOpen()
+    setModalPassed(problem.id)
+  }
   const bg = useStatusColor(problem.submission)
 
   return (
     <Tr bg={bg}>
-      <Td textAlign="center" w={88}>
+      <Td textAlign="center" w={22}>
         {problem.submission ? (
           <Button onClick={onCodeModalOpen} variant="ghost" px={1}>
             {problem.id}
@@ -178,9 +203,45 @@ function ProblemRow(props: ProblemRowProps) {
           MB)
         </Link>
       </Td>
-      <Td w={88}>
+      <Td w={22} textAlign="center">
+        {/* TODO: remove optional chaining */}
+        {problem.submission?.status === 'accept' ? (
+          <Button variant="ghost" px={1} onClick={onPassedModalOpen}>
+            {problem?.passed ?? 0}
+          </Button>
+        ) : (
+          problem?.passed ?? 0
+        )}
+      </Td>
+      <Td w={22}>
         <SubmitButton onClick={onSubmitModalOpen} />
       </Td>
     </Tr>
+  )
+}
+
+interface PassedModalProps extends UseDisclosureReturn {
+  modalPassed: number
+}
+
+const PassedModal = (props: PassedModalProps) => {
+  const { isOpen, onClose, modalPassed } = props
+  const { data: users } = usePassedUsers(modalPassed)
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} size="xs">
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>ผู้ที่ผ่าน</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <Stack>
+            {users?.map((user) => (
+              <Text key={user.id}>{user.showName}</Text>
+            ))}
+          </Stack>
+        </ModalBody>
+        <ModalFooter />
+      </ModalContent>
+    </Modal>
   )
 }
