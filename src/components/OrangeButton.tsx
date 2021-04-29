@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 import { ForwardedRef } from 'react'
 
-export function useOrangeButtonStyles() {
+export const useOrangeButtonStyles = () => {
   const theme = useTheme()
   return useColorModeValue(
     {

@@ -58,7 +58,7 @@ export interface ContestProps {
   time: string
 }
 
-export function ContestRouter(props: ContestProps) {
+export const ContestRouter = (props: ContestProps) => {
   const { contest, time } = props
   const { data: serverTime } = useServerTime(time)
   const currentTime = new Date(serverTime || time)
@@ -73,7 +73,7 @@ export function ContestRouter(props: ContestProps) {
   return <PostContest {...props} />
 }
 
-export function PreContest(props: ContestProps) {
+export const PreContest = (props: ContestProps) => {
   const { contest, time } = props
   const { data: serverTime } = useServerTime(time)
   const remaining = useTimer(serverTime || time, contest.timeStart)
@@ -98,7 +98,7 @@ export function PreContest(props: ContestProps) {
   )
 }
 
-export function MidContest(props: ContestProps) {
+export const MidContest = (props: ContestProps) => {
   const { contest, time } = props
   const { data: serverTime } = useServerTime(time)
   const remaining = useTimer(serverTime || time, contest.timeEnd)
@@ -130,7 +130,7 @@ export function MidContest(props: ContestProps) {
   )
 }
 
-export function PostContest(props: ContestProps) {
+export const PostContest = (props: ContestProps) => {
   const { contest } = props
   return (
     <PageContainer display="flex">

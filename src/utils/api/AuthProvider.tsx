@@ -39,8 +39,8 @@ export function getUserData(accessToken: string | null): User | null {
 }
 
 const AuthContext = createContext({} as AuthProviderProps)
-const useAuth = () => useContext(AuthContext)
-const AuthProvider = (props: AuthValueProps) => {
+export const useAuth = () => useContext(AuthContext)
+export const AuthProvider = (props: AuthValueProps) => {
   const { value: accessToken, children } = props
 
   const user = getUserData(accessToken)
@@ -63,7 +63,7 @@ const AuthProvider = (props: AuthValueProps) => {
     router.push('/login')
   }
 
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const loginModal = useDisclosure()
 
   const [profileSrc, setProfileSrc] = useState<string>()
   const getProfilePic = async () => {
@@ -87,7 +87,7 @@ const AuthProvider = (props: AuthValueProps) => {
   }, [isAuthenticated])
 
   useEffect(() => {
-    http.openLoginModal = onOpen
+    http.openLoginModal = loginModal.onOpen
     http.refresh = forceUpdate
   }, [http])
 
@@ -104,10 +104,8 @@ const AuthProvider = (props: AuthValueProps) => {
 
   return (
     <AuthContext.Provider value={value}>
-      <LoginModal isOpen={isOpen} onClose={onClose} />
+      <LoginModal {...loginModal} />
       {children}
     </AuthContext.Provider>
   )
 }
-
-export { AuthProvider, useAuth }

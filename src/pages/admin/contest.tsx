@@ -2,7 +2,7 @@ import { Button, IconButton } from '@chakra-ui/button'
 import { FormControl, FormLabel } from '@chakra-ui/form-control'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Input } from '@chakra-ui/input'
-import { Box, Flex, Heading, HStack, Stack, Text } from '@chakra-ui/layout'
+import { Box, Flex, Spacer, Stack, Text } from '@chakra-ui/layout'
 import {
   Modal,
   ModalBody,
@@ -31,8 +31,14 @@ import {
 import { ProblemWithSubmission, useProblems } from '@src/utils/api/Problem'
 import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
-import { memo, useState } from 'react'
-import { FaEye, FaEyeSlash, FaPlusCircle, FaTools } from 'react-icons/fa'
+import { memo, PropsWithChildren, useState } from 'react'
+import {
+  FaEye,
+  FaEyeSlash,
+  FaPlusCircle,
+  FaTools,
+  FaTrophy,
+} from 'react-icons/fa'
 import NextLink from 'next/link'
 import { useHttp } from '@src/utils/api/HttpProvider'
 import { useForm } from 'react-hook-form'
@@ -62,18 +68,14 @@ export default function AdminContestPage() {
         </Text>
       </TitleLayout>
       <Stack spacing={4}>
-        <HStack>
+        <Flex>
+          <SelectContestModalButton setContestId={setContest}>
+            {contest?.name ?? 'เลือกการแข่งขัน'}
+          </SelectContestModalButton>
+          <Spacer />
           <CreateContestModalButton setContestId={setContest} />
-          <SelectContestModalButton setContestId={setContest} />
-        </HStack>
-        {contest && (
-          <>
-            <Heading as="h3" fontSize="3xl">
-              {contest.name}
-            </Heading>
-            <ContestTable contest={contest} />
-          </>
-        )}
+        </Flex>
+        {contest && <ContestTable contest={contest} />}
       </Stack>
     </PageContainer>
   )
@@ -83,9 +85,9 @@ interface CreateContestModalButtonProps {
   setContestId: (contestId: number) => void
 }
 
-function CreateContestModalButton(props: CreateContestModalButtonProps) {
+const CreateContestModalButton = (props: CreateContestModalButtonProps) => {
   const { setContestId } = props
-  const { isOpen, onClose, onOpen } = useDisclosure()
+  const createModal = useDisclosure()
   const [startDate, setStartDate] = useState<Date>(new Date())
   const [endDate, setEndDate] = useState<Date>(new Date())
 
@@ -106,7 +108,7 @@ function CreateContestModalButton(props: CreateContestModalButtonProps) {
       const { id } = await http.post<Contest, CreateContest>('contest', body)
       setContestId(id)
       mutate('contest')
-      onClose()
+      createModal.onClose()
     } catch (e) {
       onError(e)
     }
@@ -117,11 +119,11 @@ function CreateContestModalButton(props: CreateContestModalButtonProps) {
         colorScheme="green"
         leftIcon={<FaPlusCircle />}
         size="lg"
-        onClick={onOpen}
+        onClick={createModal.onOpen}
       >
         สร้างการแข่งขัน
       </Button>
-      <Modal onClose={onClose} isOpen={isOpen} size="sm">
+      <Modal {...createModal} size="sm">
         <ModalOverlay />
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalContent>
@@ -236,7 +238,7 @@ interface ContestProblemRowProps {
   isOpen: boolean
 }
 
-function ContestProblemRow(props: ContestProblemRowProps) {
+const ContestProblemRow = (props: ContestProblemRowProps) => {
   const { problem, isOpen: initialValue, contestId } = props
   const [isOpen, setOpen] = useState(initialValue)
   const http = useHttp()
@@ -275,20 +277,25 @@ function ContestProblemRow(props: ContestProblemRowProps) {
   )
 }
 
-interface SelectContestModalButtonProps {
+type SelectContestModalButtonProps = PropsWithChildren<{
   setContestId: (id: number) => void
-}
+}>
 
-function SelectContestModalButton(props: SelectContestModalButtonProps) {
-  const { setContestId } = props
-  const { isOpen, onOpen, onClose } = useDisclosure()
+const SelectContestModalButton = (props: SelectContestModalButtonProps) => {
+  const { setContestId, children } = props
+  const selectModal = useDisclosure()
   const { data: contests } = useContests()
   return (
     <>
-      <Button size="lg" colorScheme="blue" onClick={onOpen}>
-        เลือกการแข่งขัน
+      <Button
+        size="lg"
+        colorScheme="orange"
+        onClick={selectModal.onOpen}
+        leftIcon={<FaTrophy />}
+      >
+        {children}
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal {...selectModal}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>เลือกการแข่งขัน</ModalHeader>
@@ -300,7 +307,7 @@ function SelectContestModalButton(props: SelectContestModalButtonProps) {
                   key={contest.id}
                   onClick={() => {
                     setContestId(contest.id)
-                    onClose()
+                    selectModal.onClose()
                   }}
                   variant="ghost"
                   colorScheme="orange"

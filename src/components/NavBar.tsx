@@ -72,7 +72,7 @@ function useActiveColor(href: string, options: ColorOptions = defaultOptions) {
   return { color, normalColor, activeColor, isActive }
 }
 
-export function NavBar() {
+export const NavBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef(null)
 
@@ -200,7 +200,7 @@ interface ItemProps extends ButtonProps {
   title: string
 }
 
-function NavItem(props: ItemProps) {
+const NavItem = (props: ItemProps) => {
   const { href, title, ...rest } = props
   const { color, activeColor } = useActiveColor(href)
   return (
@@ -219,7 +219,7 @@ function NavItem(props: ItemProps) {
   )
 }
 
-function DrawerItem(props: ItemProps) {
+const DrawerItem = (props: ItemProps) => {
   const { href, title, ...rest } = props
   const { color } = useActiveColor(href)
   return (

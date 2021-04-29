@@ -41,7 +41,7 @@ const language: Record<string, string> = {
   python: 'Python',
 }
 
-export function CodeModal(props: CodeModalProps) {
+export const CodeModal = (props: CodeModalProps) => {
   const { onClose, isOpen, submissionId } = props
   const { data: submission } = useSubmission(submissionId)
   const isLoaded = !!submission
@@ -168,7 +168,7 @@ export interface CodeSubmissionProps {
   submission: SubmissionWithSourceCode
 }
 
-export function CodeSubmission(props: CodeSubmissionProps) {
+export const CodeSubmission = (props: CodeSubmissionProps) => {
   const { submission } = props
 
   const { onCopy, hasCopied } = useClipboard(submission.sourceCode)
@@ -237,7 +237,7 @@ export interface ErrorModalProp extends Omit<ModalProps, 'children'> {
   submission: SubmissionWithProblem
 }
 
-export function ErrorModal(props: ErrorModalProp) {
+export const ErrorModal = (props: ErrorModalProp) => {
   const { onClose, isOpen, submission } = props
   return (
     <Modal onClose={onClose} isOpen={isOpen} size="xl">
@@ -261,7 +261,7 @@ export interface CodeHighlightProps {
   language: Language
 }
 
-export function CodeHighlight(props: CodeHighlightProps) {
+export const CodeHighlight = (props: CodeHighlightProps) => {
   return (
     <Highlight
       {...defaultProps}

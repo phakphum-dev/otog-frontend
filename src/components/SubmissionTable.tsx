@@ -41,7 +41,7 @@ import { ONE_SECOND, toThDate } from '@src/utils/hooks/useTimer'
 import { useOnScreen } from '@src/utils/hooks/useOnScreen'
 import NextLink from 'next/link'
 
-export function SubmissionTable() {
+export const SubmissionTable = () => {
   const {
     data: submissionsList,
     setSize,
@@ -77,7 +77,7 @@ export function SubmissionTable() {
   )
 }
 
-export function AllSubmissionTable() {
+export const AllSubmissionTable = () => {
   const {
     data: submissionsList,
     setSize,
@@ -119,9 +119,9 @@ interface SubmissionTableBaseProps {
   hasMore?: boolean
 }
 
-export function SubmissionTableBase(props: SubmissionTableBaseProps) {
+export const SubmissionTableBase = (props: SubmissionTableBaseProps) => {
   const { submissions, loadMore, hasMore } = props
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const codeDisclosure = useDisclosure()
   const [submissionId, setSubmissionId] = useState<number>(0)
   const { ref, isIntersecting } = useOnScreen()
   useEffect(() => {
@@ -148,7 +148,7 @@ export function SubmissionTableBase(props: SubmissionTableBaseProps) {
         <Tbody>
           <SubmissionRows
             submissions={submissions}
-            onOpen={onOpen}
+            onOpen={codeDisclosure.onOpen}
             setSubmissionId={setSubmissionId}
           />
         </Tbody>
@@ -158,11 +158,7 @@ export function SubmissionTableBase(props: SubmissionTableBaseProps) {
           <Spinner size="lg" ref={ref} />
         </Flex>
       )}
-      <CodeModal
-        submissionId={submissionId}
-        isOpen={isOpen}
-        onClose={onClose}
-      />
+      <CodeModal submissionId={submissionId} {...codeDisclosure} />
     </Box>
   )
 }
@@ -207,11 +203,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
     setSubmissionId(submission?.id ?? 0)
   }
 
-  const {
-    isOpen: isErrorModalOpen,
-    onOpen: onErrorModalOpen,
-    onClose: onErrorModalClose,
-  } = useDisclosure()
+  const errorDisclosure = useDisclosure()
 
   const { user, isAdmin } = useAuth()
   const bg = useStatusColor(submission, true)
@@ -245,14 +237,10 @@ const SubmissionRow = (props: SubmissionRowProps) => {
       <Td>
         {submission.errmsg && (isAdmin || user?.id === submission.user.id) ? (
           <>
-            <Button px={1} variant="ghost" onClick={onErrorModalOpen}>
+            <Button px={1} variant="ghost" onClick={errorDisclosure.onOpen}>
               {submission.result}
             </Button>
-            <ErrorModal
-              isOpen={isErrorModalOpen}
-              onClose={onErrorModalClose}
-              submission={submission}
-            />
+            <ErrorModal {...errorDisclosure} submission={submission} />
           </>
         ) : isGrading(submission) ? (
           <HStack>

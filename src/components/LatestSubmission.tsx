@@ -6,8 +6,8 @@ import { useLatestSubmission, useSubmissions } from '@src/utils/api/Submission'
 import { OrangeSubmitButton } from './SubmitButton'
 import { SubmitModal } from './SubmitModal'
 
-export function LatestSubmission() {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+export const LatestSubmission = () => {
+  const submitModal = useDisclosure()
   const { isAuthenticated } = useAuth()
   const { data: submission } = useLatestSubmission()
   const { mutate } = useSubmissions()
@@ -23,12 +23,11 @@ export function LatestSubmission() {
           {submission.problem.name}
         </Link>
       </Text>
-      <OrangeSubmitButton onClick={onOpen} />
+      <OrangeSubmitButton onClick={submitModal.onOpen} />
       <SubmitModal
         problem={submission.problem}
-        onClose={onClose}
-        isOpen={isOpen}
         onSuccess={mutate}
+        {...submitModal}
       />
     </HStack>
   ) : (

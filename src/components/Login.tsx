@@ -26,7 +26,7 @@ export interface LoginModalProps {
   onClose: () => void
 }
 
-export function LoginModal(props: LoginModalProps) {
+export const LoginModal = (props: LoginModalProps) => {
   const { isOpen, onClose } = props
   const { refresh } = useAuth()
   const onSuccess = () => {
@@ -50,7 +50,7 @@ export interface LoginFormProps {
   onSuccess?: () => void
 }
 
-export function LoginForm(props: LoginFormProps) {
+export const LoginForm = (props: LoginFormProps) => {
   const { onSuccess } = props
   const { register, handleSubmit } = useForm()
   const { onError, toast } = useErrorToast()
@@ -97,7 +97,7 @@ export function LoginForm(props: LoginFormProps) {
   )
 }
 
-export function CenteredCard(props: BoxProps) {
+export const CenteredCard = (props: BoxProps) => {
   return (
     <Box
       p={4}

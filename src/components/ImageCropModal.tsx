@@ -101,7 +101,7 @@ export async function getCroppedImage(
   throw new Error(`This browser doesn't support 2D Context`)
 }
 
-export function ImageCropModal(props: ImageUploadModalProps) {
+export const ImageCropModal = (props: ImageUploadModalProps) => {
   const { isOpen, onClose } = props
 
   const { user, profileSrc, refreshProfilePic } = useAuth()

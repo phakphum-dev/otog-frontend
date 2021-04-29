@@ -1,6 +1,6 @@
 import { PropsWithChildren, useEffect, useState } from 'react'
 
-export function RenderLater(props: PropsWithChildren<{ delay: number }>) {
+export const RenderLater = (props: PropsWithChildren<{ delay: number }>) => {
   const { children, delay = 0 } = props
   const [show, setShow] = useState(false)
   useEffect(() => {

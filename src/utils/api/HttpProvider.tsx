@@ -11,9 +11,9 @@ import { ApiClient } from '.'
 import { ErrorToastOptions } from '../hooks/useError'
 
 const HttpContext = createContext({} as ApiClient)
-const useHttp = () => useContext(HttpContext)
+export const useHttp = () => useContext(HttpContext)
 
-function HttpProvider(props: ProviderProps<ErrorToastOptions>) {
+export const HttpProvider = (props: ProviderProps<ErrorToastOptions>) => {
   // server side api error handling and displays
   const { value: errorToast, children } = props
   const toast = useToast()
@@ -30,5 +30,3 @@ function HttpProvider(props: ProviderProps<ErrorToastOptions>) {
     </SWRConfig>
   )
 }
-
-export { HttpProvider, useHttp }

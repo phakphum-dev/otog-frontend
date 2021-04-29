@@ -61,14 +61,18 @@ export default function AdminProblemPage() {
         </Text>
       </TitleLayout>
 
-      <CreateProblemModalButton />
-      <ProblemAdminTable />
+      <Stack spacing={4}>
+        <Flex justify="flex-end">
+          <CreateProblemModalButton />
+        </Flex>
+        <ProblemAdminTable />
+      </Stack>
     </PageContainer>
   )
 }
 
-function CreateProblemModalButton() {
-  const { isOpen, onClose, onOpen } = useDisclosure()
+const CreateProblemModalButton = () => {
+  const createModal = useDisclosure()
 
   const { resetFileInput: resetPdfInput, fileProps: pdfProps } = useFileInput()
   const { resetFileInput: resetZipInput, fileProps: zipProps } = useFileInput()
@@ -80,24 +84,25 @@ function CreateProblemModalButton() {
     try {
       await http.post('problem', new FormData(e.currentTarget))
       mutate('problem')
-      onClose()
+      createModal.onClose()
       resetPdfInput()
       resetZipInput()
     } catch (e) {
       onError(e)
     }
   }
+
   return (
     <>
       <Button
         colorScheme="green"
         leftIcon={<FaPlusCircle />}
         size="lg"
-        onClick={onOpen}
+        onClick={createModal.onOpen}
       >
         เพิ่มโจทย์
       </Button>
-      <Modal onClose={onClose} isOpen={isOpen} size="sm">
+      <Modal {...createModal} size="sm">
         <ModalOverlay />
         <form onSubmit={onSubmit}>
           <ModalContent>

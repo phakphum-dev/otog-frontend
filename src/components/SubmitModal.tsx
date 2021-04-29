@@ -13,6 +13,7 @@ import {
   HStack,
   Button,
   Stack,
+  UseDisclosureReturn,
 } from '@chakra-ui/react'
 import { FileInput } from './FileInput'
 import { Problem } from '@src/utils/api/Problem'
@@ -22,10 +23,8 @@ import { useErrorToast } from '@src/utils/hooks/useError'
 import NextLink from 'next/link'
 import { useFileInput } from '@src/utils/hooks/useInput'
 
-export interface SubmitModalProps {
+export interface SubmitModalProps extends UseDisclosureReturn {
   problem: Problem
-  onClose: () => void
-  isOpen: boolean
   onSuccess?: () => void
 }
 
@@ -35,7 +34,7 @@ export interface SubmitReq {
   contestId?: number
 }
 
-export function SubmitModal(props: SubmitModalProps) {
+export const SubmitModal = (props: SubmitModalProps) => {
   const { problem, onClose, isOpen, onSuccess } = props
 
   const { resetFileInput, fileProps } = useFileInput()

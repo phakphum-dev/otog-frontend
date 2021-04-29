@@ -124,11 +124,11 @@ export const TaskCard = memo((props: TaskCardProps) => {
 
 export type ContestFileFormProps = TaskCardProps
 
-export function ContestFileForm(props: ContestFileFormProps) {
+export const ContestFileForm = (props: ContestFileFormProps) => {
   const { problem, contestId } = props
 
   const { mutate } = useProblemSubmission(problem.id)
-  const { file, resetFileInput, fileProps } = useFileInput()
+  const { resetFileInput, fileProps } = useFileInput()
 
   const http = useHttp()
   const { onError } = useErrorToast()
@@ -180,7 +180,7 @@ const extension: Record<string, string> = {
 
 export type ContestEditorFormProps = TaskCardProps
 
-export function ContestEditorForm(props: ContestEditorFormProps) {
+export const ContestEditorForm = (props: ContestEditorFormProps) => {
   const { problem, contestId } = props
   const { mutate } = useProblemSubmission(problem.id)
 
@@ -244,21 +244,12 @@ export interface TaskSubmissionTableProps {
   submission: SubmissionWithProblem
 }
 
-export function TaskSubmissionTable(props: TaskSubmissionTableProps) {
+export const TaskSubmissionTable = (props: TaskSubmissionTableProps) => {
   const { submission } = props
   const bg = useStatusColor(submission)
 
-  const {
-    isOpen: isErrorOpen,
-    onOpen: onErrorOpen,
-    onClose: onErrorClose,
-  } = useDisclosure()
-
-  const {
-    isOpen: isCodeOpen,
-    onOpen: onCodeOpen,
-    onClose: onCodeClose,
-  } = useDisclosure()
+  const errorDisclosure = useDisclosure()
+  const codeDisclosure = useDisclosure()
 
   return (
     <Box overflowX="auto">
@@ -274,14 +265,15 @@ export function TaskSubmissionTable(props: TaskSubmissionTableProps) {
         <Tbody>
           <Tr bg={bg}>
             <Td>
-              <Button variant="ghost" onClick={onCodeOpen} px={1} size="sm">
+              <Button
+                variant="ghost"
+                px={1}
+                size="sm"
+                onClick={codeDisclosure.onOpen}
+              >
                 ล่าสุด
               </Button>
-              <CodeModal
-                submissionId={submission.id}
-                isOpen={isCodeOpen}
-                onClose={onCodeClose}
-              />
+              <CodeModal submissionId={submission.id} {...codeDisclosure} />
             </Td>
             <Td>
               {submission.errmsg ? (
@@ -289,16 +281,12 @@ export function TaskSubmissionTable(props: TaskSubmissionTableProps) {
                   <Button
                     px={1}
                     variant="ghost"
-                    onClick={onErrorOpen}
+                    onClick={errorDisclosure.onOpen}
                     size="sm"
                   >
                     {submission.result}
                   </Button>
-                  <ErrorModal
-                    isOpen={isErrorOpen}
-                    onClose={onErrorClose}
-                    submission={submission}
-                  />
+                  <ErrorModal submission={submission} {...errorDisclosure} />
                 </>
               ) : isGrading(submission) ? (
                 <HStack>

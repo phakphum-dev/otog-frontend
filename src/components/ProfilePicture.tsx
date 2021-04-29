@@ -17,8 +17,8 @@ import { UploadFileButton } from '@src/components/FileInput'
 import Icon from '@chakra-ui/icon'
 import { useErrorToast } from '@src/utils/hooks/useError'
 
-export function ProfileUpload() {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+export const ProfileUpload = () => {
+  const cropModal = useDisclosure()
   const { user, profileSrc, refreshProfilePic } = useAuth()
 
   const { onError } = useErrorToast()
@@ -68,9 +68,9 @@ export function ProfileUpload() {
                 size="xs"
                 aria-label="edit-profile-image"
                 icon={<FaCropAlt />}
-                onClick={onOpen}
+                onClick={cropModal.onOpen}
               />
-              <ImageCropModal isOpen={isOpen} onClose={onClose} />
+              <ImageCropModal {...cropModal} />
             </>
           )}
         </HStack>
@@ -83,7 +83,7 @@ export interface ProfilePictureProps {
   userId: number
 }
 
-export function ProfilePicture(props: ProfilePictureProps) {
+export const ProfilePicture = (props: ProfilePictureProps) => {
   const { userId } = props
   const [url, setUrl] = useState<string>()
   const getProfileUrl = async (userId: number) => {
@@ -109,7 +109,7 @@ export interface PictureProps {
   url: string | undefined
 }
 
-export function Picture(props: PictureProps) {
+export const Picture = (props: PictureProps) => {
   const { url } = props
   return url ? (
     <Img
