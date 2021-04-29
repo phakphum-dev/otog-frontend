@@ -20,13 +20,12 @@ import { Box, Link } from '@chakra-ui/layout'
 import { CgDetailsLess, CgDetailsMore } from 'react-icons/cg'
 import { ContestScoreboard, UserWithSubmission } from '@src/utils/api/Contest'
 
-import { getServerSideFetch } from '@src/utils/api'
+import { API_HOST, getServerSideFetch } from '@src/utils/api'
 import { GetServerSideProps } from 'next'
 import { sum } from '@src/utils'
 import { Tooltip } from '@chakra-ui/tooltip'
 import { ONE_SECOND } from '@src/utils/hooks/useTimer'
 import Head from 'next/head'
-import NextLink from 'next/link'
 
 const Th = (props: TableColumnHeaderProps) => (
   <THead textAlign="center" {...props} />
@@ -120,9 +119,12 @@ export default function ContestHistory(props: ContestHistoryProps) {
                       closeOnClick={false}
                       shouldWrapChildren
                     >
-                      <NextLink href={`/problem/${problem.id}`}>
-                        <Link>ข้อที่ {index + 1}</Link>
-                      </NextLink>
+                      <Link
+                        href={`${API_HOST}problem/doc/${problem.id}`}
+                        target="_blank"
+                      >
+                        ข้อที่ {index + 1}
+                      </Link>
                     </Tooltip>
                   </Th>
                 ))}

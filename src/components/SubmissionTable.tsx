@@ -39,7 +39,7 @@ import {
 } from '@src/utils/hooks/useStatusColor'
 import { ONE_SECOND, toThDate } from '@src/utils/hooks/useTimer'
 import { useOnScreen } from '@src/utils/hooks/useOnScreen'
-import NextLink from 'next/link'
+import { API_HOST } from '@src/utils/config'
 
 export const SubmissionTable = () => {
   const {
@@ -230,9 +230,12 @@ const SubmissionRow = (props: SubmissionRowProps) => {
       </Td>
       <Td>{submission.user.showName}</Td>
       <Td>
-        <NextLink href={`/problem/${submission.problem.id}`} passHref>
-          <Link>{submission.problem.name}</Link>
-        </NextLink>
+        <Link
+          href={`${API_HOST}problem/doc/${submission.problem.id}`}
+          target="_blank"
+        >
+          {submission.problem.name}
+        </Link>
       </Td>
       <Td>
         {submission.errmsg && (isAdmin || user?.id === submission.user.id) ? (

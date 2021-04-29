@@ -30,7 +30,8 @@ import { PropsWithChildren, useEffect } from 'react'
 import { CopyIcon } from '@chakra-ui/icons'
 import { ONE_SECOND, toThDate } from '@src/utils/hooks/useTimer'
 import { FaRegShareSquare } from 'react-icons/fa'
-import { APP_HOST } from '@src/utils/config'
+import { API_HOST, APP_HOST } from '@src/utils/config'
+
 export interface CodeModalProps extends Omit<ModalProps, 'children'> {
   submissionId: number
 }
@@ -200,9 +201,12 @@ export const CodeSubmission = (props: CodeSubmissionProps) => {
   return (
     <Stack>
       <div>
-        <NextLink href={`/problem/${submission?.problem.id}`} passHref>
-          <Link>ข้อ: {submission?.problem.name}</Link>
-        </NextLink>
+        <Link
+          href={`${API_HOST}problem/doc/${submission?.problem.id}`}
+          target="_blank"
+        >
+          ข้อ: {submission?.problem.name}
+        </Link>
         <Text>ผลตรวจ: {submission.result}</Text>
         <Text>ภาษา: {language[submission.language]}</Text>
         <Text>เวลารวม: {submission.timeUsed / ONE_SECOND} วินาที</Text>
