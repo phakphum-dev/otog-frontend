@@ -133,11 +133,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { notFound: true }
   }
   const { accessToken = null } = parseCookies(context)
-  if (accessToken) {
-    return getServerSideFetch<WriteSolutionPageProps>(context, async (api) => ({
-      problem: await api.get(`problem/${id}`),
-      submission: await api.get(`submission/problem/${id}/latest`),
-    }))
-  }
-  return getServerSideCookies(context)
+  return getServerSideFetch<WriteSolutionPageProps>(context, async (api) => ({
+    problem: await api.get(`problem/${id}`),
+    submission: accessToken
+      ? await api.get(`submission/problem/${id}/latest`)
+      : null,
+  }))
 }
