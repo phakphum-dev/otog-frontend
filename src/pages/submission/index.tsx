@@ -29,7 +29,7 @@ export default function SubmissionPage(props: SubmissionPageProps) {
         <TitleLayout>
           <Title icon={FaTasks}>ผลตรวจ</Title>
           <NextLink href="/submission/all">
-            <Button>ผลตรวจรวม</Button>
+            <Button variant="outline">ผลตรวจรวม</Button>
           </NextLink>
         </TitleLayout>
         <HStack mb={4}>

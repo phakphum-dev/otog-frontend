@@ -97,6 +97,7 @@ export const ProblemTable = (props: ProblemTableProps) => {
         <SubmitModal
           problem={modalProblem}
           onSuccess={onSubmitSuccess}
+          submitted={!!modalProblem.submission}
           {...submitModal}
         />
       )}

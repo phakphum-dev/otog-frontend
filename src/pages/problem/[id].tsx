@@ -17,11 +17,7 @@ import {
 import { Problem } from '@src/utils/api/Problem'
 import { Select } from '@chakra-ui/select'
 import { ChangeEvent, useState } from 'react'
-import {
-  API_HOST,
-  getServerSideFetch,
-  getServerSideCookies,
-} from '@src/utils/api'
+import { API_HOST, getServerSideFetch } from '@src/utils/api'
 import { GetServerSideProps } from 'next'
 import { SubmissionWithSourceCode } from '@src/utils/api/Submission'
 import { ONE_SECOND } from '@src/utils/hooks/useTimer'

@@ -27,6 +27,7 @@ export const LatestSubmission = () => {
       <SubmitModal
         problem={submission.problem}
         onSuccess={mutate}
+        submitted={true}
         {...submitModal}
       />
     </HStack>

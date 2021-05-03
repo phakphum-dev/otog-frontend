@@ -26,6 +26,7 @@ import { useFileInput } from '@src/utils/hooks/useInput'
 export interface SubmitModalProps extends UseDisclosureReturn {
   problem: Problem
   onSuccess?: () => void
+  submitted?: boolean
 }
 
 export interface SubmitReq {
@@ -35,7 +36,7 @@ export interface SubmitReq {
 }
 
 export const SubmitModal = (props: SubmitModalProps) => {
-  const { problem, onClose, isOpen, onSuccess } = props
+  const { problem, onClose, isOpen, onSuccess, submitted = false } = props
 
   const { resetFileInput, fileProps } = useFileInput()
   useEffect(() => {
@@ -91,7 +92,7 @@ export const SubmitModal = (props: SubmitModalProps) => {
           <ModalFooter>
             <HStack>
               <NextLink href={`/problem/${problem.id}`}>
-                <Button>ใหม่</Button>
+                <Button>{submitted ? 'แก้ไข' : 'ใหม่'}</Button>
               </NextLink>
               <OrangeButton type="submit">ส่ง</OrangeButton>
             </HStack>
