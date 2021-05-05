@@ -8,7 +8,6 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { OrangeButton } from '@src/components/OrangeButton'
 import { PageContainer } from '@src/components/PageContainer'
 import { GetServerSideProps } from 'next'
 import { getServerSideCookies } from '@src/utils/api'
@@ -30,7 +29,9 @@ export default function HomePage() {
           </Text>
           <HStack spacing={4}>
             <NextLink href="/register">
-              <OrangeButton width="100px">Sign Up</OrangeButton>
+              <Button variant="otog" width="100px">
+                Sign Up
+              </Button>
             </NextLink>
             <NextLink href="/login">
               <Button width="100px" variant="outline">

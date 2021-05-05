@@ -17,7 +17,6 @@ import {
 } from '@src/utils/hooks/useTimer'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { OrangeButton } from '@src/components/OrangeButton'
 import { mutate } from 'swr'
 import Head from 'next/head'
 import { Tooltip } from '@chakra-ui/tooltip'
@@ -140,7 +139,7 @@ export const PostContest = (props: ContestProps) => {
             การแข่งขัน {contest.name} จบลงแล้ว
           </Heading>
           <NextLink href={`/contest/history/${contest.id}`}>
-            <OrangeButton>สรุปผลการแข่งขัน</OrangeButton>
+            <Button variant="otog">สรุปผลการแข่งขัน</Button>
           </NextLink>
         </VStack>
       </Center>

@@ -1,4 +1,5 @@
 import { extendTheme, ThemeComponents } from '@chakra-ui/react'
+import { mode } from '@chakra-ui/theme-tools'
 
 const colors = {
   otog: '#ff851b',
@@ -105,6 +106,21 @@ const components: ThemeComponents = {
         },
         transitionDuration: '0s',
       },
+    },
+  },
+  Button: {
+    variants: {
+      otog: (props) => ({
+        bg: mode('orange.400', 'orange.500')(props),
+        color: 'white',
+        _hover: {
+          bg: mode('orange.500', 'orange.400')(props),
+          _disabled: {
+            bg: 'otog',
+          },
+        },
+        _active: { bg: mode('orange.700', 'orange.200')(props) },
+      }),
     },
   },
 }

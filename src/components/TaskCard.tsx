@@ -41,7 +41,6 @@ import { ChangeEvent, FormEvent, memo, useState } from 'react'
 
 import { CodeModal, ErrorModal } from './Code'
 import { FileInput } from './FileInput'
-import { OrangeButton } from './OrangeButton'
 
 const defaultValue = `#include <iostream>
 
@@ -159,9 +158,9 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
             accept=".c,.cpp,.py"
             {...fileProps}
           />
-          <OrangeButton size="sm" type="submit">
+          <Button variant="otog" size="sm" type="submit">
             ส่ง
-          </OrangeButton>
+          </Button>
         </HStack>
       </Stack>
     </form>
@@ -227,9 +226,9 @@ export const ContestEditorForm = (props: ContestEditorFormProps) => {
         </Select>
         <Spacer />
         <Box flex={1}>
-          <OrangeButton size="sm" width="100%" onClick={onSubmit}>
+          <Button variant="otog" size="sm" width="100%" onClick={onSubmit}>
             ส่ง
-          </OrangeButton>
+          </Button>
         </Box>
       </Stack>
     </Stack>

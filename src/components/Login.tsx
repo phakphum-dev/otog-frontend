@@ -13,7 +13,6 @@ import {
   ModalOverlay,
   Stack,
 } from '@chakra-ui/react'
-import { OrangeButton } from '@src/components/OrangeButton'
 
 import { useForm } from 'react-hook-form'
 
@@ -87,7 +86,9 @@ export const LoginForm = (props: LoginFormProps) => {
           ref={register}
           required
         />
-        <OrangeButton type="submit">เข้าสู่ระบบ</OrangeButton>
+        <Button type="submit" variant="otog">
+          เข้าสู่ระบบ
+        </Button>
         <Divider />
         <NextLink href="/register">
           <Button>ลงทะเบียน</Button>

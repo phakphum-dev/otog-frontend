@@ -1,3 +1,4 @@
+import { Button } from '@chakra-ui/button'
 import { Box, HStack, Stack } from '@chakra-ui/layout'
 import {
   Modal,
@@ -21,7 +22,6 @@ import { useErrorToast } from '@src/utils/hooks/useError'
 import { useState } from 'react'
 import Cropper from 'react-easy-crop'
 import { Area } from 'react-easy-crop/types'
-import { OrangeButton } from './OrangeButton'
 
 interface ImageUploadModalProps {
   isOpen: boolean
@@ -186,7 +186,9 @@ export const ImageCropModal = (props: ImageUploadModalProps) => {
 
         <ModalFooter>
           <HStack>
-            <OrangeButton onClick={uploadCroppedImage}>เสร็จสิ้น</OrangeButton>
+            <Button variant="otog" onClick={uploadCroppedImage}>
+              เสร็จสิ้น
+            </Button>
           </HStack>
         </ModalFooter>
       </ModalContent>

@@ -1,6 +1,5 @@
-import { Img, Input, Stack } from '@chakra-ui/react'
+import { Button, Img, Input, Stack } from '@chakra-ui/react'
 import { CenteredCard } from '@src/components/Login'
-import { OrangeButton } from '@src/components/OrangeButton'
 import { PageContainer } from '@src/components/PageContainer'
 import { useHttp } from '@src/utils/api/HttpProvider'
 import { useErrorToast } from '@src/utils/hooks/useError'
@@ -58,9 +57,9 @@ export default function RegisterPage() {
               required
               placeholder="ชื่อที่ใช้แสดง"
             />
-            <OrangeButton colorScheme="orange" type="submit">
+            <Button variant="otog" type="submit">
               ลงทะเบียน
-            </OrangeButton>
+            </Button>
           </Stack>
         </form>
       </CenteredCard>

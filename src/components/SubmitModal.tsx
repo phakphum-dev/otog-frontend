@@ -17,7 +17,6 @@ import {
 } from '@chakra-ui/react'
 import { FileInput } from './FileInput'
 import { Problem } from '@src/utils/api/Problem'
-import { OrangeButton } from './OrangeButton'
 import { useHttp } from '@src/utils/api/HttpProvider'
 import { useErrorToast } from '@src/utils/hooks/useError'
 import NextLink from 'next/link'
@@ -94,7 +93,9 @@ export const SubmitModal = (props: SubmitModalProps) => {
               <NextLink href={`/problem/${problem.id}`}>
                 <Button>{submitted ? 'แก้ไข' : 'ใหม่'}</Button>
               </NextLink>
-              <OrangeButton type="submit">ส่ง</OrangeButton>
+              <Button variant="otog" type="submit">
+                ส่ง
+              </Button>
             </HStack>
           </ModalFooter>
         </ModalContent>
