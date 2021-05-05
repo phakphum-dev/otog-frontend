@@ -120,8 +120,9 @@ export default function ContestHistory(props: ContestHistoryProps) {
                       shouldWrapChildren
                     >
                       <Link
+                        isExternal
                         href={`${API_HOST}problem/doc/${problem.id}`}
-                        target="_blank"
+                        variant="hidden"
                       >
                         ข้อที่ {index + 1}
                       </Link>

@@ -87,11 +87,7 @@ export const TaskCard = memo((props: TaskCardProps) => {
         <Stack p={{ base: 2, sm: 6 }} pt={{ sm: 4 }} spacing={4}>
           <HStack>
             <Box flex={1}>
-              <Link
-                href={`${API_HOST}problem/doc/${problem.id}`}
-                target="_blank"
-                color="otog"
-              >
+              <Link isExternal href={`${API_HOST}problem/doc/${problem.id}`}>
                 [ดาวน์โหลด]
               </Link>
               <Text fontSize="sm">

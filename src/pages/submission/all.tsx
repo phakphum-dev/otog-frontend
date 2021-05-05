@@ -4,7 +4,7 @@ import { AllSubmissionTable } from '@src/components/SubmissionTable'
 import { Title, TitleLayout } from '@src/components/Title'
 import { useAuth } from '@src/utils/api/AuthProvider'
 import Head from 'next/head'
-import Link from 'next/link'
+import NextLink from 'next/link'
 import { FaTasks } from 'react-icons/fa'
 
 export default function SubmissionPage() {
@@ -17,9 +17,9 @@ export default function SubmissionPage() {
       <TitleLayout>
         <Title icon={FaTasks}>ผลตรวจรวม</Title>
         {isAuthenticated && (
-          <Link href="/submission">
+          <NextLink href="/submission">
             <Button>ผลตรวจของคุณ</Button>
-          </Link>
+          </NextLink>
         )}
       </TitleLayout>
       <AllSubmissionTable />

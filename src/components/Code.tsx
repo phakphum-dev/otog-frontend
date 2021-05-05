@@ -93,9 +93,13 @@ export const CodeModal = (props: CodeModalProps) => {
       <ModalContent>
         <ModalHeader>
           <TextSkeleton w={80} h={6}>
-            <NextLink href={`/problem/${submission?.problem.id}`} passHref>
-              <Link>ข้อ {submission?.problem.name}</Link>
-            </NextLink>
+            <Link
+              isExternal
+              variant="hidden"
+              href={`${API_HOST}problem/doc/${submission?.problem.id}`}
+            >
+              ข้อ {submission?.problem.name}
+            </Link>
           </TextSkeleton>
         </ModalHeader>
         <ModalCloseButton />
@@ -202,8 +206,8 @@ export const CodeSubmission = (props: CodeSubmissionProps) => {
     <Stack>
       <div>
         <Link
+          isExternal
           href={`${API_HOST}problem/doc/${submission?.problem.id}`}
-          target="_blank"
         >
           ข้อ: {submission?.problem.name}
         </Link>

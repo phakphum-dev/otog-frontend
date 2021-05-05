@@ -89,11 +89,7 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
             </Title>
           </Tooltip>
           <VStack align="flex-end" spacing={0}>
-            <Link
-              href={`${API_HOST}problem/doc/${problem.id}`}
-              target="_blank"
-              color="otog"
-            >
+            <Link isExternal href={`${API_HOST}problem/doc/${problem.id}`}>
               [ดาวน์โหลด]
             </Link>
             <Text fontSize="sm" whiteSpace="nowrap">

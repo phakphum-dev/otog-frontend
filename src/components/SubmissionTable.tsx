@@ -231,8 +231,9 @@ const SubmissionRow = (props: SubmissionRowProps) => {
       <Td>{submission.user.showName}</Td>
       <Td>
         <Link
+          isExternal
           href={`${API_HOST}problem/doc/${submission.problem.id}`}
-          target="_blank"
+          variant="hidden"
         >
           {submission.problem.name}
         </Link>

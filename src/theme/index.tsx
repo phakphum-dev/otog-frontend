@@ -1,4 +1,4 @@
-import { extendTheme } from '@chakra-ui/react'
+import { extendTheme, ThemeComponents } from '@chakra-ui/react'
 
 const colors = {
   otog: '#ff851b',
@@ -91,4 +91,22 @@ const sizes = {
   },
 }
 
-export const theme = extendTheme({ colors, sizes })
+const components: ThemeComponents = {
+  Link: {
+    defaultProps: { variant: 'default' },
+    variants: {
+      default: {
+        color: 'otog',
+      },
+      hidden: {
+        _hover: {
+          color: 'otog',
+          textDecoration: 'underline',
+        },
+        transitionDuration: '0s',
+      },
+    },
+  },
+}
+
+export const theme = extendTheme({ colors, sizes, components })

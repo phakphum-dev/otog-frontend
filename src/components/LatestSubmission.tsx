@@ -15,14 +15,13 @@ export const LatestSubmission = () => {
   return isAuthenticated && submission ? (
     <HStack spacing={4}>
       <Text fontWeight="bold">ส่งข้อล่าสุด</Text>
-      <Text isTruncated color="otog">
-        <Link
-          href={`${API_HOST}problem/doc/${submission.problem.id}`}
-          target="_blank"
-        >
-          {submission.problem.name}
-        </Link>
-      </Text>
+      <Link
+        isExternal
+        href={`${API_HOST}problem/doc/${submission.problem.id}`}
+        noOfLines={1}
+      >
+        {submission.problem.name}
+      </Link>
       <OrangeSubmitButton onClick={submitModal.onOpen} />
       <SubmitModal
         problem={submission.problem}

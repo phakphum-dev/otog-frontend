@@ -10,7 +10,7 @@ export const Footer = () => {
       <Flex direction={{ base: 'column', sm: 'row' }}>
         <Text>
           หากมีข้อแนะนำ หรือข้อสงสัย{' '}
-          <Link color="otog" href={CONTACT_LINK} target="_blank">
+          <Link href={CONTACT_LINK} isExternal>
             ติดต่อเรา
           </Link>
         </Text>
