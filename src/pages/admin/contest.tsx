@@ -123,7 +123,7 @@ const CreateContestModalButton = (props: CreateContestModalButtonProps) => {
       >
         สร้างการแข่งขัน
       </Button>
-      <Modal {...createModal} size="sm">
+      <Modal {...createModal}>
         <ModalOverlay />
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalContent>
