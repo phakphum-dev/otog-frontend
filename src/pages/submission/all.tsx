@@ -17,8 +17,8 @@ export default function SubmissionPage() {
       <TitleLayout>
         <Title icon={FaTasks}>ผลตรวจรวม</Title>
         {isAuthenticated && (
-          <NextLink href="/submission">
-            <Button>ผลตรวจของคุณ</Button>
+          <NextLink href="/submission" passHref>
+            <Button as="a">ผลตรวจของคุณ</Button>
           </NextLink>
         )}
       </TitleLayout>

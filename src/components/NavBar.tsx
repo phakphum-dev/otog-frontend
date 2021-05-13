@@ -33,7 +33,6 @@ import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
 import { ToggleColorModeButton } from './ToggleColorModeButton'
 import { PageContainer } from './PageContainer'
 import { useAuth } from '@src/utils/api/AuthProvider'
-import { User } from '@src/utils/api/User'
 
 interface ColorOptions {
   normal: {
@@ -109,8 +108,8 @@ export const NavBar = () => {
       >
         <PageContainer>
           <Flex>
-            <NextLink href={isAdmin ? '/admin/contest' : '/'}>
-              <Button variant="link" color={color} _hover={{ color }}>
+            <NextLink href={isAdmin ? '/admin/contest' : '/'} passHref>
+              <Button as="a" variant="link" color={color} _hover={{ color }}>
                 <HStack cursor="pointer">
                   <Img src="/logo196.png" boxSize={8} my={1} />
                   <Heading size="md" py={2}>
@@ -165,8 +164,8 @@ export const NavBar = () => {
             <DrawerBody>
               <VStack mt={2} mr={6} spacing={3} align="flex-start">
                 {user && (
-                  <NextLink href={`/profile/${user.id}`}>
-                    <DrawerButton>
+                  <NextLink href={`/profile/${user.id}`} passHref>
+                    <DrawerButton as="a">
                       <HStack py={2}>
                         <Avatar size="xs" src={profileSrc} />
                         <Text isTruncated>{user.showName}</Text>
@@ -204,8 +203,9 @@ const NavItem = (props: ItemProps) => {
   const { href, title, ...rest } = props
   const { color, activeColor } = useActiveColor(href)
   return (
-    <NextLink href={href} key={href}>
+    <NextLink href={href} passHref>
       <Button
+        as="a"
         p={2}
         variant="link"
         fontWeight="normal"
@@ -223,8 +223,8 @@ const DrawerItem = (props: ItemProps) => {
   const { href, title, ...rest } = props
   const { color } = useActiveColor(href)
   return (
-    <NextLink href={href} key={href}>
-      <DrawerButton {...rest} fontWeight="normal" color={color}>
+    <NextLink href={href} passHref>
+      <DrawerButton {...rest} as="a" fontWeight="normal" color={color}>
         {title}
       </DrawerButton>
     </NextLink>
@@ -261,8 +261,8 @@ const AvatarMenu = () => {
       {/* fix render menulist on ssr */}
       {isClient && (
         <MenuList>
-          <NextLink href={`/profile/${user?.id}`}>
-            <MenuItem>โปรไฟล์</MenuItem>
+          <NextLink href={`/profile/${user?.id}`} passHref>
+            <MenuItem as="a">โปรไฟล์</MenuItem>
           </NextLink>
           <MenuItem color="red.500" onClick={logout}>
             ออกจากระบบ

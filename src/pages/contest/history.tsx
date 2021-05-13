@@ -38,8 +38,8 @@ export default function ContestHistoryPage() {
                 <Tr key={contest.id} height={16}>
                   <Td>{contest.id}</Td>
                   <Td>
-                    <NextLink href={`/contest/history/${contest.id}`}>
-                      <Button variant="link" px={1} color="otog">
+                    <NextLink href={`/contest/history/${contest.id}`} passHref>
+                      <Button as="a" variant="link" px={1} color="otog">
                         {contest.name}
                       </Button>
                     </NextLink>

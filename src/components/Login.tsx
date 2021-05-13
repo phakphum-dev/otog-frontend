@@ -90,8 +90,8 @@ export const LoginForm = (props: LoginFormProps) => {
           เข้าสู่ระบบ
         </Button>
         <Divider />
-        <NextLink href="/register">
-          <Button>ลงทะเบียน</Button>
+        <NextLink href="/register" passHref>
+          <Button as="a">ลงทะเบียน</Button>
         </NextLink>
       </Stack>
     </form>

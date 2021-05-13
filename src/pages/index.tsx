@@ -28,13 +28,13 @@ export default function HomePage() {
             Code and Create algorithms efficiently.
           </Text>
           <HStack spacing={4}>
-            <NextLink href="/register">
-              <Button variant="otog" width="100px">
+            <NextLink href="/register" passHref>
+              <Button as="a" variant="otog" width="100px">
                 Sign Up
               </Button>
             </NextLink>
-            <NextLink href="/login">
-              <Button width="100px" variant="outline">
+            <NextLink href="/login" passHref>
+              <Button as="a" width="100px" variant="outline">
                 Sign in
               </Button>
             </NextLink>

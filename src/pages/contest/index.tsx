@@ -42,8 +42,8 @@ export default function ContestPage(props: ContestPageProps) {
           <Center flex={1}>
             <VStack spacing={4}>
               <Heading>ยังไม่มีการแข่งขัน</Heading>
-              <NextLink href="/contest/history">
-                <Button>ประวัติการแข่งขัน</Button>
+              <NextLink href="/contest/history" passHref>
+                <Button as="a">ประวัติการแข่งขัน</Button>
               </NextLink>
             </VStack>
           </Center>
@@ -138,8 +138,10 @@ export const PostContest = (props: ContestProps) => {
           <Heading textAlign="center">
             การแข่งขัน {contest.name} จบลงแล้ว
           </Heading>
-          <NextLink href={`/contest/history/${contest.id}`}>
-            <Button variant="otog">สรุปผลการแข่งขัน</Button>
+          <NextLink href={`/contest/history/${contest.id}`} passHref>
+            <Button as="a" variant="otog">
+              สรุปผลการแข่งขัน
+            </Button>
           </NextLink>
         </VStack>
       </Center>

@@ -25,7 +25,6 @@ import {
   SubmissionWithProblem,
   SubmissionWithSourceCode,
 } from '@src/utils/api/Submission'
-import NextLink from 'next/link'
 import { PropsWithChildren, useEffect } from 'react'
 import { CopyIcon } from '@chakra-ui/icons'
 import { ONE_SECOND, toThDate } from '@src/utils/hooks/useTimer'

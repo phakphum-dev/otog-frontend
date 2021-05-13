@@ -2,7 +2,7 @@ import { Button, IconButton } from '@chakra-ui/button'
 import { FormControl, FormLabel } from '@chakra-ui/form-control'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Input } from '@chakra-ui/input'
-import { Box, Flex, Spacer, Stack, Text } from '@chakra-ui/layout'
+import { Box, Flex, Link, Spacer, Stack, Text } from '@chakra-ui/layout'
 import {
   Modal,
   ModalBody,
@@ -18,7 +18,7 @@ import { DatePicker } from '@src/components/DatePick'
 import { PageContainer } from '@src/components/PageContainer'
 
 import { Title, TitleLayout } from '@src/components/Title'
-import { getServerSideCookies } from '@src/utils/api'
+import { API_HOST, getServerSideCookies } from '@src/utils/api'
 import { getUserData } from '@src/utils/api/AuthProvider'
 import {
   Contest,
@@ -62,8 +62,8 @@ export default function AdminContestPage() {
       <TitleLayout>
         <Title icon={FaTools}>ระบบ GOTO</Title>
         <Text>
-          <NextLink href="/admin/problem">
-            <Button>โจทย์</Button>
+          <NextLink href="/admin/problem" passHref>
+            <Button as="a">โจทย์</Button>
           </NextLink>
         </Text>
       </TitleLayout>
@@ -264,7 +264,15 @@ const ContestProblemRow = (props: ContestProblemRowProps) => {
   return (
     <Tr>
       <Td>{problem.id}</Td>
-      <Td>{problem.name}</Td>
+      <Td>
+        <Link
+          isExternal
+          variant="hidden"
+          href={`${API_HOST}problem/doc/${problem.id}`}
+        >
+          {problem.name}
+        </Link>
+      </Td>
       <Td>
         <IconButton
           colorScheme={isOpen ? 'orange' : 'gray'}

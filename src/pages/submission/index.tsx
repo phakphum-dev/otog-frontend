@@ -28,8 +28,10 @@ export default function SubmissionPage(props: SubmissionPageProps) {
         </Head>
         <TitleLayout>
           <Title icon={FaTasks}>ผลตรวจ</Title>
-          <NextLink href="/submission/all">
-            <Button variant="outline">ผลตรวจรวม</Button>
+          <NextLink href="/submission/all" passHref>
+            <Button as="a" variant="outline">
+              ผลตรวจรวม
+            </Button>
           </NextLink>
         </TitleLayout>
         <HStack mb={4}>

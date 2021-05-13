@@ -90,8 +90,8 @@ export const SubmitModal = (props: SubmitModalProps) => {
 
           <ModalFooter>
             <HStack>
-              <NextLink href={`/problem/${problem.id}`}>
-                <Button>{submitted ? 'แก้ไข' : 'ใหม่'}</Button>
+              <NextLink href={`/problem/${problem.id}`} passHref>
+                <Button as="a">{submitted ? 'แก้ไข' : 'ใหม่'}</Button>
               </NextLink>
               <Button variant="otog" type="submit">
                 ส่ง
