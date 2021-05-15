@@ -46,7 +46,7 @@ export const EditableName = (props: EditableNameProps) => {
 
   return user?.id === userData.id ? (
     <Editable
-      defaultValue={userData?.showName}
+      defaultValue={user?.showName}
       isPreviewFocusable={false}
       onSubmit={onSubmit}
     >
