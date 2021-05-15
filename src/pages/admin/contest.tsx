@@ -31,7 +31,7 @@ import {
 import { ProblemWithSubmission, useProblems } from '@src/utils/api/Problem'
 import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
-import { memo, PropsWithChildren, useState } from 'react'
+import { memo, PropsWithChildren, useEffect, useState } from 'react'
 import {
   FaEye,
   FaEyeSlash,
@@ -241,6 +241,9 @@ interface ContestProblemRowProps {
 const ContestProblemRow = (props: ContestProblemRowProps) => {
   const { problem, isOpen: initialValue, contestId } = props
   const [isOpen, setOpen] = useState(initialValue)
+  useEffect(() => {
+    setOpen(initialValue)
+  }, [initialValue])
   const http = useHttp()
   const { onError } = useErrorToast()
 
