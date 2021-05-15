@@ -5,8 +5,8 @@ import {
   EditablePreview,
   useEditableControls,
 } from '@chakra-ui/editable'
-import { CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons'
-import { Flex, HStack } from '@chakra-ui/layout'
+import { EditIcon } from '@chakra-ui/icons'
+import { HStack } from '@chakra-ui/layout'
 import { useAuth } from '@src/utils/api/AuthProvider'
 import { useHttp } from '@src/utils/api/HttpProvider'
 import { UserProfile } from '@src/utils/api/User'
@@ -46,7 +46,7 @@ export const EditableName = (props: EditableNameProps) => {
 
   return user?.id === userData.id ? (
     <Editable
-      defaultValue={user?.showName}
+      defaultValue={userData?.showName}
       isPreviewFocusable={false}
       onSubmit={onSubmit}
     >
