@@ -22,7 +22,7 @@ export const Title = forwardRef(
       <Heading {...rest} ref={ref}>
         <HStack>
           <Icon as={icon} />
-          <Text noOfLines={noOfLines}>{children}</Text>
+          <Heading noOfLines={noOfLines}>{children}</Heading>
         </HStack>
       </Heading>
     )
