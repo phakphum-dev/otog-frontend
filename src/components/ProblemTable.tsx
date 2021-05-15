@@ -73,9 +73,9 @@ export const ProblemTable = (props: ProblemTableProps) => {
               #
             </Th>
             <Th>ชื่อ</Th>
-            <Th px={7} w={22} textAlign="center">
+            {/* <Th px={7} w={22} textAlign="center">
               ผ่าน
-            </Th>
+            </Th> */}
             <Th w={22} textAlign="center">
               ส่ง
             </Th>
@@ -200,8 +200,7 @@ const ProblemRow = (props: ProblemRowProps) => {
           MB)
         </Link>
       </Td>
-      <Td w={22} textAlign="center">
-        {/* TODO: remove optional chaining */}
+      {/* <Td w={22} textAlign="center">
         {problem.submission?.status === 'accept' ? (
           <Button variant="ghost" px={1} onClick={onPassedModalOpen}>
             {problem?.passed ?? 0}
@@ -209,7 +208,7 @@ const ProblemRow = (props: ProblemRowProps) => {
         ) : (
           problem?.passed ?? 0
         )}
-      </Td>
+      </Td> */}
       <Td w={22}>
         <SubmitButton onClick={onSubmitModalOpen} />
       </Td>

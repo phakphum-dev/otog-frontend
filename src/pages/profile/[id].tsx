@@ -12,6 +12,7 @@ import { UserProfile } from '@src/utils/api/User'
 import { useRouter } from 'next/router'
 import { useAuth } from '@src/utils/api/AuthProvider'
 import Head from 'next/head'
+import { EditableName } from '@src/components/EditableName'
 
 export interface ProfilePageProps {
   userData: UserProfile
@@ -28,8 +29,8 @@ export default function ProfilePage(props: ProfilePageProps) {
         <title>Profile #{id} | OTOG</title>
       </Head>
       <TitleLayout>
-        <Title icon={FaUser} noOfLines={1}>
-          {userData?.showName}
+        <Title icon={FaUser}>
+          <EditableName userData={userData} />
         </Title>
       </TitleLayout>
       <Stack direction={{ base: 'column', md: 'row' }} spacing={8}>
