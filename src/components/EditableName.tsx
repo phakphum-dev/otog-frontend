@@ -57,6 +57,6 @@ export const EditableName = (props: EditableNameProps) => {
       </HStack>
     </Editable>
   ) : (
-    <>{user?.showName}</>
+    <>{userData?.showName}</>
   )
 }
