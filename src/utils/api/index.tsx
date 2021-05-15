@@ -166,6 +166,7 @@ class ApiClient {
 
   removeToken(context: Context | null = null) {
     nookies.destroy(context, 'accessToken', { path: '/' })
+    nookies.destroy(context, 'RID', { path: '/' })
   }
 
   processQueue(error: any) {
