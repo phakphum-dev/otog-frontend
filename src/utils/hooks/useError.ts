@@ -53,25 +53,40 @@ export function getErrorToast(e: any): ErrorToastOptions {
         }
       case 409:
         const message = error.response.data.message
+        if (url === 'auth/register') {
+          if (message === 'username was taken.') {
+            return {
+              title: 'ลงทะเบียนไม่สำเร็จ !',
+              description: 'ชื่อผู้ใช้นี้ ได้ถูกใช้ไปแล้ว',
+              status: 'error',
+              isClosable: true,
+              code: 409,
+            }
+          }
+          if (message === 'showName was taken.') {
+            return {
+              title: 'ลงทะเบียนไม่สำเร็จ !',
+              description: 'ชื่อที่ใช้แสดงนี้ ได้ถูกใช้ไปแล้ว',
+              status: 'error',
+              isClosable: true,
+              code: 409,
+            }
+          }
+        }
         if (message === 'username was taken.') {
           return {
-            title: 'ลงทะเบียนไม่สำเร็จ !',
-            description: 'ชื่อผู้ใช้นี้ ได้ถูกใช้ไปแล้ว',
+            title: 'ชื่อผู้ใช้นี้ ได้ถูกใช้ไปแล้ว!',
             status: 'error',
             isClosable: true,
             code: 409,
           }
         }
-        if (message === 'showName was taken.') {
-          return {
-            title: 'ลงทะเบียนไม่สำเร็จ !',
-            description: 'ชื่อที่ใช้แสดงนี้ ได้ถูกใช้ไปแล้ว',
-            status: 'error',
-            isClosable: true,
-            code: 409,
-          }
+        return {
+          title: 'เกิดข้อมูลซ้ำซ้อน',
+          status: 'error',
+          isClosable: true,
+          code: 409,
         }
-        break
       case undefined: {
         return {
           title: 'เซิฟเวอร์ยังไม่เปิด',
