@@ -98,6 +98,7 @@ export function useLatestSubmission() {
     isAuthenticated ? 'submission/latest' : null,
     {
       initialData,
+      revalidateOnMount: true,
     }
   )
 }
