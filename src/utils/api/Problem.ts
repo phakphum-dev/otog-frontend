@@ -16,7 +16,7 @@ export interface Problem {
 }
 export type ProblemWithSubmission = Problem & {
   submission: Submission | null
-  passed: number
+  passedCount: number
 }
 
 export function usePassedUsers(problemId: number) {

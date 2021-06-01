@@ -37,6 +37,7 @@ import { CodeModal } from './Code'
 import { Submission } from '@src/utils/api/Submission'
 import { RenderLater } from './RenderLater'
 import { ONE_SECOND } from '@src/utils/hooks/useTimer'
+import { useAuth } from '@src/utils/api/AuthProvider'
 
 export type FilterFunction = (problem: ProblemWithSubmission) => boolean
 export interface ProblemTableProps {
@@ -73,9 +74,9 @@ export const ProblemTable = (props: ProblemTableProps) => {
               #
             </Th>
             <Th>ชื่อ</Th>
-            {/* <Th px={7} w={22} textAlign="center">
+            <Th px={7} w={22} textAlign="center">
               ผ่าน
-            </Th> */}
+            </Th>
             <Th w={22} textAlign="center">
               ส่ง
             </Th>
@@ -180,6 +181,8 @@ const ProblemRow = (props: ProblemRowProps) => {
     onPassedOpen()
     setModalPassed(problem.id)
   }
+  const { isAdmin } = useAuth()
+
   const bg = useStatusColor(problem.submission)
 
   return (
@@ -200,15 +203,16 @@ const ProblemRow = (props: ProblemRowProps) => {
           MB)
         </Link>
       </Td>
-      {/* <Td w={22} textAlign="center">
-        {problem.submission?.status === 'accept' ? (
+      <Td w={22} textAlign="center">
+        {problem.passedCount &&
+        (isAdmin || problem.submission?.status === 'accept') ? (
           <Button variant="ghost" px={1} onClick={onPassedModalOpen}>
-            {problem?.passed ?? 0}
+            {problem.passedCount}
           </Button>
         ) : (
-          problem?.passed ?? 0
+          problem.passedCount
         )}
-      </Td> */}
+      </Td>
       <Td w={22}>
         <SubmitButton onClick={onSubmitModalOpen} />
       </Td>
@@ -227,7 +231,7 @@ const PassedModal = (props: PassedModalProps) => {
     <Modal isOpen={isOpen} onClose={onClose} size="xs">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>ผู้ที่ผ่าน</ModalHeader>
+        <ModalHeader>ผู้ที่ผ่านข้อที่ {modalPassed}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Stack>

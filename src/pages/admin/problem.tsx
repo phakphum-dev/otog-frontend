@@ -172,7 +172,7 @@ const CreateProblemModalButton = () => {
                     {...zipProps}
                   />
                   <FormHelperText>
-                    ไฟล์เทสต์เคสอยู่ในรูปแบบ x.in, x.sol โดยที่ x เริ่มที่ 1
+                    Testcase Files อยู่ในรูปแบบ 1.in, 1.sol, ...
                   </FormHelperText>
                 </FormControl>
               </Stack>
