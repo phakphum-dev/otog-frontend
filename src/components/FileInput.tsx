@@ -1,9 +1,10 @@
-import { forwardRef, useEffect, useRef, ForwardedRef } from 'react'
+import { ForwardedRef, forwardRef, useEffect, useRef } from 'react'
 import {
   Button,
   IconButton,
   Input,
   InputGroup,
+  InputGroupProps,
   InputProps,
   InputRightAddon,
   useColorModeValue,
@@ -11,7 +12,10 @@ import {
 import { FaUpload } from 'react-icons/fa'
 
 export interface UploadFileProps extends InputProps {
-  fileName?: string
+  fileInputProps: {
+    fileName?: string
+  }
+  inputGroupProps?: InputGroupProps
 }
 
 export function useInputRef(ref: ForwardedRef<HTMLInputElement>) {
@@ -29,19 +33,12 @@ export function useInputRef(ref: ForwardedRef<HTMLInputElement>) {
 
 export const FileInput = forwardRef(
   (props: UploadFileProps, ref: ForwardedRef<HTMLInputElement>) => {
-    const { isRequired, fileName, name, onChange, accept, ...rest } = props
+    const { fileInputProps, inputGroupProps, ...rest } = props
+    const { fileName } = fileInputProps
     const { inputRef, onClick } = useInputRef(ref)
     return (
-      <InputGroup {...rest}>
-        <Input
-          type="file"
-          ref={inputRef}
-          display="none"
-          name={name}
-          onChange={onChange}
-          accept={accept}
-          isRequired={isRequired}
-        />
+      <InputGroup {...inputGroupProps}>
+        <Input type="file" ref={inputRef} display="none" {...rest} />
         <Input
           value={fileName ?? ''}
           placeholder="ยังไม่ได้เลือกไฟล์"

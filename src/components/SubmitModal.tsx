@@ -40,7 +40,7 @@ export const SubmitModal = (props: SubmitModalProps) => {
   const { resetFileInput, fileProps } = useFileInput()
   useEffect(() => {
     resetFileInput()
-  }, [problem])
+  }, [problem.id])
 
   const http = useHttp()
   const { onError } = useErrorToast()

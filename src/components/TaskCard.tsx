@@ -153,9 +153,9 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
         <HStack justify="flex-end">
           <FileInput
             isRequired
-            size="sm"
             name="sourceCode"
             accept=".c,.cpp,.py"
+            inputGroupProps={{ size: 'sm' }}
             {...fileProps}
           />
           <Button variant="otog" size="sm" type="submit">

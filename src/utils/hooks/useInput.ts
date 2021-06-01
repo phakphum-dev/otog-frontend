@@ -16,6 +16,12 @@ export function useFileInput() {
     file,
     setFile,
     resetFileInput,
-    fileProps: { ref, onChange, fileName: file?.name },
+    fileProps: {
+      ref,
+      onChange,
+      fileInputProps: {
+        fileName: file?.name,
+      },
+    },
   }
 }
