@@ -17,6 +17,7 @@ import { AuthProvider } from '@src/utils/api/AuthProvider'
 
 import Error from 'next/error'
 import { ErrorToastOptions } from '@src/utils/hooks/useError'
+import { Chat } from '@src/components/Chat'
 
 const TopProgressBar = dynamic(() => import('@src/components/ProgressBar'), {
   ssr: false,
@@ -59,6 +60,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               ) : (
                 <Component {...props} />
               )}
+              <Chat />
               <Footer />
             </Flex>
           </AuthProvider>
