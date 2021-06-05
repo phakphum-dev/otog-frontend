@@ -5,14 +5,12 @@ import { useDisclosure } from '@chakra-ui/hooks'
 import { SmallCloseIcon } from '@chakra-ui/icons'
 import {
   Box,
-  BoxProps,
   Circle,
   Code,
   Flex,
   Heading,
   HStack,
   Text,
-  TextProps,
 } from '@chakra-ui/layout'
 import { Spinner } from '@chakra-ui/spinner'
 import { Textarea } from '@chakra-ui/textarea'
@@ -29,6 +27,7 @@ import {
   useState,
 } from 'react'
 import { IoChatbubbleEllipses, IoSend } from 'react-icons/io5'
+import { useChat, Message } from '@src/utils/hooks/useChat'
 
 const ChatButton = (props: IconButtonProps) => {
   const bg = useColorModeValue('white', 'gray.800')
@@ -72,7 +71,7 @@ export const Chat = () => {
   const { isOpen, onClose, onToggle } = useDisclosure()
   const bg = useColorModeValue('white', 'gray.800')
   const { ref, isIntersecting } = useOnScreen()
-  const [newMessages, setNewMessages] = useState(mockNewMessages)
+  const [newMessages, setNewMessages] = useState<Message[]>([])
   const { user } = useAuth()
   useEffect(() => {
     console.log('load more', isIntersecting)
@@ -80,12 +79,10 @@ export const Chat = () => {
   if (!user) {
     return null
   }
-  const appendNewMessage = (message: string) => {
-    setNewMessages((prevMessages) => [
-      ...prevMessages,
-      { message, showName: user.showName, id: user.id },
-    ])
+  const appendMessage = (newMessage: Message) => {
+    setNewMessages((prevMessages) => [...prevMessages, newMessage])
   }
+  const { emitChat } = useChat(appendMessage)
 
   return (
     <>
@@ -124,17 +121,19 @@ export const Chat = () => {
               overflowX="hidden"
             >
               <Flex direction="column">
-                {newMessages.map((message, index, newMessages) => (
-                  <ChatMessage
-                    key={index}
-                    {...message}
-                    repeated={
-                      !!index && message.id === newMessages[index - 1].id
-                    }
-                  />
-                ))}
+                {newMessages.map((message, index, newMessages) => {
+                  const [id] = message
+                  const [latestMessageId] = newMessages[index - 1]
+                  return (
+                    <ChatMessage
+                      key={id}
+                      message={message}
+                      repeated={!!index && id === latestMessageId}
+                    />
+                  )
+                })}
               </Flex>
-              <Flex direction="column-reverse">
+              {/* <Flex direction="column-reverse">
                 {messages.map((message, index, messages) => (
                   <ChatMessage
                     key={index}
@@ -148,9 +147,9 @@ export const Chat = () => {
               </Flex>
               <Flex justify="center" py={2} ref={ref}>
                 <Spinner />
-              </Flex>
+              </Flex> */}
             </Flex>
-            <ChatInput appendNewMessage={appendNewMessage} />
+            <ChatInput emitChat={emitChat} />
           </Flex>
         </SlideFade>
       </Box>
@@ -159,11 +158,11 @@ export const Chat = () => {
 }
 
 interface ChatInputProps {
-  appendNewMessage: (message: string) => void
+  emitChat?: (message: string) => void
 }
 
 const ChatInput = (props: ChatInputProps) => {
-  const { appendNewMessage } = props
+  const { emitChat } = props
   const [message, setMessage] = useState('')
   const toast = useToast()
   const onSubmit = () => {
@@ -179,8 +178,7 @@ const ChatInput = (props: ChatInputProps) => {
         })
         return
       }
-      appendNewMessage(msg)
-      console.log('send', msg)
+      emitChat?.(msg)
     }
     setMessage('')
   }
@@ -218,101 +216,20 @@ const ChatInput = (props: ChatInputProps) => {
   )
 }
 
-interface Message {
-  message: string
-  id?: number
-  showName: string
-  rating?: number
-}
-
-interface ChatMessageProps extends Message {
+interface ChatMessageProps {
+  message: Message
   repeated?: boolean
 }
-
-let mockNewMessages: Message[] = [
-  {
-    message: 'test1',
-    showName: 'bruh',
-    id: 1,
-  },
-  {
-    message: 'test2',
-    showName: 'bruh',
-    id: 1,
-  },
-  {
-    message: 'test3',
-    showName: 'bruh',
-    id: 1,
-  },
-  {
-    message: `ขออธิบายในส่วนของตรงนี้ว่า
-\`for (int di : {-1, 0, 1}) {
-  int ni = i + di;
-  // do something
-}\`
-*BOLD* _Italic_ ~Strikethrough~`,
-    showName: 'Anos',
-    id: 391,
-  },
-]
-const messages: Message[] = [
-  {
-    message: 'test',
-    showName: 'bruh',
-    id: 1,
-  },
-  {
-    message: '............................................',
-    showName: 'bruh',
-    id: 1,
-  },
-  {
-    message:
-      'เรื่องราวมีอยู่ว่าขณะท่ี CrazyDave เพื่อนบ้านของคุณซึ่งเขามีบ้านอยู่ติดกับบ้านคุณและคุณก็ มีบ้านติดอยู่กับบ้านของเขา(?)กําลังทําTaco สุดแสนจะอร',
-    showName: 'bruh',
-    id: 1,
-  },
-  {
-    message:
-      'เรื่องราวมีอยู่ว่าขณะท่ี CrazyDave เพื่อนบ้านของคุณซึ่งเขามีบ้านอยู่ติดกับบ้านคุณและคุณก็ มีบ้านติดอยู่กับบ้านของเขา(?)กําลังทําTaco สุดแสนจะอร',
-    showName: 'Anos',
-    id: 391,
-  },
-  {
-    message:
-      'abdfsdfcsd   hfj kshdjkfh sjkdh fjklsdh is one of the best thing to',
-    showName: 'csdhr',
-    id: 4,
-  },
-  {
-    message: 'abdggggc',
-    showName: 'bruh',
-    id: 3,
-  },
-  {
-    message: `ขออธิบายในส่วนของตรงนี้ว่า
-\`for (int di : {-1, 0, 1}) {
-  int ni = i + di;
-  // do something
-}\`
-*BOLD* _Italic_ ~Strikethrough~`,
-    showName: 'bruh',
-    id: 3,
-  },
-  {
-    message: 'abdggggc',
-    showName: 'bruh',
-    id: 3,
-  },
-]
 
 const onlineUsers = ['Anos', 'bruh', 'ไม่ใช่ตอต่อต้อต๊อต๋อ']
 
 const ChatMessage = (props: ChatMessageProps) => {
-  const { message, showName, id, rating, repeated = false } = props
+  const { message, repeated = false } = props
+  const [id, text, timestamp, sender] = message
+  const [senderId, senderName, senderRating] = sender
+
   const { user } = useAuth()
-  const isOther = user?.id !== id
+  const isOther = user?.id !== senderId
   const displayName = isOther && !repeated
 
   const bg = useColorModeValue('gray.100', 'gray.800')
@@ -328,11 +245,11 @@ const ChatMessage = (props: ChatMessageProps) => {
       <Flex direction="column">
         {displayName && (
           <Text fontSize="xs" color="gray.500" px={1}>
-            {showName}
+            {senderName}
           </Text>
         )}
         <Text
-          title={'timestamp'}
+          title={timestamp}
           px={2}
           py={1}
           mr={isOther ? 2 : undefined}
@@ -344,7 +261,7 @@ const ChatMessage = (props: ChatMessageProps) => {
           borderColor={isOther ? borderColor : 'otog'}
           whiteSpace="pre-wrap"
         >
-          {formatParser(message)}
+          {formatParser(text)}
         </Text>
       </Flex>
     </Flex>
