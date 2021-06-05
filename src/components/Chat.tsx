@@ -3,7 +3,17 @@ import { Button, IconButton, IconButtonProps } from '@chakra-ui/button'
 import { useColorModeValue } from '@chakra-ui/color-mode'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { SmallCloseIcon } from '@chakra-ui/icons'
-import { Box, Circle, Flex, Heading, HStack, Text } from '@chakra-ui/layout'
+import {
+  Box,
+  BoxProps,
+  Circle,
+  Code,
+  Flex,
+  Heading,
+  HStack,
+  Text,
+  TextProps,
+} from '@chakra-ui/layout'
 import { Spinner } from '@chakra-ui/spinner'
 import { Textarea } from '@chakra-ui/textarea'
 import { useToast } from '@chakra-ui/toast'
@@ -11,7 +21,13 @@ import { Tooltip, TooltipProps } from '@chakra-ui/tooltip'
 import { SlideFade } from '@chakra-ui/transition'
 import { useAuth } from '@src/utils/api/AuthProvider'
 import { useOnScreen } from '@src/utils/hooks/useOnScreen'
-import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
+import {
+  ChangeEvent,
+  KeyboardEvent,
+  ReactNode,
+  useEffect,
+  useState,
+} from 'react'
 import { IoChatbubbleEllipses, IoSend } from 'react-icons/io5'
 
 const ChatButton = (props: IconButtonProps) => {
@@ -230,7 +246,12 @@ let mockNewMessages: Message[] = [
     id: 1,
   },
   {
-    message: 'abdfsdfcsd',
+    message: `ขออธิบายในส่วนของตรงนี้ว่า
+\`for (int di : {-1, 0, 1}) {
+  int ni = i + di;
+  // do something
+}\`
+*BOLD* _Italic_ ~Strikethrough~`,
     showName: 'Anos',
     id: 391,
   },
@@ -270,7 +291,12 @@ const messages: Message[] = [
     id: 3,
   },
   {
-    message: 'abdggggc',
+    message: `ขออธิบายในส่วนของตรงนี้ว่า
+\`for (int di : {-1, 0, 1}) {
+  int ni = i + di;
+  // do something
+}\`
+*BOLD* _Italic_ ~Strikethrough~`,
     showName: 'bruh',
     id: 3,
   },
@@ -316,10 +342,56 @@ const ChatMessage = (props: ChatMessageProps) => {
           bg={isOther ? bg : 'otog'}
           color={isOther ? undefined : 'white'}
           borderColor={isOther ? borderColor : 'otog'}
+          whiteSpace="pre-wrap"
         >
-          {message}
+          {formatParser(message)}
         </Text>
       </Flex>
     </Flex>
   )
+}
+
+const formatter: Record<string, (token: string) => ReactNode> = {
+  _: (token) => <Text as="i">{token}</Text>,
+  '~': (token) => <Text as="s">{token}</Text>,
+  '*': (token) => <Text as="strong">{token}</Text>,
+  '`': (token) => (
+    <Code
+      color="inherit"
+      bg={useColorModeValue('whiteAlpha.400', 'blackAlpha.300')}
+    >
+      {token}
+    </Code>
+  ),
+}
+
+const formatted = (token: string, format: string) => {
+  return formatter[format]?.(token) ?? <Text as="p">{token}</Text>
+}
+
+const formatParser = (message: string) => {
+  const tokens: ReactNode[] = []
+  let token: string = ''
+  let format: string = ''
+  for (let i = 0; i < message.length; i++) {
+    if (format) {
+      if (message[i] === format) {
+        tokens.push(formatted(token, format))
+        format = ''
+        token = ''
+      } else {
+        token += message[i]
+      }
+    } else if (message[i] in formatter) {
+      tokens.push(token)
+      format = message[i]
+      token = ''
+    } else {
+      token += message[i]
+    }
+  }
+  if (token) {
+    tokens.push(token)
+  }
+  return tokens
 }
