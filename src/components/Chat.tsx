@@ -352,13 +352,13 @@ const ChatMessage = (props: ChatMessageProps) => {
 }
 
 const formatter: Record<string, (token: string) => ReactNode> = {
-  _: (token) => <Text as="i">{token}</Text>,
-  '~': (token) => <Text as="s">{token}</Text>,
-  '*': (token) => <Text as="strong">{token}</Text>,
+  _: (token) => <i>{token}</i>,
+  '~': (token) => <s>{token}</s>,
+  '*': (token) => <b>{token}</b>,
   '`': (token) => (
     <Code
       color="inherit"
-      bg={useColorModeValue('whiteAlpha.400', 'blackAlpha.300')}
+      bg={useColorModeValue('transparent', 'blackAlpha.300')}
     >
       {token}
     </Code>
@@ -366,7 +366,7 @@ const formatter: Record<string, (token: string) => ReactNode> = {
 }
 
 const formatted = (token: string, format: string) => {
-  return formatter[format]?.(token) ?? <Text as="p">{token}</Text>
+  return formatter[format]?.(token) ?? <>{token}</>
 }
 
 const formatParser = (message: string) => {
@@ -374,18 +374,14 @@ const formatParser = (message: string) => {
   let token: string = ''
   let format: string = ''
   for (let i = 0; i < message.length; i++) {
-    if (format) {
-      if (message[i] === format) {
-        tokens.push(formatted(token, format))
-        format = ''
-        token = ''
-      } else {
-        token += message[i]
-      }
-    } else if (message[i] in formatter) {
+    if (format && message[i] === format) {
+      tokens.push(formatted(token.slice(1), format))
+      format = ''
+      token = ''
+    } else if (!format && message[i] in formatter) {
       tokens.push(token)
       format = message[i]
-      token = ''
+      token = message[i]
     } else {
       token += message[i]
     }
