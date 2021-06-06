@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import socketIOClient from 'socket.io-client'
-import { API_HOST } from '../api'
+import { useAuth } from '../api/AuthProvider'
+import { useHttp } from '../api/HttpProvider'
+import { SOCKET_HOST } from '../config'
 
 export type Message = [
   id: number,
@@ -11,20 +13,29 @@ export type Message = [
 
 export const useChat = (appendMessage: (message: Message) => void) => {
   const [emitChat, setEmitChat] = useState<(message: string) => void>()
+  const { isAuthenticated } = useAuth()
+  const http = useHttp()
+
   useEffect(() => {
-    const socket = socketIOClient(API_HOST)
-    socket.on('chat', (args: Message) => {
-      appendMessage(args)
-    })
-    const emit = (message: string) => {
-      socket.emit('chat-server', message, (data: any) => {
-        console.log(data)
+    if (isAuthenticated) {
+      const socket = socketIOClient(SOCKET_HOST, {
+        query: {
+          token: http.getAccessToken(),
+        },
       })
+      socket.on('chat', (message: Message) => {
+        appendMessage(message)
+      })
+      const emit = (message: string) => {
+        socket.emit('chat-server', message, async (response: any) => {
+          console.log(response)
+        })
+      }
+      setEmitChat(() => emit)
+      return () => {
+        socket.disconnect()
+      }
     }
-    setEmitChat(emit)
-    return () => {
-      socket.disconnect()
-    }
-  }, [])
+  }, [isAuthenticated])
   return { emitChat }
 }

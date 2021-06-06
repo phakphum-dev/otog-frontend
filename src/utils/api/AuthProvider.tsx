@@ -88,7 +88,7 @@ export const AuthProvider = (props: AuthValueProps) => {
 
   useEffect(() => {
     http.openLoginModal = loginModal.onOpen
-    http.refresh = forceUpdate
+    http.updateOnLogout = forceUpdate
   }, [http])
 
   const value = {

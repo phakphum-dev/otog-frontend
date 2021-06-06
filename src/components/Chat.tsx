@@ -72,17 +72,17 @@ export const Chat = () => {
   const bg = useColorModeValue('white', 'gray.800')
   const { ref, isIntersecting } = useOnScreen()
   const [newMessages, setNewMessages] = useState<Message[]>([])
-  const { user } = useAuth()
+  const { isAuthenticated } = useAuth()
   useEffect(() => {
     console.log('load more', isIntersecting)
   }, [isIntersecting])
-  if (!user) {
-    return null
-  }
   const appendMessage = (newMessage: Message) => {
     setNewMessages((prevMessages) => [...prevMessages, newMessage])
   }
   const { emitChat } = useChat(appendMessage)
+  if (!isAuthenticated) {
+    return null
+  }
 
   return (
     <>
@@ -123,12 +123,11 @@ export const Chat = () => {
               <Flex direction="column">
                 {newMessages.map((message, index, newMessages) => {
                   const [id] = message
-                  const [latestMessageId] = newMessages[index - 1]
                   return (
                     <ChatMessage
                       key={id}
                       message={message}
-                      repeated={!!index && id === latestMessageId}
+                      repeated={!!index && id === newMessages[index - 1][0]}
                     />
                   )
                 })}
@@ -229,7 +228,8 @@ const ChatMessage = (props: ChatMessageProps) => {
   const [senderId, senderName, senderRating] = sender
 
   const { user } = useAuth()
-  const isOther = user?.id !== senderId
+  const isMyself = user?.id === senderId
+  const isOther = !isMyself
   const displayName = isOther && !repeated
 
   const bg = useColorModeValue('gray.100', 'gray.800')
@@ -252,13 +252,12 @@ const ChatMessage = (props: ChatMessageProps) => {
           title={timestamp}
           px={2}
           py={1}
-          mr={isOther ? 2 : undefined}
-          ml={isOther ? undefined : 2}
+          {...{ [isMyself ? 'ml' : 'mr']: 2 }}
           rounded={16}
           borderWidth="1px"
-          bg={isOther ? bg : 'otog'}
-          color={isOther ? undefined : 'white'}
-          borderColor={isOther ? borderColor : 'otog'}
+          bg={isMyself ? 'otog' : bg}
+          color={isMyself ? 'white' : undefined}
+          borderColor={isMyself ? 'otog' : borderColor}
           whiteSpace="pre-wrap"
         >
           {formatParser(text)}

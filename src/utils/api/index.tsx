@@ -110,7 +110,7 @@ class ApiClient {
                   e = e as AxiosError
                   if (e.response?.status === 403) {
                     this.removeToken(context)
-                    this.refresh()
+                    this.updateOnLogout()
                     return Promise.reject(e)
                   }
                 }
@@ -202,7 +202,10 @@ class ApiClient {
 
   // this will be set only on client
   openLoginModal() {}
-  refresh() {}
+  updateOnLogout() {}
+  getAccessToken() {
+    return nookies.get(null).accessToken
+  }
 }
 
 export type Context = GetServerSidePropsContext<ParsedUrlQuery>
