@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import socketIOClient from 'socket.io-client'
+import { useSWRInfinite } from 'swr'
 import { useAuth } from '../api/AuthProvider'
 import { useHttp } from '../api/HttpProvider'
 import { SOCKET_HOST } from '../config'
@@ -11,15 +12,45 @@ export type Message = [
   user: [id: number, showName: string, rating: number]
 ]
 
-export const useChat = (appendMessage: (message: Message) => void) => {
-  const [emitChat, setEmitChat] = useState<(message: string) => void>()
+export const useChat = () => {
   const { isAuthenticated } = useAuth()
-  const http = useHttp()
 
+  const { data: oldMessages, setSize, size, isValidating } = useSWRInfinite<
+    Message[]
+  >(
+    (pageIndex, previousPageData) => {
+      if (!isAuthenticated) return null
+
+      // reached the end
+      if (previousPageData && !previousPageData.length) return null
+
+      // first page, we don't have `previousPageData`
+      if (pageIndex === 0 || !previousPageData) return 'chat'
+
+      // add the cursor to the API endpoint
+      return `chat?offset=${previousPageData[previousPageData?.length - 1][0]}`
+    },
+    { revalidateOnFocus: false, revalidateOnReconnect: false }
+  )
+  const messages = useMemo(() => oldMessages?.flatMap((messages) => messages), [
+    oldMessages,
+  ])
+  const loadMore = () => {
+    setSize((size) => size + 1)
+  }
+  const hasMore = isValidating || (oldMessages && oldMessages.length === size)
+
+  const [newMessages, setNewMessages] = useState<Message[]>([])
+  const appendMessage = (newMessage: Message) => {
+    setNewMessages((prevMessages) => [...prevMessages, newMessage])
+  }
+
+  const [emitChat, setEmitChat] = useState<(message: string) => void>()
+  const http = useHttp()
   useEffect(() => {
     if (isAuthenticated) {
       const socket = socketIOClient(SOCKET_HOST, {
-        query: {
+        auth: {
           token: http.getAccessToken(),
         },
       })
@@ -27,9 +58,7 @@ export const useChat = (appendMessage: (message: Message) => void) => {
         appendMessage(message)
       })
       const emit = (message: string) => {
-        socket.emit('chat-server', message, async (response: any) => {
-          console.log(response)
-        })
+        socket.emit('chat-server', message)
       }
       setEmitChat(() => emit)
       return () => {
@@ -37,5 +66,6 @@ export const useChat = (appendMessage: (message: Message) => void) => {
       }
     }
   }, [isAuthenticated])
-  return { emitChat }
+
+  return { emitChat, newMessages, messages, loadMore, hasMore }
 }

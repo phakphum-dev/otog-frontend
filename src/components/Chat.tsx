@@ -10,7 +10,9 @@ import {
   Flex,
   Heading,
   HStack,
+  Link,
   Text,
+  VStack,
 } from '@chakra-ui/layout'
 import { Spinner } from '@chakra-ui/spinner'
 import { Textarea } from '@chakra-ui/textarea'
@@ -70,16 +72,17 @@ const OnlineUsersTooltip = (props: TooltipProps) => {
 export const Chat = () => {
   const { isOpen, onClose, onToggle } = useDisclosure()
   const bg = useColorModeValue('white', 'gray.800')
+
+  const { emitChat, messages, hasMore, loadMore, newMessages } = useChat()
+
   const { ref, isIntersecting } = useOnScreen()
-  const [newMessages, setNewMessages] = useState<Message[]>([])
-  const { isAuthenticated } = useAuth()
   useEffect(() => {
-    console.log('load more', isIntersecting)
+    if (isIntersecting) {
+      loadMore()
+    }
   }, [isIntersecting])
-  const appendMessage = (newMessage: Message) => {
-    setNewMessages((prevMessages) => [...prevMessages, newMessage])
-  }
-  const { emitChat } = useChat(appendMessage)
+
+  const { isAuthenticated } = useAuth()
   if (!isAuthenticated) {
     return null
   }
@@ -121,32 +124,39 @@ export const Chat = () => {
               overflowX="hidden"
             >
               <Flex direction="column">
-                {newMessages.map((message, index, newMessages) => {
-                  const [id] = message
+                {newMessages.map((message, index) => {
+                  const [id, _, __, [senderId]] = message
+                  const latestSenderId = index && newMessages[index - 1][3][0]
                   return (
                     <ChatMessage
                       key={id}
                       message={message}
-                      repeated={!!index && id === newMessages[index - 1][0]}
+                      repeated={senderId === latestSenderId}
                     />
                   )
                 })}
               </Flex>
-              {/* <Flex direction="column-reverse">
-                {messages.map((message, index, messages) => (
-                  <ChatMessage
-                    key={index}
-                    {...message}
-                    repeated={
-                      index + 1 !== messages.length &&
-                      message.id === messages[index + 1].id
-                    }
-                  />
-                ))}
+              <Flex direction="column-reverse">
+                {messages?.map((message, index) => {
+                  const [id, _, __, [senderId]] = message
+                  const latestSenderId =
+                    index + 1 === messages.length
+                      ? -1
+                      : messages[index + 1][3][0]
+                  return (
+                    <ChatMessage
+                      key={id}
+                      message={message}
+                      repeated={senderId === latestSenderId}
+                    />
+                  )
+                })}
               </Flex>
-              <Flex justify="center" py={2} ref={ref}>
-                <Spinner />
-              </Flex> */}
+              {hasMore && (
+                <Flex justify="center" py={2} ref={ref}>
+                  <Spinner />
+                </Flex>
+              )}
             </Flex>
             <ChatInput emitChat={emitChat} />
           </Flex>
@@ -242,7 +252,7 @@ const ChatMessage = (props: ChatMessageProps) => {
       ) : (
         isOther && <Box minW={6} mr={1} />
       )}
-      <Flex direction="column">
+      <VStack align="flex-start" spacing={0}>
         {displayName && (
           <Text fontSize="xs" color="gray.500" px={1}>
             {senderName}
@@ -259,30 +269,45 @@ const ChatMessage = (props: ChatMessageProps) => {
           color={isMyself ? 'white' : undefined}
           borderColor={isMyself ? 'otog' : borderColor}
           whiteSpace="pre-wrap"
+          wordBreak="break-word"
         >
           {formatParser(text)}
         </Text>
-      </Flex>
+      </VStack>
     </Flex>
   )
 }
 
-const formatter: Record<string, (token: string) => ReactNode> = {
-  _: (token) => <i>{token}</i>,
-  '~': (token) => <s>{token}</s>,
-  '*': (token) => <b>{token}</b>,
-  '`': (token) => (
-    <Code
-      color="inherit"
-      bg={useColorModeValue('transparent', 'blackAlpha.300')}
-    >
-      {token}
-    </Code>
-  ),
+const matcher: Record<
+  string,
+  { match: string; formatter: (token: string) => ReactNode }
+> = {
+  _: { match: '_', formatter: (token) => <i>{token}</i> },
+  '~': { match: '~', formatter: (token) => <s>{token}</s> },
+  '*': { match: '*', formatter: (token) => <b>{token}</b> },
+  '`': {
+    match: '`',
+    formatter: (token) => (
+      <Code
+        color="inherit"
+        bg={useColorModeValue('transparent', 'blackAlpha.300')}
+      >
+        {token}
+      </Code>
+    ),
+  },
+  '[': {
+    match: ']',
+    formatter: (token) => (
+      <Link href={token} isExternal textDecor="underline" color="inherit">
+        {token}
+      </Link>
+    ),
+  },
 }
 
 const formatted = (token: string, format: string) => {
-  return formatter[format]?.(token) ?? <>{token}</>
+  return matcher[format]?.formatter(token) ?? <>{token}</>
 }
 
 const formatParser = (message: string) => {
@@ -290,11 +315,11 @@ const formatParser = (message: string) => {
   let token: string = ''
   let format: string = ''
   for (let i = 0; i < message.length; i++) {
-    if (format && message[i] === format) {
+    if (format && matcher[format].match === message[i]) {
       tokens.push(formatted(token.slice(1), format))
       format = ''
       token = ''
-    } else if (!format && message[i] in formatter) {
+    } else if (!format && message[i] in matcher) {
       tokens.push(token)
       format = message[i]
       token = message[i]
