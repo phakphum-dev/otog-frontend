@@ -30,6 +30,7 @@ import {
 } from 'react'
 import { IoChatbubbleEllipses, IoSend } from 'react-icons/io5'
 import { useChat, Message } from '@src/utils/hooks/useChat'
+import { useOnlineUsers } from '@src/utils/api/User'
 
 const ChatButton = (props: IconButtonProps) => {
   const bg = useColorModeValue('white', 'gray.800')
@@ -51,12 +52,13 @@ const ChatButton = (props: IconButtonProps) => {
 }
 
 const OnlineUsersTooltip = (props: TooltipProps) => {
+  const { data: onlineUsers } = useOnlineUsers()
   return (
     <Tooltip
       hasArrow
       label={
         <Flex flexDir="column" justify="flex-start">
-          {onlineUsers.map((showName, index) => (
+          {onlineUsers?.map((showName, index) => (
             <HStack key={index}>
               <Circle size={2} bg="green.400" />
               <Text>{showName}</Text>

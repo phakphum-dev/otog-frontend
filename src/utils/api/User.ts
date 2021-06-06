@@ -49,3 +49,7 @@ export function useUsers() {
 export function useUser(userId: number) {
   return useSWR<User>(`user/${userId}/profile`)
 }
+
+export function useOnlineUsers() {
+  return useSWR<string[]>('user/online')
+}

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import socketIOClient from 'socket.io-client'
-import { useSWRInfinite } from 'swr'
+import { mutate, useSWRInfinite } from 'swr'
 import { useAuth } from '../api/AuthProvider'
 import { useHttp } from '../api/HttpProvider'
 import { SOCKET_HOST } from '../config'
@@ -62,9 +62,13 @@ export const useChat = () => {
       socket.on('chat', (message: Message) => {
         appendMessage(message)
       })
+      socket.on('online', () => {
+        mutate('user/online')
+      })
       const emit = (message: string) => {
         socket.emit('chat-server', message)
       }
+
       setEmitChat(() => emit)
       return () => {
         socket.disconnect()
