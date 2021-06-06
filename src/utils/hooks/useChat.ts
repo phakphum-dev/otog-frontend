@@ -12,9 +12,8 @@ export type Message = [
   user: [id: number, showName: string, rating: number]
 ]
 
-export const useChat = () => {
+const useLoadChat = () => {
   const { isAuthenticated } = useAuth()
-
   const { data: oldMessages, setSize, size, isValidating } = useSWRInfinite<
     Message[]
   >(
@@ -40,6 +39,14 @@ export const useChat = () => {
   }
   const hasMore = isValidating || (oldMessages && oldMessages.length === size)
 
+  return { messages, loadMore, hasMore }
+}
+
+export const useChat = () => {
+  const { isAuthenticated } = useAuth()
+
+  const oldChat = useLoadChat()
+
   const [newMessages, setNewMessages] = useState<Message[]>([])
   const appendMessage = (newMessage: Message) => {
     setNewMessages((prevMessages) => [...prevMessages, newMessage])
@@ -50,9 +57,7 @@ export const useChat = () => {
   useEffect(() => {
     if (isAuthenticated) {
       const socket = socketIOClient(SOCKET_HOST, {
-        auth: {
-          token: http.getAccessToken(),
-        },
+        auth: { token: http.getAccessToken() },
       })
       socket.on('chat', (message: Message) => {
         appendMessage(message)
@@ -67,5 +72,5 @@ export const useChat = () => {
     }
   }, [isAuthenticated])
 
-  return { emitChat, newMessages, messages, loadMore, hasMore }
+  return { emitChat, newMessages, ...oldChat }
 }
