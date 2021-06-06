@@ -42,15 +42,25 @@ const useLoadChat = () => {
   return { messages, loadMore, hasMore }
 }
 
-export const useChat = () => {
+export const useChat = (isOpen: boolean) => {
   const { isAuthenticated } = useAuth()
 
   const oldChat = useLoadChat()
 
   const [newMessages, setNewMessages] = useState<Message[]>([])
+
+  const [hasUnread, setUnread] = useState(false)
   const appendMessage = (newMessage: Message) => {
     setNewMessages((prevMessages) => [...prevMessages, newMessage])
+    if (!isOpen) {
+      setUnread(true)
+    }
   }
+  useEffect(() => {
+    if (isOpen) {
+      setUnread(false)
+    }
+  }, [isOpen])
 
   const [emitChat, setEmitChat] = useState<(message: string) => void>()
   const http = useHttp()
@@ -76,5 +86,52 @@ export const useChat = () => {
     }
   }, [isAuthenticated])
 
-  return { emitChat, newMessages, ...oldChat }
+  return { emitChat, newMessages, hasUnread, ...oldChat }
 }
+
+const mockMessages: Message[] = [
+  [1, 'As you can see', '2345678', [391, 'Anos', 100]],
+  [
+    2,
+    '[https://ideone.com]*BOLD*_Italic_~Strike~`code`',
+    '2345678',
+    [391, 'Anos', 100],
+  ],
+  [
+    3,
+    'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..',
+    '2345678',
+    [391, 'Anos', 100],
+  ],
+  [
+    4,
+    `\`for (int i = 0; i < m; i++) {
+  ans = min (ans, dfs(0, i));
+}\``,
+    '2345678',
+    [391, 'Anos', 100],
+  ],
+  [5, 'As you can see', '2345678', [1000, 'onAs', 100]],
+  [
+    6,
+    '[https://ideone.com]*BOLD*_Italic_~Strike~`code`',
+    '2345678',
+    [1000, 'onAs', 100],
+  ],
+  [
+    7,
+    'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..',
+    '2345678',
+    [1000, 'onAs', 100],
+  ],
+  [
+    8,
+    `\`for (int i = 0; i < m; i++) {
+  ans = min (ans, dfs(0, i));
+}\``,
+    '2345678',
+    [1000, 'onAs', 100],
+  ],
+  [9, 'As you can see', '2345678', [391, 'Anos', 100]],
+  [10, 'As you can see', '2345678', [1000, 'onAs', 100]],
+]

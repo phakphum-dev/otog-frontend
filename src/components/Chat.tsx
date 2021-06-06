@@ -31,25 +31,45 @@ import {
 import { IoChatbubbleEllipses, IoSend } from 'react-icons/io5'
 import { useChat, Message } from '@src/utils/hooks/useChat'
 import { useOnlineUsers } from '@src/utils/api/User'
+import NextLink from 'next/link'
+import { toThDate } from '@src/utils/hooks/useTimer'
 
-const ChatButton = (props: IconButtonProps) => {
-  const bg = useColorModeValue('white', 'gray.800')
-  return (
-    <Box position="fixed" bottom={6} right={6} zIndex={100}>
-      <OnlineUsersTooltip placement="top">
-        <IconButton
-          isRound
-          color="gray.500"
-          size="lg"
-          variant="outline"
-          bg={bg}
-          icon={<IoChatbubbleEllipses />}
-          {...props}
-        />
-      </OnlineUsersTooltip>
-    </Box>
-  )
+interface ChatButtonProps extends IconButtonProps {
+  hasUnread: boolean
 }
+
+const ChatButton = ({ hasUnread, ...props }: ChatButtonProps) => (
+  <Box position="fixed" bottom={5} right={5} zIndex={100}>
+    <Box position="relative" zIndex={101}>
+      {hasUnread && (
+        <Circle position="absolute" top={1} right={1} boxSize={2} bg="orange" />
+      )}
+    </Box>
+    <OnlineUsersTooltip placement="top">
+      <IconButton
+        isRound
+        boxSize="50"
+        variant="solid"
+        fontSize="x-large"
+        borderWidth="1px"
+        bg={useColorModeValue('white', 'gray.800')}
+        color={useColorModeValue('gray.400', 'gray.500')}
+        icon={<IoChatbubbleEllipses />}
+        colorScheme="orange"
+        _hover={{
+          bg: 'orange.400',
+          color: 'white',
+          borderColor: 'orange.400',
+        }}
+        _active={{
+          bg: 'orange.700',
+          borderColor: 'orange.700',
+        }}
+        {...props}
+      />
+    </OnlineUsersTooltip>
+  </Box>
+)
 
 const OnlineUsersTooltip = (props: TooltipProps) => {
   const { data: onlineUsers } = useOnlineUsers()
@@ -58,10 +78,10 @@ const OnlineUsersTooltip = (props: TooltipProps) => {
       hasArrow
       label={
         <Flex flexDir="column" justify="flex-start">
-          {onlineUsers?.map((showName, index) => (
-            <HStack key={index}>
+          {onlineUsers?.map((user) => (
+            <HStack key={user.id}>
               <Circle size={2} bg="green.400" />
-              <Text>{showName}</Text>
+              <Text>{user.showName}</Text>
             </HStack>
           ))}
         </Flex>
@@ -72,11 +92,17 @@ const OnlineUsersTooltip = (props: TooltipProps) => {
 }
 
 export const Chat = () => {
-  const { isOpen, onClose, onToggle } = useDisclosure()
   const bg = useColorModeValue('white', 'gray.800')
 
-  const { emitChat, messages, hasMore, loadMore, newMessages } = useChat()
-
+  const { isOpen, onClose, onToggle } = useDisclosure()
+  const {
+    emitChat,
+    messages,
+    hasMore,
+    loadMore,
+    newMessages,
+    hasUnread,
+  } = useChat(isOpen)
   const { ref, isIntersecting } = useOnScreen()
   useEffect(() => {
     if (isIntersecting) {
@@ -91,14 +117,17 @@ export const Chat = () => {
 
   return (
     <>
-      <ChatButton aria-label="open-chat" onClick={onToggle} />
+      <ChatButton
+        aria-label="open-chat"
+        onClick={onToggle}
+        hasUnread={hasUnread}
+      />
       <Box position="fixed" bottom={0} right={[0, null, 4]} zIndex={100}>
         <SlideFade in={isOpen} style={{ zIndex: 100 }} unmountOnExit={true}>
           <Flex
             width="320px"
             height="420px"
-            flexDir="column"
-            borderWidth="1px"
+            direction="column"
             rounded="lg"
             borderBottomRadius={0}
             boxShadow="sm"
@@ -124,6 +153,8 @@ export const Chat = () => {
               flex={1}
               overflowY="auto"
               overflowX="hidden"
+              borderWidth="1px"
+              borderY="unset"
             >
               <Flex direction="column">
                 {newMessages.map((message, index) => {
@@ -143,7 +174,7 @@ export const Chat = () => {
                   const [id, _, __, [senderId]] = message
                   const latestSenderId =
                     index + 1 === messages.length
-                      ? -1
+                      ? 0
                       : messages[index + 1][3][0]
                   return (
                     <ChatMessage
@@ -160,7 +191,9 @@ export const Chat = () => {
                 </Flex>
               )}
             </Flex>
-            <ChatInput emitChat={emitChat} />
+            <Flex borderWidth="1px" borderY="unset">
+              <ChatInput emitChat={emitChat} />
+            </Flex>
           </Flex>
         </SlideFade>
       </Box>
@@ -203,7 +236,7 @@ const ChatInput = (props: ChatInputProps) => {
     }
   }
   return (
-    <HStack p={2} spacing={1}>
+    <HStack p={2} spacing={1} flex={1}>
       <Textarea
         rows={1}
         rounded={16}
@@ -232,12 +265,10 @@ interface ChatMessageProps {
   repeated?: boolean
 }
 
-const onlineUsers = ['Anos', 'bruh', 'ไม่ใช่ตอต่อต้อต๊อต๋อ']
-
 const ChatMessage = (props: ChatMessageProps) => {
   const { message, repeated = false } = props
-  const [id, text, timestamp, sender] = message
-  const [senderId, senderName, senderRating] = sender
+  const [_, text, timestamp, sender] = message
+  const [senderId, senderName] = sender
 
   const { user } = useAuth()
   const isMyself = user?.id === senderId
@@ -250,7 +281,9 @@ const ChatMessage = (props: ChatMessageProps) => {
   return (
     <Flex direction={isOther ? 'row' : 'row-reverse'} mt={repeated ? 0.5 : 2}>
       {displayName ? (
-        <Avatar size="xs" mt={7} mr={1} />
+        <NextLink href={`/profile/${senderId}`} passHref>
+          <Avatar as="a" size="xs" mt={7} mr={1} />
+        </NextLink>
       ) : (
         isOther && <Box minW={6} mr={1} />
       )}
@@ -261,7 +294,7 @@ const ChatMessage = (props: ChatMessageProps) => {
           </Text>
         )}
         <Text
-          title={timestamp}
+          title={toThDate(timestamp)}
           px={2}
           py={1}
           {...{ [isMyself ? 'ml' : 'mr']: 2 }}

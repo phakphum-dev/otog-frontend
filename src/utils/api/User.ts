@@ -51,5 +51,5 @@ export function useUser(userId: number) {
 }
 
 export function useOnlineUsers() {
-  return useSWR<string[]>('user/online')
+  return useSWR<User[]>('user/online')
 }
