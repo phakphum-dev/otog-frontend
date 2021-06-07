@@ -15,9 +15,9 @@ import dynamic from 'next/dynamic'
 import { HttpProvider } from '@src/utils/api/HttpProvider'
 import { AuthProvider } from '@src/utils/api/AuthProvider'
 
-import Error from 'next/error'
 import { ErrorToastOptions } from '@src/utils/hooks/useError'
 import { Chat } from '@src/components/Chat'
+import Error from './_error'
 
 const TopProgressBar = dynamic(() => import('@src/components/ProgressBar'), {
   ssr: false,
@@ -53,10 +53,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             <Flex direction="column" minH="100vh">
               <NavBar />
               {errorToast ? (
-                <Error
-                  title={errorToast.title}
-                  statusCode={errorToast.code ?? 404}
-                />
+                <Error title={errorToast.title} statusCode={errorToast.code} />
               ) : (
                 <Component {...props} />
               )}
