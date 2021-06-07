@@ -106,6 +106,7 @@ const filterButton: {
   },
   {
     filter: (problem) =>
+      problem.show &&
       Date.now() - new Date(problem.recentShowTime).getTime() < ONE_DAY,
     colorScheme: 'btn_blue',
     label: 'โจทย์วันนี้',

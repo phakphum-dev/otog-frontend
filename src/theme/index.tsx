@@ -106,6 +106,14 @@ const components: ThemeComponents = {
         },
         transitionDuration: '0s',
       },
+      close: (props) => ({
+        _hover: {
+          color: 'otog',
+          textDecoration: 'underline',
+        },
+        transitionDuration: '0s',
+        color: mode('blackAlpha.500', 'whiteAlpha.400')(props),
+      }),
     },
   },
   Button: {

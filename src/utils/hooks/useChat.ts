@@ -1,3 +1,4 @@
+import { useToast } from '@chakra-ui/toast'
 import { useEffect, useMemo, useState } from 'react'
 import socketIOClient from 'socket.io-client'
 import { mutate, useSWRInfinite } from 'swr'
@@ -62,8 +63,8 @@ export const useChat = (isOpen: boolean) => {
     }
   }, [isOpen])
 
-  const [emitChat, setEmitChat] = useState<(message: string) => void>()
   const http = useHttp()
+  const [emitChat, setEmitChat] = useState<(message: string) => void>()
   useEffect(() => {
     if (isAuthenticated) {
       const socket = socketIOClient(SOCKET_HOST, {

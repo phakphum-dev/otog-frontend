@@ -197,7 +197,11 @@ const ProblemRow = (props: ProblemRowProps) => {
         )}
       </Td>
       <Td>
-        <Link isExternal href={`${API_HOST}problem/doc/${problem.id}`}>
+        <Link
+          isExternal
+          href={`${API_HOST}problem/doc/${problem.id}`}
+          variant={problem.show ? 'default' : 'close'}
+        >
           {problem.name}
           <br />({problem.timeLimit / ONE_SECOND} วินาที {problem.memoryLimit}{' '}
           MB)

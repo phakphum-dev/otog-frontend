@@ -73,12 +73,12 @@ const ChatButton = ({ hasUnread, ...props }: ChatButtonProps) => (
 
 const OnlineUsersTooltip = (props: TooltipProps) => {
   const { data: onlineUsers } = useOnlineUsers()
-  return (
+  return onlineUsers ? (
     <Tooltip
       hasArrow
       label={
         <Flex flexDir="column" justify="flex-start">
-          {onlineUsers?.map((user) => (
+          {onlineUsers.map((user) => (
             <HStack key={user.id}>
               <Circle size={2} bg="green.400" />
               <Text>{user.showName}</Text>
@@ -88,6 +88,8 @@ const OnlineUsersTooltip = (props: TooltipProps) => {
       }
       {...props}
     />
+  ) : (
+    <>{props.children}</>
   )
 }
 

@@ -1,4 +1,5 @@
 import useSWR from 'swr'
+import { useAuth } from './AuthProvider'
 import { SubmissionWithProblem } from './Submission'
 
 export type Role = 'user' | 'admin'
@@ -51,5 +52,8 @@ export function useUser(userId: number) {
 }
 
 export function useOnlineUsers() {
-  return useSWR<User[]>('user/online')
+  const { isAuthenticated } = useAuth()
+  return useSWR<User[]>(isAuthenticated ? 'user/online' : null, {
+    revalidateOnMount: false,
+  })
 }
