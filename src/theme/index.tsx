@@ -112,7 +112,7 @@ const components: ThemeComponents = {
           textDecoration: 'underline',
         },
         transitionDuration: '0s',
-        color: mode('blackAlpha.500', 'whiteAlpha.400')(props),
+        color: mode('gray.300', 'whiteAlpha.400')(props),
       }),
     },
   },

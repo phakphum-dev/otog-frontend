@@ -57,7 +57,12 @@ export const ProblemTable = (props: ProblemTableProps) => {
 
   const { data: problems } = useProblems()
   const filteredProblems = useMemo(() => {
-    return problems?.filter(filter)
+    return problems
+      ?.filter(filter)
+      .map((problem) => ({
+        ...problem,
+        submission: problem.submission?.id ? problem.submission : null,
+      }))
   }, [problems, filter])
 
   const router = useRouter()

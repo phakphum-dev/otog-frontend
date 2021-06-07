@@ -1,4 +1,3 @@
-import { useToast } from '@chakra-ui/toast'
 import { useEffect, useMemo, useState } from 'react'
 import socketIOClient from 'socket.io-client'
 import { mutate, useSWRInfinite } from 'swr'
