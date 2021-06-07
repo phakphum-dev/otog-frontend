@@ -1,7 +1,7 @@
 import { CenteredCard, LoginForm } from '@src/components/Login'
 import { PageContainer } from '@src/components/PageContainer'
 import { useRouter } from 'next/router'
-import { getServerSideCookies } from '@src/utils/api'
+import { getServerSideCookies } from '@src/api'
 import { GetServerSideProps } from 'next'
 
 export default function LoginPage() {

@@ -16,9 +16,9 @@ import {
 
 import { useForm } from 'react-hook-form'
 
-import { useErrorToast } from '@src/utils/hooks/useError'
-import { useAuth } from '@src/utils/api/AuthProvider'
-import { LoginReq } from '@src/utils/api/User'
+import { useErrorToast } from '@src/hooks/useError'
+import { useAuth } from '@src/api/AuthProvider'
+import { LoginReq } from '@src/hooks/useUser'
 
 export interface LoginModalProps {
   isOpen: boolean

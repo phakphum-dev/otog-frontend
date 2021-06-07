@@ -3,7 +3,7 @@ import socketIOClient from 'socket.io-client'
 import { mutate, useSWRInfinite } from 'swr'
 import { useAuth } from '../api/AuthProvider'
 import { useHttp } from '../api/HttpProvider'
-import { SOCKET_HOST } from '../config'
+import { SOCKET_HOST } from '../utils/config'
 
 export type Message = [
   id: number,

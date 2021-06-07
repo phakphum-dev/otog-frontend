@@ -12,10 +12,10 @@ import '../styles/globals.css'
 import '@src/styles/nprogress.css'
 import dynamic from 'next/dynamic'
 
-import { HttpProvider } from '@src/utils/api/HttpProvider'
-import { AuthProvider } from '@src/utils/api/AuthProvider'
+import { HttpProvider } from '@src/api/HttpProvider'
+import { AuthProvider } from '@src/api/AuthProvider'
 
-import { ErrorToastOptions } from '@src/utils/hooks/useError'
+import { ErrorToastOptions } from '@src/hooks/useError'
 import { Chat } from '@src/components/Chat'
 import Error from './_error'
 

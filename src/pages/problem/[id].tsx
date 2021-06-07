@@ -4,8 +4,8 @@ import { useRouter } from 'next/router'
 import { FaLightbulb } from 'react-icons/fa'
 import Editor, { useMonaco } from '@monaco-editor/react'
 import { Button } from '@chakra-ui/button'
-import { useHttp } from '@src/utils/api/HttpProvider'
-import { useErrorToast } from '@src/utils/hooks/useError'
+import { useHttp } from '@src/api/HttpProvider'
+import { useErrorToast } from '@src/hooks/useError'
 import {
   Link,
   SimpleGrid,
@@ -14,13 +14,13 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/layout'
-import { Problem } from '@src/utils/api/Problem'
+import { Problem } from '@src/hooks/useProblem'
 import { Select } from '@chakra-ui/select'
 import { ChangeEvent, useState } from 'react'
-import { API_HOST, getServerSideFetch } from '@src/utils/api'
+import { API_HOST, getServerSideFetch } from '@src/api'
 import { GetServerSideProps } from 'next'
-import { SubmissionWithSourceCode } from '@src/utils/api/Submission'
-import { ONE_SECOND } from '@src/utils/hooks/useTimer'
+import { SubmissionWithSourceCode } from '@src/hooks/useSubmission'
+import { ONE_SECOND } from '@src/hooks/useTimer'
 import { parseCookies } from 'nookies'
 import Head from 'next/head'
 import { Tooltip } from '@chakra-ui/tooltip'

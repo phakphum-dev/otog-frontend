@@ -22,21 +22,17 @@ import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 import { Collapse } from '@chakra-ui/transition'
 import Editor from '@monaco-editor/react'
-import { API_HOST } from '@src/utils/api'
-import { useHttp } from '@src/utils/api/HttpProvider'
-import { Problem } from '@src/utils/api/Problem'
+import { API_HOST } from '@src/api'
+import { useHttp } from '@src/api/HttpProvider'
+import { Problem } from '@src/hooks/useProblem'
 import {
   SubmissionWithProblem,
   useProblemSubmission,
-} from '@src/utils/api/Submission'
-import { useErrorToast } from '@src/utils/hooks/useError'
-import { useFileInput } from '@src/utils/hooks/useInput'
-import {
-  isGraded,
-  isGrading,
-  useStatusColor,
-} from '@src/utils/hooks/useStatusColor'
-import { ONE_SECOND } from '@src/utils/hooks/useTimer'
+} from '@src/hooks/useSubmission'
+import { useErrorToast } from '@src/hooks/useError'
+import { useFileInput } from '@src/hooks/useInput'
+import { isGraded, isGrading, useStatusColor } from '@src/hooks/useStatusColor'
+import { ONE_SECOND } from '@src/hooks/useTimer'
 import { ChangeEvent, FormEvent, memo, useState } from 'react'
 
 import { CodeModal, ErrorModal } from './Code'

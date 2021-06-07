@@ -1,6 +1,6 @@
 import useSWR from 'swr'
-import { Submission } from './Submission'
-import { User } from './User'
+import { Submission } from './useSubmission'
+import { User } from './useUser'
 
 export interface Problem {
   id: number

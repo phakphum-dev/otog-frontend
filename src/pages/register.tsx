@@ -1,8 +1,8 @@
 import { Button, Img, Input, Stack } from '@chakra-ui/react'
 import { CenteredCard } from '@src/components/Login'
 import { PageContainer } from '@src/components/PageContainer'
-import { useHttp } from '@src/utils/api/HttpProvider'
-import { useErrorToast } from '@src/utils/hooks/useError'
+import { useHttp } from '@src/api/HttpProvider'
+import { useErrorToast } from '@src/hooks/useError'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 interface CreateUserDTO {
@@ -67,4 +67,4 @@ export default function RegisterPage() {
   )
 }
 
-export { getServerSideCookies as getServerSideProps } from '@src/utils/api'
+export { getServerSideCookies as getServerSideProps } from '@src/api'

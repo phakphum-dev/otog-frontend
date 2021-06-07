@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react'
 import { PageContainer } from '@src/components/PageContainer'
 import { GetServerSideProps } from 'next'
-import { getServerSideCookies } from '@src/utils/api'
+import { getServerSideCookies } from '@src/api'
 
 export default function HomePage() {
   return (

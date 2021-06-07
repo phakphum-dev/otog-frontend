@@ -1,12 +1,12 @@
 import useSWR, { mutate, useSWRInfinite } from 'swr'
 
 import { Language } from 'prism-react-renderer'
-import { Problem } from './Problem'
-import { User } from './User'
-import { useInitialData } from '@src/utils/hooks/useInitialData'
-import { useAuth } from './AuthProvider'
-import { isGrading } from '../hooks/useStatusColor'
-import { ONE_SECOND } from '../hooks/useTimer'
+import { Problem } from './useProblem'
+import { User } from './useUser'
+import { useInitialData } from '@src/hooks/useInitialData'
+import { useAuth } from '@src/api/AuthProvider'
+import { isGrading } from './useStatusColor'
+import { ONE_SECOND } from './useTimer'
 
 export type Status = 'waiting' | 'grading' | 'accept' | 'reject'
 

@@ -17,13 +17,13 @@ import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 import { PageContainer } from '@src/components/PageContainer'
 
 import { Title, TitleLayout } from '@src/components/Title'
-import { API_HOST, getServerSideCookies } from '@src/utils/api'
-import { getUserData } from '@src/utils/api/AuthProvider'
+import { API_HOST, getServerSideCookies } from '@src/api'
+import { getUserData } from '@src/api/AuthProvider'
 import {
   Problem,
   ProblemWithSubmission,
   useProblems,
-} from '@src/utils/api/Problem'
+} from '@src/hooks/useProblem'
 import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
 import { FormEvent, useState } from 'react'
@@ -37,14 +37,14 @@ import {
   FaTrash,
 } from 'react-icons/fa'
 import NextLink from 'next/link'
-import { useHttp } from '@src/utils/api/HttpProvider'
-import { useErrorToast } from '@src/utils/hooks/useError'
+import { useHttp } from '@src/api/HttpProvider'
+import { useErrorToast } from '@src/hooks/useError'
 import { FileInput } from '@src/components/FileInput'
 import { mutate } from 'swr'
 import { Spinner } from '@chakra-ui/spinner'
 import { RenderLater } from '@src/components/RenderLater'
 import Head from 'next/head'
-import { useFileInput } from '@src/utils/hooks/useInput'
+import { useFileInput } from '@src/hooks/useInput'
 
 export default function AdminProblemPage() {
   return (

@@ -1,8 +1,8 @@
 import { CodeSubmission } from '@src/components/Code'
 import { PageContainer } from '@src/components/PageContainer'
 import { Title, TitleLayout } from '@src/components/Title'
-import { getServerSideFetch } from '@src/utils/api'
-import { SubmissionWithSourceCode } from '@src/utils/api/Submission'
+import { getServerSideFetch } from '@src/api'
+import { SubmissionWithSourceCode } from '@src/hooks/useSubmission'
 
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'

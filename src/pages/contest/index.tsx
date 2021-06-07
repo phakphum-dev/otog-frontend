@@ -4,9 +4,9 @@ import { TaskCard } from '@src/components/TaskCard'
 import { Title, TitleLayout } from '@src/components/Title'
 import { FaTrophy } from 'react-icons/fa'
 
-import { getServerSideFetch } from '@src/utils/api'
+import { getServerSideFetch } from '@src/api'
 import { GetServerSideProps } from 'next'
-import { Contest, useCurrentContest } from '@src/utils/api/Contest'
+import { Contest, useCurrentContest } from '@src/hooks/useContest'
 import { Button } from '@chakra-ui/button'
 import NextLink from 'next/link'
 import {
@@ -14,7 +14,7 @@ import {
   toTimerFormat,
   useServerTime,
   useTimer,
-} from '@src/utils/hooks/useTimer'
+} from '@src/hooks/useTimer'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { mutate } from 'swr'

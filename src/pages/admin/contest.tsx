@@ -18,8 +18,8 @@ import { DatePicker } from '@src/components/DatePick'
 import { PageContainer } from '@src/components/PageContainer'
 
 import { Title, TitleLayout } from '@src/components/Title'
-import { API_HOST, getServerSideCookies } from '@src/utils/api'
-import { getUserData } from '@src/utils/api/AuthProvider'
+import { API_HOST, getServerSideCookies } from '@src/api'
+import { getUserData } from '@src/api/AuthProvider'
 import {
   Contest,
   ContestMode,
@@ -27,8 +27,8 @@ import {
   GradingMode,
   useContest,
   useContests,
-} from '@src/utils/api/Contest'
-import { ProblemWithSubmission, useProblems } from '@src/utils/api/Problem'
+} from '@src/hooks/useContest'
+import { ProblemWithSubmission, useProblems } from '@src/hooks/useProblem'
 import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
 import { memo, PropsWithChildren, useEffect, useState } from 'react'
@@ -40,9 +40,9 @@ import {
   FaTrophy,
 } from 'react-icons/fa'
 import NextLink from 'next/link'
-import { useHttp } from '@src/utils/api/HttpProvider'
+import { useHttp } from '@src/api/HttpProvider'
 import { useForm } from 'react-hook-form'
-import { useErrorToast } from '@src/utils/hooks/useError'
+import { useErrorToast } from '@src/hooks/useError'
 import { Spinner } from '@chakra-ui/spinner'
 import { RenderLater } from '@src/components/RenderLater'
 import { mutate } from 'swr'

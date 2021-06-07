@@ -12,4 +12,4 @@ export default function Error({ title = 'Page not found', statusCode = 404 }) {
   )
 }
 
-export { getServerSideCookies as getServerSideProps } from '@src/utils/api'
+export { getServerSideCookies as getServerSideProps } from '@src/api'

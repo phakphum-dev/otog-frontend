@@ -16,11 +16,11 @@ import {
   UseDisclosureReturn,
 } from '@chakra-ui/react'
 import { FileInput } from './FileInput'
-import { Problem } from '@src/utils/api/Problem'
-import { useHttp } from '@src/utils/api/HttpProvider'
-import { useErrorToast } from '@src/utils/hooks/useError'
+import { Problem } from '@src/hooks/useProblem'
+import { useHttp } from '@src/api/HttpProvider'
+import { useErrorToast } from '@src/hooks/useError'
 import NextLink from 'next/link'
-import { useFileInput } from '@src/utils/hooks/useInput'
+import { useFileInput } from '@src/hooks/useInput'
 
 export interface SubmitModalProps extends UseDisclosureReturn {
   problem: Problem

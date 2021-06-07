@@ -8,14 +8,14 @@ import {
   getCroppedImage,
 } from '@src/components/ImageCropModal'
 
-import { useAuth } from '@src/utils/api/AuthProvider'
+import { useAuth } from '@src/api/AuthProvider'
 import { FaCropAlt, FaUserCircle } from 'react-icons/fa'
 
 import { ChangeEvent, useEffect, useState } from 'react'
-import { storage } from '@src/utils/firebase'
+import { storage } from '@src/firebase'
 import { UploadFileButton } from '@src/components/FileInput'
 import Icon from '@chakra-ui/icon'
-import { useErrorToast } from '@src/utils/hooks/useError'
+import { useErrorToast } from '@src/hooks/useError'
 
 export const ProfileUpload = () => {
   const cropModal = useDisclosure()

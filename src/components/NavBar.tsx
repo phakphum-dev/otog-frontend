@@ -32,7 +32,7 @@ import {
 import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
 import { ToggleColorModeButton } from './ToggleColorModeButton'
 import { PageContainer } from './PageContainer'
-import { useAuth } from '@src/utils/api/AuthProvider'
+import { useAuth } from '@src/api/AuthProvider'
 
 interface ColorOptions {
   normal: {

@@ -29,16 +29,12 @@ import {
   useAllSubmissions,
   useSubmissionRow,
   useSubmissions,
-} from '@src/utils/api/Submission'
+} from '@src/hooks/useSubmission'
 import { CodeModal, ErrorModal } from './Code'
-import { useAuth } from '@src/utils/api/AuthProvider'
-import {
-  isGraded,
-  isGrading,
-  useStatusColor,
-} from '@src/utils/hooks/useStatusColor'
-import { ONE_SECOND, toThDate } from '@src/utils/hooks/useTimer'
-import { useOnScreen } from '@src/utils/hooks/useOnScreen'
+import { useAuth } from '@src/api/AuthProvider'
+import { isGraded, isGrading, useStatusColor } from '@src/hooks/useStatusColor'
+import { ONE_SECOND, toThDate } from '@src/hooks/useTimer'
+import { useOnScreen } from '@src/hooks/useOnScreen'
 import { API_HOST } from '@src/utils/config'
 
 export const SubmissionTable = () => {

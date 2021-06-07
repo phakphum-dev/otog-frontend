@@ -3,14 +3,14 @@ import { PageContainer } from '@src/components/PageContainer'
 import { Title, TitleLayout } from '@src/components/Title'
 import { FaUser } from 'react-icons/fa'
 
-import { getServerSideFetch } from '@src/utils/api'
+import { getServerSideFetch } from '@src/api'
 import { GetServerSideProps } from 'next'
 
 import { Graph } from '@src/components/Graph'
 import { ProfilePicture, ProfileUpload } from '@src/components/ProfilePicture'
-import { UserProfile } from '@src/utils/api/User'
+import { UserProfile } from '@src/hooks/useUser'
 import { useRouter } from 'next/router'
-import { useAuth } from '@src/utils/api/AuthProvider'
+import { useAuth } from '@src/api/AuthProvider'
 import Head from 'next/head'
 import { EditableName } from '@src/components/EditableName'
 

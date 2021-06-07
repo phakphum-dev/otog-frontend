@@ -29,15 +29,15 @@ import {
   ProblemWithSubmission,
   usePassedUsers,
   useProblems,
-} from '@src/utils/api/Problem'
+} from '@src/hooks/useProblem'
 import { useRouter } from 'next/router'
-import { API_HOST } from '@src/utils/api'
-import { useStatusColor } from '@src/utils/hooks/useStatusColor'
+import { API_HOST } from '@src/api'
+import { useStatusColor } from '@src/hooks/useStatusColor'
 import { CodeModal } from './Code'
-import { Submission } from '@src/utils/api/Submission'
+import { Submission } from '@src/hooks/useSubmission'
 import { RenderLater } from './RenderLater'
-import { ONE_SECOND } from '@src/utils/hooks/useTimer'
-import { useAuth } from '@src/utils/api/AuthProvider'
+import { ONE_SECOND } from '@src/hooks/useTimer'
+import { useAuth } from '@src/api/AuthProvider'
 
 export type FilterFunction = (problem: ProblemWithSubmission) => boolean
 export interface ProblemTableProps {
@@ -57,12 +57,10 @@ export const ProblemTable = (props: ProblemTableProps) => {
 
   const { data: problems } = useProblems()
   const filteredProblems = useMemo(() => {
-    return problems
-      ?.filter(filter)
-      .map((problem) => ({
-        ...problem,
-        submission: problem.submission?.id ? problem.submission : null,
-      }))
+    return problems?.filter(filter).map((problem) => ({
+      ...problem,
+      submission: problem.submission?.id ? problem.submission : null,
+    }))
   }, [problems, filter])
 
   const router = useRouter()

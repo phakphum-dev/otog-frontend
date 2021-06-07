@@ -1,6 +1,6 @@
 import useSWR from 'swr'
-import { useAuth } from './AuthProvider'
-import { SubmissionWithProblem } from './Submission'
+import { useAuth } from '@src/api/AuthProvider'
+import { SubmissionWithProblem } from './useSubmission'
 
 export type Role = 'user' | 'admin'
 

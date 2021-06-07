@@ -10,9 +10,9 @@ import jwtDecode, { JwtPayload } from 'jwt-decode'
 
 import { LoginModal } from '@src/components/Login'
 import { useDisclosure, useForceUpdate } from '@chakra-ui/hooks'
-import { storage } from '@src/utils/firebase'
+import { storage } from '@src/firebase'
 import { useRouter } from 'next/router'
-import { AuthRes, LoginReq, User } from './User'
+import { AuthRes, LoginReq, User } from '@src/hooks/useUser'
 import { cache } from 'swr'
 
 export interface AuthProviderProps {

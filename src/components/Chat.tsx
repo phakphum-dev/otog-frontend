@@ -19,8 +19,8 @@ import { Textarea } from '@chakra-ui/textarea'
 import { useToast } from '@chakra-ui/toast'
 import { Tooltip, TooltipProps } from '@chakra-ui/tooltip'
 import { SlideFade } from '@chakra-ui/transition'
-import { useAuth } from '@src/utils/api/AuthProvider'
-import { useOnScreen } from '@src/utils/hooks/useOnScreen'
+import { useAuth } from '@src/api/AuthProvider'
+import { useOnScreen } from '@src/hooks/useOnScreen'
 import {
   ChangeEvent,
   KeyboardEvent,
@@ -29,10 +29,10 @@ import {
   useState,
 } from 'react'
 import { IoChatbubbleEllipses, IoSend } from 'react-icons/io5'
-import { useChat, Message } from '@src/utils/hooks/useChat'
-import { useOnlineUsers } from '@src/utils/api/User'
+import { useChat, Message } from '@src/hooks/useChat'
+import { useOnlineUsers } from '@src/hooks/useUser'
 import NextLink from 'next/link'
-import { toThDate } from '@src/utils/hooks/useTimer'
+import { toThDate } from '@src/hooks/useTimer'
 
 interface ChatButtonProps extends IconButtonProps {
   hasUnread: boolean

@@ -16,9 +16,9 @@ import {
   SliderTrack,
 } from '@chakra-ui/slider'
 
-import { useAuth } from '@src/utils/api/AuthProvider'
-import { storage } from '@src/utils/firebase'
-import { useErrorToast } from '@src/utils/hooks/useError'
+import { useAuth } from '@src/api/AuthProvider'
+import { storage } from '@src/firebase'
+import { useErrorToast } from '@src/hooks/useError'
 import { useState } from 'react'
 import Cropper from 'react-easy-crop'
 import { Area } from 'react-easy-crop/types'

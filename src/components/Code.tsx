@@ -24,10 +24,10 @@ import {
   useSubmission,
   SubmissionWithProblem,
   SubmissionWithSourceCode,
-} from '@src/utils/api/Submission'
+} from '@src/hooks/useSubmission'
 import { PropsWithChildren, useEffect } from 'react'
 import { CopyIcon } from '@chakra-ui/icons'
-import { ONE_SECOND, toThDate } from '@src/utils/hooks/useTimer'
+import { ONE_SECOND, toThDate } from '@src/hooks/useTimer'
 import { FaRegShareSquare } from 'react-icons/fa'
 import { API_HOST, APP_HOST } from '@src/utils/config'
 

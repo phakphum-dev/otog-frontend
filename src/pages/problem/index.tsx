@@ -5,9 +5,9 @@ import { Skeleton } from '@chakra-ui/skeleton'
 import { PageContainer } from '@src/components/PageContainer'
 import { ProblemTable, FilterFunction } from '@src/components/ProblemTable'
 import { Title, TitleLayout } from '@src/components/Title'
-import { useAuth } from '@src/utils/api/AuthProvider'
-import { useProblems } from '@src/utils/api/Problem'
-import { ONE_DAY } from '@src/utils/hooks/useTimer'
+import { useAuth } from '@src/api/AuthProvider'
+import { useProblems } from '@src/hooks/useProblem'
+import { ONE_DAY } from '@src/hooks/useTimer'
 import Head from 'next/head'
 import { Dispatch, memo, SetStateAction, useState } from 'react'
 import { FaPuzzlePiece } from 'react-icons/fa'
@@ -113,4 +113,4 @@ const filterButton: {
   },
 ]
 
-export { getServerSideCookies as getServerSideProps } from '@src/utils/api'
+export { getServerSideCookies as getServerSideProps } from '@src/api'

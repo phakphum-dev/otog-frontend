@@ -1,6 +1,6 @@
 import firebase from 'firebase/app'
 import 'firebase/storage'
-import { FIREBASE_CONFIG } from '../config'
+import { FIREBASE_CONFIG } from '../utils/config'
 
 if (firebase.apps.length === 0) {
   firebase.initializeApp(FIREBASE_CONFIG)

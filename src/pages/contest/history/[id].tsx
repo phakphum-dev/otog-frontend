@@ -18,13 +18,13 @@ import { Title, TitleLayout } from '@src/components/Title'
 import { FaTrophy } from 'react-icons/fa'
 import { Box, Link } from '@chakra-ui/layout'
 import { CgDetailsLess, CgDetailsMore } from 'react-icons/cg'
-import { ContestScoreboard, UserWithSubmission } from '@src/utils/api/Contest'
+import { ContestScoreboard, UserWithSubmission } from '@src/hooks/useContest'
 
-import { API_HOST, getServerSideFetch } from '@src/utils/api'
+import { API_HOST, getServerSideFetch } from '@src/api'
 import { GetServerSideProps } from 'next'
 import { sum } from '@src/utils'
 import { Tooltip } from '@chakra-ui/tooltip'
-import { ONE_SECOND } from '@src/utils/hooks/useTimer'
+import { ONE_SECOND } from '@src/hooks/useTimer'
 import Head from 'next/head'
 
 const Th = (props: TableColumnHeaderProps) => (

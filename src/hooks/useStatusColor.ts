@@ -1,5 +1,5 @@
 import { useColorModeValue } from '@chakra-ui/color-mode'
-import { Submission } from '@src/utils/api/Submission'
+import { Submission } from '@src/hooks/useSubmission'
 
 export function useStatusColor(
   submission: Submission | undefined | null,
