@@ -45,7 +45,9 @@ const useLoadChat = () => {
   const loadMore = () => {
     setSize((size) => size + 1)
   }
-  const hasMore = isValidating || (oldMessages && oldMessages.length === size)
+  const hasMore =
+    isValidating ||
+    (oldMessages && oldMessages[oldMessages.length - 1].length > 0)
 
   return { messages, loadMore, hasMore }
 }

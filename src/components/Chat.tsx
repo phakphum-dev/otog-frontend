@@ -107,7 +107,7 @@ export const Chat = () => {
   } = useChat(isOpen)
   const { ref, isIntersecting } = useOnScreen()
   useEffect(() => {
-    if (isIntersecting) {
+    if (isIntersecting && hasMore) {
       loadMore()
     }
   }, [isIntersecting])
@@ -163,9 +163,15 @@ export const Chat = () => {
                   <ChatMessage
                     key={message.id}
                     message={message}
-                    repeated={
+                    sameUserAbove={
                       message.user.id ===
                       (index && newMessages[index - 1].user.id)
+                    }
+                    sameUserBelow={
+                      message.user.id ===
+                      (index + 1 === newMessages.length
+                        ? 0
+                        : newMessages[index + 1].user.id)
                     }
                   />
                 ))}
@@ -175,11 +181,14 @@ export const Chat = () => {
                   <ChatMessage
                     key={message.id}
                     message={message}
-                    repeated={
+                    sameUserAbove={
                       message.user.id ===
                       (index + 1 === messages.length
                         ? 0
                         : messages[index + 1].user.id)
+                    }
+                    sameUserBelow={
+                      message.user.id === (index && messages[index - 1].user.id)
                     }
                   />
                 ))}
@@ -261,25 +270,31 @@ const ChatInput = (props: ChatInputProps) => {
 
 interface ChatMessageProps {
   message: Message
-  repeated?: boolean
+  sameUserAbove?: boolean
+  sameUserBelow?: boolean
 }
 
 const ChatMessage = (props: ChatMessageProps) => {
-  const { message, repeated = false } = props
+  const { message, sameUserAbove = false, sameUserBelow = false } = props
 
   const { user } = useAuth()
   const isMyself = user?.id === message.user.id
   const isOther = !isMyself
-  const displayName = isOther && !repeated
+  const displayName = isOther && !sameUserAbove
+  const displayAvatar = isOther && !sameUserBelow
 
   const bg = useColorModeValue('gray.100', 'gray.800')
   const borderColor = useColorModeValue('gray.100', 'whiteAlpha.300')
 
   return (
-    <Flex direction={isOther ? 'row' : 'row-reverse'} mt={repeated ? 0.5 : 2}>
-      {displayName ? (
+    <Flex
+      direction={isOther ? 'row' : 'row-reverse'}
+      mt={sameUserAbove ? 0.5 : 2}
+      align="flex-end"
+    >
+      {displayAvatar ? (
         <NextLink href={`/profile/${message.user.id}`} passHref>
-          <Avatar as="a" size="xs" mt={7} mr={1} />
+          <Avatar as="a" size="xs" mr={1} />
         </NextLink>
       ) : (
         isOther && <Box minW={6} mr={1} />
