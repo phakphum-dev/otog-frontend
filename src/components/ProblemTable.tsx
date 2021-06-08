@@ -11,6 +11,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Spacer,
   Spinner,
   Stack,
   Table,
@@ -242,9 +243,13 @@ const PassedModal = (props: PassedModalProps) => {
         <ModalCloseButton />
         <ModalBody>
           <Stack>
-            {users?.map((user) => (
-              <Text key={user.id}>{user.showName}</Text>
-            ))}
+            {users ? (
+              users.map((user) => <Text key={user.id}>{user.showName}</Text>)
+            ) : (
+              <Flex justify="center">
+                <Spinner />
+              </Flex>
+            )}
           </Stack>
         </ModalBody>
         <ModalFooter />
