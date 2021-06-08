@@ -4,11 +4,19 @@ import { mutate, useSWRInfinite } from 'swr'
 import { useAuth } from '../api/AuthProvider'
 import { useHttp } from '../api/HttpProvider'
 import { SOCKET_HOST } from '../utils/config'
+import { User } from './useUser'
 
-export type Message = [
+export type Message = {
+  id: number
+  message: string
+  creationDate: string
+  user: Omit<User, 'role' | 'username'>
+}
+
+export type SocketMessage = [
   id: number,
-  text: string,
-  timestamp: string,
+  message: string,
+  creationDate: string,
   user: [id: number, showName: string, rating: number]
 ]
 
@@ -27,7 +35,7 @@ const useLoadChat = () => {
       if (pageIndex === 0 || !previousPageData) return 'chat'
 
       // add the cursor to the API endpoint
-      return `chat?offset=${previousPageData[previousPageData?.length - 1][0]}`
+      return `chat?offset=${previousPageData[previousPageData?.length - 1].id}`
     },
     { revalidateOnFocus: false, revalidateOnReconnect: false }
   )
@@ -50,8 +58,16 @@ export const useChat = (isOpen: boolean) => {
   const [newMessages, setNewMessages] = useState<Message[]>([])
 
   const [hasUnread, setUnread] = useState(false)
-  const appendMessage = (newMessage: Message) => {
-    setNewMessages((prevMessages) => [...prevMessages, newMessage])
+  const appendMessage = ([
+    id,
+    message,
+    creationDate,
+    [userId, showName, rating],
+  ]: SocketMessage) => {
+    setNewMessages((prevMessages) => [
+      ...prevMessages,
+      { id, message, creationDate, user: { id: userId, showName, rating } },
+    ])
     if (!isOpen) {
       setUnread(true)
     }
@@ -69,7 +85,7 @@ export const useChat = (isOpen: boolean) => {
       const socket = socketIOClient(SOCKET_HOST, {
         auth: { token: http.getAccessToken() },
       })
-      socket.on('chat', (message: Message) => {
+      socket.on('chat', (message: SocketMessage) => {
         appendMessage(message)
       })
       socket.on('online', () => {
@@ -88,50 +104,3 @@ export const useChat = (isOpen: boolean) => {
 
   return { emitChat, newMessages, hasUnread, ...oldChat }
 }
-
-const mockMessages: Message[] = [
-  [1, 'As you can see', '2345678', [391, 'Anos', 100]],
-  [
-    2,
-    '[https://ideone.com]*BOLD*_Italic_~Strike~`code`',
-    '2345678',
-    [391, 'Anos', 100],
-  ],
-  [
-    3,
-    'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..',
-    '2345678',
-    [391, 'Anos', 100],
-  ],
-  [
-    4,
-    `\`for (int i = 0; i < m; i++) {
-  ans = min (ans, dfs(0, i));
-}\``,
-    '2345678',
-    [391, 'Anos', 100],
-  ],
-  [5, 'As you can see', '2345678', [1000, 'onAs', 100]],
-  [
-    6,
-    '[https://ideone.com]*BOLD*_Italic_~Strike~`code`',
-    '2345678',
-    [1000, 'onAs', 100],
-  ],
-  [
-    7,
-    'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..',
-    '2345678',
-    [1000, 'onAs', 100],
-  ],
-  [
-    8,
-    `\`for (int i = 0; i < m; i++) {
-  ans = min (ans, dfs(0, i));
-}\``,
-    '2345678',
-    [1000, 'onAs', 100],
-  ],
-  [9, 'As you can see', '2345678', [391, 'Anos', 100]],
-  [10, 'As you can see', '2345678', [1000, 'onAs', 100]],
-]

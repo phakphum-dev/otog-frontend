@@ -159,33 +159,30 @@ export const Chat = () => {
               borderY="unset"
             >
               <Flex direction="column">
-                {newMessages.map((message, index) => {
-                  const [id, _, __, [senderId]] = message
-                  const latestSenderId = index && newMessages[index - 1][3][0]
-                  return (
-                    <ChatMessage
-                      key={id}
-                      message={message}
-                      repeated={senderId === latestSenderId}
-                    />
-                  )
-                })}
+                {newMessages.map((message, index) => (
+                  <ChatMessage
+                    key={message.id}
+                    message={message}
+                    repeated={
+                      message.user.id ===
+                      (index && newMessages[index - 1].user.id)
+                    }
+                  />
+                ))}
               </Flex>
               <Flex direction="column-reverse">
-                {messages?.map((message, index) => {
-                  const [id, _, __, [senderId]] = message
-                  const latestSenderId =
-                    index + 1 === messages.length
-                      ? 0
-                      : messages[index + 1][3][0]
-                  return (
-                    <ChatMessage
-                      key={id}
-                      message={message}
-                      repeated={senderId === latestSenderId}
-                    />
-                  )
-                })}
+                {messages?.map((message, index) => (
+                  <ChatMessage
+                    key={message.id}
+                    message={message}
+                    repeated={
+                      message.user.id ===
+                      (index + 1 === messages.length
+                        ? 0
+                        : messages[index + 1].user.id)
+                    }
+                  />
+                ))}
               </Flex>
               {hasMore && (
                 <Flex justify="center" py={2} ref={ref}>
@@ -269,11 +266,9 @@ interface ChatMessageProps {
 
 const ChatMessage = (props: ChatMessageProps) => {
   const { message, repeated = false } = props
-  const [_, text, timestamp, sender] = message
-  const [senderId, senderName] = sender
 
   const { user } = useAuth()
-  const isMyself = user?.id === senderId
+  const isMyself = user?.id === message.user.id
   const isOther = !isMyself
   const displayName = isOther && !repeated
 
@@ -283,7 +278,7 @@ const ChatMessage = (props: ChatMessageProps) => {
   return (
     <Flex direction={isOther ? 'row' : 'row-reverse'} mt={repeated ? 0.5 : 2}>
       {displayName ? (
-        <NextLink href={`/profile/${senderId}`} passHref>
+        <NextLink href={`/profile/${message.user.id}`} passHref>
           <Avatar as="a" size="xs" mt={7} mr={1} />
         </NextLink>
       ) : (
@@ -292,11 +287,11 @@ const ChatMessage = (props: ChatMessageProps) => {
       <VStack align="flex-start" spacing={0}>
         {displayName && (
           <Text fontSize="xs" color="gray.500" px={1}>
-            {senderName}
+            {message.user.showName}
           </Text>
         )}
         <Text
-          title={toThDate(timestamp)}
+          title={toThDate(message.creationDate)}
           px={2}
           py={1}
           {...{ [isMyself ? 'ml' : 'mr']: 2 }}
@@ -308,7 +303,7 @@ const ChatMessage = (props: ChatMessageProps) => {
           whiteSpace="pre-wrap"
           wordBreak="break-word"
         >
-          {formatParser(text)}
+          {formatParser(message.message)}
         </Text>
       </VStack>
     </Flex>
