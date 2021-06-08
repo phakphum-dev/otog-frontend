@@ -100,7 +100,7 @@ const filterButton: {
     label: 'ยังไม่ผ่าน',
   },
   {
-    filter: (problem) => !problem.submission,
+    filter: (problem) => !problem.submission?.id,
     colorScheme: 'btn_orange',
     label: 'ยังไม่ส่ง',
   },
