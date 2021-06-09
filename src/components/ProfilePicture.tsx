@@ -41,7 +41,9 @@ export const ProfileUpload = () => {
 
   const onUpload = (file: File) => {
     if (user) {
-      const uploadTask = storage.ref(`images/${user.id}.png`).put(file)
+      const uploadTask = storage
+        .ref(`images/${user.id}.png`)
+        .put(file, { contentType: 'image/png' })
       uploadTask.on(
         'state_changed',
         (snapshot) => {
