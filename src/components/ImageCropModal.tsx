@@ -26,6 +26,8 @@ import { Area } from 'react-easy-crop/types'
 interface ImageUploadModalProps {
   isOpen: boolean
   onClose: () => void
+  url: string
+  fetchUrl: () => Promise<void>
 }
 
 // ref: https://codesandbox.io/s/q8q1mnr01w
@@ -94,17 +96,17 @@ export async function getCroppedImage(
     // As a blob
     return new Promise<File | null>((resolve) => {
       canvas.toBlob((blob) => {
-        resolve(blob && new File([blob], 'tmp.png'))
-      }, 'image/png')
+        resolve(blob && new File([blob], 'tmp.jpeg'))
+      }, 'image/jpeg')
     })
   }
   throw new Error(`This browser doesn't support 2D Context`)
 }
 
 export const ImageCropModal = (props: ImageUploadModalProps) => {
-  const { isOpen, onClose } = props
+  const { isOpen, onClose, url, fetchUrl } = props
 
-  const { user, profileSrc, refreshProfilePic } = useAuth()
+  const { user } = useAuth()
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area>()
@@ -114,13 +116,13 @@ export const ImageCropModal = (props: ImageUploadModalProps) => {
 
   const { onError } = useErrorToast()
   const uploadCroppedImage = async () => {
-    if (user && profileSrc && croppedAreaPixels) {
+    if (user && url && croppedAreaPixels) {
       try {
-        const image = await createImage(profileSrc)
+        const image = await createImage(url)
         const croppedImage = await getCroppedImage(image, croppedAreaPixels)
         if (croppedImage) {
           const uploadTask = storage
-            .ref(`images/${user.id}.png`)
+            .ref(`images/${user.id}.jpeg`)
             .put(croppedImage)
           uploadTask.on(
             'state_changed',
@@ -134,7 +136,7 @@ export const ImageCropModal = (props: ImageUploadModalProps) => {
               onError(error)
             },
             () => {
-              refreshProfilePic()
+              fetchUrl()
               onClose()
               setZoom(1)
               setCrop({ x: 0, y: 0 })
@@ -158,7 +160,7 @@ export const ImageCropModal = (props: ImageUploadModalProps) => {
             <Box position="relative" width="100%" height="400px">
               <Cropper
                 aspect={1}
-                image={profileSrc}
+                image={url}
                 crop={crop}
                 onCropChange={setCrop}
                 zoom={zoom}

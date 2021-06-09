@@ -20,12 +20,8 @@ import { useProfilePic } from '@src/hooks/useProfilePic'
 
 export const ProfileUpload = () => {
   const cropModal = useDisclosure()
-  const { user, profileSrc, refreshProfilePic } = useAuth()
-
-  const { url, fetchUrl } = useProfilePic(user?.id, { auto: false, full: true })
-  useEffect(() => {
-    fetchUrl()
-  }, [profileSrc])
+  const { user, refresh } = useAuth()
+  const { url, fetchUrl } = useProfilePic(user?.id, { full: true })
 
   const { onError } = useErrorToast()
   const onFileSelect = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -47,8 +43,8 @@ export const ProfileUpload = () => {
   const onUpload = (file: File) => {
     if (user) {
       const uploadTask = storage
-        .ref(`images/${user.id}.png`)
-        .put(file, { contentType: 'image/png' })
+        .ref(`images/${user.id}.jpeg`)
+        .put(file, { contentType: 'image/jpeg' })
       uploadTask.on(
         'state_changed',
         (snapshot) => {
@@ -58,8 +54,9 @@ export const ProfileUpload = () => {
           // setProgress(progress)
         },
         (error) => onError(error),
-        () => {
-          refreshProfilePic()
+        async () => {
+          await fetchUrl()
+          setTimeout(refresh, 3000)
         }
       )
     }
@@ -71,7 +68,7 @@ export const ProfileUpload = () => {
         <Picture url={url} />
         <HStack position="absolute" top={2} right={2}>
           <UploadFileButton accept=".png,.jpg,.jpeg" onChange={onFileSelect} />
-          {profileSrc && (
+          {url && (
             <>
               <IconButton
                 size="xs"
@@ -79,7 +76,7 @@ export const ProfileUpload = () => {
                 icon={<FaCropAlt />}
                 onClick={cropModal.onOpen}
               />
-              <ImageCropModal {...cropModal} />
+              <ImageCropModal url={url} fetchUrl={fetchUrl} {...cropModal} />
             </>
           )}
         </HStack>

@@ -33,6 +33,7 @@ import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
 import { ToggleColorModeButton } from './ToggleColorModeButton'
 import { PageContainer } from './PageContainer'
 import { useAuth } from '@src/api/AuthProvider'
+import { useProfilePic } from '@src/hooks/useProfilePic'
 
 interface ColorOptions {
   normal: {
@@ -85,7 +86,8 @@ export const NavBar = () => {
   const bg = useColorModeValue('white', 'gray.800')
   const color = useColorModeValue('gray.800', 'white')
 
-  const { isAuthenticated, user, logout, profileSrc, isAdmin } = useAuth()
+  const { isAuthenticated, user, logout, isAdmin } = useAuth()
+  const { url } = useProfilePic(user?.id)
 
   const entries = [
     { href: '/problem', title: 'โจทย์' },
@@ -167,7 +169,7 @@ export const NavBar = () => {
                   <NextLink href={`/profile/${user.id}`} passHref>
                     <DrawerButton as="a">
                       <HStack py={2}>
-                        <Avatar size="xs" src={profileSrc} />
+                        <Avatar size="xs" src={url} />
                         <Text isTruncated>{user.showName}</Text>
                       </HStack>
                     </DrawerButton>
@@ -248,7 +250,8 @@ const DrawerButton = forwardRef(
 )
 
 const AvatarMenu = () => {
-  const { user, logout, profileSrc } = useAuth()
+  const { user, logout } = useAuth()
+  const { url } = useProfilePic(user?.id)
   const [isClient, setClient] = useState(false)
   useEffect(() => {
     setClient(true)
@@ -256,7 +259,7 @@ const AvatarMenu = () => {
   return (
     <Menu>
       <MenuButton as={Button} variant="link" rightIcon={<ChevronDownIcon />}>
-        <Avatar size="xs" src={profileSrc} />
+        <Avatar size="xs" src={url} />
       </MenuButton>
       {/* fix render menulist on ssr */}
       {isClient && (

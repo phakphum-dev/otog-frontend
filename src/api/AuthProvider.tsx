@@ -1,10 +1,4 @@
-import {
-  createContext,
-  ProviderProps,
-  useContext,
-  useEffect,
-  useState,
-} from 'react'
+import { createContext, ProviderProps, useContext, useEffect } from 'react'
 import { useHttp } from './HttpProvider'
 import jwtDecode, { JwtPayload } from 'jwt-decode'
 
@@ -13,14 +7,11 @@ import { useDisclosure, useForceUpdate } from '@chakra-ui/hooks'
 import { useRouter } from 'next/router'
 import { AuthRes, LoginReq, User } from '@src/hooks/useUser'
 import { cache } from 'swr'
-import { useProfilePic } from '@src/hooks/useProfilePic'
 
 export interface AuthProviderProps {
   user: User | null
   isAuthenticated: boolean
   isAdmin: boolean
-  profileSrc: string | undefined
-  refreshProfilePic: () => Promise<void>
   login: (credentials: LoginReq) => Promise<void>
   logout: () => void
   refresh: () => void
@@ -65,11 +56,6 @@ export const AuthProvider = (props: AuthValueProps) => {
 
   const loginModal = useDisclosure()
 
-  const { url, fetchUrl } = useProfilePic(user?.id, { auto: false })
-  useEffect(() => {
-    fetchUrl()
-  }, [isAuthenticated])
-
   useEffect(() => {
     http.openLoginModal = loginModal.onOpen
     http.updateOnLogout = forceUpdate
@@ -81,8 +67,6 @@ export const AuthProvider = (props: AuthValueProps) => {
     user,
     isAuthenticated,
     isAdmin,
-    profileSrc: url,
-    refreshProfilePic: fetchUrl,
     refresh: forceUpdate,
   }
 

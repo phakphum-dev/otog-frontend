@@ -14,7 +14,7 @@ export const useProfilePic = (
     try {
       const url = await storage
         .ref('images')
-        .child(`${name}.png`)
+        .child(`${name}.jpeg`)
         .getDownloadURL()
       urlMap.set(name, url)
       setUrl(url)
