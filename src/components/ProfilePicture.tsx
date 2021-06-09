@@ -101,7 +101,7 @@ export const ProfilePicture = (props: ProfilePictureProps) => {
   }
   useEffect(() => {
     getProfileUrl(userId)
-  }, [])
+  }, [userId])
   return <Picture url={url} />
 }
 

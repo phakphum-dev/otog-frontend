@@ -40,7 +40,7 @@ interface ChatButtonProps extends IconButtonProps {
 }
 
 // TODO: modal scrolling
-
+// TODO: esc to close
 const ChatButton = ({ hasUnread, ...props }: ChatButtonProps) => (
   <Box position="fixed" bottom={5} right={5} zIndex={100}>
     <Box position="relative" zIndex={101}>
@@ -297,10 +297,7 @@ const ChatMessage = memo(
         mt={sameUserAbove ? 0.5 : 2}
         align="flex-end"
       >
-        {/* 
-      // TODO: get avatar image 
-      // TODO: fix avatar not reload in profile page 
-      */}
+        {/* // TODO: get avatar image */}
         {displayAvatar ? (
           <NextLink href={`/profile/${message.user.id}`} passHref>
             <Avatar as="a" size="xs" mr={1} />
