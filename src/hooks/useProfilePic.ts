@@ -1,17 +1,23 @@
 import { storage } from '@src/firebase'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-export const useProfilPic = (userId?: number) => {
+const urlMap = new Map<string, string>()
+
+export const useProfilePic = (
+  userId: number | undefined,
+  { full = false, auto = true } = {}
+) => {
   const [url, setUrl] = useState<string>()
+  const name = `${userId}${full ? '' : '_32'}`
   const fetchUrl = async () => {
+    if (!userId) return
     try {
-      if (userId) {
-        const url = await storage
-          .ref('images')
-          .child(`${userId}.png`)
-          .getDownloadURL()
-        setUrl(url)
-      }
+      const url = await storage
+        .ref('images')
+        .child(`${name}.png`)
+        .getDownloadURL()
+      urlMap.set(name, url)
+      setUrl(url)
     } catch (error) {
       if (error.code === 'storage/object-not-found') {
         setUrl(undefined)
@@ -20,5 +26,15 @@ export const useProfilPic = (userId?: number) => {
       }
     }
   }
+
+  useEffect(() => {
+    if (auto && userId) {
+      if (urlMap.has(name)) {
+        setUrl(urlMap.get(name))
+      } else {
+        fetchUrl()
+      }
+    }
+  }, [userId, auto])
   return { url, fetchUrl }
 }

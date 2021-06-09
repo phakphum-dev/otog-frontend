@@ -34,6 +34,7 @@ import { useChat, Message } from '@src/hooks/useChat'
 import { useOnlineUsers } from '@src/hooks/useUser'
 import NextLink from 'next/link'
 import { toThDate } from '@src/hooks/useTimer'
+import { useProfilePic } from '@src/hooks/useProfilePic'
 
 interface ChatButtonProps extends IconButtonProps {
   hasUnread: boolean
@@ -302,11 +303,8 @@ const ChatMessage = memo(
         mt={sameUserAbove ? 0.5 : 2}
         align="flex-end"
       >
-        {/* // TODO: get avatar image */}
         {displayAvatar ? (
-          <NextLink href={`/profile/${message.user.id}`} passHref>
-            <Avatar as="a" size="xs" mr={1} />
-          </NextLink>
+          <SmallAvatar userId={message.user.id} />
         ) : (
           isOther && <Box minW={6} mr={1} />
         )}
@@ -340,6 +338,15 @@ const ChatMessage = memo(
     prevProps.sameUserAbove === nextProps.sameUserAbove &&
     prevProps.sameUserBelow === nextProps.sameUserBelow
 )
+
+const SmallAvatar = ({ userId }: { userId: number }) => {
+  const { url } = useProfilePic(userId)
+  return (
+    <NextLink href={`/profile/${userId}`} passHref>
+      <Avatar as="a" size="xs" mr={1} src={url} />
+    </NextLink>
+  )
+}
 
 const matcher: Record<
   string,

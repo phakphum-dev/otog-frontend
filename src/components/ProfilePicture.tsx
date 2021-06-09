@@ -11,16 +11,21 @@ import {
 import { useAuth } from '@src/api/AuthProvider'
 import { FaCropAlt, FaUserCircle } from 'react-icons/fa'
 
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect } from 'react'
 import { storage } from '@src/firebase'
 import { UploadFileButton } from '@src/components/FileInput'
 import Icon from '@chakra-ui/icon'
 import { useErrorToast } from '@src/hooks/useError'
-import { useProfilPic } from '@src/hooks/useProfilePic'
+import { useProfilePic } from '@src/hooks/useProfilePic'
 
 export const ProfileUpload = () => {
   const cropModal = useDisclosure()
   const { user, profileSrc, refreshProfilePic } = useAuth()
+
+  const { url, fetchUrl } = useProfilePic(user?.id, { auto: false, full: true })
+  useEffect(() => {
+    fetchUrl()
+  }, [profileSrc])
 
   const { onError } = useErrorToast()
   const onFileSelect = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -59,10 +64,11 @@ export const ProfileUpload = () => {
       )
     }
   }
+
   return (
     <div>
       <Box position="relative" boxSize="xs" flex={1}>
-        <Picture url={profileSrc} />
+        <Picture url={url} />
         <HStack position="absolute" top={2} right={2}>
           <UploadFileButton accept=".png,.jpg,.jpeg" onChange={onFileSelect} />
           {profileSrc && (
@@ -88,7 +94,7 @@ export interface ProfilePictureProps {
 
 export const ProfilePicture = (props: ProfilePictureProps) => {
   const { userId } = props
-  const { url, fetchUrl } = useProfilPic(userId)
+  const { url, fetchUrl } = useProfilePic(userId)
   useEffect(() => {
     fetchUrl()
   }, [userId])

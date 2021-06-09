@@ -10,11 +10,10 @@ import jwtDecode, { JwtPayload } from 'jwt-decode'
 
 import { LoginModal } from '@src/components/Login'
 import { useDisclosure, useForceUpdate } from '@chakra-ui/hooks'
-import { storage } from '@src/firebase'
 import { useRouter } from 'next/router'
 import { AuthRes, LoginReq, User } from '@src/hooks/useUser'
 import { cache } from 'swr'
-import { useProfilPic } from '@src/hooks/useProfilePic'
+import { useProfilePic } from '@src/hooks/useProfilePic'
 
 export interface AuthProviderProps {
   user: User | null
@@ -66,7 +65,7 @@ export const AuthProvider = (props: AuthValueProps) => {
 
   const loginModal = useDisclosure()
 
-  const { url, fetchUrl } = useProfilPic(user?.id)
+  const { url, fetchUrl } = useProfilePic(user?.id, { auto: false })
   useEffect(() => {
     fetchUrl()
   }, [isAuthenticated])

@@ -56,7 +56,7 @@ export const createImageFromFile = (file: File) =>
  * @param {Object} pixelCrop - pixelCrop Object provided by react-easy-crop
  * @param {number} rotation - optional rotation parameter
  */
-const BOX_SIZE = 320
+const BOX_SIZE = 480
 export async function getCroppedImage(
   image: HTMLImageElement,
   sourceArea?: Area
