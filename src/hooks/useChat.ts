@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react'
-import socketIOClient from 'socket.io-client'
+import { useEffect, useMemo, useReducer } from 'react'
+import socketIOClient, { Socket } from 'socket.io-client'
 import { mutate, useSWRInfinite } from 'swr'
 import { useAuth } from '../api/AuthProvider'
 import { useHttp } from '../api/HttpProvider'
@@ -12,13 +12,6 @@ export type Message = {
   creationDate: string
   user: Omit<User, 'role' | 'username'>
 }
-
-export type SocketMessage = [
-  id: number,
-  message: string,
-  creationDate: string,
-  user: [id: number, showName: string, rating: number]
-]
 
 const useLoadChat = () => {
   const { isAuthenticated } = useAuth()
@@ -52,57 +45,123 @@ const useLoadChat = () => {
   return { messages, loadMore, hasMore }
 }
 
-export const useChat = (isOpen: boolean) => {
-  const { isAuthenticated } = useAuth()
+export type SocketMessage = [
+  id: number,
+  message: string,
+  creationDate: string,
+  user: [id: number, showName: string, rating: number]
+]
+type ChatSocketState = {
+  socket?: Socket
+  emitMessage?: (message: string) => void
+  newMessages: Message[]
+  hasUnread: boolean
+}
 
-  const oldChat = useLoadChat()
-
-  const [newMessages, setNewMessages] = useState<Message[]>([])
-
-  const [hasUnread, setUnread] = useState(false)
-  const appendMessage = ([
-    id,
-    message,
-    creationDate,
-    [userId, showName, rating],
-  ]: SocketMessage) => {
-    setNewMessages((prevMessages) => [
-      ...prevMessages,
-      { id, message, creationDate, user: { id: userId, showName, rating } },
-    ])
-    if (!isOpen) {
-      setUnread(true)
+type ChatSocketAction =
+  | {
+      type: 'connect'
+      payload: {
+        socket: Socket
+      }
     }
-  }
-  useEffect(() => {
-    if (isOpen) {
-      setUnread(false)
+  | {
+      type: 'new-message'
+      payload: {
+        message: SocketMessage
+        isOpen: boolean
+      }
     }
-  }, [isOpen])
+  | { type: 'read' }
+  | { type: 'disconnect' }
 
-  const http = useHttp()
-  const [emitChat, setEmitChat] = useState<(message: string) => void>()
-  useEffect(() => {
-    if (isAuthenticated) {
-      const socket = socketIOClient(SOCKET_HOST, {
-        auth: { token: http.getAccessToken() },
-      })
-      socket.on('chat', (message: SocketMessage) => {
-        appendMessage(message)
-      })
+const reducer = (
+  state: ChatSocketState,
+  action: ChatSocketAction
+): ChatSocketState => {
+  switch (action.type) {
+    case 'connect': {
+      const socket = action.payload.socket
       socket.on('online', () => {
         mutate('user/online')
       })
-      const emit = (message: string) => {
+      const emitMessage = (message: string) => {
         socket.emit('chat-server', message)
       }
+      return { ...state, socket, emitMessage }
+    }
+    case 'new-message': {
+      const [
+        id,
+        message,
+        creationDate,
+        [userId, showName, rating],
+      ] = action.payload.message
+      state.newMessages.push({
+        id,
+        message,
+        creationDate,
+        user: { id: userId, showName, rating },
+      })
+      return { ...state, hasUnread: !action.payload.isOpen }
+    }
+    case 'read': {
+      return { ...state, hasUnread: false }
+    }
+    case 'disconnect': {
+      const socket = state.socket
+      socket?.disconnect()
+      return state
+    }
+    default: {
+      return state
+    }
+  }
+}
 
-      setEmitChat(() => emit)
+export const useChatSocket = () => {
+  return useReducer(reducer, { newMessages: [], hasUnread: false })
+}
+
+export const useChat = (isOpen: boolean) => {
+  const [
+    { socket, emitMessage: emitChat, newMessages, hasUnread },
+    dispatch,
+  ] = useChatSocket()
+
+  const { isAuthenticated } = useAuth()
+  const http = useHttp()
+  useEffect(() => {
+    if (isAuthenticated) {
+      const socketClient = socketIOClient(SOCKET_HOST, {
+        auth: { token: http.getAccessToken() },
+      })
+      dispatch({
+        type: 'connect',
+        payload: { socket: socketClient },
+      })
       return () => {
-        socket.disconnect()
+        dispatch({ type: 'disconnect' })
       }
     }
   }, [isAuthenticated])
+
+  useEffect(() => {
+    if (socket) {
+      socket.off('chat')
+      socket.on('chat', (message: SocketMessage) => {
+        dispatch({ type: 'new-message', payload: { message, isOpen } })
+      })
+    }
+  }, [socket, isOpen])
+
+  useEffect(() => {
+    if (isOpen && hasUnread) {
+      dispatch({ type: 'read' })
+    }
+  }, [isOpen, hasUnread])
+
+  const oldChat = useLoadChat()
 
   return { emitChat, newMessages, hasUnread, ...oldChat }
 }

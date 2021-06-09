@@ -38,6 +38,8 @@ interface ChatButtonProps extends IconButtonProps {
   hasUnread: boolean
 }
 
+// TODO: modal scrolling
+
 const ChatButton = ({ hasUnread, ...props }: ChatButtonProps) => (
   <Box position="fixed" bottom={5} right={5} zIndex={100}>
     <Box position="relative" zIndex={101}>
@@ -45,7 +47,7 @@ const ChatButton = ({ hasUnread, ...props }: ChatButtonProps) => (
         <Circle position="absolute" top={1} right={1} boxSize={2} bg="orange" />
       )}
     </Box>
-    <OnlineUsersTooltip placement="top">
+    <OnlineUsersTooltip placement="top-end">
       <IconButton
         isRound
         boxSize="50"
@@ -274,6 +276,7 @@ interface ChatMessageProps {
   sameUserBelow?: boolean
 }
 
+// TODO: optimize chat message rerendering
 const ChatMessage = (props: ChatMessageProps) => {
   const { message, sameUserAbove = false, sameUserBelow = false } = props
 
@@ -292,6 +295,10 @@ const ChatMessage = (props: ChatMessageProps) => {
       mt={sameUserAbove ? 0.5 : 2}
       align="flex-end"
     >
+      {/* 
+      // TODO: get avatar image 
+      // TODO: fix avatar not reload in profile page 
+      */}
       {displayAvatar ? (
         <NextLink href={`/profile/${message.user.id}`} passHref>
           <Avatar as="a" size="xs" mr={1} />
