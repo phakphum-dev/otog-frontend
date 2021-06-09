@@ -87,7 +87,7 @@ export const CodeModal = (props: CodeModalProps) => {
   )
 
   return (
-    <Modal onClose={onClose} isOpen={isOpen} size="xl" preserveScrollBarGap>
+    <Modal onClose={onClose} isOpen={isOpen} size="xl">
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>

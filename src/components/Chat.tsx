@@ -39,8 +39,6 @@ interface ChatButtonProps extends IconButtonProps {
   hasUnread: boolean
 }
 
-// TODO: modal scrolling
-// TODO: esc to close
 const ChatButton = ({ hasUnread, ...props }: ChatButtonProps) => (
   <Box position="fixed" bottom={5} right={5} zIndex={100}>
     <Box position="relative" zIndex={101}>
@@ -204,7 +202,7 @@ export const Chat = () => {
               )}
             </Flex>
             <Flex borderWidth="1px" borderY="unset">
-              <ChatInput emitChat={emitChat} />
+              <ChatInput emitMessage={emitChat} onClose={onClose} />
             </Flex>
           </Flex>
         </SlideFade>
@@ -214,11 +212,12 @@ export const Chat = () => {
 }
 
 interface ChatInputProps {
-  emitChat?: (message: string) => void
+  onClose: () => void
+  emitMessage?: (message: string) => void
 }
 
 const ChatInput = (props: ChatInputProps) => {
-  const { emitChat } = props
+  const { emitMessage, onClose } = props
   const [message, setMessage] = useState('')
   const toast = useToast()
   const onSubmit = () => {
@@ -234,7 +233,7 @@ const ChatInput = (props: ChatInputProps) => {
         })
         return
       }
-      emitChat?.(msg)
+      emitMessage?.(msg)
     }
     setMessage('')
   }
@@ -245,6 +244,11 @@ const ChatInput = (props: ChatInputProps) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
       onSubmit()
+    }
+  }
+  const onKeydown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Escape') {
+      onClose()
     }
   }
   return (
@@ -260,6 +264,7 @@ const ChatInput = (props: ChatInputProps) => {
         value={message}
         onChange={onChange}
         onKeyPress={onKeyPress}
+        onKeyDown={onKeydown}
       />
       <IconButton
         aria-label="send message"
