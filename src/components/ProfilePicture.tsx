@@ -20,7 +20,7 @@ import { useProfilePic } from '@src/hooks/useProfilePic'
 
 export const ProfileUpload = () => {
   const cropModal = useDisclosure()
-  const { user, refresh } = useAuth()
+  const { user } = useAuth()
   const { url, fetchUrl } = useProfilePic(user?.id, { full: true })
 
   const { onError } = useErrorToast()
@@ -54,9 +54,8 @@ export const ProfileUpload = () => {
           // setProgress(progress)
         },
         (error) => onError(error),
-        async () => {
-          await fetchUrl()
-          setTimeout(refresh, 3000)
+        () => {
+          fetchUrl()
         }
       )
     }
