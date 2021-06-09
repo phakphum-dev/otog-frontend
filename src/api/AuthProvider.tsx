@@ -14,6 +14,7 @@ import { storage } from '@src/firebase'
 import { useRouter } from 'next/router'
 import { AuthRes, LoginReq, User } from '@src/hooks/useUser'
 import { cache } from 'swr'
+import { useProfilPic } from '@src/hooks/useProfilePic'
 
 export interface AuthProviderProps {
   user: User | null
@@ -65,25 +66,9 @@ export const AuthProvider = (props: AuthValueProps) => {
 
   const loginModal = useDisclosure()
 
-  const [profileSrc, setProfileSrc] = useState<string>()
-  const getProfilePic = async () => {
-    if (user) {
-      try {
-        const url = await storage
-          .ref('images')
-          .child(`${user.id}.png`)
-          .getDownloadURL()
-        setProfileSrc(url)
-      } catch (error) {
-        if (error.code === 'storage/object-not-found') {
-          setProfileSrc(undefined)
-        }
-      }
-    }
-  }
-
+  const { url, fetchUrl } = useProfilPic(user?.id)
   useEffect(() => {
-    getProfilePic()
+    fetchUrl()
   }, [isAuthenticated])
 
   useEffect(() => {
@@ -97,8 +82,8 @@ export const AuthProvider = (props: AuthValueProps) => {
     user,
     isAuthenticated,
     isAdmin,
-    profileSrc,
-    refreshProfilePic: getProfilePic,
+    profileSrc: url,
+    refreshProfilePic: fetchUrl,
     refresh: forceUpdate,
   }
 

@@ -16,6 +16,7 @@ import { storage } from '@src/firebase'
 import { UploadFileButton } from '@src/components/FileInput'
 import Icon from '@chakra-ui/icon'
 import { useErrorToast } from '@src/hooks/useError'
+import { useProfilPic } from '@src/hooks/useProfilePic'
 
 export const ProfileUpload = () => {
   const cropModal = useDisclosure()
@@ -85,22 +86,9 @@ export interface ProfilePictureProps {
 
 export const ProfilePicture = (props: ProfilePictureProps) => {
   const { userId } = props
-  const [url, setUrl] = useState<string>()
-  const getProfileUrl = async (userId: number) => {
-    try {
-      const url = await storage
-        .ref('images')
-        .child(`${userId}.png`)
-        .getDownloadURL()
-      setUrl(url)
-    } catch (error) {
-      if (error.code === 'storage/object-not-found') {
-        setUrl(undefined)
-      }
-    }
-  }
+  const { url, fetchUrl } = useProfilPic(userId)
   useEffect(() => {
-    getProfileUrl(userId)
+    fetchUrl()
   }, [userId])
   return <Picture url={url} />
 }
