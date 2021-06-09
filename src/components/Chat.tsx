@@ -330,7 +330,10 @@ const ChatMessage = memo(
       </Flex>
     )
   },
-  (prevProps, nextProps) => prevProps.message.id === nextProps.message.id
+  (prevProps, nextProps) =>
+    prevProps.message.id === nextProps.message.id &&
+    prevProps.sameUserAbove === nextProps.sameUserAbove &&
+    prevProps.sameUserBelow === nextProps.sameUserBelow
 )
 
 const matcher: Record<
