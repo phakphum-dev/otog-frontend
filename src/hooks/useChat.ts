@@ -111,7 +111,7 @@ const reducer = (
     case 'disconnect': {
       const socket = state.socket
       socket?.disconnect()
-      return state
+      return { newMessages: [], hasUnread: false }
     }
     default: {
       return state

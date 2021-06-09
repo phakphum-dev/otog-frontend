@@ -24,6 +24,7 @@ import { useOnScreen } from '@src/hooks/useOnScreen'
 import {
   ChangeEvent,
   KeyboardEvent,
+  memo,
   ReactNode,
   useEffect,
   useState,
@@ -54,6 +55,7 @@ const ChatButton = ({ hasUnread, ...props }: ChatButtonProps) => (
         variant="solid"
         fontSize="x-large"
         borderWidth="1px"
+        boxShadow="sm"
         bg={useColorModeValue('white', 'gray.800')}
         color={useColorModeValue('gray.400', 'gray.500')}
         icon={<IoChatbubbleEllipses />}
@@ -134,7 +136,7 @@ export const Chat = () => {
             direction="column"
             rounded="lg"
             borderBottomRadius={0}
-            boxShadow="sm"
+            boxShadow="md"
             bg={bg}
           >
             <OnlineUsersTooltip placement="top-start">
@@ -276,61 +278,63 @@ interface ChatMessageProps {
   sameUserBelow?: boolean
 }
 
-// TODO: optimize chat message rerendering
-const ChatMessage = (props: ChatMessageProps) => {
-  const { message, sameUserAbove = false, sameUserBelow = false } = props
+const ChatMessage = memo(
+  (props: ChatMessageProps) => {
+    const { message, sameUserAbove = false, sameUserBelow = false } = props
 
-  const { user } = useAuth()
-  const isMyself = user?.id === message.user.id
-  const isOther = !isMyself
-  const displayName = isOther && !sameUserAbove
-  const displayAvatar = isOther && !sameUserBelow
+    const { user } = useAuth()
+    const isMyself = user?.id === message.user.id
+    const isOther = !isMyself
+    const displayName = isOther && !sameUserAbove
+    const displayAvatar = isOther && !sameUserBelow
 
-  const bg = useColorModeValue('gray.100', 'gray.800')
-  const borderColor = useColorModeValue('gray.100', 'whiteAlpha.300')
+    const bg = useColorModeValue('gray.100', 'gray.800')
+    const borderColor = useColorModeValue('gray.100', 'whiteAlpha.300')
 
-  return (
-    <Flex
-      direction={isOther ? 'row' : 'row-reverse'}
-      mt={sameUserAbove ? 0.5 : 2}
-      align="flex-end"
-    >
-      {/* 
+    return (
+      <Flex
+        direction={isOther ? 'row' : 'row-reverse'}
+        mt={sameUserAbove ? 0.5 : 2}
+        align="flex-end"
+      >
+        {/* 
       // TODO: get avatar image 
       // TODO: fix avatar not reload in profile page 
       */}
-      {displayAvatar ? (
-        <NextLink href={`/profile/${message.user.id}`} passHref>
-          <Avatar as="a" size="xs" mr={1} />
-        </NextLink>
-      ) : (
-        isOther && <Box minW={6} mr={1} />
-      )}
-      <VStack align="flex-start" spacing={0}>
-        {displayName && (
-          <Text fontSize="xs" color="gray.500" px={1}>
-            {message.user.showName}
-          </Text>
+        {displayAvatar ? (
+          <NextLink href={`/profile/${message.user.id}`} passHref>
+            <Avatar as="a" size="xs" mr={1} />
+          </NextLink>
+        ) : (
+          isOther && <Box minW={6} mr={1} />
         )}
-        <Text
-          title={toThDate(message.creationDate)}
-          px={2}
-          py={1}
-          {...{ [isMyself ? 'ml' : 'mr']: 2 }}
-          rounded={16}
-          borderWidth="1px"
-          bg={isMyself ? 'otog' : bg}
-          color={isMyself ? 'white' : undefined}
-          borderColor={isMyself ? 'otog' : borderColor}
-          whiteSpace="pre-wrap"
-          wordBreak="break-word"
-        >
-          {formatParser(message.message)}
-        </Text>
-      </VStack>
-    </Flex>
-  )
-}
+        <VStack align="flex-start" spacing={0}>
+          {displayName && (
+            <Text fontSize="xs" color="gray.500" px={1}>
+              {message.user.showName}
+            </Text>
+          )}
+          <Text
+            title={toThDate(message.creationDate)}
+            px={2}
+            py={1}
+            {...{ [isMyself ? 'ml' : 'mr']: 2 }}
+            rounded={16}
+            borderWidth="1px"
+            bg={isMyself ? 'otog' : bg}
+            color={isMyself ? 'white' : undefined}
+            borderColor={isMyself ? 'otog' : borderColor}
+            whiteSpace="pre-wrap"
+            wordBreak="break-word"
+          >
+            {formatParser(message.message)}
+          </Text>
+        </VStack>
+      </Flex>
+    )
+  },
+  (prevProps, nextProps) => prevProps.message.id === nextProps.message.id
+)
 
 const matcher: Record<
   string,
