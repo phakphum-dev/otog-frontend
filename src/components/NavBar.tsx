@@ -33,7 +33,7 @@ import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
 import { ToggleColorModeButton } from './ToggleColorModeButton'
 import { PageContainer } from './PageContainer'
 import { useAuth } from '@src/api/AuthProvider'
-import { useProfilePic } from '@src/hooks/useProfilePic'
+import { useUserProfilePic } from '@src/hooks/useProfilePic'
 
 interface ColorOptions {
   normal: {
@@ -87,7 +87,7 @@ export const NavBar = () => {
   const color = useColorModeValue('gray.800', 'white')
 
   const { isAuthenticated, user, logout, isAdmin } = useAuth()
-  const { url } = useProfilePic(user?.id)
+  const { url } = useUserProfilePic({ small: true })
 
   const entries = [
     { href: '/problem', title: 'โจทย์' },
@@ -251,7 +251,7 @@ const DrawerButton = forwardRef(
 
 const AvatarMenu = () => {
   const { user, logout } = useAuth()
-  const { url } = useProfilePic(user?.id)
+  const { url } = useUserProfilePic({ small: true })
   const [isClient, setClient] = useState(false)
   useEffect(() => {
     setClient(true)

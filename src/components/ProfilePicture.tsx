@@ -11,17 +11,18 @@ import {
 import { useAuth } from '@src/api/AuthProvider'
 import { FaCropAlt, FaUserCircle } from 'react-icons/fa'
 
-import { ChangeEvent, useEffect } from 'react'
+import { ChangeEvent } from 'react'
 import { storage } from '@src/firebase'
 import { UploadFileButton } from '@src/components/FileInput'
 import Icon from '@chakra-ui/icon'
 import { useErrorToast } from '@src/hooks/useError'
-import { useProfilePic } from '@src/hooks/useProfilePic'
+import { useProfilePic, useUserProfilePic } from '@src/hooks/useProfilePic'
+import { mutate } from 'swr'
 
 export const ProfileUpload = () => {
   const cropModal = useDisclosure()
   const { user } = useAuth()
-  const { url, fetchUrl } = useProfilePic(user?.id, { full: true })
+  const { url, fetchUrl } = useUserProfilePic()
 
   const { onError } = useErrorToast()
   const onFileSelect = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -56,6 +57,9 @@ export const ProfileUpload = () => {
         (error) => onError(error),
         () => {
           fetchUrl()
+          setTimeout(() => {
+            mutate([user.id, true])
+          }, 1000)
         }
       )
     }
@@ -75,7 +79,7 @@ export const ProfileUpload = () => {
                 icon={<FaCropAlt />}
                 onClick={cropModal.onOpen}
               />
-              <ImageCropModal url={url} fetchUrl={fetchUrl} {...cropModal} />
+              <ImageCropModal {...cropModal} />
             </>
           )}
         </HStack>
@@ -90,10 +94,7 @@ export interface ProfilePictureProps {
 
 export const ProfilePicture = (props: ProfilePictureProps) => {
   const { userId } = props
-  const { url, fetchUrl } = useProfilePic(userId)
-  useEffect(() => {
-    fetchUrl()
-  }, [userId])
+  const { url } = useProfilePic(userId)
   return <Picture url={url} />
 }
 

@@ -1,40 +1,35 @@
+import { useAuth } from '@src/api/AuthProvider'
 import { storage } from '@src/firebase'
-import { useEffect, useState } from 'react'
-
-const urlMap = new Map<string, string>()
+import useSWR from 'swr'
 
 export const useProfilePic = (
   userId: number | undefined,
-  { full = false, auto = true } = {}
+  { small = false, auto = true } = {}
 ) => {
-  const [url, setUrl] = useState<string>()
-  const name = `${userId}${full ? '' : '_32'}`
-  const fetchUrl = async () => {
-    if (!userId) return
-    try {
-      const url = await storage
-        .ref('images')
-        .child(`${name}.jpeg`)
-        .getDownloadURL()
-      urlMap.set(name, url)
-      setUrl(url)
-    } catch (error) {
-      if (error.code === 'storage/object-not-found') {
-        setUrl(undefined)
-      } else {
-        console.log(error)
-      }
+  const fetcher = async (userId: number, small: boolean): Promise<string> =>
+    storage
+      .ref('images')
+      .child(`${userId}${small ? '_32' : ''}.jpeg`)
+      .getDownloadURL()
+
+  const { data: url, mutate: fetchUrl, error } = useSWR<string>(
+    userId ? [userId, small] : null,
+    fetcher,
+    {
+      revalidateOnMount: auto,
+      revalidateOnFocus: false,
+      shouldRetryOnError: false,
     }
+  )
+
+  if (error && error.code !== 'storage/object-not-found') {
+    console.log(error)
   }
 
-  useEffect(() => {
-    if (auto && userId) {
-      if (urlMap.has(name)) {
-        setUrl(urlMap.get(name))
-      } else {
-        fetchUrl()
-      }
-    }
-  }, [userId, auto])
   return { url, fetchUrl }
+}
+
+export const useUserProfilePic = ({ small = false, auto = true } = {}) => {
+  const { user } = useAuth()
+  return useProfilePic(user?.id, { small, auto })
 }

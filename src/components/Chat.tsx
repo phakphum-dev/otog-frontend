@@ -340,7 +340,7 @@ const ChatMessage = memo(
 )
 
 const SmallAvatar = ({ userId }: { userId: number }) => {
-  const { url } = useProfilePic(userId)
+  const { url } = useProfilePic(userId, { small: true })
   return (
     <NextLink href={`/profile/${userId}`} passHref>
       <Avatar as="a" size="xs" mr={1} src={url} />

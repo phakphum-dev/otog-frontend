@@ -19,15 +19,15 @@ import {
 import { useAuth } from '@src/api/AuthProvider'
 import { storage } from '@src/firebase'
 import { useErrorToast } from '@src/hooks/useError'
+import { useUserProfilePic } from '@src/hooks/useProfilePic'
 import { useState } from 'react'
 import Cropper from 'react-easy-crop'
 import { Area } from 'react-easy-crop/types'
+import { mutate } from 'swr'
 
 interface ImageUploadModalProps {
   isOpen: boolean
   onClose: () => void
-  url: string
-  fetchUrl: () => Promise<void>
 }
 
 // ref: https://codesandbox.io/s/q8q1mnr01w
@@ -69,7 +69,6 @@ export async function getCroppedImage(
     if (sourceArea) {
       canvas.width = BOX_SIZE
       canvas.height = BOX_SIZE
-      console.log(sourceArea)
 
       context.drawImage(
         image,
@@ -104,9 +103,10 @@ export async function getCroppedImage(
 }
 
 export const ImageCropModal = (props: ImageUploadModalProps) => {
-  const { isOpen, onClose, url, fetchUrl } = props
+  const { isOpen, onClose } = props
 
   const { user } = useAuth()
+  const { url, fetchUrl } = useUserProfilePic()
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area>()
@@ -123,7 +123,7 @@ export const ImageCropModal = (props: ImageUploadModalProps) => {
         if (croppedImage) {
           const uploadTask = storage
             .ref(`images/${user.id}.jpeg`)
-            .put(croppedImage)
+            .put(croppedImage, { contentType: 'image/jpeg' })
           uploadTask.on(
             'state_changed',
             (snapshot) => {
@@ -140,6 +140,9 @@ export const ImageCropModal = (props: ImageUploadModalProps) => {
               onClose()
               setZoom(1)
               setCrop({ x: 0, y: 0 })
+              setTimeout(() => {
+                mutate([user.id, true])
+              }, 1000)
             }
           )
         }
