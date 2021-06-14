@@ -12,7 +12,7 @@ export const useProfilePic = (
       .child(`${userId}${small ? '_32' : ''}.jpeg`)
       .getDownloadURL()
 
-  const { data: url, mutate: fetchUrl, error } = useSWR<string>(
+  const { data: url, mutate: fetchUrl } = useSWR<string>(
     userId ? [userId, small] : null,
     fetcher,
     {
@@ -21,10 +21,6 @@ export const useProfilePic = (
       shouldRetryOnError: false,
     }
   )
-
-  if (error && error.code !== 'storage/object-not-found') {
-    console.log(error)
-  }
 
   return { url, fetchUrl }
 }

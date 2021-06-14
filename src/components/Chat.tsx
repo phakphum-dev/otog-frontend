@@ -318,8 +318,16 @@ const ChatMessage = memo(
             title={toThDate(message.creationDate)}
             px={2}
             py={1}
-            {...{ [isMyself ? 'ml' : 'mr']: 2 }}
             rounded={16}
+            {...{
+              [isMyself ? 'ml' : 'mr']: 2,
+              ...(sameUserAbove && {
+                [isMyself ? 'roundedTopRight' : 'roundedTopLeft']: 6,
+              }),
+              ...(sameUserBelow && {
+                [isMyself ? 'roundedBottomRight' : 'roundedBottomLeft']: 6,
+              }),
+            }}
             borderWidth="1px"
             bg={isMyself ? 'otog' : bg}
             color={isMyself ? 'white' : undefined}
