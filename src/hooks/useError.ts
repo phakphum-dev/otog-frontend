@@ -89,7 +89,7 @@ export function getErrorToast(e: any): ErrorToastOptions {
         }
       case undefined: {
         return {
-          title: 'เซิฟเวอร์ยังไม่เปิด',
+          title: 'ไม่สามารถติดต่อกับเซิฟเวอร์ได้',
           status: 'error',
           code: 503,
         }
