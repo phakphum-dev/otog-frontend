@@ -72,18 +72,16 @@ export const LoginForm = (props: LoginFormProps) => {
       <Stack spacing={4}>
         <Img src="/logo512.png" boxSize={100} mx="auto" />
         <Input
+          {...register('username')}
           type="text"
-          name="username"
           placeholder="ชื่อผู้ใช้"
-          ref={register}
           autoFocus
           required
         />
         <Input
+          {...register('password')}
           type="password"
-          name="password"
           placeholder="รหัสผ่าน"
-          ref={register}
           required
         />
         <Button type="submit" variant="otog">

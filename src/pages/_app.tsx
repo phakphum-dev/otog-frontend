@@ -18,6 +18,7 @@ import { AuthProvider } from '@src/api/AuthProvider'
 import { ErrorToastOptions } from '@src/hooks/useError'
 import { Chat } from '@src/components/Chat'
 import Error from './_error'
+import { ConfirmModalProvider } from '@src/components/ConfirmModal'
 
 const TopProgressBar = dynamic(() => import('@src/components/ProgressBar'), {
   ssr: false,
@@ -47,21 +48,26 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         theme={theme}
         colorModeManager={cookieStorageManager(colorModeCookie as string)}
       >
-        <HttpProvider value={errorToast as ErrorToastOptions}>
-          <AuthProvider value={accessToken as string}>
-            <TopProgressBar />
-            <Flex direction="column" minH="100vh">
-              <NavBar />
-              {errorToast ? (
-                <Error title={errorToast.title} statusCode={errorToast.code} />
-              ) : (
-                <Component {...props} />
-              )}
-              <Chat />
-              <Footer />
-            </Flex>
-          </AuthProvider>
-        </HttpProvider>
+        <ConfirmModalProvider>
+          <HttpProvider value={errorToast as ErrorToastOptions}>
+            <AuthProvider value={accessToken as string}>
+              <TopProgressBar />
+              <Flex direction="column" minH="100vh">
+                <NavBar />
+                {errorToast ? (
+                  <Error
+                    title={errorToast.title}
+                    statusCode={errorToast.code}
+                  />
+                ) : (
+                  <Component {...props} />
+                )}
+                <Chat />
+                <Footer />
+              </Flex>
+            </AuthProvider>
+          </HttpProvider>
+        </ConfirmModalProvider>
       </ChakraProvider>
     </>
   )

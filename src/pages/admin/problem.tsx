@@ -97,7 +97,6 @@ const CreateProblemModalButton = () => {
       <Button
         colorScheme="green"
         leftIcon={<FaPlusCircle />}
-        size="lg"
         onClick={createModal.onOpen}
       >
         เพิ่มโจทย์

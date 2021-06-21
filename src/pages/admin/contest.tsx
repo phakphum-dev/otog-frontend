@@ -35,6 +35,7 @@ import { memo, PropsWithChildren, useEffect, useState } from 'react'
 import {
   FaEye,
   FaEyeSlash,
+  FaPencilAlt,
   FaPlusCircle,
   FaTools,
   FaTrophy,
@@ -47,6 +48,8 @@ import { Spinner } from '@chakra-ui/spinner'
 import { RenderLater } from '@src/components/RenderLater'
 import { mutate } from 'swr'
 import Head from 'next/head'
+import { HStack } from '@chakra-ui/react'
+import { useConfirmModal } from '@src/components/ConfirmModal'
 
 export default function AdminContestPage() {
   const [contestId, setContestId] = useState<number>()
@@ -69,15 +72,152 @@ export default function AdminContestPage() {
       </TitleLayout>
       <Stack spacing={4}>
         <Flex>
-          <SelectContestModalButton setContestId={setContest}>
-            {contest?.name ?? 'เลือกการแข่งขัน'}
-          </SelectContestModalButton>
+          <HStack>
+            <SelectContestModalButton setContestId={setContest}>
+              {contest?.name ?? 'เลือกการแข่งขัน'}
+            </SelectContestModalButton>
+            {contestId && <EditContestModalButton contest={contest} />}
+          </HStack>
           <Spacer />
           <CreateContestModalButton setContestId={setContest} />
         </Flex>
         {contest && <ContestTable contest={contest} />}
       </Stack>
     </PageContainer>
+  )
+}
+
+interface EditContestModalButtonProps {
+  contest: Contest | undefined
+}
+
+const EditContestModalButton = (props: EditContestModalButtonProps) => {
+  const { contest } = props
+  const editModal = useDisclosure()
+  const [startDate, setStartDate] = useState<Date>(new Date())
+  const [endDate, setEndDate] = useState<Date>(new Date())
+
+  const { register, handleSubmit, reset } = useForm()
+  useEffect(() => {
+    if (contest) {
+      reset(contest)
+      setStartDate(new Date(contest.timeStart))
+      setEndDate(new Date(contest.timeEnd))
+    }
+  }, [contest])
+
+  const http = useHttp()
+  const { onError } = useErrorToast()
+  const onSubmit = async (value: {
+    name: string
+    gradingMode: GradingMode
+    mode: ContestMode
+  }) => {
+    const body = {
+      ...value,
+      timeStart: startDate.toISOString(),
+      timeEnd: endDate.toISOString(),
+    }
+    try {
+      await http.put<Contest>(`contest/${contest?.id}`, body)
+      mutate('contest')
+      editModal.onClose()
+    } catch (e) {
+      onError(e)
+    }
+  }
+
+  const { onConfirm } = useConfirmModal()
+  const onDelete = () => {
+    onConfirm({
+      title: `ยืนยันลบการแข่งขัน`,
+      subtitle: `คุณต้องการที่จะลบการแข่งขัน ${contest?.name} ใช่หรือไม่ ?`,
+      submitText: 'ยืนยัน',
+      cancleText: 'ยกเลิก',
+      onSubmit: async () => {
+        try {
+          await http.del(`contest/${contest?.id}`)
+          mutate('contest')
+          editModal.onClose()
+        } catch (e) {
+          onError(e)
+        }
+      },
+    })
+  }
+
+  return (
+    <>
+      <IconButton
+        aria-label="edit-contest"
+        icon={<FaPencilAlt />}
+        onClick={editModal.onOpen}
+      />
+      <Modal {...editModal}>
+        <ModalOverlay />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <ModalContent>
+            <ModalHeader>แก้ไขการแข่งขัน</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Stack>
+                <FormControl>
+                  <FormLabel>ชื่อการแข่งขัน</FormLabel>
+                  <Input
+                    isRequired
+                    {...register('name')}
+                    placeholder="การแข่งขัน"
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>การเรท</FormLabel>
+                  <Select {...register('mode')}>
+                    <option value="unrated">Unrated</option>
+                    <option value="rated">Rated</option>
+                  </Select>
+                </FormControl>
+                <FormControl>
+                  <FormLabel>โหมด</FormLabel>
+                  <Select {...register('gradingMode')}>
+                    <option value="classic">Classic</option>
+                    <option value="acm">ACM</option>
+                  </Select>
+                </FormControl>
+                <FormControl>
+                  <FormLabel>เวลาเริ่ม</FormLabel>
+                  <DatePicker
+                    selectedDate={startDate}
+                    onChange={(date: Date) => {
+                      setStartDate(date)
+                    }}
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>เวลาจบ</FormLabel>
+                  <DatePicker
+                    selectedDate={endDate}
+                    onChange={(date: Date) => {
+                      setEndDate(date)
+                    }}
+                  />
+                </FormControl>
+              </Stack>
+            </ModalBody>
+            <ModalFooter>
+              <Flex w="100%">
+                <Button colorScheme="red" variant="ghost" onClick={onDelete}>
+                  ลบ
+                </Button>
+                <Spacer />
+                <Button colorScheme="green" type="submit">
+                  บันทึก
+                </Button>
+              </Flex>
+            </ModalFooter>
+          </ModalContent>
+        </form>
+      </Modal>
+    </>
   )
 }
 
@@ -118,7 +258,6 @@ const CreateContestModalButton = (props: CreateContestModalButtonProps) => {
       <Button
         colorScheme="green"
         leftIcon={<FaPlusCircle />}
-        size="lg"
         onClick={createModal.onOpen}
       >
         สร้างการแข่งขัน
@@ -134,22 +273,21 @@ const CreateContestModalButton = (props: CreateContestModalButtonProps) => {
                 <FormControl>
                   <FormLabel>ชื่อการแข่งขัน</FormLabel>
                   <Input
-                    ref={register}
+                    {...register('name')}
                     isRequired
-                    name="name"
                     placeholder="การแข่งขัน"
                   />
                 </FormControl>
                 <FormControl>
                   <FormLabel>การเรท</FormLabel>
-                  <Select ref={register} name="mode">
+                  <Select {...register('mode')}>
                     <option value="unrated">Unrated</option>
                     <option value="rated">Rated</option>
                   </Select>
                 </FormControl>
                 <FormControl>
                   <FormLabel>โหมด</FormLabel>
-                  <Select ref={register} name="gradingMode">
+                  <Select {...register('gradingMode')}>
                     <option value="classic">Classic</option>
                     <option value="acm">ACM</option>
                   </Select>
@@ -299,7 +437,6 @@ const SelectContestModalButton = (props: SelectContestModalButtonProps) => {
   return (
     <>
       <Button
-        size="lg"
         colorScheme="orange"
         onClick={selectModal.onOpen}
         leftIcon={<FaTrophy />}

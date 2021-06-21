@@ -37,23 +37,20 @@ export default function RegisterPage() {
           <Stack spacing={4}>
             <Img src="/logo512.png" boxSize={100} mx="auto" />
             <Input
-              name="username"
+              {...register('username')}
               type="username"
               placeholder="ชื่อผู้ใช้"
-              ref={register}
               required
               autoFocus
             />
             <Input
-              name="password"
+              {...register('password')}
               type="password"
-              ref={register}
               required
               placeholder="รหัสผ่าน"
             />
             <Input
-              name="showName"
-              ref={register}
+              {...register('showName')}
               required
               placeholder="ชื่อที่ใช้แสดง"
             />
