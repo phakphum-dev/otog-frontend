@@ -21,6 +21,7 @@ import { useHttp } from '@src/api/HttpProvider'
 import { useErrorToast } from '@src/hooks/useError'
 import NextLink from 'next/link'
 import { useFileInput } from '@src/hooks/useInput'
+import { useLoading } from '@src/hooks/useLoading'
 
 export interface SubmitModalProps extends UseDisclosureReturn {
   problem: Problem
@@ -44,18 +45,24 @@ export const SubmitModal = (props: SubmitModalProps) => {
 
   const http = useHttp()
   const { onError } = useErrorToast()
+  const { isLoading, onLoad, onLoaded } = useLoading()
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    try {
-      await http.post(
-        `submission/problem/${problem.id}`,
-        new FormData(e.currentTarget)
-      )
-      resetFileInput()
-      onSuccess?.()
-      onClose()
-    } catch (e) {
-      onError(e)
+    if (!isLoading) {
+      try {
+        onLoad()
+        await http.post(
+          `submission/problem/${problem.id}`,
+          new FormData(e.currentTarget)
+        )
+        resetFileInput()
+        onSuccess?.()
+        onClose()
+      } catch (e) {
+        onError(e)
+      } finally {
+        onLoaded()
+      }
     }
   }
 

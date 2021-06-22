@@ -37,6 +37,7 @@ import { ChangeEvent, FormEvent, memo, useState } from 'react'
 
 import { CodeModal, ErrorModal } from './Code'
 import { FileInput } from './FileInput'
+import { useLoading } from '@src/hooks/useLoading'
 
 const defaultValue = `#include <iostream>
 
@@ -123,16 +124,22 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
 
   const http = useHttp()
   const { onError } = useErrorToast()
+  const { isLoading, onLoad, onLoaded } = useLoading()
   const onFileSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const formData = new FormData(e.currentTarget)
-    formData.append('contestId', `${contestId}`)
-    try {
-      await http.post(`submission/problem/${problem.id}`, formData)
-      mutate()
-      resetFileInput()
-    } catch (e) {
-      onError(e)
+    if (!isLoading) {
+      const formData = new FormData(e.currentTarget)
+      formData.append('contestId', `${contestId}`)
+      try {
+        onLoad()
+        await http.post(`submission/problem/${problem.id}`, formData)
+        mutate()
+        resetFileInput()
+      } catch (e) {
+        onError(e)
+      } finally {
+        onLoaded()
+      }
     }
   }
   return (
@@ -187,20 +194,24 @@ export const ContestEditorForm = (props: ContestEditorFormProps) => {
 
   const http = useHttp()
   const { onError } = useErrorToast()
+  const { isLoading, onLoad, onLoaded } = useLoading()
   const onSubmit = async () => {
-    if (value) {
-      const blob = new Blob([value])
-      const file = new File([blob], `${problem.id}${extension[language]}`)
-
-      const formData = new FormData()
-      formData.append('contestId', `${contestId}`)
-      formData.append('sourceCode', file)
-      formData.append('language', language)
+    if (!isLoading && value) {
       try {
+        onLoad()
+        const blob = new Blob([value])
+        const file = new File([blob], `${problem.id}${extension[language]}`)
+
+        const formData = new FormData()
+        formData.append('contestId', `${contestId}`)
+        formData.append('sourceCode', file)
+        formData.append('language', language)
         await http.post(`submission/problem/${problem.id}`, formData)
         mutate()
       } catch (e) {
         onError(e)
+      } finally {
+        onLoaded()
       }
     }
   }
