@@ -87,11 +87,11 @@ export const NavBar = () => {
   const color = useColorModeValue('gray.800', 'white')
 
   const { isAuthenticated, user, logout, isAdmin } = useAuth()
-  const { url } = useUserProfilePic({ small: true })
+  // const { url } = useUserProfilePic({ small: true })
 
   const entries = [
-    { href: '/problem', title: 'โจทย์' },
-    { href: isAdmin ? '/submission/all' : '/submission', title: 'ผลตรวจ' },
+    // { href: '/problem', title: 'โจทย์' },
+    // { href: isAdmin ? '/submission/all' : '/submission', title: 'ผลตรวจ' },
     { href: '/contest', title: 'แข่งขัน' },
   ]
 
@@ -169,7 +169,10 @@ export const NavBar = () => {
                   <NextLink href={`/profile/${user.id}`} passHref>
                     <DrawerButton as="a">
                       <HStack py={2}>
-                        <Avatar size="xs" src={url} />
+                        <Avatar
+                          size="xs"
+                          // src={url}
+                        />
                         <Text isTruncated>{user.showName}</Text>
                       </HStack>
                     </DrawerButton>
@@ -251,22 +254,26 @@ const DrawerButton = forwardRef(
 
 const AvatarMenu = () => {
   const { user, logout } = useAuth()
-  const { url } = useUserProfilePic({ small: true })
+  // const { url } = useUserProfilePic({ small: true })
   const [isClient, setClient] = useState(false)
   useEffect(() => {
     setClient(true)
   }, [])
   return (
     <Menu>
+      <Text>สวัสดี {user?.showName}</Text>
       <MenuButton as={Button} variant="link" rightIcon={<ChevronDownIcon />}>
-        <Avatar size="xs" src={url} />
+        <Avatar
+          size="xs"
+          // src={url}
+        />
       </MenuButton>
       {/* fix render menulist on ssr */}
       {isClient && (
         <MenuList>
-          <NextLink href={`/profile/${user?.id}`} passHref>
+          {/* <NextLink href={`/profile/${user?.id}`} passHref>
             <MenuItem as="a">โปรไฟล์</MenuItem>
-          </NextLink>
+          </NextLink> */}
           <MenuItem color="red.500" onClick={logout}>
             ออกจากระบบ
           </MenuItem>

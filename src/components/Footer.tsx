@@ -9,9 +9,9 @@ export const Footer = () => {
       <Divider mb={2} />
       <Flex direction={{ base: 'column', sm: 'row' }}>
         <Text>
-          หากมีข้อแนะนำ หรือข้อสงสัย{' '}
+          หากมีข้อสงสัย{' '}
           <Link href={CONTACT_LINK} isExternal>
-            ติดต่อเรา
+            เรียนรู้เพิ่มเติม
           </Link>
         </Text>
         <Spacer />

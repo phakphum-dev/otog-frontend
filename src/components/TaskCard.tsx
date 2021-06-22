@@ -151,7 +151,9 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
         <Select name="language" size="sm" flex={1}>
           <option value="cpp">C++</option>
           <option value="c">C</option>
-          <option value="python">Python</option>
+          <option value="python" disabled>
+            Python
+          </option>
         </Select>
         <HStack justify="flex-end">
           <FileInput
@@ -229,7 +231,9 @@ export const ContestEditorForm = (props: ContestEditorFormProps) => {
         <Select name="language" size="sm" flex={1} onChange={onSelectChange}>
           <option value="cpp">C++</option>
           <option value="c">C</option>
-          <option value="python">Python</option>
+          <option value="python" disabled>
+            Python
+          </option>
         </Select>
         <Spacer />
         <Box flex={1}>

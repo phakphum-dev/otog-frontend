@@ -4,6 +4,8 @@ import {
   BoxProps,
   Button,
   Divider,
+  FormControl,
+  FormLabel,
   Img,
   Input,
   Modal,
@@ -87,10 +89,10 @@ export const LoginForm = (props: LoginFormProps) => {
         <Button type="submit" variant="otog">
           เข้าสู่ระบบ
         </Button>
-        <Divider />
+        {/* <Divider />
         <NextLink href="/register" passHref>
           <Button as="a">ลงทะเบียน</Button>
-        </NextLink>
+        </NextLink> */}
       </Stack>
     </form>
   )

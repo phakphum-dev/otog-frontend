@@ -49,14 +49,14 @@ export default function HomePage() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const serverSideCookies = getServerSideCookies(context)
-  if (serverSideCookies.props.accessToken) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/problem',
-      },
-    }
+  // const serverSideCookies = getServerSideCookies(context)
+  // if (serverSideCookies.props.accessToken) {
+  return {
+    redirect: {
+      permanent: false,
+      destination: '/login',
+    },
   }
-  return serverSideCookies
+  // }
+  // return serverSideCookies
 }

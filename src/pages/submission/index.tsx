@@ -43,7 +43,8 @@ export default function SubmissionPage(props: SubmissionPageProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export { getNotFound as getServerSideProps } from '@src/api'
+const getServerSideProps: GetServerSideProps = async (context) => {
   const { accessToken = null } = parseCookies(context)
   if (accessToken) {
     return getServerSideFetch<SubmissionPageProps>(context, async (api) => ({

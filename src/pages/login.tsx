@@ -9,7 +9,7 @@ export default function LoginPage() {
   return (
     <PageContainer>
       <CenteredCard>
-        <LoginForm onSuccess={() => router.replace('/problem')} />
+        <LoginForm onSuccess={() => router.replace('/contest')} />
       </CenteredCard>
     </PageContainer>
   )
@@ -21,7 +21,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       redirect: {
         permanent: false,
-        destination: '/problem',
+        destination: '/contest',
       },
     }
   }

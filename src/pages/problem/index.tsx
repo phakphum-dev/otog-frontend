@@ -113,4 +113,5 @@ const filterButton: {
   },
 ]
 
-export { getServerSideCookies as getServerSideProps } from '@src/api'
+export { getNotFound as getServerSideProps } from '@src/api'
+// export { getServerSideCookies as getServerSideProps } from '@src/api'

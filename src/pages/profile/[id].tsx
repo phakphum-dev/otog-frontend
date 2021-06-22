@@ -45,7 +45,8 @@ export default function ProfilePage(props: ProfilePageProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export { getNotFound as getServerSideProps } from '@src/api'
+const getServerSideProps: GetServerSideProps = async (context) => {
   const id = Number(context.query.id)
   if (Number.isNaN(id)) {
     return { notFound: true }

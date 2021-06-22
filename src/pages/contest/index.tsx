@@ -85,9 +85,7 @@ export const PreContest = (props: ContestProps) => {
     <PageContainer display="flex">
       <Center flex={1}>
         <VStack spacing={4}>
-          <Heading textAlign="center">
-            การแข่งขัน {contest.name} กำลังจะเริ่ม
-          </Heading>
+          <Heading textAlign="center">การแข่งขันกำลังจะเริ่ม</Heading>
           <Heading as="h2" fontSize="2xl">
             ในอีก {toThTimeFormat(remaining)}...
           </Heading>
@@ -135,11 +133,9 @@ export const PostContest = (props: ContestProps) => {
     <PageContainer display="flex">
       <Center flex={1}>
         <VStack spacing={4}>
-          <Heading textAlign="center">
-            การแข่งขัน {contest.name} จบลงแล้ว
-          </Heading>
+          <Heading textAlign="center">การแข่งขันจบลงแล้ว</Heading>
           <NextLink href={`/contest/history/${contest.id}`} passHref>
-            <Button as="a" variant="otog">
+            <Button as="a" variant="otog" disabled>
               สรุปผลการแข่งขัน
             </Button>
           </NextLink>

@@ -36,11 +36,11 @@ export const Axios = axios.create({
 
 class ApiClient {
   axiosInstance: AxiosInstance
-  isRefreshing: boolean = false
-  failedQueue: {
-    resolve: (value?: any | PromiseLike<any>) => void
-    reject: (reason?: any) => void
-  }[] = []
+  // isRefreshing: boolean = false
+  // failedQueue: {
+  //   resolve: (value?: any | PromiseLike<any>) => void
+  //   reject: (reason?: any) => void
+  // }[] = []
 
   constructor(context: Context | null) {
     this.axiosInstance = axios.create({
@@ -75,7 +75,7 @@ class ApiClient {
       async (error) => {
         if (error.isAxiosError) {
           error = error as AxiosError
-          const originalRequest = error.config
+          // const originalRequest = error.config
           // console.log(
           //   'error response :',
           //   err.response?.status,
@@ -83,40 +83,40 @@ class ApiClient {
           // )
 
           if (error.response?.status === 401) {
-            if (this.isRefreshing) {
-              return new Promise((resolve, reject) => {
-                this.failedQueue.push({ resolve, reject })
-              })
-                .then(() => {
-                  return this.axiosInstance(originalRequest)
-                })
-                .catch((e) => {
-                  return Promise.reject(e)
-                })
-            }
+            // if (this.isRefreshing) {
+            //   return new Promise((resolve, reject) => {
+            //     this.failedQueue.push({ resolve, reject })
+            //   })
+            //     .then(() => {
+            //       return this.axiosInstance(originalRequest)
+            //     })
+            //     .catch((e) => {
+            //       return Promise.reject(e)
+            //     })
+            // }
 
-            // try refresh token on every unauthorized response if accessToken exists
+            // // try refresh token on every unauthorized response if accessToken exists
             const { accessToken } = nookies.get(context)
             if (accessToken) {
-              try {
-                this.isRefreshing = true
-                await this.refreshToken(context)
-                this.processQueue(null)
-                return this.axiosInstance(originalRequest)
-              } catch (e) {
-                this.processQueue(e)
-                // remove token if failed to refresh token
-                if (e.isAxiosError) {
-                  e = e as AxiosError
-                  if (e.response?.status === 403) {
-                    this.removeToken(context)
-                    this.updateOnLogout()
-                    return Promise.reject(e)
-                  }
-                }
-              } finally {
-                this.isRefreshing = false
-              }
+              //   try {
+              //     this.isRefreshing = true
+              //     await this.refreshToken(context)
+              //     this.processQueue(null)
+              //     return this.axiosInstance(originalRequest)
+              //   } catch (e) {
+              //     this.processQueue(e)
+              //     // remove token if failed to refresh token
+              //     if (e.isAxiosError) {
+              //       e = e as AxiosError
+              //       if (e.response?.status === 403) {
+              //         this.removeToken(context)
+              //         this.updateOnLogout()
+              //         return Promise.reject(e)
+              //       }
+              //     }
+              //   } finally {
+              //     this.isRefreshing = false
+              //   }
             }
             // if token doesn't exists and not logging in then open up login modal
             else if (error.config.url !== 'auth/login') {
@@ -131,34 +131,34 @@ class ApiClient {
     )
   }
 
-  async refreshToken(
-    context: GetServerSidePropsContext<ParsedUrlQuery> | null
-  ) {
-    const { accessToken, RID: refreshToken } = nookies.get(context)
-    const response = await Axios.get<AuthRes>('auth/refresh/token', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        ...(refreshToken && {
-          cookie: `RID=${refreshToken}; HttpOnly ${
-            isProduction ? '; Secure' : ''
-          }`,
-        }),
-      },
-    })
-    if (response.status === 200) {
-      const { accessToken } = response.data
-      const { 'set-cookie': refreshToken } = response.headers
-      if (context) {
-        // set request header for retrying on original request
-        context.req.headers.cookie = `accessToken=${accessToken}; ${refreshToken}`
+  // async refreshToken(
+  //   context: GetServerSidePropsContext<ParsedUrlQuery> | null
+  // ) {
+  //   const { accessToken, RID: refreshToken } = nookies.get(context)
+  //   const response = await Axios.get<AuthRes>('auth/refresh/token', {
+  //     headers: {
+  //       Authorization: `Bearer ${accessToken}`,
+  //       ...(refreshToken && {
+  //         cookie: `RID=${refreshToken}; HttpOnly ${
+  //           isProduction ? '; Secure' : ''
+  //         }`,
+  //       }),
+  //     },
+  //   })
+  //   if (response.status === 200) {
+  //     const { accessToken } = response.data
+  //     const { 'set-cookie': refreshToken } = response.headers
+  //     if (context) {
+  //       // set request header for retrying on original request
+  //       context.req.headers.cookie = `accessToken=${accessToken}; ${refreshToken}`
 
-        // set response header to set new token on client-side
-        context.res.setHeader('Set-cookie', refreshToken)
-      }
-      this.setNewToken(accessToken, context)
-      return accessToken
-    }
-  }
+  //       // set response header to set new token on client-side
+  //       context.res.setHeader('Set-cookie', refreshToken)
+  //     }
+  //     this.setNewToken(accessToken, context)
+  //     return accessToken
+  //   }
+  // }
 
   setNewToken(accessToken: string, context: Context | null = null) {
     nookies.set(context, 'accessToken', accessToken, { path: '/' })
@@ -166,19 +166,19 @@ class ApiClient {
 
   removeToken(context: Context | null = null) {
     nookies.destroy(context, 'accessToken', { path: '/' })
-    nookies.destroy(context, 'RID', { path: '/' })
+    // nookies.destroy(context, 'RID', { path: '/' })
   }
 
-  processQueue(error: any) {
-    this.failedQueue.forEach((promise) => {
-      if (error) {
-        promise.reject(error)
-      } else {
-        promise.resolve()
-      }
-    })
-    this.failedQueue = []
-  }
+  // processQueue(error: any) {
+  //   this.failedQueue.forEach((promise) => {
+  //     if (error) {
+  //       promise.reject(error)
+  //     } else {
+  //       promise.resolve()
+  //     }
+  //   })
+  //   this.failedQueue = []
+  // }
 
   async get<T>(url: string, config?: AxiosRequestConfig) {
     return (await this.axiosInstance.get<T>(url, config)).data
@@ -247,6 +247,10 @@ export const getServerSideCookies = (context: Context) => {
   const colorModeCookie = getColorMode(context)
   const { accessToken = null } = nookies.get(context)
   return { props: { accessToken, colorModeCookie } }
+}
+
+export const getNotFound = () => {
+  return { notFound: true }
 }
 
 export { API_HOST, ApiClient }
