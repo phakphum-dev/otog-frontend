@@ -56,9 +56,7 @@ type ChatSocketState = {
 }
 
 type ChatSocketAction =
-  | {
-      type: 'subscribe'
-    }
+  | { type: 'start' }
   | {
       type: 'new-message'
       payload: {
@@ -67,14 +65,14 @@ type ChatSocketAction =
       }
     }
   | { type: 'read' }
-  | { type: 'disconnect' }
+  | { type: 'clear' }
 
 export const useChatSocket = () => {
   const { socket } = useSocket()
   const reducer = useCallback(
     (state: ChatSocketState, action: ChatSocketAction): ChatSocketState => {
       switch (action.type) {
-        case 'subscribe': {
+        case 'start': {
           socket?.on('online', () => {
             mutate('user/online')
           })
@@ -101,8 +99,7 @@ export const useChatSocket = () => {
         case 'read': {
           return { ...state, hasUnread: false }
         }
-        case 'disconnect': {
-          socket?.disconnect()
+        case 'clear': {
           return { newMessages: [], hasUnread: false }
         }
         default: {
@@ -124,9 +121,11 @@ export const useChat = (isOpen: boolean) => {
 
   useEffect(() => {
     if (socket) {
-      dispatch({ type: 'subscribe' })
+      dispatch({ type: 'start' })
+    } else {
+      dispatch({ type: 'clear' })
     }
-  }, [socket])
+  }, [socket, dispatch])
 
   useEffect(() => {
     if (socket) {
@@ -135,13 +134,13 @@ export const useChat = (isOpen: boolean) => {
         dispatch({ type: 'new-message', payload: { message, isOpen } })
       })
     }
-  }, [socket, isOpen])
+  }, [socket, isOpen, dispatch])
 
   useEffect(() => {
     if (isOpen && hasUnread) {
       dispatch({ type: 'read' })
     }
-  }, [isOpen, hasUnread])
+  }, [isOpen, hasUnread, dispatch])
 
   const oldChat = useLoadChat()
 
