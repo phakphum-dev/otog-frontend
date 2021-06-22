@@ -44,7 +44,7 @@ export interface UserContestData extends User {
 }
 
 export function useUsers() {
-  return useSWR<User>('user')
+  return useSWR<User[]>('user')
 }
 
 export function useUser(userId: number) {

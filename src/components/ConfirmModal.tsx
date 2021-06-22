@@ -12,7 +12,6 @@ import {
 import {
   createContext,
   PropsWithChildren,
-  ProviderProps,
   useContext,
   useRef,
   useState,
@@ -85,5 +84,6 @@ export const ConfirmModalProvider = ({ children }: PropsWithChildren<{}>) => {
 }
 
 export function useConfirmModal() {
-  return useContext(ConfirmContext)
+  const { onConfirm: confirm } = useContext(ConfirmContext)
+  return confirm
 }

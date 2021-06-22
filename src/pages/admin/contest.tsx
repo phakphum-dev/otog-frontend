@@ -64,11 +64,17 @@ export default function AdminContestPage() {
       </Head>
       <TitleLayout>
         <Title icon={FaTools}>ระบบ GOTO</Title>
-        <Text>
+        <HStack>
+          <NextLink href="/admin/contest" passHref>
+            <Button as="a">แข่งขัน</Button>
+          </NextLink>
           <NextLink href="/admin/problem" passHref>
             <Button as="a">โจทย์</Button>
           </NextLink>
-        </Text>
+          <NextLink href="/admin/user" passHref>
+            <Button as="a">ผู้ใช้งาน</Button>
+          </NextLink>
+        </HStack>
       </TitleLayout>
       <Stack spacing={4}>
         <Flex>
@@ -76,7 +82,12 @@ export default function AdminContestPage() {
             <SelectContestModalButton setContestId={setContest}>
               {contest?.name ?? 'เลือกการแข่งขัน'}
             </SelectContestModalButton>
-            {contestId && <EditContestModalButton contest={contest} />}
+            {contestId && (
+              <EditContestModalButton
+                contest={contest}
+                setContestId={setContestId}
+              />
+            )}
           </HStack>
           <Spacer />
           <CreateContestModalButton setContestId={setContest} />
@@ -89,10 +100,11 @@ export default function AdminContestPage() {
 
 interface EditContestModalButtonProps {
   contest: Contest | undefined
+  setContestId: (contestId: number) => void
 }
 
 const EditContestModalButton = (props: EditContestModalButtonProps) => {
-  const { contest } = props
+  const { contest, setContestId } = props
   const editModal = useDisclosure()
   const [startDate, setStartDate] = useState<Date>(new Date())
   const [endDate, setEndDate] = useState<Date>(new Date())
@@ -127,9 +139,9 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
     }
   }
 
-  const { onConfirm } = useConfirmModal()
+  const confirm = useConfirmModal()
   const onDelete = () => {
-    onConfirm({
+    confirm({
       title: `ยืนยันลบการแข่งขัน`,
       subtitle: `คุณต้องการที่จะลบการแข่งขัน ${contest?.name} ใช่หรือไม่ ?`,
       submitText: 'ยืนยัน',
@@ -139,6 +151,7 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
           await http.del(`contest/${contest?.id}`)
           mutate('contest')
           editModal.onClose()
+          setContestId(0)
         } catch (e) {
           onError(e)
         }
@@ -149,6 +162,8 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
   return (
     <>
       <IconButton
+        variant="outline"
+        colorScheme="orange"
         aria-label="edit-contest"
         icon={<FaPencilAlt />}
         onClick={editModal.onOpen}
