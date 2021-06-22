@@ -30,7 +30,7 @@ import { mutate } from 'swr'
 import { Spinner } from '@chakra-ui/spinner'
 import { RenderLater } from '@src/components/RenderLater'
 import Head from 'next/head'
-import { HStack } from '@chakra-ui/react'
+import { HStack, Select } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { User, useUsers } from '@src/hooks/useUser'
 
@@ -122,6 +122,13 @@ const CreateUserModalButton = () => {
                     {...register('showName')}
                     placeholder="ชื่อที่ใช้แสดง"
                   />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>ตำแหน่ง</FormLabel>
+                  <Select {...register('role')}>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                  </Select>
                 </FormControl>
               </Stack>
             </ModalBody>

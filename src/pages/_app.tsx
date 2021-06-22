@@ -64,7 +64,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                   ) : (
                     <Component {...props} />
                   )}
-                  <Chat />
+                  {/* <Chat /> */}
                   <Footer />
                 </Flex>
               </SocketProvider>

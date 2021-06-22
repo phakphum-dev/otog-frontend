@@ -50,6 +50,7 @@ import { mutate } from 'swr'
 import Head from 'next/head'
 import { HStack } from '@chakra-ui/react'
 import { useConfirmModal } from '@src/components/ConfirmModal'
+import { CgDetailsMore } from 'react-icons/cg'
 
 export default function AdminContestPage() {
   const [contestId, setContestId] = useState<number>()
@@ -83,10 +84,20 @@ export default function AdminContestPage() {
               {contest?.name ?? 'เลือกการแข่งขัน'}
             </SelectContestModalButton>
             {contestId && (
-              <EditContestModalButton
-                contest={contest}
-                setContestId={setContestId}
-              />
+              <>
+                <EditContestModalButton
+                  contest={contest}
+                  setContestId={setContestId}
+                />
+                <NextLink href={`/contest/history/${contestId}`} passHref>
+                  <IconButton
+                    as="a"
+                    variant="outline"
+                    aria-label="view scoreboard"
+                    icon={<CgDetailsMore />}
+                  />
+                </NextLink>
+              </>
             )}
           </HStack>
           <Spacer />
@@ -184,7 +195,7 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
                     placeholder="การแข่งขัน"
                   />
                 </FormControl>
-                <FormControl>
+                {/* <FormControl>
                   <FormLabel>การเรท</FormLabel>
                   <Select {...register('mode')}>
                     <option value="unrated">Unrated</option>
@@ -197,7 +208,7 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
                     <option value="classic">Classic</option>
                     <option value="acm">ACM</option>
                   </Select>
-                </FormControl>
+                </FormControl> */}
                 <FormControl>
                   <FormLabel>เวลาเริ่ม</FormLabel>
                   <DatePicker
@@ -293,7 +304,7 @@ const CreateContestModalButton = (props: CreateContestModalButtonProps) => {
                     placeholder="การแข่งขัน"
                   />
                 </FormControl>
-                <FormControl>
+                {/* <FormControl>
                   <FormLabel>การเรท</FormLabel>
                   <Select {...register('mode')}>
                     <option value="unrated">Unrated</option>
@@ -306,7 +317,7 @@ const CreateContestModalButton = (props: CreateContestModalButtonProps) => {
                     <option value="classic">Classic</option>
                     <option value="acm">ACM</option>
                   </Select>
-                </FormControl>
+                </FormControl> */}
                 <FormControl>
                   <FormLabel>เวลาเริ่ม</FormLabel>
                   <DatePicker

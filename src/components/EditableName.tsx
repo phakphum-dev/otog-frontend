@@ -25,7 +25,7 @@ export const EditableName = (props: EditableNameProps) => {
   const onSubmit = async (showName: string) => {
     try {
       await http.patch(`user/${user?.id}/name`, { showName })
-      await http.refreshToken(null)
+      // await http.refreshToken(null)
     } catch (e) {
       onError(e)
     }

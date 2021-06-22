@@ -99,10 +99,9 @@ export const MidContest = (props: ContestProps) => {
   const { contest, time } = props
   const { data: serverTime } = useServerTime(time)
   const remaining = useTimer(serverTime || time, contest.timeEnd)
-  const router = useRouter()
   useEffect(() => {
     if (remaining <= 0) {
-      router.push(`/contest/history/${contest.id}`)
+      mutate('time')
     }
   }, [remaining])
   return (
@@ -134,11 +133,11 @@ export const PostContest = (props: ContestProps) => {
       <Center flex={1}>
         <VStack spacing={4}>
           <Heading textAlign="center">การแข่งขันจบลงแล้ว</Heading>
-          <NextLink href={`/contest/history/${contest.id}`} passHref>
-            <Button as="a" variant="otog" disabled>
-              สรุปผลการแข่งขัน
-            </Button>
-          </NextLink>
+          {/* <NextLink href={`/contest/history/${contest.id}`} passHref> */}
+          <Button as="a" variant="otog" isDisabled>
+            สรุปผลการแข่งขัน
+          </Button>
+          {/* </NextLink> */}
         </VStack>
       </Center>
     </PageContainer>
