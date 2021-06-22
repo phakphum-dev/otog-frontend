@@ -1,17 +1,17 @@
 import { CenteredCard, LoginForm } from '@src/components/Login'
-import { PageContainer } from '@src/components/PageContainer'
 import { useRouter } from 'next/router'
 import { getServerSideCookies } from '@src/api'
 import { GetServerSideProps } from 'next'
+import { Center, useColorModeValue } from '@chakra-ui/react'
 
 export default function LoginPage() {
   const router = useRouter()
   return (
-    <PageContainer>
-      <CenteredCard>
+    <Center flex={1}>
+      <CenteredCard my={0}>
         <LoginForm onSuccess={() => router.replace('/contest')} />
       </CenteredCard>
-    </PageContainer>
+    </Center>
   )
 }
 

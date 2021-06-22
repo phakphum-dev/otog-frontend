@@ -109,7 +109,7 @@ export const MidContest = (props: ContestProps) => {
       <TitleLayout>
         <Tooltip label={contest.name} hasArrow placement="top">
           <Title icon={FaTrophy} noOfLines={1}>
-            {contest.name}
+            การแข่งขัน
           </Title>
         </Tooltip>
         <Heading as="h2" whiteSpace="nowrap">
