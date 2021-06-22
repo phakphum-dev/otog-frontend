@@ -1,9 +1,7 @@
-import { useEffect, useMemo, useReducer } from 'react'
-import socketIOClient, { Socket } from 'socket.io-client'
+import { useSocket } from '@src/api/SocketProvider'
+import { useCallback, useEffect, useMemo, useReducer } from 'react'
 import { mutate, useSWRInfinite } from 'swr'
 import { useAuth } from '../api/AuthProvider'
-import { useHttp } from '../api/HttpProvider'
-import { SOCKET_HOST } from '../utils/config'
 import { User } from './useUser'
 
 export type Message = {
@@ -52,7 +50,6 @@ export type SocketMessage = [
   user: [id: number, showName: string, rating: number]
 ]
 type ChatSocketState = {
-  socket?: Socket
   emitMessage?: (message: string) => void
   newMessages: Message[]
   hasUnread: boolean
@@ -60,10 +57,7 @@ type ChatSocketState = {
 
 type ChatSocketAction =
   | {
-      type: 'connect'
-      payload: {
-        socket: Socket
-      }
+      type: 'subscribe'
     }
   | {
       type: 'new-message'
@@ -75,76 +69,64 @@ type ChatSocketAction =
   | { type: 'read' }
   | { type: 'disconnect' }
 
-const reducer = (
-  state: ChatSocketState,
-  action: ChatSocketAction
-): ChatSocketState => {
-  switch (action.type) {
-    case 'connect': {
-      const socket = action.payload.socket
-      socket.on('online', () => {
-        mutate('user/online')
-      })
-      const emitMessage = (message: string) => {
-        socket.emit('chat-server', message)
-      }
-      return { ...state, socket, emitMessage }
-    }
-    case 'new-message': {
-      const [
-        id,
-        message,
-        creationDate,
-        [userId, showName, rating],
-      ] = action.payload.message
-      state.newMessages.push({
-        id,
-        message,
-        creationDate,
-        user: { id: userId, showName, rating },
-      })
-      return { ...state, hasUnread: !action.payload.isOpen }
-    }
-    case 'read': {
-      return { ...state, hasUnread: false }
-    }
-    case 'disconnect': {
-      const socket = state.socket
-      socket?.disconnect()
-      return { newMessages: [], hasUnread: false }
-    }
-    default: {
-      return state
-    }
-  }
-}
-
 export const useChatSocket = () => {
+  const { socket } = useSocket()
+  const reducer = useCallback(
+    (state: ChatSocketState, action: ChatSocketAction): ChatSocketState => {
+      switch (action.type) {
+        case 'subscribe': {
+          socket?.on('online', () => {
+            mutate('user/online')
+          })
+          const emitMessage = (message: string) => {
+            socket?.emit('chat-server', message)
+          }
+          return { ...state, emitMessage }
+        }
+        case 'new-message': {
+          const [
+            id,
+            message,
+            creationDate,
+            [userId, showName, rating],
+          ] = action.payload.message
+          state.newMessages.push({
+            id,
+            message,
+            creationDate,
+            user: { id: userId, showName, rating },
+          })
+          return { ...state, hasUnread: !action.payload.isOpen }
+        }
+        case 'read': {
+          return { ...state, hasUnread: false }
+        }
+        case 'disconnect': {
+          socket?.disconnect()
+          return { newMessages: [], hasUnread: false }
+        }
+        default: {
+          return state
+        }
+      }
+    },
+    [socket]
+  )
   return useReducer(reducer, { newMessages: [], hasUnread: false })
 }
 
 export const useChat = (isOpen: boolean) => {
   const [
-    { socket, emitMessage: emitChat, newMessages, hasUnread },
+    { emitMessage: emitChat, newMessages, hasUnread },
     dispatch,
   ] = useChatSocket()
+  const { socket } = useSocket()
 
-  const { isAuthenticated } = useAuth()
-  const http = useHttp()
   useEffect(() => {
-    if (isAuthenticated) {
-      const socketClient = socketIOClient(SOCKET_HOST, {
-        auth: { token: http.getAccessToken() },
-      })
-      dispatch({
-        type: 'connect',
-        payload: { socket: socketClient },
-      })
-      return () => {
-        dispatch({ type: 'disconnect' })
-      }
+    if (socket) {
+      dispatch({ type: 'subscribe' })
     }
-  }, [isAuthenticated])
+  }, [socket])
 
   useEffect(() => {
     if (socket) {
