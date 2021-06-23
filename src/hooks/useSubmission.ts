@@ -5,8 +5,10 @@ import { Problem } from './useProblem'
 import { User } from './useUser'
 import { useInitialData } from '@src/hooks/useInitialData'
 import { useAuth } from '@src/api/AuthProvider'
-import { isGrading } from './useStatusColor'
+import { isGraded, isGrading } from './useStatusColor'
 import { ONE_SECOND } from './useTimer'
+import { useState } from 'react'
+import { useSocket } from '@src/api/SocketProvider'
 
 export type Status = 'waiting' | 'grading' | 'accept' | 'reject'
 
@@ -104,8 +106,17 @@ export function useLatestSubmission() {
   )
 }
 
+type SocketSubmission = [
+  result: string,
+  score: number,
+  timeUsed: number,
+  status: string,
+  errmsg: string | null
+]
+
 export function useProblemSubmission(problemId: number) {
   const { isAuthenticated } = useAuth()
+  const { socket } = useSocket()
   return useSWR<SubmissionWithSourceCode>(
     isAuthenticated && problemId
       ? `submission/problem/${problemId}/latest`
@@ -114,7 +125,19 @@ export function useProblemSubmission(problemId: number) {
       revalidateOnFocus: false,
       onSuccess: (data, key) => {
         if (isGrading(data)) {
-          setTimeout(() => mutate(key), ONE_SECOND)
+          socket?.on(
+            `${data.id}`,
+            ([result, score, timeUsed, status, errmeg]: SocketSubmission) => {
+              mutate(
+                key,
+                { ...data, result, score, timeUsed, status, errmeg },
+                false
+              )
+              if (status === 'accept' || status === 'reject') {
+                socket.off(`${data.id}`)
+              }
+            }
+          )
         }
       },
     }
