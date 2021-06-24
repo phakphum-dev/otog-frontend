@@ -127,10 +127,10 @@ export function useProblemSubmission(problemId: number) {
         if (isGrading(data)) {
           socket?.on(
             `${data.id}`,
-            ([result, score, timeUsed, status, errmeg]: SocketSubmission) => {
+            ([result, score, timeUsed, status, errmsg]: SocketSubmission) => {
               mutate(
                 key,
-                { ...data, result, score, timeUsed, status, errmeg },
+                { ...data, result, score, timeUsed, status, errmsg },
                 false
               )
               if (status === 'accept' || status === 'reject') {
