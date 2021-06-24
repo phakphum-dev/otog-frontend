@@ -1,4 +1,4 @@
-import { SOCKET_HOST } from '@src/utils/config'
+import { SOCKET_HOST, USER_SOCKET_KEY } from '@src/utils/config'
 import {
   createContext,
   PropsWithChildren,
@@ -24,6 +24,7 @@ export const SocketProvider = ({ children }: PropsWithChildren<{}>) => {
     if (isAuthenticated) {
       const socketClient = socketIOClient(SOCKET_HOST, {
         auth: { token: http.getAccessToken() },
+        extraHeaders: { key: USER_SOCKET_KEY },
       })
       setSocket(socketClient)
       return () => {
