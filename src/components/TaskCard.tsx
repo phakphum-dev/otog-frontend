@@ -163,7 +163,7 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
             inputGroupProps={{ size: 'sm' }}
             {...fileProps}
           />
-          <Button variant="otog" size="sm" type="submit">
+          <Button variant="otog" size="sm" type="submit" isLoading={isLoading}>
             ส่ง
           </Button>
         </HStack>
@@ -237,7 +237,13 @@ export const ContestEditorForm = (props: ContestEditorFormProps) => {
         </Select>
         <Spacer />
         <Box flex={1}>
-          <Button variant="otog" size="sm" width="100%" onClick={onSubmit}>
+          <Button
+            variant="otog"
+            size="sm"
+            width="100%"
+            onClick={onSubmit}
+            isLoading={isLoading}
+          >
             ส่ง
           </Button>
         </Box>
