@@ -21,7 +21,7 @@ import { Select } from '@chakra-ui/select'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 import { Collapse } from '@chakra-ui/transition'
-import Editor from '@monaco-editor/react'
+import Editor, { loader } from '@monaco-editor/react'
 import { API_HOST } from '@src/api'
 import { useHttp } from '@src/api/HttpProvider'
 import { Problem } from '@src/hooks/useProblem'
@@ -38,6 +38,12 @@ import { ChangeEvent, FormEvent, memo, useState } from 'react'
 import { CodeModal, ErrorModal } from './Code'
 import { FileInput } from './FileInput'
 import { useLoading } from '@src/hooks/useLoading'
+
+loader.config({
+  paths: {
+    vs: '/vs',
+  },
+})
 
 const defaultValue = `#include <iostream>
 
