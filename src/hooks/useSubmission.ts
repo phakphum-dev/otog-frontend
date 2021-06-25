@@ -135,6 +135,7 @@ export function useProblemSubmission(problemId: number) {
               )
               if (status === 'accept' || status === 'reject') {
                 socket.off(`${data.id}`)
+                mutate(`submission/${data.id}`)
               }
             }
           )
