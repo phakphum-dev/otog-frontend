@@ -118,14 +118,16 @@ export const useChat = (isOpen: boolean) => {
     dispatch,
   ] = useChatSocket()
   const { socket } = useSocket()
-
+  const { isAuthenticated } = useAuth()
   useEffect(() => {
     if (socket) {
-      dispatch({ type: 'start' })
-    } else {
-      dispatch({ type: 'clear' })
+      if (isAuthenticated) {
+        dispatch({ type: 'start' })
+      } else {
+        dispatch({ type: 'clear' })
+      }
     }
-  }, [socket, dispatch])
+  }, [socket, dispatch, isAuthenticated])
 
   useEffect(() => {
     if (socket) {
