@@ -76,9 +76,11 @@ export const PreContest = (props: ContestProps) => {
   const { contest, time } = props
   const { data: serverTime } = useServerTime(time)
   const remaining = useTimer(serverTime || time, contest.timeStart)
+  const { mutate: mutateCurrentContest } = useCurrentContest(contest)
   useEffect(() => {
     if (remaining <= 0) {
       mutate('time')
+      mutateCurrentContest()
     }
   }, [remaining])
   return (
