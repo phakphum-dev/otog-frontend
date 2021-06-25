@@ -1,4 +1,9 @@
-import { extendTheme, ThemeComponents } from '@chakra-ui/react'
+import {
+  extendTheme,
+  ThemeComponents,
+  ThemeConfig,
+  ThemeOverride,
+} from '@chakra-ui/react'
 import { mode } from '@chakra-ui/theme-tools'
 
 const colors = {
@@ -133,4 +138,9 @@ const components: ThemeComponents = {
   },
 }
 
-export const theme = extendTheme({ colors, sizes, components })
+const config: ThemeConfig = {
+  initialColorMode: 'dark',
+}
+
+export const overrides = { colors, sizes, components, config }
+export const theme = extendTheme(overrides)

@@ -3,6 +3,7 @@ import {
   Box,
   BoxProps,
   Button,
+  ChakraProvider,
   Divider,
   FormControl,
   FormLabel,
@@ -21,6 +22,7 @@ import { useForm } from 'react-hook-form'
 import { useErrorToast } from '@src/hooks/useError'
 import { useAuth } from '@src/api/AuthProvider'
 import { LoginReq } from '@src/hooks/useUser'
+import { glassTheme, useGlass } from '@src/theme/glass'
 
 export interface LoginModalProps {
   isOpen: boolean
@@ -99,16 +101,21 @@ export const LoginForm = (props: LoginFormProps) => {
 }
 
 export const CenteredCard = (props: BoxProps) => {
+  const { bg } = useGlass()
   return (
-    <Box
-      p={4}
-      my={16}
-      mx="auto"
-      w="max-content"
-      boxShadow="md"
-      borderWidth="1px"
-      borderRadius="md"
-      {...props}
-    />
+    <ChakraProvider theme={glassTheme}>
+      <Box
+        p={4}
+        my={16}
+        mx="auto"
+        w="max-content"
+        boxShadow="lg"
+        // borderWidth="1px"
+        rounded="2xl"
+        bg={bg}
+        style={{ backdropFilter: 'blur(100px)' }}
+        {...props}
+      />
+    </ChakraProvider>
   )
 }

@@ -2,7 +2,7 @@ import { CenteredCard, LoginForm } from '@src/components/Login'
 import { useRouter } from 'next/router'
 import { getServerSideCookies } from '@src/api'
 import { GetServerSideProps } from 'next'
-import { Center, useColorModeValue } from '@chakra-ui/react'
+import { Center } from '@chakra-ui/react'
 
 export default function LoginPage() {
   const router = useRouter()

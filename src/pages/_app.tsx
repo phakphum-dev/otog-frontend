@@ -7,6 +7,7 @@ import 'focus-visible/dist/focus-visible'
 
 import { NavBar } from '@src/components/NavBar'
 import { Footer } from '@src/components/Footer'
+import { PageLayout } from '@src/components/PageLayout'
 import '../styles/globals.css'
 
 import '@src/styles/nprogress.css'
@@ -54,8 +55,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             <AuthProvider value={accessToken as string}>
               <SocketProvider>
                 <TopProgressBar />
-                <Flex direction="column" minH="100vh">
-                  <NavBar />
+                <PageLayout>
                   {errorToast ? (
                     <Error
                       title={errorToast.title}
@@ -64,9 +64,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                   ) : (
                     <Component {...props} />
                   )}
-                  {/* <Chat /> */}
-                  <Footer />
-                </Flex>
+                </PageLayout>
               </SocketProvider>
             </AuthProvider>
           </HttpProvider>

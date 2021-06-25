@@ -91,7 +91,7 @@ export const NavBar = () => {
 
   const entries = [
     // { href: '/problem', title: 'โจทย์' },
-    // { href: isAdmin ? '/submission/all' : '/submission', title: 'ผลตรวจ' },
+    ...(isAdmin ? [{ href: '/submission/all', title: 'ผลตรวจ' }] : []),
     { href: '/contest', title: 'แข่งขัน' },
   ]
 
