@@ -138,7 +138,7 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
       } catch (e) {
         onError(e)
       } finally {
-        onLoaded()
+        setTimeout(() => onLoaded(), ONE_SECOND)
       }
     }
   }
@@ -213,7 +213,7 @@ export const ContestEditorForm = (props: ContestEditorFormProps) => {
       } catch (e) {
         onError(e)
       } finally {
-        onLoaded()
+        setTimeout(() => onLoaded(), ONE_SECOND)
       }
     }
   }
