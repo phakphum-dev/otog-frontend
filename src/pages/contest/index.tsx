@@ -135,11 +135,11 @@ export const PostContest = (props: ContestProps) => {
       <Center flex={1}>
         <VStack spacing={4}>
           <Heading textAlign="center">การแข่งขันจบลงแล้ว</Heading>
-          {/* <NextLink href={`/contest/history/${contest.id}`} passHref> */}
-          <Button as="a" variant="otog" isDisabled>
-            สรุปผลการแข่งขัน
-          </Button>
-          {/* </NextLink> */}
+          <NextLink href={`/tenor.gif`} passHref>
+            <Button as="a" variant="otog" isDisabled>
+              สรุปผลการแข่งขัน
+            </Button>
+          </NextLink>
         </VStack>
       </Center>
     </PageContainer>
