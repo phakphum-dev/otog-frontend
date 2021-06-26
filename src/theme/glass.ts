@@ -3,7 +3,7 @@ import { theme } from '.'
 import { mode } from '@chakra-ui/theme-tools'
 
 export function useGlass() {
-  const bg = useColorModeValue('whiteAlpha.500', 'blackAlpha.600')
+  const bg = useColorModeValue('whiteAlpha.400', 'blackAlpha.500')
   return { bg }
 }
 

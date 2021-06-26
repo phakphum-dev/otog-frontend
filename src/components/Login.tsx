@@ -15,6 +15,7 @@ import {
   ModalContent,
   ModalOverlay,
   Stack,
+  useStyleConfig,
 } from '@chakra-ui/react'
 
 import { useForm } from 'react-hook-form'
@@ -113,7 +114,7 @@ export const CenteredCard = ({ children }: BoxProps) => {
         // my={16}
         // mx="auto"
         w="max-content"
-        boxShadow="lg"
+        boxShadow="2xl"
         // borderWidth="1px"
         rounded="2xl"
         bg={bg}
@@ -123,6 +124,8 @@ export const CenteredCard = ({ children }: BoxProps) => {
           close: { opacity: 0, scale: 0.5 },
           open: { opacity: 1, scale: 1 },
         }}
+        sx={{ backdropFilter: 'blur(10px)' }}
+        zIndex={2}
       >
         {children}
       </MotionBox>

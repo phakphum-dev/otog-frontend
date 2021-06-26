@@ -18,6 +18,7 @@ export const PageLayout = (props: PropsWithChildren<{}>) => {
           ? 'linear-gradient(60deg, #ec88c2 10%,  #ff851b 90%)'
           : undefined
       }
+      pos="relative"
     >
       {!isLogin && <NavBar />}
       {children}
