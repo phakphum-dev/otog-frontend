@@ -138,9 +138,5 @@ const components: ThemeComponents = {
   },
 }
 
-const config: ThemeConfig = {
-  initialColorMode: 'dark',
-}
-
-export const overrides = { colors, sizes, components, config }
+export const overrides = { colors, sizes, components }
 export const theme = extendTheme(overrides)

@@ -111,13 +111,12 @@ export const CenteredCard = ({ children }: BoxProps) => {
       <MotionBox
         p={4}
         // my={16}
-        mx="auto"
+        // mx="auto"
         w="max-content"
         boxShadow="lg"
         // borderWidth="1px"
         rounded="2xl"
         bg={bg}
-        style={{ backdropFilter: 'blur(100px)' }}
         initial="close"
         animate={isAuthenticated ? 'close' : 'open'}
         variants={{

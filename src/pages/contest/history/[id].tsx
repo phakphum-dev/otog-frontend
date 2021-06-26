@@ -157,7 +157,7 @@ export default function ContestHistory(props: ContestHistoryProps) {
                     )
                     return (
                       <Td key={`${user.id}/${problem.id}`}>
-                        {submission?.score ?? 0}
+                        {submission?.score ?? '-'}
                       </Td>
                     )
                   })}
