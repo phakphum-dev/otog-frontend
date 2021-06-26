@@ -232,7 +232,7 @@ export async function getServerSideFetch<T = any>(
     }
   } catch (error) {
     const errorToast = getErrorToast(error)
-    console.log(error)
+    console.log(error.toJSON())
     return {
       props: { ...props, errorToast },
     }
