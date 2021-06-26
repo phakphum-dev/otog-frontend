@@ -8,7 +8,6 @@ export type ErrorToastOptions = UseToastOptions & {
 export function useErrorToast() {
   const toast = useToast()
   const onError = (e: any) => {
-    console.error(e)
     toast(getErrorToast(e))
   }
   return { onError, toast }
@@ -97,7 +96,7 @@ export function getErrorToast(e: any): ErrorToastOptions {
     }
     return {
       title: error.name,
-      description: error.message,
+      description: error.response?.data?.message ?? error.message,
       status: 'error',
       isClosable: true,
       code: error.response?.status ?? null,
