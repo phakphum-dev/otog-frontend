@@ -23,6 +23,7 @@ import { useErrorToast } from '@src/hooks/useError'
 import { useAuth } from '@src/api/AuthProvider'
 import { LoginReq } from '@src/hooks/useUser'
 import { glassTheme, useGlass } from '@src/theme/glass'
+import { motion } from 'framer-motion'
 
 export interface LoginModalProps {
   isOpen: boolean
@@ -100,13 +101,16 @@ export const LoginForm = (props: LoginFormProps) => {
   )
 }
 
-export const CenteredCard = (props: BoxProps) => {
+const MotionBox = motion<BoxProps>(Box)
+
+export const CenteredCard = ({ children }: BoxProps) => {
   const { bg } = useGlass()
+  const { isAuthenticated } = useAuth()
   return (
     <ChakraProvider theme={glassTheme}>
-      <Box
+      <MotionBox
         p={4}
-        my={16}
+        // my={16}
         mx="auto"
         w="max-content"
         boxShadow="lg"
@@ -114,8 +118,15 @@ export const CenteredCard = (props: BoxProps) => {
         rounded="2xl"
         bg={bg}
         style={{ backdropFilter: 'blur(100px)' }}
-        {...props}
-      />
+        initial="close"
+        animate={isAuthenticated ? 'close' : 'open'}
+        variants={{
+          close: { opacity: 0, scale: 0.5 },
+          open: { opacity: 1, scale: 1 },
+        }}
+      >
+        {children}
+      </MotionBox>
     </ChakraProvider>
   )
 }

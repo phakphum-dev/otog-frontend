@@ -34,17 +34,18 @@ export const useAuth = () => useContext(AuthContext)
 export const AuthProvider = (props: AuthValueProps) => {
   const { value: accessToken, children } = props
 
-  const user = getUserData(accessToken)
+  const http = useHttp()
+  const user = getUserData(http.getAccessToken() ?? accessToken)
   const isAuthenticated = !!user
   const isAdmin = user?.role === 'admin'
 
   const forceUpdate = useForceUpdate()
 
-  const http = useHttp()
   const login = async (credentials: LoginReq) => {
     const { accessToken } = await http.post<AuthRes>(`auth/login`, credentials)
     http.setNewToken(accessToken)
     cache.clear()
+    forceUpdate()
   }
 
   const router = useRouter()

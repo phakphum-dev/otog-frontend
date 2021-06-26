@@ -8,7 +8,7 @@ export default function LoginPage() {
   const router = useRouter()
   return (
     <Center flex={1}>
-      <CenteredCard my={0}>
+      <CenteredCard>
         <LoginForm onSuccess={() => router.replace('/contest')} />
       </CenteredCard>
     </Center>
