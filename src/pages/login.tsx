@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { getServerSideCookies } from '@src/api'
 import { GetServerSideProps } from 'next'
 import { Center, Circle, SquareProps } from '@chakra-ui/react'
+import { motion } from 'framer-motion'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -36,23 +37,26 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return serverSideCookies
 }
 
-const Ball = (
-  props: SquareProps & { boxSize: number; l?: number; t?: number }
-) => {
+const MotionBall = motion<SquareProps>(Circle)
+
+const Ball = (props: { boxSize: number; l?: number; t?: number }) => {
   const { boxSize, l = 0, t = 0, ...rest } = props
   return (
-    <Circle
+    <MotionBall
       pos="absolute"
       zIndex={1}
       size={`${boxSize}px`}
       boxShadow="0 0 1rem 0 rgba(0, 0, 0, 0.25)"
       bg="radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.4))"
       sx={{
-        backdropFilter: 'blur(10px)',
+        backdropFilter: 'blur(5px)',
         top: `calc(50% - ${boxSize / 2}px + ${t}px)`,
         left: `calc(50% - ${boxSize / 2}px + ${l}px)`,
       }}
-      {...rest}
+      drag
+      dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }}
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.9 }}
     />
   )
 }
