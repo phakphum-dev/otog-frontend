@@ -224,7 +224,10 @@ const SubmissionRow = (props: SubmissionRowProps) => {
           </Tooltip>
         )}
       </Td>
-      <Td>{submission.user.showName}</Td>
+      <Td>
+        {submission.user.showName}
+        {isAdmin && ` (${submission.user.username})`}
+      </Td>
       <Td>
         <Link
           isExternal
