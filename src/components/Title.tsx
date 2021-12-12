@@ -1,12 +1,5 @@
 import Icon from '@chakra-ui/icon'
-import {
-  Flex,
-  FlexProps,
-  Heading,
-  HStack,
-  Text,
-  TextProps,
-} from '@chakra-ui/layout'
+import { Flex, FlexProps, Heading, HStack, TextProps } from '@chakra-ui/layout'
 import { forwardRef } from '@chakra-ui/system'
 import { ForwardedRef } from 'react'
 import { IconType } from 'react-icons'

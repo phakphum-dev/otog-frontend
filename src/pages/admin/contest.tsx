@@ -134,7 +134,7 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
       await http.put<Contest>(`contest/${contest?.id}`, body)
       mutate('contest')
       editModal.onClose()
-    } catch (e) {
+    } catch (e: any) {
       onError(e)
     }
   }
@@ -152,7 +152,7 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
           mutate('contest')
           editModal.onClose()
           setContestId(0)
-        } catch (e) {
+        } catch (e: any) {
           onError(e)
         }
       },
@@ -264,7 +264,7 @@ const CreateContestModalButton = (props: CreateContestModalButtonProps) => {
       setContestId(id)
       mutate('contest')
       createModal.onClose()
-    } catch (e) {
+    } catch (e: any) {
       onError(e)
     }
   }
@@ -343,7 +343,7 @@ interface ContestTableProps {
   contest: Contest
 }
 
-const ContestTable = memo((props: ContestTableProps) => {
+const ContestTable = memo(function ContestTable(props: ContestTableProps) {
   const { contest } = props
   const { data: problems } = useProblems()
   const openProblemIds = contest.problems.map((problem) => problem.id)
@@ -411,7 +411,7 @@ const ContestProblemRow = (props: ContestProblemRowProps) => {
         }
       )
       setOpen(show)
-    } catch (e) {
+    } catch (e: any) {
       onError(e)
       setOpen(isOpen)
     }

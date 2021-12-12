@@ -135,7 +135,7 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
         await http.post(`submission/problem/${problem.id}`, formData)
         mutate()
         resetFileInput()
-      } catch (e) {
+      } catch (e: any) {
         onError(e)
       } finally {
         onLoaded()
@@ -208,7 +208,7 @@ export const ContestEditorForm = (props: ContestEditorFormProps) => {
         formData.append('language', language)
         await http.post(`submission/problem/${problem.id}`, formData)
         mutate()
-      } catch (e) {
+      } catch (e: any) {
         onError(e)
       } finally {
         onLoaded()

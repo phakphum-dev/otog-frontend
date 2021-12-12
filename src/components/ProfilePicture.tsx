@@ -35,7 +35,7 @@ export const ProfileUpload = () => {
         if (croppedImage) {
           onUpload(croppedImage)
         }
-      } catch (e) {
+      } catch (e: any) {
         onError(e)
       }
     }

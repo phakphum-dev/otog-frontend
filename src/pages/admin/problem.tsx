@@ -96,7 +96,7 @@ const CreateProblemModalButton = () => {
       createModal.onClose()
       resetPdfInput()
       resetZipInput()
-    } catch (e) {
+    } catch (e: any) {
       onError(e)
     }
   }
@@ -231,7 +231,7 @@ const EditProblemModal = (props: EditProblemModalProps) => {
       editModal.onClose()
       resetPdfInput()
       resetZipInput()
-    } catch (e) {
+    } catch (e: any) {
       onError(e)
     }
   }
@@ -248,7 +248,7 @@ const EditProblemModal = (props: EditProblemModalProps) => {
           await http.del(`problem/${problem.id}`)
           mutate('problem')
           editModal.onClose()
-        } catch (e) {
+        } catch (e: any) {
           onError(e)
         }
       },
@@ -389,7 +389,7 @@ const ProblemAdminRow = (props: ProblemAdminProps) => {
         show: !isOpen,
       })
       setOpen(show)
-    } catch (e) {
+    } catch (e: any) {
       onError(e)
       setOpen(isOpen)
     }

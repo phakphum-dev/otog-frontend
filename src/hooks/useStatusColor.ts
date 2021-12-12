@@ -3,7 +3,7 @@ import { Submission } from '@src/hooks/useSubmission'
 
 export function useStatusColor(
   submission: Submission | undefined | null,
-  exceptReject: boolean = false
+  exceptReject = false
 ) {
   const acceptColor = useColorModeValue('accept.50', 'accept.900')
   const rejectColor = useColorModeValue('reject.50', 'reject.900')

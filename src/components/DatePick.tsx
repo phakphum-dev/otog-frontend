@@ -19,7 +19,7 @@ export const DatePicker = ({
   isClearable = false,
   showPopperArrow = false,
   ...props
-}: Props & {}) => {
+}: Props) => {
   const isLight = useColorMode().colorMode === 'light'
   return (
     <Box

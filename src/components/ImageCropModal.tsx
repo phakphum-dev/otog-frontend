@@ -146,7 +146,7 @@ export const ImageCropModal = (props: ImageUploadModalProps) => {
             }
           )
         }
-      } catch (e) {
+      } catch (e: any) {
         onError(e)
       }
     }

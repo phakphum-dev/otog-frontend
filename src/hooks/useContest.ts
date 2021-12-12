@@ -15,7 +15,7 @@ export interface CreateContest {
 }
 export interface Contest extends CreateContest {
   id: number
-  announce: object
+  announce: any
   problems: Problem[]
 }
 

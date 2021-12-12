@@ -356,6 +356,12 @@ const SmallAvatar = ({ userId }: { userId: number }) => {
   )
 }
 
+const MessageCode = (token: string) => (
+  <Code color="inherit" bg={useColorModeValue('transparent', 'blackAlpha.300')}>
+    {token}
+  </Code>
+)
+
 const matcher: Record<
   string,
   { match: string; formatter: (token: string) => ReactNode }
@@ -365,14 +371,7 @@ const matcher: Record<
   '*': { match: '*', formatter: (token) => <b>{token}</b> },
   '`': {
     match: '`',
-    formatter: (token) => (
-      <Code
-        color="inherit"
-        bg={useColorModeValue('transparent', 'blackAlpha.300')}
-      >
-        {token}
-      </Code>
-    ),
+    formatter: MessageCode,
   },
   '[': {
     match: ']',
@@ -390,8 +389,8 @@ const formatted = (token: string, format: string) => {
 
 const formatParser = (message: string) => {
   const tokens: ReactNode[] = []
-  let token: string = ''
-  let format: string = ''
+  let token = ''
+  let format = ''
   for (let i = 0; i < message.length; i++) {
     if (format && matcher[format].match === message[i]) {
       tokens.push(formatted(token.slice(1), format))

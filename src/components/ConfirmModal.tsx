@@ -9,13 +9,7 @@ import {
   HStack,
   useDisclosure,
 } from '@chakra-ui/react'
-import {
-  createContext,
-  PropsWithChildren,
-  useContext,
-  useRef,
-  useState,
-} from 'react'
+import { createContext, ReactNode, useContext, useRef, useState } from 'react'
 
 export interface ConfirmProviderProps {
   onConfirm: (props: ConfirmModalProps) => void
@@ -31,7 +25,11 @@ interface ConfirmModalProps {
   onSubmit: () => void | Promise<void>
 }
 
-export const ConfirmModalProvider = ({ children }: PropsWithChildren<{}>) => {
+export const ConfirmModalProvider = ({
+  children,
+}: {
+  children?: ReactNode
+}) => {
   const [
     { cancleText, submitText, title, subtitle = '', onSubmit },
     setProps,

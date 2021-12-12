@@ -49,9 +49,10 @@ export const FileInput = forwardRef(
           as={Button}
           color={useColorModeValue('gray.600', 'white')}
           fontWeight="normal"
-          children="ค้นหาไฟล์"
           onClick={onClick}
-        />
+        >
+          ค้นหาไฟล์
+        </InputRightAddon>
       </InputGroup>
     )
   }

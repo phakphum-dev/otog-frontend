@@ -63,7 +63,7 @@ export const LoginForm = (props: LoginFormProps) => {
         status: 'success',
         duration: 2000,
       })
-    } catch (e) {
+    } catch (e: any) {
       onError(e)
     }
   }

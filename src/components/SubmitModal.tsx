@@ -58,7 +58,7 @@ export const SubmitModal = (props: SubmitModalProps) => {
         resetFileInput()
         onSuccess?.()
         onClose()
-      } catch (e) {
+      } catch (e: any) {
         onError(e)
       } finally {
         onLoaded()

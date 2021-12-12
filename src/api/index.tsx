@@ -36,7 +36,7 @@ export const Axios = axios.create({
 
 class ApiClient {
   axiosInstance: AxiosInstance
-  isRefreshing: boolean = false
+  isRefreshing = false
   failedQueue: {
     resolve: (value?: any | PromiseLike<any>) => void
     reject: (reason?: any) => void
@@ -90,7 +90,7 @@ class ApiClient {
                 .then(() => {
                   return this.axiosInstance(originalRequest)
                 })
-                .catch((e) => {
+                .catch((e: any) => {
                   return Promise.reject(e)
                 })
             }
@@ -103,11 +103,10 @@ class ApiClient {
                 await this.refreshToken(context)
                 this.processQueue(null)
                 return this.axiosInstance(originalRequest)
-              } catch (e) {
+              } catch (e: any) {
                 this.processQueue(e)
                 // remove token if failed to refresh token
                 if (e.isAxiosError) {
-                  e = e as AxiosError
                   if (e.response?.status === 403) {
                     this.removeToken(context)
                     this.updateOnLogout()
@@ -201,6 +200,7 @@ class ApiClient {
   }
 
   // this will be set only on client
+  /* eslint-disable @typescript-eslint/no-empty-function */
   openLoginModal() {}
   updateOnLogout() {}
   getAccessToken() {
@@ -230,9 +230,9 @@ export async function getServerSideFetch<T = any>(
     return {
       props: { ...props, ...initialData, accessToken },
     }
-  } catch (error) {
+  } catch (error: any) {
     const errorToast = getErrorToast(error)
-    console.error(error?.toJson() ?? error)
+    console.error(error?.toJSON() ?? error)
     return {
       props: { ...props, errorToast },
     }

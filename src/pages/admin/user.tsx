@@ -77,7 +77,7 @@ const CreateUserModalButton = () => {
       mutate('user')
       createModal.onClose()
       reset()
-    } catch (e) {
+    } catch (e: any) {
       onError(e)
     }
   }

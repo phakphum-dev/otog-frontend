@@ -51,6 +51,7 @@ export function getErrorToast(e: any): ErrorToastOptions {
           code: 403,
         }
       case 409:
+        /*eslint-disable no-case-declarations*/
         const message = error.response.data.message
         if (url === 'auth/register') {
           if (message === 'username was taken.') {

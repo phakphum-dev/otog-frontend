@@ -26,7 +26,7 @@ export default function RegisterPage() {
         status: 'success',
         isClosable: true,
       })
-    } catch (e) {
+    } catch (e: any) {
       onError(e)
     }
   }

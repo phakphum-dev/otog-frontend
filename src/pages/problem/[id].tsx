@@ -70,7 +70,7 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
       try {
         await http.post(`submission/problem/${problem.id}`, formData)
         router.push('/submission')
-      } catch (e) {
+      } catch (e: any) {
         onError(e)
       }
     }

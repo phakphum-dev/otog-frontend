@@ -1,7 +1,7 @@
 import { SOCKET_HOST } from '@src/utils/config'
 import {
   createContext,
-  PropsWithChildren,
+  ReactNode,
   useContext,
   useEffect,
   useState,
@@ -16,7 +16,7 @@ export interface ConfirmProviderProps {
 
 const SocketContext = createContext({} as ConfirmProviderProps)
 
-export const SocketProvider = ({ children }: PropsWithChildren<{}>) => {
+export const SocketProvider = ({ children }: { children?: ReactNode }) => {
   const [socket, setSocket] = useState<Socket>()
   const { isAuthenticated } = useAuth()
   const http = useHttp()
@@ -33,7 +33,9 @@ export const SocketProvider = ({ children }: PropsWithChildren<{}>) => {
   }, [isAuthenticated])
 
   const value = { socket }
-  return <SocketContext.Provider value={value} children={children} />
+  return (
+    <SocketContext.Provider value={value}>{children}</SocketContext.Provider>
+  )
 }
 
 export function useSocket() {
