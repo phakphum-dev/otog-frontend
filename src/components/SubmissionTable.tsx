@@ -1,11 +1,4 @@
-import {
-  Dispatch,
-  memo,
-  SetStateAction,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import { Dispatch, memo, SetStateAction, useEffect, useState } from 'react'
 import {
   Box,
   Button,
@@ -27,6 +20,7 @@ import {
 import {
   SubmissionWithProblem,
   useAllSubmissions,
+  useSubmissionInfinite,
   useSubmissionRow,
   useSubmissions,
 } from '@src/hooks/useSubmission'
@@ -36,65 +30,38 @@ import { isGraded, isGrading, useStatusColor } from '@src/hooks/useStatusColor'
 import { ONE_SECOND, toThDate } from '@src/hooks/useTimer'
 import { useOnScreen } from '@src/hooks/useOnScreen'
 import { API_HOST } from '@src/utils/config'
+import { LatestSubmission } from '@src/components/LatestSubmission'
 
 export const SubmissionTable = () => {
-  const {
-    data: submissionsList,
-    setSize,
-    size,
-    isValidating,
-  } = useSubmissions()
-  useEffect(
-    () => () => {
-      setSize(1)
-    },
-    []
+  const submissionData = useSubmissions()
+  const { mutate, submissions, loadMore, hasMore } = useSubmissionInfinite(
+    submissionData
   )
-  const submissions = useMemo(
-    () => submissionsList?.flatMap((submissions) => submissions),
-    [submissionsList]
-  )
-  const hasMore =
-    isValidating || (submissionsList && submissionsList.length === size)
-  const loadMore = () => {
-    setSize((size) => size + 1)
-  }
-
-  return submissions ? (
-    <SubmissionTableBase
-      submissions={submissions}
-      loadMore={loadMore}
-      hasMore={hasMore}
-    />
-  ) : (
-    <Flex justify="center" py={16}>
-      <Spinner size="xl" />
-    </Flex>
+  return (
+    <>
+      <HStack mb={4}>
+        <LatestSubmission onSuccess={mutate} />
+      </HStack>
+      {submissions ? (
+        <SubmissionTableBase
+          submissions={submissions}
+          loadMore={loadMore}
+          hasMore={hasMore}
+        />
+      ) : (
+        <Flex justify="center" py={16}>
+          <Spinner size="xl" />
+        </Flex>
+      )}
+    </>
   )
 }
 
 export const AllSubmissionTable = () => {
-  const {
-    data: submissionsList,
-    setSize,
-    size,
-    isValidating,
-  } = useAllSubmissions()
-  useEffect(
-    () => () => {
-      setSize(1)
-    },
-    []
+  const submissionData = useAllSubmissions()
+  const { submissions, loadMore, hasMore } = useSubmissionInfinite(
+    submissionData
   )
-  const submissions = useMemo(
-    () => submissionsList?.flatMap((submissions) => submissions),
-    [submissionsList]
-  )
-  const hasMore =
-    isValidating || (submissionsList && submissionsList.length === size)
-  const loadMore = () => {
-    setSize((size) => size + 1)
-  }
 
   return submissions ? (
     <SubmissionTableBase
@@ -121,10 +88,8 @@ export const SubmissionTableBase = (props: SubmissionTableBaseProps) => {
   const [submissionId, setSubmissionId] = useState<number>(0)
   const { ref, isIntersecting } = useOnScreen()
   useEffect(() => {
-    if (isIntersecting) {
-      if (hasMore) {
-        loadMore?.()
-      }
+    if (isIntersecting && hasMore) {
+      loadMore?.()
     }
   }, [isIntersecting])
 

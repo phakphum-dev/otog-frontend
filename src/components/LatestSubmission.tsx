@@ -2,15 +2,18 @@ import { useDisclosure } from '@chakra-ui/hooks'
 import { HStack, Text, Link } from '@chakra-ui/layout'
 import { API_HOST } from '@src/api'
 import { useAuth } from '@src/api/AuthProvider'
-import { useLatestSubmission, useSubmissions } from '@src/hooks/useSubmission'
+import { useLatestSubmission } from '@src/hooks/useSubmission'
 import { OrangeSubmitButton } from './SubmitButton'
 import { SubmitModal } from './SubmitModal'
 
-export const LatestSubmission = () => {
+export interface LatestSubmissionProps {
+  onSuccess?: () => void
+}
+
+export const LatestSubmission = ({ onSuccess }: LatestSubmissionProps) => {
   const submitModal = useDisclosure()
   const { isAuthenticated } = useAuth()
   const { data: submission } = useLatestSubmission()
-  const { mutate } = useSubmissions()
 
   return isAuthenticated && submission ? (
     <HStack spacing={4}>
@@ -25,7 +28,7 @@ export const LatestSubmission = () => {
       <OrangeSubmitButton onClick={submitModal.onOpen} />
       <SubmitModal
         problem={submission.problem}
-        onSuccess={mutate}
+        onSuccess={onSuccess}
         submitted={true}
         {...submitModal}
       />

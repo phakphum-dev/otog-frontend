@@ -1,4 +1,8 @@
-import useSWR, { mutate, useSWRInfinite } from 'swr'
+import useSWR, {
+  mutate,
+  SWRInfiniteResponseInterface,
+  useSWRInfinite,
+} from 'swr'
 
 import { Language } from 'prism-react-renderer'
 import { Problem } from './useProblem'
@@ -7,6 +11,7 @@ import { useInitialData } from '@src/hooks/useInitialData'
 import { useAuth } from '@src/api/AuthProvider'
 import { isGrading } from './useStatusColor'
 import { ONE_SECOND } from './useTimer'
+import { useEffect, useMemo } from 'react'
 
 export type Status = 'waiting' | 'grading' | 'accept' | 'reject'
 
@@ -69,6 +74,33 @@ export function useSubmissions() {
     },
     { revalidateOnMount: true, revalidateAll: true }
   )
+}
+
+export function useSubmissionInfinite(
+  submissionData: SWRInfiniteResponseInterface<SubmissionWithProblem[], any>
+) {
+  const { data: submissionsList, setSize, isValidating, size } = submissionData
+  useEffect(
+    () => () => {
+      setSize(1)
+    },
+    []
+  )
+  const submissions = useMemo(
+    () => submissionsList?.flatMap((submissions) => submissions),
+    [submissionsList]
+  )
+  const hasMore =
+    isValidating || (submissionsList && submissionsList.length === size)
+  const loadMore = () => {
+    setSize((size) => size + 1)
+  }
+  return {
+    ...submissionData,
+    submissions,
+    hasMore,
+    loadMore,
+  }
 }
 
 export function useSubmissionRow(initialSubmission: SubmissionWithProblem) {

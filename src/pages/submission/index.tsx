@@ -19,7 +19,6 @@ interface SubmissionPageProps {
 
 export default function SubmissionPage(props: SubmissionPageProps) {
   const { latestSubmission } = props
-
   return (
     <InitialDataProvider value={latestSubmission}>
       <PageContainer>
@@ -34,9 +33,6 @@ export default function SubmissionPage(props: SubmissionPageProps) {
             </Button>
           </NextLink>
         </TitleLayout>
-        <HStack mb={4}>
-          <LatestSubmission />
-        </HStack>
         <SubmissionTable />
       </PageContainer>
     </InitialDataProvider>
