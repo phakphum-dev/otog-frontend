@@ -131,10 +131,12 @@ export const useChat = (isOpen: boolean) => {
 
   useEffect(() => {
     if (socket) {
-      socket.off('chat')
       socket.on('chat', (message: SocketMessage) => {
         dispatch({ type: 'new-message', payload: { message, isOpen } })
       })
+      return () => {
+        socket.off('chat')
+      }
     }
   }, [socket, isOpen, dispatch])
 

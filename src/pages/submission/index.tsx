@@ -1,6 +1,4 @@
 import { Button } from '@chakra-ui/button'
-import { HStack } from '@chakra-ui/layout'
-import { LatestSubmission } from '@src/components/LatestSubmission'
 import { PageContainer } from '@src/components/PageContainer'
 import { SubmissionTable } from '@src/components/SubmissionTable'
 import { Title, TitleLayout } from '@src/components/Title'

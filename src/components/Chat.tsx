@@ -23,9 +23,11 @@ import { useAuth } from '@src/api/AuthProvider'
 import { useOnScreen } from '@src/hooks/useOnScreen'
 import {
   ChangeEvent,
+  Children,
+  cloneElement,
   KeyboardEvent,
   memo,
-  ReactNode,
+  ReactElement,
   useEffect,
   useState,
 } from 'react'
@@ -364,7 +366,7 @@ const MessageCode = (token: string) => (
 
 const matcher: Record<
   string,
-  { match: string; formatter: (token: string) => ReactNode }
+  { match: string; formatter: (token: string) => ReactElement }
 > = {
   _: { match: '_', formatter: (token) => <i>{token}</i> },
   '~': { match: '~', formatter: (token) => <s>{token}</s> },
@@ -388,7 +390,7 @@ const formatted = (token: string, format: string) => {
 }
 
 const formatParser = (message: string) => {
-  const tokens: ReactNode[] = []
+  const tokens: ReactElement[] = []
   let token = ''
   let format = ''
   for (let i = 0; i < message.length; i++) {
@@ -397,7 +399,7 @@ const formatParser = (message: string) => {
       format = ''
       token = ''
     } else if (!format && message[i] in matcher) {
-      tokens.push(token)
+      tokens.push(<>{token}</>)
       format = message[i]
       token = message[i]
     } else {
@@ -405,7 +407,9 @@ const formatParser = (message: string) => {
     }
   }
   if (token) {
-    tokens.push(token)
+    tokens.push(<>{token}</>)
   }
-  return tokens
+  return Children.map(tokens, (child, index) =>
+    cloneElement(child, { key: index })
+  )
 }
