@@ -132,7 +132,7 @@ export default function ContestHistory(props: ContestHistoryProps) {
               <Th>เวลาที่ใช้</Th>
             </Tr>
           </Thead>
-          <Tbody>
+          <Tbody sx={{ td: { lineHeight: 'normal' } }}>
             {users.map((user) => (
               <MotionTr
                 key={user.id}

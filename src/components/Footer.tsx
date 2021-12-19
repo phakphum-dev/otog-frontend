@@ -1,9 +1,11 @@
 import { Divider, Flex, Link, Spacer, Text, Container } from '@chakra-ui/layout'
-import { useToken } from '@chakra-ui/system'
 import { CONTACT_LINK } from '@src/utils/config'
+import { useTheme } from '@chakra-ui/system'
 
 export const Footer = () => {
-  const maxWidth = useToken('sizes', 'container')
+  const theme = useTheme()
+  const maxWidth = theme.sizes.container
+
   return (
     <Container maxWidth={maxWidth} mt={8} pb={4}>
       <Divider mb={2} />

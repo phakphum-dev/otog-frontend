@@ -222,7 +222,7 @@ export const ContestEditorForm = (props: ContestEditorFormProps) => {
         height="60vh"
         language={language}
         theme="vs-dark"
-        defaultValue={defaultValue}
+        value={value}
         onChange={onEditorChange}
       />
       <Stack direction="row" spacing={{ base: 2, sm: 8 }}>

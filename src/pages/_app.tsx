@@ -1,7 +1,8 @@
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 
-import { ChakraProvider, cookieStorageManager, Flex } from '@chakra-ui/react'
+import { cookieStorageManager, Flex } from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/provider'
 import { theme } from '@src/theme'
 import 'focus-visible/dist/focus-visible'
 

@@ -2,7 +2,7 @@ import { PageContainer } from '@src/components/PageContainer'
 import { Title, TitleLayout } from '@src/components/Title'
 import { useRouter } from 'next/router'
 import { FaLightbulb } from 'react-icons/fa'
-import Editor, { useMonaco } from '@monaco-editor/react'
+import Editor from '@monaco-editor/react'
 import { Button } from '@chakra-ui/button'
 import { useHttp } from '@src/api/HttpProvider'
 import { useErrorToast } from '@src/hooks/useError'
@@ -45,36 +45,9 @@ export interface WriteSolutionPageProps {
 }
 
 export default function WriteSolutionPage(props: WriteSolutionPageProps) {
-  const { submission, problem } = props
+  const { problem } = props
   const router = useRouter()
   const id = Number(router.query.id)
-  const [language, setLanguage] = useState<string>(
-    submission?.language ?? 'cpp'
-  )
-  const onChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setLanguage(event.target.value)
-  }
-
-  const monaco = useMonaco()
-  const http = useHttp()
-  const { onError } = useErrorToast()
-  const onSubmit = async () => {
-    const value = monaco?.editor.getModels()[0].getValue()
-    if (value) {
-      const blob = new Blob([value])
-      const file = new File([blob], `${problem.id}${extension[language]}`)
-
-      const formData = new FormData()
-      formData.append('sourceCode', file)
-      formData.append('language', language)
-      try {
-        await http.post(`submission/problem/${problem.id}`, formData)
-        router.push('/submission')
-      } catch (e: any) {
-        onError(e)
-      }
-    }
-  }
 
   return (
     <PageContainer dense>
@@ -97,25 +70,66 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
             </Text>
           </VStack>
         </TitleLayout>
-
-        <Editor
-          height="75vh"
-          language={language}
-          theme="vs-dark"
-          defaultValue={submission?.sourceCode ?? defaultValue}
-        />
-
-        <SimpleGrid columns={3} alignItems="flex-end" mt={2}>
-          <Select onChange={onChange} value={language}>
-            <option value="cpp">C++</option>
-            <option value="c">C</option>
-            <option value="python">Python</option>
-          </Select>
-          <Spacer />
-          <Button onClick={onSubmit}>ส่ง</Button>
-        </SimpleGrid>
+        <EditorForm {...props} />
       </Stack>
     </PageContainer>
+  )
+}
+
+function EditorForm(props: WriteSolutionPageProps) {
+  const { submission, problem } = props
+  const router = useRouter()
+  const [language, setLanguage] = useState<string>(
+    submission?.language ?? 'cpp'
+  )
+  const onChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setLanguage(event.target.value)
+  }
+  const http = useHttp()
+  const { onError } = useErrorToast()
+
+  const [value, setValue] = useState<string | undefined>(
+    submission?.sourceCode ?? defaultValue
+  )
+  const onEditorChange = (value: string | undefined) => {
+    setValue(value)
+  }
+  const onSubmit = async () => {
+    if (!value) return
+    const blob = new Blob([value])
+    const file = new File([blob], `${problem.id}${extension[language]}`)
+
+    const formData = new FormData()
+    formData.append('sourceCode', file)
+    formData.append('language', language)
+    try {
+      await http.post(`submission/problem/${problem.id}`, formData)
+      router.push('/submission')
+    } catch (e: any) {
+      onError(e)
+    }
+  }
+
+  return (
+    <>
+      <Editor
+        height="75vh"
+        language={language}
+        theme="vs-dark"
+        value={value}
+        onChange={onEditorChange}
+      />
+
+      <SimpleGrid columns={3} alignItems="flex-end" mt={2}>
+        <Select onChange={onChange} value={language}>
+          <option value="cpp">C++</option>
+          <option value="c">C</option>
+          <option value="python">Python</option>
+        </Select>
+        <Spacer />
+        <Button onClick={onSubmit}>ส่ง</Button>
+      </SimpleGrid>
+    </>
   )
 }
 
