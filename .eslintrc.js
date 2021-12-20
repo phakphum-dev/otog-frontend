@@ -27,6 +27,7 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 0,
     'react/display-name': 0,
     'react/jsx-key': 'warn',
+    '@typescript-eslint/no-var-requires': 'warn',
   },
   settings: {
     react: {
