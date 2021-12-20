@@ -1,35 +1,61 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# One Tambon One Grader - OTOG
 
-## Getting Started
+### Become a god of competitive programming, code and create algorithms efficiently.
 
-First, run the development server:
+### [http://otog.cf/](http://otog.cf/)
+
+An online grader which was originally provided for POSN KKU center students but currently open for everybody.
+
+### Original otog
+
+This project is an upgrade version of
+
+1. [OTOG-next](https://github.com/karnjj/OTOG-next): The newer version of otog but developed in Nextjs
+2. OTOG_V2: The new version of otog built on javascript framework
+3. [otog](https://github.com/phizaz/otog): The original otog grader which is no longer maintained
+
+### Repositories
+
+There are 3 main modules for otog which are
+
+1. [otog-frontend](https://github.com/Anon-136/otog-frontend)
+2. [otog-backend](https://github.com/karnjj/otog-api)
+3. [otog-grader](https://github.com/karnjj/otog-grader)
+
+### Running Locally
+
+First, run yarn to install dependencies
 
 ```bash
-npm run dev
-# or
+yarn
+```
+
+(Note that you can also use `yarn --frozen-lockfile` instead if installed dependencies is too new)
+
+After that, run yarn dev
+
+```bash
 yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+You can use `.env.local.template` to set your local environment, just copy and rename it to `.env.local`.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+You may need to run backend and grader as well
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### Todo
 
-## Learn More
+- make it work with docker
+- bring back old features of otog such as
+  - contest scoreboard prizes (First Blood, Faster Than Light, Passed In One, One Man Solve)
+  - otog announcement with WYSIWYG
+- code sharing
+- image caching
+- improve admin monitor
+- improve overall UX
+- improve SEO
 
-To learn more about Next.js, take a look at the following resources:
+## Contributing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-# otog-frontend
+Pull requests are welcome. : )

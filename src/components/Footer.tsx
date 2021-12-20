@@ -1,6 +1,7 @@
-import { Divider, Flex, Link, Spacer, Text, Container } from '@chakra-ui/layout'
-import { CONTACT_LINK } from '@src/utils/config'
+import { Container, Divider, Flex, Link, Spacer, Text } from '@chakra-ui/layout'
 import { useTheme } from '@chakra-ui/system'
+
+import { CONTACT_LINK, GITHUB_LINK } from '@src/utils/config'
 
 export const Footer = () => {
   const theme = useTheme()
@@ -17,7 +18,12 @@ export const Footer = () => {
           </Link>
         </Text>
         <Spacer />
-        <Text>© 2021 Phakphum Dev Team</Text>
+        <Text>
+          ©{' '}
+          <Link variant="hidden" href={GITHUB_LINK} isExternal>
+            2021 Phakphum Dev Team
+          </Link>
+        </Text>
       </Flex>
     </Container>
   )
