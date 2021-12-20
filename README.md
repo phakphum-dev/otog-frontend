@@ -6,7 +6,7 @@
 
 An online grader which was originally provided for POSN KKU center students but currently open for everybody.
 
-### Original otog
+## Original otog
 
 This project is an upgrade version of
 
@@ -14,7 +14,7 @@ This project is an upgrade version of
 2. OTOG_V2: The new version of otog built on javascript framework
 3. [otog](https://github.com/phizaz/otog): The original otog grader which is no longer maintained
 
-### Repositories
+## Repositories
 
 There are 3 main modules for otog which are
 
@@ -22,7 +22,7 @@ There are 3 main modules for otog which are
 2. [otog-backend](https://github.com/karnjj/otog-api)
 3. [otog-grader](https://github.com/karnjj/otog-grader)
 
-### Running Locally
+## Running Locally
 
 First, run yarn to install dependencies
 
@@ -44,7 +44,7 @@ You can use `.env.local.template` to set your local environment, just copy and r
 
 You may need to run backend and grader as well
 
-### Todo
+## Todo
 
 - make it work with docker
 - bring back old features of otog such as
