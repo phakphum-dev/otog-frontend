@@ -3,6 +3,7 @@
   "tabWidth": 2,
   "semi": false,
   "singleQuote": true,
-  "importOrder": ["^@/(.*)$", "^[./]"],
-  "importOrderSeparation": true
+  "importOrder": ["^[./]", "^@/(.*)$", "^@chakra-ui/(.*)$", "^@src/(.*)$"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }
