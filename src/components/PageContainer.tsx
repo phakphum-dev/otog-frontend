@@ -19,11 +19,10 @@ export const PageContainer = ({
     const index = breakpoints.findIndex((breakpoint) => breakpoint === maxSize)
     const length = index === -1 ? breakpoints.length : index + 1
     const restBreakpoints = breakpoints.slice(0, length)
-    return restBreakpoints.reduce((result, key) => {
-      const obj = { ...result, [key]: theme.sizes.container[key] }
-      console.log(obj)
-      return obj
-    }, {})
+    return restBreakpoints.reduce(
+      (result, key) => ({ ...result, [key]: theme.sizes.container[key] }),
+      {}
+    )
   }, [maxSize, theme.sizes.container])
 
   return <Container flex={1} maxW={maxW} {...props} />
