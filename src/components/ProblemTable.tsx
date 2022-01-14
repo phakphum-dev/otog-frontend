@@ -1,4 +1,11 @@
+import { useRouter } from 'next/router'
 import { memo, useMemo, useState } from 'react'
+
+import { CodeModal } from './Code'
+import { RenderLater } from './RenderLater'
+import { SubmitButton } from './SubmitButton'
+import { SubmitModal } from './SubmitModal'
+
 import {
   Box,
   Button,
@@ -20,24 +27,20 @@ import {
   Th,
   Thead,
   Tr,
-  useDisclosure,
   UseDisclosureReturn,
+  useDisclosure,
 } from '@chakra-ui/react'
-import { SubmitButton } from './SubmitButton'
-import { SubmitModal } from './SubmitModal'
+
+import { API_HOST } from '@src/api'
+import { useAuth } from '@src/api/AuthProvider'
 import {
   ProblemWithSubmission,
   usePassedUsers,
   useProblems,
 } from '@src/hooks/useProblem'
-import { useRouter } from 'next/router'
-import { API_HOST } from '@src/api'
 import { useStatusColor } from '@src/hooks/useStatusColor'
-import { CodeModal } from './Code'
 import { Submission } from '@src/hooks/useSubmission'
-import { RenderLater } from './RenderLater'
 import { ONE_SECOND } from '@src/hooks/useTimer'
-import { useAuth } from '@src/api/AuthProvider'
 
 export type FilterFunction = (problem: ProblemWithSubmission) => boolean
 export interface ProblemTableProps {
@@ -114,7 +117,7 @@ export const ProblemTable = (props: ProblemTableProps) => {
     </Box>
   ) : (
     <Flex justify="center" py={16}>
-      <Spinner size="xl" />
+      <Spinner size="xl" color="gray.300" />
     </Flex>
   )
 }
