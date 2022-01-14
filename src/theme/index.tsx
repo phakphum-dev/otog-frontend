@@ -1,4 +1,4 @@
-import { extendTheme, ThemeComponents } from '@chakra-ui/react'
+import { ThemeComponents, extendTheme } from '@chakra-ui/react'
 import { mode } from '@chakra-ui/theme-tools'
 
 const colors = {
@@ -82,15 +82,18 @@ const colors = {
   btn_gray: '#c8c8c8',
 }
 
-const sizes = {
+export const sizes = {
   container: {
     sm: '640px',
     md: '768px',
     lg: '1024px',
-    xl: '1024px',
-    // xl: '1280px'
+    xl: '1280px',
+    // xl: '1024px',
   },
 }
+
+export const breakpoints = ['sm', 'md', 'lg', 'xl'] as const
+export type Breakpoints = typeof breakpoints[number]
 
 const components: ThemeComponents = {
   Link: {

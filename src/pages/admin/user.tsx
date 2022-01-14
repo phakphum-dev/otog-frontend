@@ -1,3 +1,11 @@
+import { GetServerSideProps } from 'next'
+import Head from 'next/head'
+import NextLink from 'next/link'
+import { parseCookies } from 'nookies'
+import { useForm } from 'react-hook-form'
+import { FaPencilAlt, FaPlusCircle, FaTools } from 'react-icons/fa'
+import { mutate } from 'swr'
+
 import { Button, IconButton } from '@chakra-ui/button'
 import { FormControl, FormLabel } from '@chakra-ui/form-control'
 import { useDisclosure } from '@chakra-ui/hooks'
@@ -12,31 +20,22 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/modal'
-
+import { HStack } from '@chakra-ui/react'
+import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
-import { PageContainer } from '@src/components/PageContainer'
 
-import { Title, TitleLayout } from '@src/components/Title'
 import { getServerSideCookies } from '@src/api'
 import { getUserData } from '@src/api/AuthProvider'
-import { GetServerSideProps } from 'next'
-import { parseCookies } from 'nookies'
-
-import { FaPencilAlt, FaPlusCircle, FaTools } from 'react-icons/fa'
-import NextLink from 'next/link'
 import { useHttp } from '@src/api/HttpProvider'
-import { useErrorToast } from '@src/hooks/useError'
-import { mutate } from 'swr'
-import { Spinner } from '@chakra-ui/spinner'
+import { PageContainer } from '@src/components/PageContainer'
 import { RenderLater } from '@src/components/RenderLater'
-import Head from 'next/head'
-import { HStack } from '@chakra-ui/react'
-import { useForm } from 'react-hook-form'
+import { Title, TitleLayout } from '@src/components/Title'
+import { useErrorToast } from '@src/hooks/useError'
 import { User, useUsers } from '@src/hooks/useUser'
 
 export default function AdminProblemPage() {
   return (
-    <PageContainer dense>
+    <PageContainer maxSize="md">
       <Head>
         <title>Admin User | OTOG</title>
       </Head>

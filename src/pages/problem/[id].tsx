@@ -1,11 +1,12 @@
-import { PageContainer } from '@src/components/PageContainer'
-import { Title, TitleLayout } from '@src/components/Title'
-import { useRouter } from 'next/router'
-import { FaLightbulb } from 'react-icons/fa'
 import Editor from '@monaco-editor/react'
+import { GetServerSideProps } from 'next'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { parseCookies } from 'nookies'
+import { ChangeEvent, useState } from 'react'
+import { FaLightbulb } from 'react-icons/fa'
+
 import { Button } from '@chakra-ui/button'
-import { useHttp } from '@src/api/HttpProvider'
-import { useErrorToast } from '@src/hooks/useError'
 import {
   Link,
   SimpleGrid,
@@ -14,16 +15,17 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/layout'
-import { Problem } from '@src/hooks/useProblem'
 import { Select } from '@chakra-ui/select'
-import { ChangeEvent, useState } from 'react'
+import { Tooltip } from '@chakra-ui/tooltip'
+
 import { API_HOST, getServerSideFetch } from '@src/api'
-import { GetServerSideProps } from 'next'
+import { useHttp } from '@src/api/HttpProvider'
+import { PageContainer } from '@src/components/PageContainer'
+import { Title, TitleLayout } from '@src/components/Title'
+import { useErrorToast } from '@src/hooks/useError'
+import { Problem } from '@src/hooks/useProblem'
 import { SubmissionWithSourceCode } from '@src/hooks/useSubmission'
 import { ONE_SECOND } from '@src/hooks/useTimer'
-import { parseCookies } from 'nookies'
-import Head from 'next/head'
-import { Tooltip } from '@chakra-ui/tooltip'
 
 const defaultValue = `#include <iostream>
 
@@ -50,7 +52,7 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
   const id = Number(router.query.id)
 
   return (
-    <PageContainer dense>
+    <PageContainer maxSize="md">
       <Head>
         <title>Problem {id} | OTOG</title>
       </Head>

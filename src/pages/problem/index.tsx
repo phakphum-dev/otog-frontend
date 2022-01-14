@@ -1,16 +1,17 @@
+import Head from 'next/head'
+import { Dispatch, SetStateAction, memo, useState } from 'react'
+import { FaPuzzlePiece } from 'react-icons/fa'
+
 import { Button, ButtonProps } from '@chakra-ui/button'
 import { AspectRatio, Heading, Stack, VStack } from '@chakra-ui/layout'
-import { useBreakpointValue } from '@chakra-ui/media-query'
 import { Skeleton } from '@chakra-ui/skeleton'
-import { PageContainer } from '@src/components/PageContainer'
-import { ProblemTable, FilterFunction } from '@src/components/ProblemTable'
-import { Title, TitleLayout } from '@src/components/Title'
+
 import { useAuth } from '@src/api/AuthProvider'
+import { PageContainer } from '@src/components/PageContainer'
+import { FilterFunction, ProblemTable } from '@src/components/ProblemTable'
+import { Title, TitleLayout } from '@src/components/Title'
 import { useProblems } from '@src/hooks/useProblem'
 import { ONE_DAY } from '@src/hooks/useTimer'
-import Head from 'next/head'
-import { Dispatch, memo, SetStateAction, useState } from 'react'
-import { FaPuzzlePiece } from 'react-icons/fa'
 
 export default function ProblemPage() {
   const { isAuthenticated } = useAuth()
@@ -19,7 +20,7 @@ export default function ProblemPage() {
   )
 
   return (
-    <PageContainer dense>
+    <PageContainer maxSize="md">
       <Head>
         <title>Problem | OTOG</title>
       </Head>
@@ -39,26 +40,9 @@ export interface ButtonsProps {
 export const Buttons = memo((props: ButtonsProps) => {
   const { setFilter } = props
   const { data: problems } = useProblems()
-  const display = useBreakpointValue({ base: false, sm: true })
-  const OtogButton = ({
-    label,
-    children,
-    ...props
-  }: ButtonProps & { label: string }) => (
-    <AspectRatio flex={1} ratio={5 / 4}>
-      <Button rounded="lg" mb={4} {...props}>
-        <VStack>
-          <Heading as="h6" fontSize="md">
-            {label}
-          </Heading>
-          <Heading as="h3">{children}</Heading>
-        </VStack>
-      </Button>
-    </AspectRatio>
-  )
 
-  return display ? (
-    <Stack direction="row" mb={4}>
+  return (
+    <Stack direction="row" mb={4} spacing={{ base: 2, md: 3 }}>
       {filterButton.map(({ filter, ...props }) => (
         <Skeleton
           flex={1}
@@ -76,8 +60,31 @@ export const Buttons = memo((props: ButtonsProps) => {
         </Skeleton>
       ))}
     </Stack>
-  ) : null
+  )
 })
+
+const OtogButton = ({
+  label,
+  children,
+  ...props
+}: ButtonProps & { label: string }) => (
+  <AspectRatio flex={1} ratio={5 / 4}>
+    <Button rounded="lg" {...props}>
+      <VStack spacing={{ base: 0, sm: 2 }}>
+        <Heading
+          as="h6"
+          fontSize={{ base: 'md', md: 'lg' }}
+          display={{ base: 'none', sm: 'block' }}
+        >
+          {label}
+        </Heading>
+        <Heading as="h3" fontSize={{ base: '3xl', md: '4xl' }}>
+          {children}
+        </Heading>
+      </VStack>
+    </Button>
+  </AspectRatio>
+)
 
 const filterButton: {
   filter: FilterFunction

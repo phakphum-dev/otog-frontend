@@ -59,7 +59,7 @@ export default function AdminContestPage() {
     setContestId(id)
   }
   return (
-    <PageContainer dense>
+    <PageContainer maxSize="md">
       <Head>
         <title>Admin Contest | OTOG</title>
       </Head>

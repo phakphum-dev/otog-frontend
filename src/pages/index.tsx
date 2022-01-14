@@ -1,20 +1,22 @@
+import { GetServerSideProps } from 'next'
 import NextLink from 'next/link'
+
 import {
   Button,
   Center,
-  Heading,
   HStack,
+  Heading,
   Img,
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { PageContainer } from '@src/components/PageContainer'
-import { GetServerSideProps } from 'next'
+
 import { getServerSideCookies } from '@src/api'
+import { PageContainer } from '@src/components/PageContainer'
 
 export default function HomePage() {
   return (
-    <PageContainer as={Center}>
+    <PageContainer as={Center} maxSize="lg">
       <Stack
         direction={{ base: 'column', md: 'row' }}
         spacing={16}

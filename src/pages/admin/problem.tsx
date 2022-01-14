@@ -1,3 +1,20 @@
+import { GetServerSideProps } from 'next'
+import Head from 'next/head'
+import NextLink from 'next/link'
+import { parseCookies } from 'nookies'
+import { FormEvent, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import {
+  FaEye,
+  FaEyeSlash,
+  FaPencilAlt,
+  FaPlusCircle,
+  FaSync,
+  FaTools,
+  FaTrash,
+} from 'react-icons/fa'
+import { mutate } from 'swr'
+
 import { Button, ButtonGroup, IconButton } from '@chakra-ui/button'
 import { FormControl, FormHelperText, FormLabel } from '@chakra-ui/form-control'
 import { useDisclosure } from '@chakra-ui/hooks'
@@ -12,46 +29,29 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/modal'
-
+import { HStack, Spacer, UseDisclosureReturn } from '@chakra-ui/react'
+import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
-import { PageContainer } from '@src/components/PageContainer'
 
-import { Title, TitleLayout } from '@src/components/Title'
 import { API_HOST, getServerSideCookies } from '@src/api'
 import { getUserData } from '@src/api/AuthProvider'
+import { useHttp } from '@src/api/HttpProvider'
+import { useConfirmModal } from '@src/components/ConfirmModal'
+import { FileInput } from '@src/components/FileInput'
+import { PageContainer } from '@src/components/PageContainer'
+import { RenderLater } from '@src/components/RenderLater'
+import { Title, TitleLayout } from '@src/components/Title'
+import { useErrorToast } from '@src/hooks/useError'
+import { useFileInput } from '@src/hooks/useInput'
 import {
   Problem,
   ProblemWithSubmission,
   useProblems,
 } from '@src/hooks/useProblem'
-import { GetServerSideProps } from 'next'
-import { parseCookies } from 'nookies'
-import { FormEvent, useState } from 'react'
-import {
-  FaEye,
-  FaEyeSlash,
-  FaPencilAlt,
-  FaPlusCircle,
-  FaSync,
-  FaTools,
-  FaTrash,
-} from 'react-icons/fa'
-import NextLink from 'next/link'
-import { useHttp } from '@src/api/HttpProvider'
-import { useErrorToast } from '@src/hooks/useError'
-import { FileInput } from '@src/components/FileInput'
-import { mutate } from 'swr'
-import { Spinner } from '@chakra-ui/spinner'
-import { RenderLater } from '@src/components/RenderLater'
-import Head from 'next/head'
-import { useFileInput } from '@src/hooks/useInput'
-import { HStack, Spacer, UseDisclosureReturn } from '@chakra-ui/react'
-import { useForm } from 'react-hook-form'
-import { useConfirmModal } from '@src/components/ConfirmModal'
 
 export default function AdminProblemPage() {
   return (
-    <PageContainer dense>
+    <PageContainer maxSize="md">
       <Head>
         <title>Admin Problem | OTOG</title>
       </Head>

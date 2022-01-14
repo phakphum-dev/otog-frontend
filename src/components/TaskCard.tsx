@@ -1,3 +1,9 @@
+import Editor from '@monaco-editor/react'
+import { ChangeEvent, FormEvent, memo, useState } from 'react'
+
+import { CodeModal, ErrorModal } from './Code'
+import { FileInput } from './FileInput'
+
 import { Button, IconButton } from '@chakra-ui/button'
 import { useDisclosure } from '@chakra-ui/hooks'
 import {
@@ -10,8 +16,8 @@ import {
   Badge,
   Box,
   Divider,
-  Heading,
   HStack,
+  Heading,
   Link,
   Spacer,
   Stack,
@@ -21,23 +27,19 @@ import { Select } from '@chakra-ui/select'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 import { Collapse } from '@chakra-ui/transition'
-import Editor from '@monaco-editor/react'
+
 import { API_HOST } from '@src/api'
 import { useHttp } from '@src/api/HttpProvider'
+import { useErrorToast } from '@src/hooks/useError'
+import { useFileInput } from '@src/hooks/useInput'
+import { useLoading } from '@src/hooks/useLoading'
 import { Problem } from '@src/hooks/useProblem'
+import { isGraded, isGrading, useStatusColor } from '@src/hooks/useStatusColor'
 import {
   SubmissionWithProblem,
   useProblemSubmission,
 } from '@src/hooks/useSubmission'
-import { useErrorToast } from '@src/hooks/useError'
-import { useFileInput } from '@src/hooks/useInput'
-import { isGraded, isGrading, useStatusColor } from '@src/hooks/useStatusColor'
 import { ONE_SECOND } from '@src/hooks/useTimer'
-import { ChangeEvent, FormEvent, memo, useState } from 'react'
-
-import { CodeModal, ErrorModal } from './Code'
-import { FileInput } from './FileInput'
-import { useLoading } from '@src/hooks/useLoading'
 
 const defaultValue = `#include <iostream>
 
@@ -146,7 +148,7 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
     <form onSubmit={onFileSubmit}>
       <Stack
         direction={{ base: 'column', sm: 'row' }}
-        spacing={{ base: 2, sm: 8 }}
+        spacing={{ base: 2, sm: 8, md: 20 }}
       >
         <Select name="language" size="sm" flex={1}>
           <option value="cpp">C++</option>

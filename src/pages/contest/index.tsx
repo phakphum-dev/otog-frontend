@@ -1,25 +1,26 @@
+import { GetServerSideProps } from 'next'
+import Head from 'next/head'
+import NextLink from 'next/link'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import { FaTrophy } from 'react-icons/fa'
+import { mutate } from 'swr'
+
+import { Button } from '@chakra-ui/button'
 import { Center, Heading, Stack, VStack } from '@chakra-ui/layout'
+import { Tooltip } from '@chakra-ui/tooltip'
+
+import { getServerSideFetch } from '@src/api'
 import { PageContainer } from '@src/components/PageContainer'
 import { TaskCard } from '@src/components/TaskCard'
 import { Title, TitleLayout } from '@src/components/Title'
-import { FaTrophy } from 'react-icons/fa'
-
-import { getServerSideFetch } from '@src/api'
-import { GetServerSideProps } from 'next'
 import { Contest, useCurrentContest } from '@src/hooks/useContest'
-import { Button } from '@chakra-ui/button'
-import NextLink from 'next/link'
 import {
   toThTimeFormat,
   toTimerFormat,
   useServerTime,
   useTimer,
 } from '@src/hooks/useTimer'
-import { useEffect } from 'react'
-import { useRouter } from 'next/router'
-import { mutate } from 'swr'
-import Head from 'next/head'
-import { Tooltip } from '@chakra-ui/tooltip'
 
 export interface ContestPageProps {
   contest: Contest | null
@@ -108,7 +109,7 @@ export const MidContest = (props: ContestProps) => {
     }
   }, [remaining])
   return (
-    <PageContainer dense>
+    <PageContainer maxSize="md">
       <TitleLayout>
         <Tooltip label={contest.name} hasArrow placement="top">
           <Title icon={FaTrophy} noOfLines={1}>

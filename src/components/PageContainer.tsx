@@ -1,15 +1,30 @@
+import { useMemo } from 'react'
+
 import { Container, ContainerProps } from '@chakra-ui/react'
 import { useTheme } from '@chakra-ui/system'
 
-export type PageContainerProps = ContainerProps & { dense?: boolean }
+import { Breakpoints, breakpoints } from '@src/theme'
+
+type PageContainerProps = ContainerProps & {
+  maxSize?: Breakpoints
+}
 
 export const PageContainer = ({
-  dense = false,
+  maxSize = 'lg',
   ...props
 }: PageContainerProps) => {
   const theme = useTheme()
-  const maxWidth = theme.sizes.container
-  return (
-    <Container maxWidth={dense ? maxWidth.sm : maxWidth} flex={1} {...props} />
-  )
+
+  const maxW = useMemo(() => {
+    const index = breakpoints.findIndex((breakpoint) => breakpoint === maxSize)
+    const length = index === -1 ? breakpoints.length : index + 1
+    const restBreakpoints = breakpoints.slice(0, length)
+    return restBreakpoints.reduce((result, key) => {
+      const obj = { ...result, [key]: theme.sizes.container[key] }
+      console.log(obj)
+      return obj
+    }, {})
+  }, [maxSize, theme.sizes.container])
+
+  return <Container flex={1} maxW={maxW} {...props} />
 }
