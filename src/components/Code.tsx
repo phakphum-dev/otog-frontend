@@ -1,3 +1,9 @@
+import Highlight, { Language, defaultProps } from 'prism-react-renderer'
+import theme from 'prism-react-renderer/themes/vsDark'
+import { PropsWithChildren, useEffect } from 'react'
+import { FaRegShareSquare } from 'react-icons/fa'
+
+import { CopyIcon } from '@chakra-ui/icons'
 import {
   Box,
   HStack,
@@ -17,18 +23,13 @@ import {
   useClipboard,
   useToast,
 } from '@chakra-ui/react'
-import Highlight, { defaultProps, Language } from 'prism-react-renderer'
-import theme from 'prism-react-renderer/themes/vsDark'
 
 import {
-  useSubmission,
   SubmissionWithProblem,
   SubmissionWithSourceCode,
+  useSubmission,
 } from '@src/hooks/useSubmission'
-import { PropsWithChildren, useEffect } from 'react'
-import { CopyIcon } from '@chakra-ui/icons'
 import { ONE_SECOND, toThDate } from '@src/hooks/useTimer'
-import { FaRegShareSquare } from 'react-icons/fa'
 import { API_HOST, APP_HOST } from '@src/utils/config'
 
 export interface CodeModalProps extends Omit<ModalProps, 'children'> {
@@ -44,47 +45,6 @@ const language: Record<string, string> = {
 export const CodeModal = (props: CodeModalProps) => {
   const { onClose, isOpen, submissionId } = props
   const { data: submission } = useSubmission(submissionId)
-  const isLoaded = !!submission
-
-  const { onCopy, hasCopied } = useClipboard(submission?.sourceCode ?? '')
-  const toast = useToast()
-  useEffect(() => {
-    if (hasCopied) {
-      toast({
-        title: 'คัดลอกไปยังคลิปบอร์ดแล้ว',
-        status: 'success',
-        duration: 2000,
-      })
-    }
-  }, [hasCopied])
-
-  const { onCopy: onLinkCopy, hasCopied: hasLinkCopied } = useClipboard(
-    submission ? `${APP_HOST}submission/${submission.id}` : ''
-  )
-  useEffect(() => {
-    if (hasLinkCopied) {
-      toast({
-        title: 'เปิดการแชร์',
-        description: 'คัดลอกลิงก์ไปยังคลิปบอร์ดแล้ว',
-        status: 'info',
-      })
-    }
-  }, [hasLinkCopied])
-
-  const TextSkeleton = ({
-    h = 4,
-    w,
-    children,
-  }: PropsWithChildren<{ h?: number; w: number }>) => (
-    <Skeleton
-      isLoaded={isLoaded}
-      w={isLoaded ? 'auto' : w}
-      h={isLoaded ? 'auto' : h}
-      mt={isLoaded ? 0 : 2}
-    >
-      {children}
-    </Skeleton>
-  )
 
   return (
     <Modal onClose={onClose} isOpen={isOpen} size="xl">
@@ -103,64 +63,7 @@ export const CodeModal = (props: CodeModalProps) => {
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Stack>
-            <div>
-              <TextSkeleton w={40}>
-                {submission && <Text>ผลตรวจ: {submission.result}</Text>}
-              </TextSkeleton>
-              <TextSkeleton w={20}>
-                {submission && (
-                  <Text>ภาษา: {language[submission.language]}</Text>
-                )}
-              </TextSkeleton>
-              <TextSkeleton w={36}>
-                {submission && (
-                  <Text>
-                    เวลารวม: {submission.timeUsed / ONE_SECOND} วินาที
-                  </Text>
-                )}
-              </TextSkeleton>
-
-              <TextSkeleton w={48}>
-                {submission && (
-                  <Text>เวลาที่ส่ง: {toThDate(submission.creationDate)}</Text>
-                )}
-              </TextSkeleton>
-              <TextSkeleton w={24}>
-                {submission && <Text>ผู้ส่ง: {submission.user.showName}</Text>}
-              </TextSkeleton>
-            </div>
-            <Box position="relative">
-              <Skeleton
-                isLoaded={isLoaded}
-                h={isLoaded ? 'auto' : 80}
-                rounded="lg"
-              >
-                {submission && (
-                  <>
-                    <CodeHighlight
-                      code={submission.sourceCode}
-                      language={submission.language}
-                    />
-                    <HStack position="absolute" top={2} right={2}>
-                      {/* <IconButton
-                        aria-label="share"
-                        icon={<FaRegShareSquare />}
-                        size="sm"
-                        onClick={onLinkCopy}
-                      /> */}
-                      <IconButton
-                        aria-label="copy"
-                        icon={<CopyIcon />}
-                        size="sm"
-                        onClick={onCopy}
-                      />
-                    </HStack>
-                  </>
-                )}
-              </Skeleton>
-            </Box>
-          </Stack>
+          <SubmissionContent submission={submission} />
         </ModalBody>
         <ModalFooter />
       </ModalContent>
@@ -168,15 +71,15 @@ export const CodeModal = (props: CodeModalProps) => {
   )
 }
 
-export interface CodeSubmissionProps {
-  submission: SubmissionWithSourceCode
+export interface SubmissionContentProps {
+  submission?: SubmissionWithSourceCode
 }
 
-export const CodeSubmission = (props: CodeSubmissionProps) => {
+export const SubmissionContent = (props: SubmissionContentProps) => {
   const { submission } = props
+  const isLoaded = !!submission
 
-  const { onCopy, hasCopied } = useClipboard(submission.sourceCode)
-
+  const { onCopy, hasCopied } = useClipboard(submission?.sourceCode ?? '')
   const toast = useToast()
   useEffect(() => {
     if (hasCopied) {
@@ -186,60 +89,98 @@ export const CodeSubmission = (props: CodeSubmissionProps) => {
         duration: 2000,
       })
     }
-  }, [hasCopied])
+  }, [toast, hasCopied])
 
   const { onCopy: onLinkCopy, hasCopied: hasLinkCopied } = useClipboard(
-    `${APP_HOST}submission/${submission.id}`
+    submission ? `${APP_HOST}submission/${submission.id}` : ''
   )
   useEffect(() => {
     if (hasLinkCopied) {
       toast({
-        title: 'เปิดการแชร์',
+        title: 'เปิดการแชร์ (เฉพาะแอดมิน)',
         description: 'คัดลอกลิงก์ไปยังคลิปบอร์ดแล้ว',
         status: 'info',
       })
     }
-  }, [hasLinkCopied])
+  }, [toast, hasLinkCopied])
 
   return (
     <Stack>
       <div>
-        <Link
-          isExternal
-          href={`${API_HOST}problem/doc/${submission?.problem.id}`}
-        >
-          ข้อ: {submission?.problem.name}
-        </Link>
-        <Text>ผลตรวจ: {submission.result}</Text>
-        <Text>ภาษา: {language[submission.language]}</Text>
-        <Text>เวลารวม: {submission.timeUsed / ONE_SECOND} วินาที</Text>
-        <Text>เวลาที่ส่ง: {toThDate(submission.creationDate)}</Text>
-        <Text>ผู้ส่ง: {submission.user.showName}</Text>
+        <TextSkeleton w={40}>
+          {submission && <Text>ผลตรวจ: {submission.result}</Text>}
+        </TextSkeleton>
+        <TextSkeleton w={18}>
+          {submission && <Text>คะแนน: {submission.score}</Text>}
+        </TextSkeleton>
+        <TextSkeleton w={20}>
+          {submission && <Text>ภาษา: {language[submission.language]}</Text>}
+        </TextSkeleton>
+        <TextSkeleton w={36}>
+          {submission && (
+            <Text>เวลารวม: {submission.timeUsed / ONE_SECOND} วินาที</Text>
+          )}
+        </TextSkeleton>
+
+        <TextSkeleton w={48}>
+          {submission && (
+            <Text>เวลาที่ส่ง: {toThDate(submission.creationDate)}</Text>
+          )}
+        </TextSkeleton>
+        <TextSkeleton w={24}>
+          {submission && <Text>ผู้ส่ง: {submission.user.showName}</Text>}
+        </TextSkeleton>
+        <TextSkeleton w={36}>
+          {submission && <Text>ผลตรวจที่: {submission.id}</Text>}
+        </TextSkeleton>
       </div>
       <Box position="relative">
-        <CodeHighlight
-          code={submission.sourceCode}
-          language={submission.language}
-        />
-        <HStack position="absolute" top={2} right={2}>
-          <IconButton
-            aria-label="share"
-            icon={<FaRegShareSquare />}
-            size="sm"
-            onClick={onLinkCopy}
-          />
-          <IconButton
-            aria-label="copy"
-            icon={<CopyIcon />}
-            size="sm"
-            onClick={onCopy}
-          />
-        </HStack>
+        <Skeleton isLoaded={isLoaded} h={isLoaded ? 'auto' : 80} rounded="lg">
+          {submission && (
+            <>
+              <CodeHighlight
+                code={submission.sourceCode}
+                language={submission.language}
+              />
+              <HStack position="absolute" top={2} right={2}>
+                <IconButton
+                  aria-label="share"
+                  icon={<FaRegShareSquare />}
+                  size="sm"
+                  onClick={onLinkCopy}
+                />
+                <IconButton
+                  aria-label="copy"
+                  icon={<CopyIcon />}
+                  size="sm"
+                  onClick={onCopy}
+                />
+              </HStack>
+            </>
+          )}
+        </Skeleton>
       </Box>
     </Stack>
   )
 }
 
+const TextSkeleton = ({
+  h = 4,
+  w,
+  children,
+}: PropsWithChildren<{ h?: number; w: number }>) => {
+  const isLoaded = !!children
+  return (
+    <Skeleton
+      isLoaded={isLoaded}
+      w={isLoaded ? 'auto' : w}
+      h={isLoaded ? 'auto' : h}
+      mt={isLoaded ? 0 : 2}
+    >
+      {children}
+    </Skeleton>
+  )
+}
 export interface ErrorModalProp extends Omit<ModalProps, 'children'> {
   submission: SubmissionWithProblem
 }
