@@ -83,8 +83,8 @@ export default function AdminProblemPage() {
 const CreateProblemModalButton = () => {
   const createModal = useDisclosure()
 
-  const { resetFileInput: resetPdfInput, fileProps: pdfProps } = useFileInput()
-  const { resetFileInput: resetZipInput, fileProps: zipProps } = useFileInput()
+  const { resetFile: resetPdfInput, fileInputProps: pdfProps } = useFileInput()
+  const { resetFile: resetZipInput, fileInputProps: zipProps } = useFileInput()
 
   const http = useHttp()
   const { onError } = useErrorToast()
@@ -164,17 +164,12 @@ const CreateProblemModalButton = () => {
                 </FormControl>
                 <FormControl>
                   <FormLabel>โจทย์ (PDF)</FormLabel>
-                  <FileInput
-                    isRequired
-                    name="pdf"
-                    accept=".pdf"
-                    {...pdfProps}
-                  />
+                  <FileInput required name="pdf" accept=".pdf" {...pdfProps} />
                 </FormControl>
                 <FormControl>
                   <FormLabel>เทสต์เคส (ZIP)</FormLabel>
                   <FileInput
-                    isRequired
+                    required
                     name="zip"
                     accept=".zip,.zpi"
                     {...zipProps}
@@ -205,13 +200,13 @@ interface EditProblemModalProps {
 const EditProblemModal = (props: EditProblemModalProps) => {
   const { problem, editModal } = props
   const {
-    resetFileInput: resetPdfInput,
-    fileProps: pdfProps,
+    resetFile: resetPdfInput,
+    fileInputProps: pdfProps,
     file: pdf,
   } = useFileInput()
   const {
-    resetFileInput: resetZipInput,
-    fileProps: zipProps,
+    resetFile: resetZipInput,
+    fileInputProps: zipProps,
     file: zip,
   } = useFileInput()
 

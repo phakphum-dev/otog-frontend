@@ -122,26 +122,25 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
   const { problem, contestId } = props
 
   const { mutate } = useProblemSubmission(problem.id)
-  const { resetFileInput, fileProps } = useFileInput()
+  const { resetFile, fileInputProps } = useFileInput()
 
   const http = useHttp()
   const { onError } = useErrorToast()
   const { isLoading, onLoad, onLoaded } = useLoading()
   const onFileSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!isLoading) {
-      const formData = new FormData(e.currentTarget)
-      formData.append('contestId', `${contestId}`)
-      try {
-        onLoad()
-        await http.post(`submission/problem/${problem.id}`, formData)
-        mutate()
-        resetFileInput()
-      } catch (e: any) {
-        onError(e)
-      } finally {
-        onLoaded()
-      }
+    if (isLoading) return
+    const formData = new FormData(e.currentTarget)
+    formData.append('contestId', `${contestId}`)
+    try {
+      onLoad()
+      await http.post(`submission/problem/${problem.id}`, formData)
+      mutate()
+      resetFile()
+    } catch (e: any) {
+      onError(e)
+    } finally {
+      onLoaded()
     }
   }
   return (
@@ -157,11 +156,11 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
         </Select>
         <HStack justify="flex-end">
           <FileInput
-            isRequired
+            required
             name="sourceCode"
             accept=".c,.cpp,.py"
             inputGroupProps={{ size: 'sm' }}
-            {...fileProps}
+            {...fileInputProps}
           />
           <Button variant="otog" size="sm" type="submit">
             ส่ง

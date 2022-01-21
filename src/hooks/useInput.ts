@@ -1,27 +1,32 @@
-import { ChangeEvent, useRef, useState } from 'react'
+import { ChangeEvent, useCallback, useRef, useState } from 'react'
+import { DropzoneInputProps } from 'react-dropzone'
 
-export function useFileInput() {
+export interface FileInputRef {
+  value?: string
+  onClick: () => void
+}
+
+export function useFileInput(inputProps?: DropzoneInputProps) {
   const [file, setFile] = useState<File>()
-  const onChange = ({ target: { files } }: ChangeEvent<HTMLInputElement>) => {
-    setFile(files?.[0])
-  }
-  const ref = useRef<HTMLInputElement>(null)
-  const resetFileInput = () => {
-    setFile(undefined)
-    if (ref.current) {
-      ref.current.value = ''
-    }
-  }
+  const inputRef = useRef<FileInputRef>(null)
+  const resetFile = useCallback((file?: File) => {
+    console.log('set', file)
+    setFile(file)
+  }, [])
+  const onChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      resetFile(event.target.files?.[0])
+    },
+    [resetFile]
+  )
   return {
     file,
-    setFile,
-    resetFileInput,
-    fileProps: {
-      ref,
+    fileName: file?.name,
+    resetFile,
+    fileInputProps: {
+      ...inputProps,
+      ref: inputRef,
       onChange,
-      fileInputProps: {
-        fileName: file?.name,
-      },
     },
   }
 }

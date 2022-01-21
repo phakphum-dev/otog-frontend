@@ -1,4 +1,13 @@
-import { ForwardedRef, forwardRef, useEffect, useRef } from 'react'
+import {
+  ForwardedRef,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from 'react'
+import { DropzoneInputProps } from 'react-dropzone'
+import { FaUpload } from 'react-icons/fa'
+
 import {
   Button,
   IconButton,
@@ -6,60 +15,77 @@ import {
   InputGroup,
   InputGroupProps,
   InputProps,
-  InputRightAddon,
+  InputRightElement,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { FaUpload } from 'react-icons/fa'
 
-export interface UploadFileProps extends InputProps {
-  fileInputProps: {
-    fileName?: string
-  }
+import { FileInputRef } from '@src/hooks/useInput'
+
+export type UploadFileProps = DropzoneInputProps & {
+  fileName?: string
+  isDragActive?: boolean
   inputGroupProps?: InputGroupProps
 }
 
-export function useInputRef(ref: ForwardedRef<HTMLInputElement>) {
+export function useInputRef(ref: ForwardedRef<FileInputRef>) {
   const inputRef = useRef<HTMLInputElement>(null)
-  const onClick = () => inputRef.current?.click()
-  useEffect(() => {
-    if (typeof ref === 'function') {
-      ref(inputRef.current)
-    } else if (ref) {
-      ref.current = inputRef.current
-    }
-  }, [ref])
-  return { inputRef, onClick }
+  const displayInputRef = useRef<HTMLInputElement>(null)
+  const onFocus = () => {
+    displayInputRef.current?.focus()
+  }
+  const onClick = () => {
+    if (!inputRef.current) return
+    inputRef.current.value = ''
+    inputRef.current.click()
+    onFocus()
+  }
+  useImperativeHandle(ref, () => ({ onClick }))
+  return { inputRef, displayInputRef, onClick, onFocus }
 }
 
 export const FileInput = forwardRef(
-  (props: UploadFileProps, ref: ForwardedRef<HTMLInputElement>) => {
-    const { fileInputProps, inputGroupProps, ...rest } = props
-    const { fileName } = fileInputProps
-    const { inputRef, onClick } = useInputRef(ref)
+  (props: UploadFileProps, ref: ForwardedRef<FileInputRef>) => {
+    const { isDragActive = false, fileName, inputGroupProps, ...rest } = props
+    const { inputRef, displayInputRef, onClick, onFocus } = useInputRef(ref)
+    useEffect(() => {
+      if (isDragActive) {
+        onFocus()
+      }
+    }, [isDragActive, onFocus])
     return (
       <InputGroup {...inputGroupProps}>
-        <Input type="file" ref={inputRef} display="none" {...rest} />
+        <input
+          type="file"
+          style={{ display: 'none' }}
+          {...rest}
+          ref={inputRef}
+        />
         <Input
-          value={fileName ?? ''}
+          ref={displayInputRef}
+          cursor="pointer"
+          value={isDragActive ? 'วางไฟล์ที่นี่' : fileName ?? ''}
           placeholder="ยังไม่ได้เลือกไฟล์"
           isReadOnly
           onClick={onClick}
         />
-        <InputRightAddon
-          as={Button}
-          color={useColorModeValue('gray.600', 'white')}
-          fontWeight="normal"
-          onClick={onClick}
-        >
-          ค้นหาไฟล์
-        </InputRightAddon>
+        <InputRightElement w={100} zIndex={0} right="-1px">
+          <Button
+            borderTopLeftRadius={0}
+            borderBottomLeftRadius={0}
+            color={useColorModeValue('gray.600', 'white')}
+            fontWeight="normal"
+            onClick={onClick}
+          >
+            ค้นหาไฟล์
+          </Button>
+        </InputRightElement>
       </InputGroup>
     )
   }
 )
 
 export const UploadFileButton = forwardRef(
-  (props: InputProps, ref: ForwardedRef<HTMLInputElement>) => {
+  (props: InputProps, ref: ForwardedRef<FileInputRef>) => {
     const { inputRef, onClick } = useInputRef(ref)
     return (
       <>
