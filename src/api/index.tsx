@@ -1,13 +1,15 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios'
-import nookies from 'nookies'
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
+import nookies from 'nookies'
 import { ParsedUrlQuery } from 'querystring'
+
+import { UseToastOptions } from '@chakra-ui/toast'
+
 import { getErrorToast } from '@src/hooks/useError'
+import { AuthRes } from '@src/hooks/useUser'
 import { getColorMode } from '@src/theme/ColorMode'
 import { ColorModeProps } from '@src/theme/ColorMode'
-import { UseToastOptions } from '@chakra-ui/toast'
 import { API_HOST, isProduction } from '@src/utils/config'
-import { AuthRes } from '@src/hooks/useUser'
 
 export const Axios = axios.create({
   baseURL: API_HOST,
