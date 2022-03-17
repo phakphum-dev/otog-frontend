@@ -1,7 +1,9 @@
+import Image from 'next/image'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { ForwardedRef, useEffect, useRef, useState } from 'react'
 
+import Logo from '../../public/logo512.png'
 import { PageContainer } from './PageContainer'
 import { ToggleColorModeButton } from './ToggleColorModeButton'
 
@@ -20,7 +22,6 @@ import {
   HStack,
   Heading,
   IconButton,
-  Img,
   Menu,
   MenuButton,
   MenuItem,
@@ -115,7 +116,7 @@ export const NavBar = () => {
             <NextLink href={isAdmin ? '/admin/contest' : '/'} passHref>
               <Button as="a" variant="link" color={color} _hover={{ color }}>
                 <HStack cursor="pointer">
-                  <Img src="/logo196.png" boxSize={8} my={1} />
+                  <Image src={Logo} width={32} height={32} />
                   <Heading size="md" py={2}>
                     <Box
                       display={{ base: 'none', md: 'inline-block', xl: 'none' }}

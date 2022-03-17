@@ -1,3 +1,8 @@
+import { useState } from 'react'
+import Cropper from 'react-easy-crop'
+import { Area } from 'react-easy-crop/types'
+import { mutate } from 'swr'
+
 import { Button } from '@chakra-ui/button'
 import { Box, HStack, Stack } from '@chakra-ui/layout'
 import {
@@ -20,10 +25,6 @@ import { useAuth } from '@src/api/AuthProvider'
 import { storage } from '@src/firebase'
 import { useErrorToast } from '@src/hooks/useError'
 import { useUserProfilePic } from '@src/hooks/useProfilePic'
-import { useState } from 'react'
-import Cropper from 'react-easy-crop'
-import { Area } from 'react-easy-crop/types'
-import { mutate } from 'swr'
 
 interface ImageUploadModalProps {
   isOpen: boolean
@@ -58,7 +59,7 @@ export const createImageFromFile = (file: File) =>
  * @param {Object} pixelCrop - pixelCrop Object provided by react-easy-crop
  * @param {number} rotation - optional rotation parameter
  */
-const BOX_SIZE = 480
+const BOX_SIZE = 320 * 2
 export async function getCroppedImage(
   image: HTMLImageElement,
   sourceArea?: Area
