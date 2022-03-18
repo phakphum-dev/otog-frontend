@@ -7,6 +7,7 @@ import { AspectRatio, Heading, Stack, VStack } from '@chakra-ui/layout'
 import { Skeleton } from '@chakra-ui/skeleton'
 
 import { useAuth } from '@src/api/AuthProvider'
+import { Announcement } from '@src/components/Announcement'
 import { PageContainer } from '@src/components/PageContainer'
 import { FilterFunction, ProblemTable } from '@src/components/ProblemTable'
 import { Title, TitleLayout } from '@src/components/Title'
@@ -24,6 +25,7 @@ export default function ProblemPage() {
       <Head>
         <title>Problem | OTOG</title>
       </Head>
+      <Announcement />
       <TitleLayout>
         <Title icon={FaPuzzlePiece}>โจทย์</Title>
       </TitleLayout>
