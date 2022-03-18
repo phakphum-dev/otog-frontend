@@ -7,10 +7,10 @@ import { AspectRatio, Heading, Stack, VStack } from '@chakra-ui/layout'
 import { Skeleton } from '@chakra-ui/skeleton'
 
 import { useAuth } from '@src/api/AuthProvider'
-import { Announcement } from '@src/components/Announcement'
 import { PageContainer } from '@src/components/PageContainer'
 import { FilterFunction, ProblemTable } from '@src/components/ProblemTable'
 import { Title, TitleLayout } from '@src/components/Title'
+import { Announcement } from '@src/components/announcement'
 import { useProblems } from '@src/hooks/useProblem'
 import { ONE_DAY } from '@src/hooks/useTimer'
 
