@@ -1,13 +1,14 @@
 import isHotkey from 'is-hotkey'
-import { KeyboardEvent, ReactElement, ReactNode, useMemo } from 'react'
+import { KeyboardEvent, ReactElement, useMemo } from 'react'
 import {
+  FaAngleLeft,
+  FaAngleRight,
   FaBold,
   FaCode,
+  FaEye,
   FaItalic,
   FaLink,
-  FaListOl,
-  FaListUl,
-  FaQuoteLeft,
+  FaPlus,
   FaUnderline,
 } from 'react-icons/fa'
 import { MdLooks3, MdLooks4, MdLooksOne, MdLooksTwo } from 'react-icons/md'
@@ -16,7 +17,6 @@ import {
   Descendant,
   Editor,
   Element as SlateElement,
-  Text as SlateText,
   Transforms,
   createEditor,
 } from 'slate'
@@ -258,23 +258,53 @@ export const AnnouncementEditor = (props: AnnouncementEditorProps) => {
         value={value}
         onChange={(newValue) => onChange(newValue)}
       >
-        <HStack>
-          <ButtonGroup isAttached>
-            <MarkButton format="bold" icon={<FaBold />} />
-            <MarkButton format="italic" icon={<FaItalic />} />
-            <MarkButton format="underline" icon={<FaUnderline />} />
-            <MarkButton format="link" icon={<FaLink />} />
-            <MarkButton format="code" icon={<FaCode />} />
-          </ButtonGroup>
-          <ButtonGroup isAttached>
-            <BlockButton format="heading-one" icon={<MdLooksOne />} />
-            <BlockButton format="heading-two" icon={<MdLooksTwo />} />
-            <BlockButton format="heading-three" icon={<MdLooks3 />} />
-            <BlockButton format="heading-four" icon={<MdLooks4 />} />
-            {/* <BlockButton format="block-quote" icon={<FaQuoteLeft />} />
+        <HStack justify="space-between">
+          <HStack>
+            <ButtonGroup isAttached>
+              <MarkButton format="bold" icon={<FaBold />} />
+              <MarkButton format="italic" icon={<FaItalic />} />
+              <MarkButton format="underline" icon={<FaUnderline />} />
+              <MarkButton format="link" icon={<FaLink />} />
+              <MarkButton format="code" icon={<FaCode />} />
+            </ButtonGroup>
+            <ButtonGroup isAttached>
+              <BlockButton format="heading-one" icon={<MdLooksOne />} />
+              <BlockButton format="heading-two" icon={<MdLooksTwo />} />
+              <BlockButton format="heading-three" icon={<MdLooks3 />} />
+              <BlockButton format="heading-four" icon={<MdLooks4 />} />
+              {/* <BlockButton format="block-quote" icon={<FaQuoteLeft />} />
             <BlockButton format="numbered-list" icon={<FaListOl />} />
-            <BlockButton format="bulleted-list" icon={<FaListUl />} /> */}
-          </ButtonGroup>
+          <BlockButton format="bulleted-list" icon={<FaListUl />} /> */}
+            </ButtonGroup>
+          </HStack>
+          <HStack>
+            <IconButton
+              size="sm"
+              icon={<FaEye />}
+              aria-label="add new announcement"
+              variant="outline"
+            />
+            <ButtonGroup isAttached>
+              <IconButton
+                size="sm"
+                icon={<FaAngleLeft />}
+                aria-label="previous"
+                variant="outline"
+              />
+              <IconButton
+                size="sm"
+                icon={<FaPlus />}
+                aria-label="add new announcement"
+                variant="outline"
+              />
+              <IconButton
+                size="sm"
+                icon={<FaAngleRight />}
+                aria-label="next"
+                variant="outline"
+              />
+            </ButtonGroup>
+          </HStack>
         </HStack>
         <hr />
         <Stack
