@@ -1,6 +1,5 @@
-import { Descendant } from 'slate'
-
 import { AnnouncementEditor } from './AnnouncementEditor'
+import { useAnnouncement } from './useAnnouncement'
 
 import {
   Button,
@@ -13,35 +12,21 @@ import {
   ModalOverlay,
 } from '@chakra-ui/react'
 
-interface Announcement {
-  id: number
-  value: Descendant[]
-}
-
 interface AnnouncementModalProps {
-  announcements: Announcement[]
   isOpen: boolean
   onClose: () => void
-  setAnnouncements: (value: Announcement[]) => void
 }
 export const AnnouncementModal = (props: AnnouncementModalProps) => {
-  const { isOpen, onClose, announcements, setAnnouncements } = props
+  const { isOpen, onClose } = props
+  const { currentAnnouncement } = useAnnouncement()
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="3xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>ประกาศ</ModalHeader>
+        <ModalHeader>ประกาศ #{currentAnnouncement.id}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <AnnouncementEditor
-            value={announcements[0].value}
-            onChange={(value) => {
-              setAnnouncements([
-                { ...announcements[0], value },
-                ...announcements.slice(1),
-              ])
-            }}
-          />
+          <AnnouncementEditor />
         </ModalBody>
 
         <ModalFooter>

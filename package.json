@@ -21,6 +21,7 @@
     "firebase": "^8.3.1",
     "focus-visible": "^5.2.0",
     "framer-motion": "^4",
+    "immer": "^9.0.12",
     "is-hotkey": "^0.2.0",
     "jwt-decode": "^3.1.2",
     "next": "12",

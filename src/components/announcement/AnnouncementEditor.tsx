@@ -6,6 +6,7 @@ import {
   FaBold,
   FaCode,
   FaEye,
+  FaEyeSlash,
   FaItalic,
   FaLink,
   FaPlus,
@@ -32,6 +33,7 @@ import {
 } from 'slate-react'
 
 import { HEIGHT } from './constants'
+import { useAnnouncement } from './useAnnouncement'
 
 import {
   ButtonGroup,
@@ -230,14 +232,17 @@ const BlockButton = ({ format, icon }: BlockButtonProps) => {
   )
 }
 
-interface AnnouncementEditorProps {
-  value: Descendant[]
-  onChange: (value: Descendant[]) => void
-}
-
-export const AnnouncementEditor = (props: AnnouncementEditorProps) => {
-  const { value, onChange } = props
+export const AnnouncementEditor = () => {
+  const {
+    currentAnnouncement,
+    onChange,
+    nextIndex,
+    prevIndex,
+    insertIndex,
+    toggleShow,
+  } = useAnnouncement()
   const editor = useMemo(() => withReact(withHistory(createEditor())), [])
+  editor.children = currentAnnouncement.value
   const handleHotkey = (event: KeyboardEvent<HTMLDivElement>) => {
     for (const hotkey in HOTKEYS) {
       if (isHotkey(hotkey, event)) {
@@ -255,8 +260,8 @@ export const AnnouncementEditor = (props: AnnouncementEditorProps) => {
     <Stack py={4}>
       <Slate
         editor={editor}
-        value={value}
-        onChange={(newValue) => onChange(newValue)}
+        value={currentAnnouncement.value}
+        onChange={onChange}
       >
         <HStack justify="space-between">
           <HStack>
@@ -280,9 +285,10 @@ export const AnnouncementEditor = (props: AnnouncementEditorProps) => {
           <HStack>
             <IconButton
               size="sm"
-              icon={<FaEye />}
-              aria-label="add new announcement"
+              icon={currentAnnouncement.show ? <FaEye /> : <FaEyeSlash />}
+              aria-label="toggle visibillity"
               variant="outline"
+              onClick={toggleShow}
             />
             <ButtonGroup isAttached>
               <IconButton
@@ -290,18 +296,21 @@ export const AnnouncementEditor = (props: AnnouncementEditorProps) => {
                 icon={<FaAngleLeft />}
                 aria-label="previous"
                 variant="outline"
+                onClick={prevIndex}
               />
               <IconButton
                 size="sm"
                 icon={<FaPlus />}
                 aria-label="add new announcement"
                 variant="outline"
+                onClick={insertIndex}
               />
               <IconButton
                 size="sm"
                 icon={<FaAngleRight />}
                 aria-label="next"
                 variant="outline"
+                onClick={nextIndex}
               />
             </ButtonGroup>
           </HStack>

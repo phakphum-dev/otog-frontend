@@ -10,7 +10,7 @@ import { useAuth } from '@src/api/AuthProvider'
 import { PageContainer } from '@src/components/PageContainer'
 import { FilterFunction, ProblemTable } from '@src/components/ProblemTable'
 import { Title, TitleLayout } from '@src/components/Title'
-import { Announcement } from '@src/components/announcement'
+import { AnnouncementCarousel } from '@src/components/announcement'
 import { useProblems } from '@src/hooks/useProblem'
 import { ONE_DAY } from '@src/hooks/useTimer'
 
@@ -25,7 +25,7 @@ export default function ProblemPage() {
       <Head>
         <title>Problem | OTOG</title>
       </Head>
-      <Announcement />
+      <AnnouncementCarousel />
       <TitleLayout>
         <Title icon={FaPuzzlePiece}>โจทย์</Title>
       </TitleLayout>
