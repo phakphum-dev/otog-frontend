@@ -1,5 +1,5 @@
 import { AnnouncementEditor } from './AnnouncementEditor'
-import { useAnnouncement } from './useAnnouncement'
+import { useAnnouncementContext } from './useAnnouncementContext'
 
 import {
   Button,
@@ -18,7 +18,7 @@ interface AnnouncementModalProps {
 }
 export const AnnouncementModal = (props: AnnouncementModalProps) => {
   const { isOpen, onClose } = props
-  const { currentAnnouncement } = useAnnouncement()
+  const { currentAnnouncement, onSave, deleteIndex } = useAnnouncementContext()
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="3xl">
       <ModalOverlay />
@@ -30,10 +30,21 @@ export const AnnouncementModal = (props: AnnouncementModalProps) => {
         </ModalBody>
 
         <ModalFooter>
-          <Button mr={3} colorScheme="red" variant="ghost" onClick={onClose}>
+          <Button
+            mr={3}
+            colorScheme="red"
+            variant="ghost"
+            onClick={deleteIndex}
+          >
             ลบ
           </Button>
-          <Button colorScheme="green" onClick={onClose}>
+          <Button
+            colorScheme="green"
+            onClick={() => {
+              onSave()
+              onClose()
+            }}
+          >
             บันทึก
           </Button>
         </ModalFooter>

@@ -33,7 +33,7 @@ import {
 } from 'slate-react'
 
 import { HEIGHT } from './constants'
-import { useAnnouncement } from './useAnnouncement'
+import { useAnnouncementContext } from './useAnnouncementContext'
 
 import {
   ButtonGroup,
@@ -240,7 +240,7 @@ export const AnnouncementEditor = () => {
     prevIndex,
     insertIndex,
     toggleShow,
-  } = useAnnouncement()
+  } = useAnnouncementContext()
   const editor = useMemo(() => withReact(withHistory(createEditor())), [])
   editor.children = currentAnnouncement.value
   const handleHotkey = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -300,19 +300,19 @@ export const AnnouncementEditor = () => {
               />
               <IconButton
                 size="sm"
-                icon={<FaPlus />}
-                aria-label="add new announcement"
-                variant="outline"
-                onClick={insertIndex}
-              />
-              <IconButton
-                size="sm"
                 icon={<FaAngleRight />}
                 aria-label="next"
                 variant="outline"
                 onClick={nextIndex}
               />
             </ButtonGroup>
+            <IconButton
+              size="sm"
+              icon={<FaPlus />}
+              aria-label="add new announcement"
+              variant="outline"
+              onClick={insertIndex}
+            />
           </HStack>
         </HStack>
         <hr />

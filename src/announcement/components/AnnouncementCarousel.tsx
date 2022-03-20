@@ -1,13 +1,16 @@
 import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { FaPencilAlt } from 'react-icons/fa'
 
+import { useAnnouncements } from '../queries/useAnnouncements'
 import { ReadonlyEditor } from './AnnouncementEditor'
 import { AnnouncementModal } from './AnnouncementModal'
 import { HEIGHT, INTERVAL, SHOWUP_DELAY } from './constants'
 import { Announcement } from './types'
-import { AnnouncementProvider, useAnnouncement } from './useAnnouncement'
-import { createDescendant } from './utils'
+import {
+  AnnouncementProvider,
+  useAnnouncementContext,
+} from './useAnnouncementContext'
 
 import {
   Collapse,
@@ -20,55 +23,36 @@ import {
 
 import { useAuth } from '@src/api/AuthProvider'
 
-const initialAnnouncements: Announcement[] = [
-  {
-    id: 1,
-    value: createDescendant('aaaeeaaaeeaaa'),
-    show: true,
-  },
-  // { id: 2, value: createDescendant('aaaeeaaaeeaaa'), show: false },
-  {
-    id: 3,
-    value: createDescendant(
-      'Playing Getting Over It for the first time today!'
-    ),
-    show: true,
-  },
-  // { id: 4, value: createDescendant('I burned my tongue'), show: true },
-  // {
-  //   id: 5,
-  //   value: createDescendant(
-  //     'Helloo \nPushing back SpongeBob about an hour!! Maybe a little more, but hopefully just an hour. See ya soon !'
-  //   ),
-  //   show: true,
-  // },
-  // { id: 6, value: createDescendant('อ่านโจทย์ให้ครบก่อนทำน่ะ'), show: true },
-  // {
-  //   id: 7,
-  //   value: createDescendant('ญินดีร์ฏ้อณลับสูเก็ดเฎอร์ฌาวไฑย'),
-  //   show: true,
-  // },
-  // { id: 8, value: createDescendant('จงทำโจทย์ !!!'), show: true },
-]
-
 const MotionStack = motion<StackProps>(Stack)
 
 export const AnnouncementCarousel = () => {
   const [show, setShow] = useState(false)
-  const { isAuthenticated } = useAuth()
-  const [announcements, setAnnouncements] = useState(initialAnnouncements)
+  const { isAuthenticated, isAdmin } = useAuth()
+
+  const { data } = useAnnouncements()
+  const [announcements, setAnnouncements] = useState<Announcement[]>([])
+  useEffect(() => {
+    if (data) setAnnouncements(data)
+  }, [data])
+
+  const filteredAnnouncements = useMemo(
+    () => data?.filter((announcements) => announcements.show) ?? [],
+    [data]
+  )
 
   useEffect(() => {
-    if (isAuthenticated && announcements.length > 0) {
+    if (isAuthenticated && (filteredAnnouncements.length > 0 || isAdmin)) {
       const timeout = setTimeout(() => setShow(true), SHOWUP_DELAY)
       return () => clearTimeout(timeout)
     }
-  }, [isAuthenticated, announcements])
+  }, [isAdmin, isAuthenticated, filteredAnnouncements])
 
   return (
     <Collapse in={show}>
       {show && (
-        <AnnouncementProvider value={{ announcements, setAnnouncements }}>
+        <AnnouncementProvider
+          value={{ announcements, setAnnouncements, filteredAnnouncements }}
+        >
           <AnnouncementComponent />
         </AnnouncementProvider>
       )}
@@ -78,15 +62,20 @@ export const AnnouncementCarousel = () => {
 
 const AnnouncementComponent = () => {
   const { isAuthenticated, isAdmin } = useAuth()
-  const { nextIndex, announcements, currentIndex } = useAnnouncement()
+  const {
+    nextShowIndex,
+    filteredAnnouncements,
+    showIndex,
+  } = useAnnouncementContext()
 
   const { isOpen, onOpen, onClose } = useDisclosure()
+
   useEffect(() => {
-    if (!isOpen && isAuthenticated && announcements.length > 0) {
-      const interval = setInterval(() => nextIndex(), INTERVAL)
+    if (!isOpen && isAuthenticated && filteredAnnouncements.length > 0) {
+      const interval = setInterval(() => nextShowIndex(), INTERVAL)
       return () => clearInterval(interval)
     }
-  }, [isAuthenticated, currentIndex, announcements, nextIndex, isOpen])
+  }, [isAuthenticated, showIndex, filteredAnnouncements, nextShowIndex, isOpen])
 
   const { colorMode } = useColorMode()
   return (
@@ -97,23 +86,24 @@ const AnnouncementComponent = () => {
       cursor="pointer"
       pt={4}
     >
-      {announcements.map((announcement, index, all) => (
+      {filteredAnnouncements.map((announcement, index, all) => (
         <MotionStack
           key={announcement.id}
           variants={{
             show: { y: 0, transition: { duration: 0.5 } },
-            hidden: { y: -HEIGHT, transition: { duration: 0.5 } },
+            hidden: { y: -HEIGHT * 1.2, transition: { duration: 0.5 } },
           }}
-          animate={index >= currentIndex ? 'show' : 'hidden'}
+          animate={index >= showIndex ? 'show' : 'hidden'}
           bg={colorMode === 'light' ? 'white' : 'gray.800'}
           zIndex={all.length - index}
           position="absolute"
           justify="center"
           height={HEIGHT}
+          maxHeight={HEIGHT}
           width="100%"
           overflow="hidden"
           textAlign="center"
-          onClick={nextIndex}
+          onClick={nextShowIndex}
         >
           <ReadonlyEditor value={announcement.value} />
         </MotionStack>
@@ -125,7 +115,7 @@ const AnnouncementComponent = () => {
             position="absolute"
             right={0}
             top={4}
-            zIndex={50}
+            zIndex={49}
             icon={<FaPencilAlt />}
             onClick={onOpen}
             variant="ghost"

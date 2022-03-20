@@ -6,11 +6,11 @@ import { Button, ButtonProps } from '@chakra-ui/button'
 import { AspectRatio, Heading, Stack, VStack } from '@chakra-ui/layout'
 import { Skeleton } from '@chakra-ui/skeleton'
 
+import { AnnouncementCarousel } from '@src/announcement/components/AnnouncementCarousel'
 import { useAuth } from '@src/api/AuthProvider'
 import { PageContainer } from '@src/components/PageContainer'
 import { FilterFunction, ProblemTable } from '@src/components/ProblemTable'
 import { Title, TitleLayout } from '@src/components/Title'
-import { AnnouncementCarousel } from '@src/components/announcement'
 import { useProblems } from '@src/hooks/useProblem'
 import { ONE_DAY } from '@src/hooks/useTimer'
 
