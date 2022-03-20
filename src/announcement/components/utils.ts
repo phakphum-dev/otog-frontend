@@ -11,10 +11,8 @@ export function createDescendant(value: string): Descendant[] {
   ]
 }
 
-export function createEmptyAnnouncement(): Announcement {
+export function createEmptyAnnouncement(): Pick<Announcement, 'value'> {
   return {
-    id: Math.floor(Math.random() * 10000),
-    show: false,
     value: createDescendant(''),
   }
 }
