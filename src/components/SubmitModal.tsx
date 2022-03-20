@@ -98,7 +98,6 @@ export const SubmitModal = (props: SubmitModalProps) => {
                 <FormControl>
                   <FormLabel>อัปโหลด</FormLabel>
                   <FileInput
-                    required
                     name="sourceCode"
                     fileName={fileName}
                     isDragActive={isDragActive}
