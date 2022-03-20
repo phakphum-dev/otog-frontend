@@ -2,25 +2,73 @@ name: Build & Deploy
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  
-  workflow_dispatch:
+    branches:
+      - main
+
+env:
+  IMAGE_NAME: ghcr.io/${{ github.repository }}
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  build-and-deploy:
+    strategy:
+      matrix:
+        node-version: [14.x]
+        platform: [ubuntu-latest]
+    runs-on: ${{ matrix.platform }}
     steps:
-      - name: Deploy To DigitalOcean
-        uses: appleboy/ssh-action@master
-        with: 
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to the Container registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ${{ env.IMAGE_NAME }}:latest
+          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache
+          cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache,mode=max
+
+      - name: Install Open VPN
+        run: sudo apt-get install openvpn
+
+      - name: Connect VPN
+        uses: golfzaptw/action-connect-ovpn@2.0.1
+        id: connect_vpn
+        with:
+          PING_URL: ${{ secrets.SSH_HOST }}
+          FILE_OVPN: '.github/vpn/config.ovpn'
+          SECRET: ${{ secrets.VPN_SECRET_USERNAME_PASSWORD }}
+        env:
+          CA_CRT: ${{ secrets.VPN_CA_CRT}}
+          USER_CRT: ${{ secrets.VPN_USER_CRT }}
+          USER_KEY: ${{ secrets.VPN_USER_KEY }}
+
+      - name: Check Connect VPN
+        run: echo ${{ steps.connect_vpn.outputs.STATUS }}
+
+      - name: Deploy to host
+        uses: appleboy/ssh-action@v0.1.4
+        with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
+          key: ${{ secrets.SSH_KEY }}
           script: |
-            cd otog/otog-frontend
-            git pull
-            yarn build
-            /home/otog/.yarn/bin/pm2 restart otog-front
-            echo 'Deployment successful to digital ocean'
+            docker pull ${{ env.IMAGE_NAME }}:latest
+            cd otog-backend
+            git checkout main; git pull
+            docker-compose -f docker-compose.prod.yml --env-file .env.local up -d
+            docker image prune -f
+
+      - name: kill vpn
+        if: always()
+        run: sudo killall openvpn
