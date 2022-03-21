@@ -66,7 +66,7 @@ jobs:
             docker pull ${{ env.IMAGE_NAME }}:latest
             cd otog-frontend
             git checkout main; git pull
-            docker-compose -f docker-compose.prod.yml --env-file .env.local up -d
+            docker-compose -f docker-compose.prod.yml --env-file .env up -d
             docker image prune -f
 
       - name: kill vpn
