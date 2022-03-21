@@ -18,9 +18,9 @@ This project is an upgrade version of
 
 There are 3 main modules for otog which are
 
-1. [otog-frontend](https://github.com/Anon-136/otog-frontend)
-2. [otog-backend](https://github.com/karnjj/otog-api)
-3. [otog-grader](https://github.com/karnjj/otog-grader)
+1. [otog-frontend](https://github.com/phakphum-dev/otog-frontend)
+2. [otog-backend](https://github.com/phakphum-dev/otog-backend)
+3. [otog-grader](https://github.com/phakphum-dev/otog-grader)
 
 ## Running Locally
 
