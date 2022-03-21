@@ -10,7 +10,6 @@ export function useFileInput(inputProps?: DropzoneInputProps) {
   const [file, setFile] = useState<File>()
   const inputRef = useRef<FileInputRef>(null)
   const resetFile = useCallback((file?: File) => {
-    console.log('set', file)
     setFile(file)
   }, [])
   const onChange = useCallback(
