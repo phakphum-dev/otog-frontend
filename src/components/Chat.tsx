@@ -95,9 +95,7 @@ const OnlineUsersTooltip = (props: TooltipProps) => {
           ))}
           {onlineUsers.length > MAX_LENGTH && (
             <HStack>
-              <Text>
-                ...และยังมีชีวิตอยู่อีก {onlineUsers.length - MAX_LENGTH} คน
-              </Text>
+              <Text>(ยังมีชีวิตอยู่ทั้งหมด {onlineUsers.length} คน)</Text>
             </HStack>
           )}
         </Flex>
