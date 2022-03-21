@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { memo, useMemo, useState } from 'react'
+import { memo, useEffect, useMemo, useState } from 'react'
 
 import { CodeModal } from './Code'
 import { RenderLater } from './RenderLater'
@@ -33,7 +33,10 @@ import {
 
 import { API_HOST } from '@src/api'
 import { useAuth } from '@src/api/AuthProvider'
+import { useHttp } from '@src/api/HttpProvider'
+import { useErrorToast } from '@src/hooks/useError'
 import {
+  Problem,
   ProblemWithSubmission,
   usePassedUsers,
   useProblems,
@@ -71,6 +74,8 @@ export const ProblemTable = (props: ProblemTableProps) => {
     router.push('/submission')
   }
 
+  const { isAdmin } = useAuth()
+
   return filteredProblems ? (
     <Box overflowX="auto">
       <Table variant="simple">
@@ -80,6 +85,11 @@ export const ProblemTable = (props: ProblemTableProps) => {
               #
             </Th>
             <Th>ชื่อ</Th>
+            {isAdmin && (
+              <Th w={22} textAlign="center">
+                สถานะ
+              </Th>
+            )}
             <Th px={7} w={22} textAlign="center">
               ผ่าน
             </Th>
@@ -190,6 +200,28 @@ const ProblemRow = (props: ProblemRowProps) => {
   const { isAdmin } = useAuth()
 
   const bg = useStatusColor(problem.submission)
+  const http = useHttp()
+  const { onError } = useErrorToast()
+
+  const [show, setShow] = useState(problem.show)
+  useEffect(() => {
+    setShow(problem.show)
+  }, [problem.show])
+  const onToggle = async () => {
+    setShow((show) => !show)
+    try {
+      const { show: newValue } = await http.patch<Problem>(
+        `problem/${problem.id}`,
+        {
+          show: !show,
+        }
+      )
+      setShow(newValue)
+    } catch (e: any) {
+      onError(e)
+      setShow(show)
+    }
+  }
 
   return (
     <Tr bg={bg}>
@@ -206,13 +238,20 @@ const ProblemRow = (props: ProblemRowProps) => {
         <Link
           isExternal
           href={`${API_HOST}problem/doc/${problem.id}`}
-          variant={problem.show ? 'default' : 'close'}
+          variant={show ? 'default' : 'close'}
         >
           {problem.name}
           <br />({problem.timeLimit / ONE_SECOND} วินาที {problem.memoryLimit}{' '}
           MB)
         </Link>
       </Td>
+      {isAdmin && (
+        <Td w={22} textAlign="center">
+          <Link variant={show ? 'hidden' : 'close'} onClick={onToggle}>
+            {show ? 'เปิด' : 'ซ่อน'}
+          </Link>
+        </Td>
+      )}
       <Td w={22} textAlign="center">
         {problem.passedCount &&
         (isAdmin || problem.submission?.status === 'accept') ? (
