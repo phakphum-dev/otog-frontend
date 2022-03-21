@@ -7,10 +7,11 @@ import {
 } from '@chakra-ui/editable'
 import { EditIcon } from '@chakra-ui/icons'
 import { HStack } from '@chakra-ui/layout'
+
 import { useAuth } from '@src/api/AuthProvider'
 import { useHttp } from '@src/api/HttpProvider'
-import { UserProfile } from '@src/hooks/useUser'
 import { useErrorToast } from '@src/hooks/useError'
+import { UserProfile } from '@src/hooks/useUser'
 
 interface EditableNameProps {
   userData: UserProfile

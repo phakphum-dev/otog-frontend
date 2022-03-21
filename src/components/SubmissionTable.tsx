@@ -1,4 +1,7 @@
-import { Dispatch, memo, SetStateAction, useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, memo, useEffect, useState } from 'react'
+
+import { CodeModal, ErrorModal } from './Code'
+
 import {
   Box,
   Button,
@@ -17,6 +20,10 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 
+import { useAuth } from '@src/api/AuthProvider'
+import { LatestSubmission } from '@src/components/LatestSubmission'
+import { useOnScreen } from '@src/hooks/useOnScreen'
+import { isGraded, isGrading, useStatusColor } from '@src/hooks/useStatusColor'
 import {
   SubmissionWithProblem,
   useAllSubmissions,
@@ -24,13 +31,8 @@ import {
   useSubmissionRow,
   useSubmissions,
 } from '@src/hooks/useSubmission'
-import { CodeModal, ErrorModal } from './Code'
-import { useAuth } from '@src/api/AuthProvider'
-import { isGraded, isGrading, useStatusColor } from '@src/hooks/useStatusColor'
 import { ONE_SECOND, toThDate } from '@src/hooks/useTimer'
-import { useOnScreen } from '@src/hooks/useOnScreen'
 import { API_HOST } from '@src/utils/config'
-import { LatestSubmission } from '@src/components/LatestSubmission'
 
 export const SubmissionTable = () => {
   const submissionData = useSubmissions()
@@ -189,7 +191,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
           </Tooltip>
         )}
       </Td>
-      <Td>
+      <Td maxW={300}>
         {submission.user.showName}
         {isAdmin && ` (${submission.user.username})`}
       </Td>

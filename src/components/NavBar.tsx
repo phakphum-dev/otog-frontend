@@ -1,37 +1,39 @@
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useRef, ForwardedRef, useState } from 'react'
+import { ForwardedRef, useEffect, useRef, useState } from 'react'
 
+import { PageContainer } from './PageContainer'
+import { ToggleColorModeButton } from './ToggleColorModeButton'
+
+import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
 import {
   Avatar,
   Box,
-  Heading,
+  Button,
+  ButtonProps,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerOverlay,
+  Flex,
   HStack,
+  Heading,
+  IconButton,
+  Img,
   Menu,
-  MenuItem,
   MenuButton,
+  MenuItem,
   MenuList,
   Spacer,
-  Button,
-  IconButton,
-  useDisclosure,
-  useBreakpointValue,
-  Drawer,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  DrawerBody,
-  VStack,
-  useColorModeValue,
-  ButtonProps,
-  forwardRef,
   Text,
-  Img,
-  Flex,
+  VStack,
+  forwardRef,
+  useBreakpointValue,
+  useColorModeValue,
+  useDisclosure,
 } from '@chakra-ui/react'
-import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
-import { ToggleColorModeButton } from './ToggleColorModeButton'
-import { PageContainer } from './PageContainer'
+
 import { useAuth } from '@src/api/AuthProvider'
 import { useUserProfilePic } from '@src/hooks/useProfilePic'
 
@@ -170,7 +172,7 @@ export const NavBar = () => {
                     <DrawerButton as="a">
                       <HStack py={2}>
                         <Avatar size="xs" src={url} />
-                        <Text isTruncated>{user.showName}</Text>
+                        <Text isTruncated> {user.showName}</Text>
                       </HStack>
                     </DrawerButton>
                   </NextLink>

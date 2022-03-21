@@ -285,7 +285,11 @@ const PassedModal = (props: PassedModalProps) => {
         <ModalBody>
           <Stack>
             {users ? (
-              users.map((user) => <Text key={user.id}>{user.showName}</Text>)
+              users.map((user) => (
+                <Text maxW={300} key={user.id}>
+                  {user.showName}
+                </Text>
+              ))
             ) : (
               <Flex justify="center">
                 <Spinner />

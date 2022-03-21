@@ -1,31 +1,32 @@
+import { HTMLMotionProps, motion } from 'framer-motion'
+import { GetServerSideProps } from 'next'
+import Head from 'next/head'
 import React, { useMemo } from 'react'
-import {
-  Table,
-  TableCellProps,
-  Tbody,
-  Th as THead,
-  Td as TData,
-  Thead,
-  Tr,
-  TableColumnHeaderProps,
-} from '@chakra-ui/table'
-import { PageContainer } from '@src/components/PageContainer'
+import { CgDetailsLess, CgDetailsMore } from 'react-icons/cg'
+import { FaTrophy } from 'react-icons/fa'
+
 import { ButtonGroup, IconButton } from '@chakra-ui/button'
 import { useDisclosure } from '@chakra-ui/hooks'
-import { HTMLMotionProps, motion } from 'framer-motion'
-import { HTMLChakraProps, useTheme } from '@chakra-ui/system'
-import { Title, TitleLayout } from '@src/components/Title'
-import { FaTrophy } from 'react-icons/fa'
 import { Box, Link } from '@chakra-ui/layout'
-import { CgDetailsLess, CgDetailsMore } from 'react-icons/cg'
-import { ContestScoreboard, UserWithSubmission } from '@src/hooks/useContest'
+import { HTMLChakraProps, useTheme } from '@chakra-ui/system'
+import {
+  Td as TData,
+  Th as THead,
+  Table,
+  TableCellProps,
+  TableColumnHeaderProps,
+  Tbody,
+  Thead,
+  Tr,
+} from '@chakra-ui/table'
+import { Tooltip } from '@chakra-ui/tooltip'
 
 import { API_HOST, getServerSideFetch } from '@src/api'
-import { GetServerSideProps } from 'next'
-import { sum } from '@src/utils'
-import { Tooltip } from '@chakra-ui/tooltip'
+import { PageContainer } from '@src/components/PageContainer'
+import { Title, TitleLayout } from '@src/components/Title'
+import { ContestScoreboard, UserWithSubmission } from '@src/hooks/useContest'
 import { ONE_SECOND } from '@src/hooks/useTimer'
-import Head from 'next/head'
+import { sum } from '@src/utils'
 
 const Th = (props: TableColumnHeaderProps) => (
   <THead textAlign="center" {...props} />
@@ -148,7 +149,9 @@ export default function ContestHistory(props: ContestHistoryProps) {
                 }}
               >
                 <Td>{user.rank}</Td>
-                <Td isTruncated>{user.showName}</Td>
+                <Td maxW={300} isTruncated>
+                  {user.showName}
+                </Td>
                 <Td>{getTotalScore(user)}</Td>
                 {isOpen &&
                   scoreboard.problems.map((problem) => {
