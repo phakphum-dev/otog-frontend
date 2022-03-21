@@ -1,3 +1,16 @@
+import NextLink from 'next/link'
+import {
+  ChangeEvent,
+  Children,
+  KeyboardEvent,
+  ReactElement,
+  cloneElement,
+  memo,
+  useEffect,
+  useState,
+} from 'react'
+import { IoChatbubbleEllipses, IoSend } from 'react-icons/io5'
+
 import { Avatar } from '@chakra-ui/avatar'
 import { Button, IconButton, IconButtonProps } from '@chakra-ui/button'
 import { useColorModeValue } from '@chakra-ui/color-mode'
@@ -8,8 +21,8 @@ import {
   Circle,
   Code,
   Flex,
-  Heading,
   HStack,
+  Heading,
   Link,
   Text,
   VStack,
@@ -19,28 +32,19 @@ import { Textarea } from '@chakra-ui/textarea'
 import { useToast } from '@chakra-ui/toast'
 import { Tooltip, TooltipProps } from '@chakra-ui/tooltip'
 import { SlideFade } from '@chakra-ui/transition'
+
 import { useAuth } from '@src/api/AuthProvider'
+import { Message, useChat } from '@src/hooks/useChat'
 import { useOnScreen } from '@src/hooks/useOnScreen'
-import {
-  ChangeEvent,
-  Children,
-  cloneElement,
-  KeyboardEvent,
-  memo,
-  ReactElement,
-  useEffect,
-  useState,
-} from 'react'
-import { IoChatbubbleEllipses, IoSend } from 'react-icons/io5'
-import { useChat, Message } from '@src/hooks/useChat'
-import { useOnlineUsers } from '@src/hooks/useUser'
-import NextLink from 'next/link'
-import { toThDate } from '@src/hooks/useTimer'
 import { useProfilePic } from '@src/hooks/useProfilePic'
+import { toThDate } from '@src/hooks/useTimer'
+import { useOnlineUsers } from '@src/hooks/useUser'
 
 interface ChatButtonProps extends IconButtonProps {
   hasUnread: boolean
 }
+
+const MAX_LENGTH = 15
 
 const ChatButton = ({ hasUnread, ...props }: ChatButtonProps) => (
   <Box position="fixed" bottom={5} right={5} zIndex={100}>
@@ -83,12 +87,19 @@ const OnlineUsersTooltip = (props: TooltipProps) => {
       hasArrow
       label={
         <Flex flexDir="column" justify="flex-start">
-          {onlineUsers.map((user) => (
+          {onlineUsers.slice(0, MAX_LENGTH).map((user) => (
             <HStack key={user.id}>
               <Circle size={2} bg="green.400" />
               <Text>{user.showName}</Text>
             </HStack>
           ))}
+          {onlineUsers.length > MAX_LENGTH && (
+            <HStack>
+              <Text>
+                ...และยังมีชีวิตอยู่อีก {onlineUsers.length - MAX_LENGTH} คน
+              </Text>
+            </HStack>
+          )}
         </Flex>
       }
       {...props}
