@@ -6,7 +6,7 @@ services:
     container_name: otog-frontend
     restart: unless-stopped
     env_file:
-      - .env.local
+      - .env.production
     ports:
       - 3000:3000
     networks:
