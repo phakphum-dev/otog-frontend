@@ -1,6 +1,7 @@
 import { HTMLMotionProps, motion } from 'framer-motion'
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'
+import NextLink from 'next/link'
 import React, { useMemo } from 'react'
 import { CgDetailsLess, CgDetailsMore } from 'react-icons/cg'
 import { FaTrophy } from 'react-icons/fa'
@@ -150,7 +151,9 @@ export default function ContestHistory(props: ContestHistoryProps) {
               >
                 <Td>{user.rank}</Td>
                 <Td maxW={300} isTruncated>
-                  {user.showName}
+                  <NextLink href={`/profile/${user.id}`}>
+                    <Link variant="hidden">{user.showName}</Link>
+                  </NextLink>
                 </Td>
                 <Td>{getTotalScore(user)}</Td>
                 {isOpen &&

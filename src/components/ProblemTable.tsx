@@ -1,3 +1,4 @@
+import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { memo, useEffect, useMemo, useState } from 'react'
 
@@ -23,7 +24,6 @@ import {
   Table,
   Tbody,
   Td,
-  Text,
   Th,
   Thead,
   Tr,
@@ -286,9 +286,11 @@ const PassedModal = (props: PassedModalProps) => {
           <Stack>
             {users ? (
               users.map((user) => (
-                <Text maxW={300} key={user.id}>
-                  {user.showName}
-                </Text>
+                <NextLink href={`/profile/${user.id}`} key={user.id}>
+                  <Link variant="hidden" maxW={300}>
+                    {user.showName}
+                  </Link>
+                </NextLink>
               ))
             ) : (
               <Flex justify="center">

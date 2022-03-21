@@ -185,7 +185,11 @@ const UserAdminRow = (props: ProblemAdminProps) => {
           <Link variant="hidden">{user.username}</Link>
         </NextLink>
       </Td>
-      <Td maxW={300}>{user.showName}</Td>
+      <Td maxW={300}>
+        <NextLink href={`/profile/${user.id}`}>
+          <Link variant="hidden">{user.showName}</Link>
+        </NextLink>
+      </Td>
       <Td>
         <IconButton
           icon={<FaPencilAlt />}

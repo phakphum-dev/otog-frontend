@@ -1,3 +1,4 @@
+import NextLink from 'next/link'
 import { Dispatch, SetStateAction, memo, useEffect, useState } from 'react'
 
 import { CodeModal, ErrorModal } from './Code'
@@ -192,8 +193,12 @@ const SubmissionRow = (props: SubmissionRowProps) => {
         )}
       </Td>
       <Td maxW={300}>
-        {submission.user.showName}
-        {isAdmin && ` (${submission.user.username})`}
+        <NextLink href={`/profile/${submission.user.id}`}>
+          <Link variant="hidden">
+            {submission.user.showName}
+            {isAdmin && ` (${submission.user.username})`}
+          </Link>
+        </NextLink>
       </Td>
       <Td>
         <Link
