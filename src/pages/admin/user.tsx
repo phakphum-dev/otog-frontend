@@ -185,7 +185,7 @@ const UserAdminRow = (props: ProblemAdminProps) => {
           <Link variant="hidden">{user.username}</Link>
         </NextLink>
       </Td>
-      <Td>{user.showName}</Td>
+      <Td maxW={300}>{user.showName}</Td>
       <Td>
         <IconButton
           icon={<FaPencilAlt />}
