@@ -100,7 +100,7 @@ export const NavBar = () => {
   return (
     <>
       <Box
-        zIndex={10}
+        zIndex={50}
         position="fixed"
         py={2}
         h={14}

@@ -6,6 +6,7 @@ import { Button, ButtonProps } from '@chakra-ui/button'
 import { AspectRatio, Heading, Stack, VStack } from '@chakra-ui/layout'
 import { Skeleton } from '@chakra-ui/skeleton'
 
+import { AnnouncementCarousel } from '@src/announcement/components/AnnouncementCarousel'
 import { useAuth } from '@src/api/AuthProvider'
 import { PageContainer } from '@src/components/PageContainer'
 import { FilterFunction, ProblemTable } from '@src/components/ProblemTable'
@@ -24,6 +25,7 @@ export default function ProblemPage() {
       <Head>
         <title>Problem | OTOG</title>
       </Head>
+      <AnnouncementCarousel />
       <TitleLayout>
         <Title icon={FaPuzzlePiece}>โจทย์</Title>
       </TitleLayout>

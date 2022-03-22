@@ -21,6 +21,8 @@
     "firebase": "^8.3.1",
     "focus-visible": "^5.2.0",
     "framer-motion": "^4",
+    "immer": "^9.0.12",
+    "is-hotkey": "^0.2.0",
     "jwt-decode": "^3.1.2",
     "next": "12",
     "nookies": "^2.5.2",
@@ -34,6 +36,9 @@
     "react-easy-crop": "^3.3.2",
     "react-hook-form": "^7.9.0",
     "react-icons": "^4.2.0",
+    "slate": "^0.75.0",
+    "slate-history": "^0.66.0",
+    "slate-react": "^0.75.0",
     "socket.io-client": "^4.1.2",
     "swr": "^0.4.1"
   },
