@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useEffect, useMemo, useState } from 'react'
-import { FaPencilAlt } from 'react-icons/fa'
+import { FaPencilAlt, FaPlus } from 'react-icons/fa'
 
 import { useAnnouncements } from '../queries/useAnnouncements'
 import { ReadonlyEditor } from './AnnouncementEditor'
@@ -66,6 +66,8 @@ const AnnouncementComponent = () => {
     nextShowIndex,
     filteredAnnouncements,
     showIndex,
+    announcements,
+    insertIndex,
   } = useAnnouncementContext()
 
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -76,6 +78,11 @@ const AnnouncementComponent = () => {
       return () => clearInterval(interval)
     }
   }, [isAuthenticated, showIndex, filteredAnnouncements, nextShowIndex, isOpen])
+  const hasAnnouncements = announcements.length > 0
+  const firstCreate = async () => {
+    await insertIndex()
+    onOpen()
+  }
 
   const { colorMode } = useColorMode()
   return (
@@ -116,11 +123,13 @@ const AnnouncementComponent = () => {
             right={0}
             top={4}
             zIndex={49}
-            icon={<FaPencilAlt />}
-            onClick={onOpen}
+            icon={hasAnnouncements ? <FaPencilAlt /> : <FaPlus />}
+            onClick={hasAnnouncements ? onOpen : firstCreate}
             variant="ghost"
           />
-          {isOpen && <AnnouncementModal onClose={onClose} isOpen={isOpen} />}
+          {isOpen && hasAnnouncements && (
+            <AnnouncementModal onClose={onClose} isOpen={isOpen} />
+          )}
         </>
       )}
     </Stack>
