@@ -13,14 +13,16 @@ import { Descendant } from 'slate'
 import {
   createAnnouncement,
   deleteAnnouncemet,
-  toggleAnnouncemet,
   updateAnnouncement,
   useAnnouncements,
 } from '../queries/useAnnouncements'
 import { Announcement } from './types'
 import { createEmptyAnnouncement } from './utils'
 
+import { useToast } from '@chakra-ui/react'
+
 import { useMutation } from '@src/api/useMutation'
+import { useConfirmModal } from '@src/components/ConfirmModal'
 
 export type AnnouncementProviderProps = {
   announcements: Announcement[]
@@ -62,6 +64,8 @@ export const AnnouncementProvider = (
   const [index, setIndex] = useState(0)
   const [showIndex, setShowIndex] = useState(0)
   const currentAnnouncement = announcements[index]
+
+  const toast = useToast()
 
   const nextShowIndex = useCallback(() => {
     const newIndex = (showIndex + 1) % filteredAnnouncements.length
@@ -113,8 +117,13 @@ export const AnnouncementProvider = (
           announcements[index] = announcementData
         })
       )
+      toast({
+        title: `บันทึกประกาศ #${announcements[index].id} สำเร็จ`,
+        status: 'success',
+        duration: 2000,
+      })
     } catch {}
-  }, [announcements, index, updateAnnouncementMutaion, mutate])
+  }, [announcements, index, updateAnnouncementMutaion, mutate, toast])
 
   const createAnnouncementMutation = useMutation(createAnnouncement)
   const insertIndex = useCallback(async () => {
@@ -133,48 +142,55 @@ export const AnnouncementProvider = (
   }, [announcements, mutate, createAnnouncementMutation])
 
   const deleteAnnouncementMutation = useMutation(deleteAnnouncemet)
+  const confirm = useConfirmModal()
   const deleteIndex = useCallback(async () => {
-    try {
-      await deleteAnnouncementMutation(announcements[index].id)
-    } finally {
-      prevIndex()
-      await mutate()
-    }
-  }, [deleteAnnouncementMutation, announcements, index, prevIndex, mutate])
-
-  const toggleAnnouncemetMutation = useMutation(toggleAnnouncemet)
-  const toggleShow = useCallback(async () => {
-    try {
-      const announcementId = announcements[index].id
-      const { show } = await toggleAnnouncemetMutation(
-        announcementId,
-        !announcements[index].show
-      )
-      const newAnnouncements = await mutate(
-        produce((announcements) => {
-          announcements[index].show = show
-        })
-      )
-      if (show) {
-        const matchedIndex =
-          newAnnouncements
-            ?.filter((announcement) => announcement.show)
-            .findIndex((announcement) => announcement.id === announcementId) ??
-          -1
-        if (matchedIndex !== -1) setShowIndex(matchedIndex)
-      } else {
-        setShowIndex(
-          (showIndex) => (showIndex + 1) % filteredAnnouncements.length
-        )
-      }
-    } catch {}
+    confirm({
+      title: `ยืนยันลบการประกาศ`,
+      subtitle: `คุณต้องการที่จะลบประกาศ #${announcements[index].id} ใช่หรือไม่ ?`,
+      submitText: 'ยืนยัน',
+      cancleText: 'ยกเลิก',
+      onSubmit: async () => {
+        try {
+          await deleteAnnouncementMutation(announcements[index].id)
+        } finally {
+          prevIndex()
+          await mutate()
+        }
+      },
+    })
   }, [
+    deleteAnnouncementMutation,
     announcements,
     index,
-    toggleAnnouncemetMutation,
+    prevIndex,
     mutate,
-    filteredAnnouncements,
+    confirm,
   ])
+
+  const toggleShow = useCallback(async () => {
+    const show = !announcements[index].show
+    setAnnouncements(
+      produce((announcements) => {
+        announcements[index].show = show
+      })
+    )
+    if (show) {
+      const matchedIndex =
+        announcements
+          ?.filter(
+            (announcement) =>
+              announcement.show || announcement.id === announcements[index].id
+          )
+          .findIndex(
+            (announcement) => announcement.id === announcements[index].id
+          ) ?? -1
+      if (matchedIndex !== -1) setShowIndex(matchedIndex)
+    } else {
+      setShowIndex(
+        (showIndex) => (showIndex + 1) % filteredAnnouncements.length
+      )
+    }
+  }, [setAnnouncements, index, announcements, filteredAnnouncements])
 
   const value: AnnouncementValueProps = {
     currentIndex: index,
