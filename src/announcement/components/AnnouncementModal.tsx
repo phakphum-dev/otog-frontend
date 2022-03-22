@@ -38,13 +38,7 @@ export const AnnouncementModal = (props: AnnouncementModalProps) => {
           >
             ลบ
           </Button>
-          <Button
-            colorScheme="green"
-            onClick={() => {
-              onSave()
-              onClose()
-            }}
-          >
+          <Button colorScheme="green" onClick={onSave}>
             บันทึก
           </Button>
         </ModalFooter>
