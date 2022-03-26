@@ -1,10 +1,14 @@
+import Image from 'next/image'
 import NextLink from 'next/link'
+import { useForm } from 'react-hook-form'
+
+import Logo from '../../public/logo512.png'
+
 import {
   Box,
   BoxProps,
   Button,
   Divider,
-  Img,
   Input,
   Modal,
   ModalBody,
@@ -14,10 +18,8 @@ import {
   Stack,
 } from '@chakra-ui/react'
 
-import { useForm } from 'react-hook-form'
-
-import { useErrorToast } from '@src/hooks/useError'
 import { useAuth } from '@src/api/AuthProvider'
+import { useErrorToast } from '@src/hooks/useError'
 import { LoginReq } from '@src/hooks/useUser'
 
 export interface LoginModalProps {
@@ -70,7 +72,9 @@ export const LoginForm = (props: LoginFormProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={4}>
-        <Img src="/logo512.png" boxSize={100} mx="auto" />
+        <Box boxSize={100} mx="auto">
+          <Image src={Logo} />
+        </Box>
         <Input
           {...register('username')}
           type="text"

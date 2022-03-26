@@ -1,15 +1,10 @@
 import { GetServerSideProps } from 'next'
+import Image from 'next/image'
 import NextLink from 'next/link'
 
-import {
-  Button,
-  Center,
-  HStack,
-  Heading,
-  Img,
-  Stack,
-  Text,
-} from '@chakra-ui/react'
+import ComputerImage from '../../public/computer.svg'
+
+import { Button, Center, HStack, Heading, Stack, Text } from '@chakra-ui/react'
 
 import { getServerSideCookies } from '@src/api'
 import { PageContainer } from '@src/components/PageContainer'
@@ -43,7 +38,7 @@ export default function HomePage() {
           </HStack>
         </Stack>
         <Center flex={1}>
-          <Img src="/computer.svg" width="100%" />
+          <Image src={ComputerImage} />
         </Center>
       </Stack>
     </PageContainer>
