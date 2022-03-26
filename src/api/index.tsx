@@ -9,10 +9,15 @@ import { getErrorToast } from '@src/hooks/useError'
 import { AuthRes } from '@src/hooks/useUser'
 import { getColorMode } from '@src/theme/ColorMode'
 import { ColorModeProps } from '@src/theme/ColorMode'
-import { API_HOST, isProduction } from '@src/utils/config'
+import {
+  API_HOST,
+  API_HOST_SSR,
+  isProduction,
+  isServer,
+} from '@src/utils/config'
 
 export const Axios = axios.create({
-  baseURL: API_HOST,
+  baseURL: isServer ? API_HOST : API_HOST_SSR,
   withCredentials: true,
 })
 
