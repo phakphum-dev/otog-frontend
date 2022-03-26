@@ -23,7 +23,7 @@ import {
 
 import { useHttp } from '@src/api/HttpProvider'
 import { useErrorToast } from '@src/hooks/useError'
-import { useFileInput } from '@src/hooks/useInput'
+import { useFileInput } from '@src/hooks/useFileInput'
 import { useLoading } from '@src/hooks/useLoading'
 import { Problem } from '@src/hooks/useProblem'
 
@@ -54,7 +54,7 @@ export const SubmitModal = (props: SubmitModalProps) => {
 
   const draggedFile = acceptedFiles[0]
   const inputProps = getInputProps({})
-  const { file, fileName, resetFile, fileInputProps } = useFileInput(inputProps)
+  const { file, resetFile, fileInputProps } = useFileInput(inputProps)
   useEffect(() => {
     if (draggedFile) {
       resetFile(draggedFile)
@@ -99,7 +99,6 @@ export const SubmitModal = (props: SubmitModalProps) => {
                   <FormLabel>อัปโหลด</FormLabel>
                   <FileInput
                     name="sourceCode"
-                    fileName={fileName}
                     isDragActive={isDragActive}
                     {...fileInputProps}
                   />

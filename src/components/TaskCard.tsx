@@ -31,7 +31,7 @@ import { Collapse } from '@chakra-ui/transition'
 import { API_HOST } from '@src/api'
 import { useHttp } from '@src/api/HttpProvider'
 import { useErrorToast } from '@src/hooks/useError'
-import { useFileInput } from '@src/hooks/useInput'
+import { useFileInput } from '@src/hooks/useFileInput'
 import { useLoading } from '@src/hooks/useLoading'
 import { Problem } from '@src/hooks/useProblem'
 import { isGraded, isGrading, useStatusColor } from '@src/hooks/useStatusColor'
@@ -159,7 +159,7 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
             required
             name="sourceCode"
             accept=".c,.cpp,.py"
-            inputGroupProps={{ size: 'sm' }}
+            variant="sm"
             {...fileInputProps}
           />
           <Button variant="otog" size="sm" type="submit">

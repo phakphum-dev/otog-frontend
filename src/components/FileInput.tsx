@@ -10,21 +10,21 @@ import { FaUpload } from 'react-icons/fa'
 
 import {
   Button,
+  ButtonProps,
   IconButton,
   Input,
   InputGroup,
-  InputGroupProps,
   InputProps,
   InputRightElement,
   useColorModeValue,
 } from '@chakra-ui/react'
 
-import { FileInputRef } from '@src/hooks/useInput'
+import { FileInputRef } from '@src/hooks/useFileInput'
 
 export type UploadFileProps = DropzoneInputProps & {
   fileName?: string
   isDragActive?: boolean
-  inputGroupProps?: InputGroupProps
+  variant?: 'sm' | 'md'
 }
 
 export function useInputRef(ref: ForwardedRef<FileInputRef>) {
@@ -45,7 +45,7 @@ export function useInputRef(ref: ForwardedRef<FileInputRef>) {
 
 export const FileInput = forwardRef(
   (props: UploadFileProps, ref: ForwardedRef<FileInputRef>) => {
-    const { isDragActive = false, fileName, inputGroupProps, ...rest } = props
+    const { isDragActive = false, fileName, variant = 'md', ...rest } = props
     const { inputRef, displayInputRef, onClick, onFocus } = useInputRef(ref)
     useEffect(() => {
       if (isDragActive) {
@@ -53,7 +53,7 @@ export const FileInput = forwardRef(
       }
     }, [isDragActive, onFocus])
     return (
-      <InputGroup {...inputGroupProps}>
+      <InputGroup size={variant}>
         <input
           type="file"
           style={{ display: 'none' }}
@@ -68,13 +68,13 @@ export const FileInput = forwardRef(
           isReadOnly
           onClick={onClick}
         />
-        <InputRightElement w={100} zIndex={0} right="-1px">
+        <InputRightElement w={100} zIndex={0} justifyContent="end">
           <Button
-            borderTopLeftRadius={0}
-            borderBottomLeftRadius={0}
+            borderRadius={variant === 'md' ? '0 4px 4px 0' : '0 2px 2px 0'}
             color={useColorModeValue('gray.600', 'white')}
             fontWeight="normal"
             onClick={onClick}
+            size={variant}
           >
             ค้นหาไฟล์
           </Button>

@@ -18,11 +18,12 @@ export function useFileInput(inputProps?: DropzoneInputProps) {
     },
     [resetFile]
   )
+
   return {
     file,
-    fileName: file?.name,
     resetFile,
     fileInputProps: {
+      fileName: file?.name,
       ...inputProps,
       ref: inputRef,
       onChange,
