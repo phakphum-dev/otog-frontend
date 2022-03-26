@@ -42,7 +42,7 @@ import { PageContainer } from '@src/components/PageContainer'
 import { RenderLater } from '@src/components/RenderLater'
 import { Title, TitleLayout } from '@src/components/Title'
 import { useErrorToast } from '@src/hooks/useError'
-import { useFileInput } from '@src/hooks/useInput'
+import { useFileInput } from '@src/hooks/useFileInput'
 import {
   Problem,
   ProblemWithSubmission,
