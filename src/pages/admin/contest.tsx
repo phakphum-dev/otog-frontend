@@ -83,7 +83,7 @@ export default function AdminContestPage() {
             <SelectContestModalButton setContestId={setContest}>
               {contest?.name ?? 'เลือกการแข่งขัน'}
             </SelectContestModalButton>
-            {contestId && (
+            {contestId && contest && (
               <EditContestModalButton
                 contest={contest}
                 setContestId={setContestId}
@@ -100,7 +100,7 @@ export default function AdminContestPage() {
 }
 
 interface EditContestModalButtonProps {
-  contest: Contest | undefined
+  contest: Contest
   setContestId: (contestId: number) => void
 }
 
@@ -117,7 +117,7 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
       setStartDate(new Date(contest.timeStart))
       setEndDate(new Date(contest.timeEnd))
     }
-  }, [contest])
+  }, [contest, reset])
 
   const http = useHttp()
   const { onError } = useErrorToast()
@@ -132,8 +132,9 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
       timeEnd: endDate.toISOString(),
     }
     try {
-      await http.put<Contest>(`contest/${contest?.id}`, body)
-      mutate('contest')
+      await http.put<Contest>(`contest/${contest.id}`, body)
+      await mutate('contest')
+      await mutate(`contest/${contest.id}`)
       editModal.onClose()
     } catch (e: any) {
       onError(e)
@@ -144,12 +145,12 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
   const onDelete = () => {
     confirm({
       title: `ยืนยันลบการแข่งขัน`,
-      subtitle: `คุณต้องการที่จะลบการแข่งขัน ${contest?.name} ใช่หรือไม่ ?`,
+      subtitle: `คุณต้องการที่จะลบการแข่งขัน ${contest.name} ใช่หรือไม่ ?`,
       submitText: 'ยืนยัน',
       cancleText: 'ยกเลิก',
       onSubmit: async () => {
         try {
-          await http.del(`contest/${contest?.id}`)
+          await http.del(`contest/${contest.id}`)
           mutate('contest')
           editModal.onClose()
           setContestId(0)
