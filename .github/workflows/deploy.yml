@@ -39,7 +39,7 @@ jobs:
           cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache,mode=max
 
       - name: Install Open VPN
-        run: sudo apt-get install openvpn
+        run: sudo apt update && sudo apt install openvpn
 
       - name: Connect VPN
         uses: golfzaptw/action-connect-ovpn@2.0.1
