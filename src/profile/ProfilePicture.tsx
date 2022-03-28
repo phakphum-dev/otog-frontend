@@ -48,7 +48,7 @@ export const ProfileUpload = () => {
         .put(file, { contentType: 'image/jpeg' })
       uploadTask.on(
         'state_changed',
-        (snapshot) => {
+        () => {
           // const progress = Math.round(
           //   (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           // )

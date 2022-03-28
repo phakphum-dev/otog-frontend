@@ -18,7 +18,7 @@ import { Button, IconButton } from '@chakra-ui/button'
 import { FormControl, FormLabel } from '@chakra-ui/form-control'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Input } from '@chakra-ui/input'
-import { Box, Flex, Link, Spacer, Stack, Text } from '@chakra-ui/layout'
+import { Box, Flex, Link, Spacer, Stack } from '@chakra-ui/layout'
 import {
   Modal,
   ModalBody,

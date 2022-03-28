@@ -87,7 +87,7 @@ export const NavBar = () => {
   const { pathname } = useRouter()
   useEffect(() => {
     onClose()
-  }, [isMobile, pathname])
+  }, [isMobile, pathname, onClose])
 
   const bg = useColorModeValue('white', 'gray.800')
   const color = useColorModeValue('gray.800', 'white')

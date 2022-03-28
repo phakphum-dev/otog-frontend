@@ -131,7 +131,7 @@ export const ImageCropModal = (props: ImageUploadModalProps) => {
             .put(croppedImage, { contentType: 'image/jpeg' })
           uploadTask.on(
             'state_changed',
-            (snapshot) => {
+            () => {
               // const progress = Math.round(
               //   (snapshot.bytesTransferred / snapshot.totalBytes) * 100
               // )

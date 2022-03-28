@@ -107,7 +107,7 @@ export const MidContest = (props: ContestProps) => {
     if (remaining <= 0) {
       router.push(`/contest/history/${contest.id}`)
     }
-  }, [remaining])
+  }, [remaining, contest.id, router])
   return (
     <PageContainer maxSize="md">
       <TitleLayout>

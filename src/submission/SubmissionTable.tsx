@@ -94,7 +94,7 @@ export const SubmissionTableBase = (props: SubmissionTableBaseProps) => {
     if (isIntersecting && hasMore) {
       loadMore?.()
     }
-  }, [isIntersecting])
+  }, [isIntersecting, loadMore, hasMore])
 
   return (
     <Box overflowX="auto">

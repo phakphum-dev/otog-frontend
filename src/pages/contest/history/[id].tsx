@@ -76,7 +76,7 @@ export default function ContestHistory(props: ContestHistoryProps) {
       latestRank = index + 1
       return { ...user, rank: latestRank }
     })
-  }, [])
+  }, [scoreboard])
 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const theme = useTheme()

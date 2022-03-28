@@ -15,29 +15,30 @@ export type Message = {
 
 const useLoadChat = () => {
   const { isAuthenticated } = useAuth()
-  const { data: oldMessages, setSize, size, isValidating } = useSWRInfinite<
-    Message[]
-  >(
+  const fetcher = useCallback(
     (pageIndex, previousPageData) => {
       if (!isAuthenticated) return null
-
       // reached the end
       if (previousPageData && !previousPageData.length) return null
-
       // first page, we don't have `previousPageData`
       if (pageIndex === 0 || !previousPageData) return 'chat'
-
       // add the cursor to the API endpoint
       return `chat?offset=${previousPageData[previousPageData?.length - 1].id}`
     },
-    { revalidateOnFocus: false, revalidateOnReconnect: false }
+    [isAuthenticated]
   )
+
+  const { data: oldMessages, setSize, isValidating } = useSWRInfinite<
+    Message[]
+  >(fetcher, { revalidateOnFocus: false, revalidateOnReconnect: false })
+
   const messages = useMemo(() => oldMessages?.flatMap((messages) => messages), [
     oldMessages,
   ])
-  const loadMore = () => {
+  const loadMore = useCallback(() => {
     setSize((size) => size + 1)
-  }
+  }, [setSize])
+
   const hasMore =
     isValidating ||
     (oldMessages && oldMessages[oldMessages.length - 1].length > 0)

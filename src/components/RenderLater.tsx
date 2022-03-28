@@ -10,6 +10,6 @@ export const RenderLater = (props: PropsWithChildren<{ delay: number }>) => {
     return () => {
       clearTimeout(timeout)
     }
-  }, [])
+  }, [delay])
   return show ? <>{children}</> : null
 }

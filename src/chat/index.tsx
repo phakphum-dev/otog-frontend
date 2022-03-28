@@ -124,7 +124,7 @@ export const Chat = () => {
     if (isIntersecting && hasMore) {
       loadMore()
     }
-  }, [isIntersecting])
+  }, [isIntersecting, loadMore, hasMore])
 
   const { isAuthenticated } = useAuth()
   if (!isAuthenticated) {

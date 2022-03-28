@@ -21,8 +21,8 @@ import { createEmptyAnnouncement } from './utils'
 
 import { useToast } from '@chakra-ui/react'
 
-import { useMutation } from '@src/api/useMutation'
 import { useConfirmModal } from '@src/context/ConfirmContext'
+import { useMutation } from '@src/hooks/useMutation'
 
 export type AnnouncementProviderProps = {
   announcements: Announcement[]

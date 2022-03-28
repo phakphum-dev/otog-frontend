@@ -31,10 +31,10 @@ export function toThTimeFormat(ms: number) {
     .join(' ')
 }
 
-export function useTimer(start: string, end: string) {
-  const getRemaining = (start: string, end: string) =>
-    new Date(end).getTime() - new Date(start).getTime()
+const getRemaining = (start: string, end: string) =>
+  new Date(end).getTime() - new Date(start).getTime()
 
+export function useTimer(start: string, end: string) {
   const [remaining, setRemaining] = useState(() => getRemaining(start, end))
 
   useEffect(() => {
@@ -43,8 +43,9 @@ export function useTimer(start: string, end: string) {
     }
   }, [start, end])
 
+  const shouldInterval = remaining > 0
   useEffect(() => {
-    if (remaining > 0) {
+    if (shouldInterval) {
       const interval = setInterval(() => {
         setRemaining((current) => current - ONE_SECOND)
       }, ONE_SECOND)
@@ -52,7 +53,7 @@ export function useTimer(start: string, end: string) {
         clearInterval(interval)
       }
     }
-  }, [remaining > 0])
+  }, [shouldInterval])
   return remaining
 }
 

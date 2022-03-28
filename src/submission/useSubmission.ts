@@ -1,5 +1,5 @@
 import { Language } from 'prism-react-renderer'
-import { useEffect, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import useSWR, {
   SWRInfiniteResponseInterface,
   mutate,
@@ -81,21 +81,21 @@ export function useSubmissionInfinite(
   submissionData: SWRInfiniteResponseInterface<SubmissionWithProblem[], any>
 ) {
   const { data: submissionsList, setSize, isValidating, size } = submissionData
-  useEffect(
-    () => () => {
-      setSize(1)
-    },
-    []
-  )
+  // useEffect(
+  //   () => () => {
+  //     setSize(1)
+  //   },
+  //   []
+  // )
   const submissions = useMemo(
     () => submissionsList?.flatMap((submissions) => submissions),
     [submissionsList]
   )
   const hasMore =
     isValidating || (submissionsList && submissionsList.length === size)
-  const loadMore = () => {
+  const loadMore = useCallback(() => {
     setSize((size) => size + 1)
-  }
+  }, [setSize])
   return {
     ...submissionData,
     submissions,
