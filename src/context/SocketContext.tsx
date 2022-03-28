@@ -28,10 +28,10 @@ export const SocketProvider = ({ children }: { children?: ReactNode }) => {
       })
       setSocket(socketClient)
       return () => {
-        socket?.disconnect()
+        socketClient.disconnect()
       }
     }
-  }, [isAuthenticated, http, socket])
+  }, [isAuthenticated, http])
 
   const value = { socket }
   return (
