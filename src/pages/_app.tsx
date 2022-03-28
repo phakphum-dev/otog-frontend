@@ -1,30 +1,31 @@
+import 'focus-visible/dist/focus-visible'
 import { AppProps } from 'next/app'
+import dynamic from 'next/dynamic'
 import Head from 'next/head'
 
-import { cookieStorageManager, Flex } from '@chakra-ui/react'
-import { ChakraProvider } from '@chakra-ui/provider'
-import { theme } from '@src/theme'
-import 'focus-visible/dist/focus-visible'
-
-import { NavBar } from '@src/components/NavBar'
-import { Footer } from '@src/components/Footer'
 import '../styles/globals.css'
-
-import '@src/styles/nprogress.css'
-import dynamic from 'next/dynamic'
-
-import { HttpProvider } from '@src/api/HttpProvider'
-import { AuthProvider } from '@src/api/AuthProvider'
-import { SocketProvider } from '@src/api/SocketProvider'
-import { ConfirmModalProvider } from '@src/components/ConfirmModal'
-
-import { ErrorToastOptions } from '@src/hooks/useError'
-import { Chat } from '@src/components/Chat'
 import Error from './_error'
 
-const TopProgressBar = dynamic(() => import('@src/components/ProgressBar'), {
-  ssr: false,
-})
+import { ChakraProvider } from '@chakra-ui/provider'
+import { Flex, cookieStorageManager } from '@chakra-ui/react'
+
+import { Chat } from '@src/chat'
+import { Footer } from '@src/components/layout/Footer'
+import { NavBar } from '@src/components/layout/NavBar'
+import { AuthProvider } from '@src/context/AuthContext'
+import { ConfirmModalProvider } from '@src/context/ConfirmContext'
+import { HttpProvider } from '@src/context/HttpContext'
+import { SocketProvider } from '@src/context/SocketContext'
+import { ErrorToastOptions } from '@src/hooks/useError'
+import '@src/styles/nprogress.css'
+import { theme } from '@src/theme'
+
+const TopProgressBar = dynamic(
+  () => import('@src/components/layout/ProgressBar'),
+  {
+    ssr: false,
+  }
+)
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const { colorModeCookie, accessToken, errorToast, ...props } = pageProps

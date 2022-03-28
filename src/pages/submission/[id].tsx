@@ -4,11 +4,12 @@ import { FaTasks } from 'react-icons/fa'
 
 import { Link } from '@chakra-ui/react'
 
-import { API_HOST, getServerSideFetch } from '@src/api'
 import { SubmissionContent } from '@src/components/Code'
-import { PageContainer } from '@src/components/PageContainer'
-import { Title, TitleLayout } from '@src/components/Title'
-import { SubmissionWithSourceCode } from '@src/hooks/useSubmission'
+import { PageContainer } from '@src/components/layout/PageContainer'
+import { Title, TitleLayout } from '@src/components/layout/Title'
+import { API_HOST } from '@src/config'
+import { getServerSideFetch } from '@src/context/HttpClient'
+import { SubmissionWithSourceCode } from '@src/submission/useSubmission'
 
 interface SubmissionIdPageProps {
   submission: SubmissionWithSourceCode
@@ -42,7 +43,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (Number.isNaN(id)) {
     return { notFound: true }
   }
-  return getServerSideFetch<SubmissionIdPageProps>(context, async (api) => ({
-    submission: await api.get(`submission/${id}`),
+  return getServerSideFetch<SubmissionIdPageProps>(context, async (client) => ({
+    submission: await client.get(`submission/${id}`),
   }))
 }

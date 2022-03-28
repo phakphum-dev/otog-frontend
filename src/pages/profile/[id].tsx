@@ -1,18 +1,18 @@
-import { Stack } from '@chakra-ui/layout'
-import { PageContainer } from '@src/components/PageContainer'
-import { Title, TitleLayout } from '@src/components/Title'
+import { GetServerSideProps } from 'next'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { FaUser } from 'react-icons/fa'
 
-import { getServerSideFetch } from '@src/api'
-import { GetServerSideProps } from 'next'
+import { Stack } from '@chakra-ui/layout'
 
-import { Graph } from '@src/components/Graph'
-import { ProfilePicture, ProfileUpload } from '@src/components/ProfilePicture'
-import { UserProfile } from '@src/hooks/useUser'
-import { useRouter } from 'next/router'
-import { useAuth } from '@src/api/AuthProvider'
-import Head from 'next/head'
-import { EditableName } from '@src/components/EditableName'
+import { PageContainer } from '@src/components/layout/PageContainer'
+import { Title, TitleLayout } from '@src/components/layout/Title'
+import { useAuth } from '@src/context/AuthContext'
+import { getServerSideFetch } from '@src/context/HttpClient'
+import { EditableName } from '@src/profile/EditableName'
+import { Graph } from '@src/profile/Graph'
+import { ProfilePicture, ProfileUpload } from '@src/profile/ProfilePicture'
+import { UserProfile } from '@src/user/types'
 
 export interface ProfilePageProps {
   userData: UserProfile
@@ -50,7 +50,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (Number.isNaN(id)) {
     return { notFound: true }
   }
-  return getServerSideFetch<ProfilePageProps>(context, async (api) => ({
-    userData: await api.get<UserProfile>(`user/${id}/profile`),
+  return getServerSideFetch<ProfilePageProps>(context, async (client) => ({
+    userData: await client.get<UserProfile>(`user/${id}/profile`),
   }))
 }

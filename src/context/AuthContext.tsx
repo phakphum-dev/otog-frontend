@@ -1,12 +1,14 @@
-import { createContext, ProviderProps, useContext, useEffect } from 'react'
-import { useHttp } from './HttpProvider'
 import jwtDecode, { JwtPayload } from 'jwt-decode'
+import { useRouter } from 'next/router'
+import { ProviderProps, createContext, useContext, useEffect } from 'react'
+import { cache } from 'swr'
+
+import { useHttp } from './HttpContext'
+
+import { useDisclosure, useForceUpdate } from '@chakra-ui/hooks'
 
 import { LoginModal } from '@src/components/Login'
-import { useDisclosure, useForceUpdate } from '@chakra-ui/hooks'
-import { useRouter } from 'next/router'
-import { AuthRes, LoginReq, User } from '@src/hooks/useUser'
-import { cache } from 'swr'
+import { AuthRes, LoginReq, User } from '@src/user/types'
 
 export interface AuthProviderProps {
   user: User | null
@@ -59,7 +61,7 @@ export const AuthProvider = (props: AuthValueProps) => {
   useEffect(() => {
     http.openLoginModal = loginModal.onOpen
     http.updateOnLogout = forceUpdate
-  }, [http])
+  }, [http, loginModal.onOpen, forceUpdate])
 
   const value = {
     login,

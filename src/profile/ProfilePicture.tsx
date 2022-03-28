@@ -1,23 +1,23 @@
+import { ChangeEvent } from 'react'
+import { FaCropAlt, FaUserCircle } from 'react-icons/fa'
+import { mutate } from 'swr'
+
 import { IconButton } from '@chakra-ui/button'
 import { useDisclosure } from '@chakra-ui/hooks'
+import Icon from '@chakra-ui/icon'
 import { Img } from '@chakra-ui/image'
 import { Box, HStack } from '@chakra-ui/layout'
+
+import { UploadFileButton } from '@src/components/FileInput'
+import { useAuth } from '@src/context/AuthContext'
+import { storage } from '@src/firebase'
+import { useErrorToast } from '@src/hooks/useError'
 import {
   ImageCropModal,
   createImageFromFile,
   getCroppedImage,
-} from '@src/components/ImageCropModal'
-
-import { useAuth } from '@src/api/AuthProvider'
-import { FaCropAlt, FaUserCircle } from 'react-icons/fa'
-
-import { ChangeEvent } from 'react'
-import { storage } from '@src/firebase'
-import { UploadFileButton } from '@src/components/FileInput'
-import Icon from '@chakra-ui/icon'
-import { useErrorToast } from '@src/hooks/useError'
-import { useProfilePic, useUserProfilePic } from '@src/hooks/useProfilePic'
-import { mutate } from 'swr'
+} from '@src/profile/ImageCropModal'
+import { useProfilePic, useUserProfilePic } from '@src/profile/useProfilePic'
 
 export const ProfileUpload = () => {
   const cropModal = useDisclosure()

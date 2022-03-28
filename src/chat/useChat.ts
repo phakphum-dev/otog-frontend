@@ -1,8 +1,10 @@
-import { useSocket } from '@src/api/SocketProvider'
 import { useCallback, useEffect, useMemo, useReducer } from 'react'
 import { mutate, useSWRInfinite } from 'swr'
-import { useAuth } from '../api/AuthProvider'
-import { User } from './useUser'
+
+import { useAuth } from '../context/AuthContext'
+
+import { useSocket } from '@src/context/SocketContext'
+import { User } from '@src/user/types'
 
 export type Message = {
   id: number

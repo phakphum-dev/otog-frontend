@@ -1,6 +1,7 @@
-import { useAuth } from '@src/api/AuthProvider'
-import { storage } from '@src/firebase'
 import useSWR from 'swr'
+
+import { useAuth } from '@src/context/AuthContext'
+import { storage } from '@src/firebase'
 
 export const useProfilePic = (
   userId: number | undefined,

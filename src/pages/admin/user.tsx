@@ -24,14 +24,15 @@ import { HStack } from '@chakra-ui/react'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
-import { getServerSideCookies } from '@src/api'
-import { getUserData } from '@src/api/AuthProvider'
-import { useHttp } from '@src/api/HttpProvider'
-import { PageContainer } from '@src/components/PageContainer'
 import { RenderLater } from '@src/components/RenderLater'
-import { Title, TitleLayout } from '@src/components/Title'
+import { PageContainer } from '@src/components/layout/PageContainer'
+import { Title, TitleLayout } from '@src/components/layout/Title'
+import { getUserData } from '@src/context/AuthContext'
+import { getServerSideCookies } from '@src/context/HttpClient'
+import { useHttp } from '@src/context/HttpContext'
 import { useErrorToast } from '@src/hooks/useError'
-import { User, useUsers } from '@src/hooks/useUser'
+import { User } from '@src/user/types'
+import { useUsers } from '@src/user/useUser'
 
 export default function AdminProblemPage() {
   return (

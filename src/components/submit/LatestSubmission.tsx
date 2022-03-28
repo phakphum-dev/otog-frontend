@@ -1,10 +1,12 @@
-import { useDisclosure } from '@chakra-ui/hooks'
-import { HStack, Text, Link } from '@chakra-ui/layout'
-import { API_HOST } from '@src/api'
-import { useAuth } from '@src/api/AuthProvider'
-import { useLatestSubmission } from '@src/hooks/useSubmission'
 import { OrangeSubmitButton } from './SubmitButton'
 import { SubmitModal } from './SubmitModal'
+
+import { useDisclosure } from '@chakra-ui/hooks'
+import { HStack, Link, Text } from '@chakra-ui/layout'
+
+import { API_HOST } from '@src/config'
+import { useAuth } from '@src/context/AuthContext'
+import { useLatestSubmission } from '@src/submission/useSubmission'
 
 export interface LatestSubmissionProps {
   onSuccess?: () => void

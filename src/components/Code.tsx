@@ -24,13 +24,13 @@ import {
   useToast,
 } from '@chakra-ui/react'
 
+import { API_HOST, APP_HOST } from '@src/config'
+import { ONE_SECOND, toThDate } from '@src/contest/useTimer'
 import {
   SubmissionWithProblem,
   SubmissionWithSourceCode,
   useSubmission,
-} from '@src/hooks/useSubmission'
-import { ONE_SECOND, toThDate } from '@src/hooks/useTimer'
-import { API_HOST, APP_HOST } from '@src/utils/config'
+} from '@src/submission/useSubmission'
 
 export interface CodeModalProps extends Omit<ModalProps, 'children'> {
   submissionId: number

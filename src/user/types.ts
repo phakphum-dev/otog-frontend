@@ -1,6 +1,4 @@
-import useSWR from 'swr'
-import { useAuth } from '@src/api/AuthProvider'
-import { SubmissionWithProblem } from './useSubmission'
+import { SubmissionWithProblem } from '@src/submission/useSubmission'
 
 export type Role = 'user' | 'admin'
 
@@ -41,19 +39,4 @@ export interface UserContestData extends User {
   updateDate: string
   attendedContest: UserProfile[]
   submissions: SubmissionWithProblem[]
-}
-
-export function useUsers() {
-  return useSWR<User[]>('user')
-}
-
-export function useUser(userId: number) {
-  return useSWR<User>(`user/${userId}/profile`)
-}
-
-export function useOnlineUsers() {
-  const { isAuthenticated } = useAuth()
-  return useSWR<User[]>(isAuthenticated ? 'user/online' : null, {
-    revalidateOnMount: false,
-  })
 }

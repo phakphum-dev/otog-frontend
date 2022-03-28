@@ -22,11 +22,12 @@ import {
 } from '@chakra-ui/table'
 import { Tooltip } from '@chakra-ui/tooltip'
 
-import { API_HOST, getServerSideFetch } from '@src/api'
-import { PageContainer } from '@src/components/PageContainer'
-import { Title, TitleLayout } from '@src/components/Title'
-import { ContestScoreboard, UserWithSubmission } from '@src/hooks/useContest'
-import { ONE_SECOND } from '@src/hooks/useTimer'
+import { PageContainer } from '@src/components/layout/PageContainer'
+import { Title, TitleLayout } from '@src/components/layout/Title'
+import { API_HOST } from '@src/config'
+import { ContestScoreboard, UserWithSubmission } from '@src/contest/useContest'
+import { ONE_SECOND } from '@src/contest/useTimer'
+import { getServerSideFetch } from '@src/context/HttpClient'
 import { sum } from '@src/utils'
 
 const Th = (props: TableColumnHeaderProps) => (
@@ -186,7 +187,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (Number.isNaN(id)) {
     return { notFound: true }
   }
-  return getServerSideFetch<ContestHistoryProps>(context, async (api) => ({
-    scoreboard: await api.get<ContestScoreboard>(`contest/${id}/scoreboard`),
+  return getServerSideFetch<ContestHistoryProps>(context, async (client) => ({
+    scoreboard: await client.get<ContestScoreboard>(`contest/${id}/scoreboard`),
   }))
 }

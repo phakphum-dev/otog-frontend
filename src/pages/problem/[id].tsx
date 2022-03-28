@@ -18,14 +18,15 @@ import {
 import { Select } from '@chakra-ui/select'
 import { Tooltip } from '@chakra-ui/tooltip'
 
-import { API_HOST, getServerSideFetch } from '@src/api'
-import { useHttp } from '@src/api/HttpProvider'
-import { PageContainer } from '@src/components/PageContainer'
-import { Title, TitleLayout } from '@src/components/Title'
+import { PageContainer } from '@src/components/layout/PageContainer'
+import { Title, TitleLayout } from '@src/components/layout/Title'
+import { API_HOST } from '@src/config'
+import { ONE_SECOND } from '@src/contest/useTimer'
+import { getServerSideFetch } from '@src/context/HttpClient'
+import { useHttp } from '@src/context/HttpContext'
 import { useErrorToast } from '@src/hooks/useError'
-import { Problem } from '@src/hooks/useProblem'
-import { SubmissionWithSourceCode } from '@src/hooks/useSubmission'
-import { ONE_SECOND } from '@src/hooks/useTimer'
+import { Problem } from '@src/problem/useProblem'
+import { SubmissionWithSourceCode } from '@src/submission/useSubmission'
 
 const defaultValue = `#include <iostream>
 
@@ -141,10 +142,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { notFound: true }
   }
   const { accessToken = null } = parseCookies(context)
-  return getServerSideFetch<WriteSolutionPageProps>(context, async (api) => ({
-    problem: await api.get(`problem/${id}`),
-    submission: accessToken
-      ? await api.get(`submission/problem/${id}/latest`)
-      : null,
-  }))
+  return getServerSideFetch<WriteSolutionPageProps>(
+    context,
+    async (client) => ({
+      problem: await client.get(`problem/${id}`),
+      submission: accessToken
+        ? await client.get(`submission/problem/${id}/latest`)
+        : null,
+    })
+  )
 }

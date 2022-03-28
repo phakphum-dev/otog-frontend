@@ -2,7 +2,7 @@ import NextLink from 'next/link'
 import { FormEvent, useEffect } from 'react'
 import { useDropzone } from 'react-dropzone'
 
-import { FileInput } from './FileInput'
+import { FileInput } from '../FileInput'
 
 import {
   Button,
@@ -21,11 +21,11 @@ import {
   UseDisclosureReturn,
 } from '@chakra-ui/react'
 
-import { useHttp } from '@src/api/HttpProvider'
+import { useHttp } from '@src/context/HttpContext'
 import { useErrorToast } from '@src/hooks/useError'
 import { useFileInput } from '@src/hooks/useFileInput'
 import { useLoading } from '@src/hooks/useLoading'
-import { Problem } from '@src/hooks/useProblem'
+import { Problem } from '@src/problem/useProblem'
 
 export interface SubmitModalProps extends UseDisclosureReturn {
   problem: Problem

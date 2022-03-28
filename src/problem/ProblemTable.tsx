@@ -2,10 +2,10 @@ import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { memo, useEffect, useMemo, useState } from 'react'
 
-import { CodeModal } from './Code'
-import { RenderLater } from './RenderLater'
-import { SubmitButton } from './SubmitButton'
-import { SubmitModal } from './SubmitModal'
+import { CodeModal } from '../components/Code'
+import { RenderLater } from '../components/RenderLater'
+import { SubmitButton } from '../components/submit/SubmitButton'
+import { SubmitModal } from '../components/submit/SubmitModal'
 
 import {
   Box,
@@ -31,19 +31,19 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 
-import { API_HOST } from '@src/api'
-import { useAuth } from '@src/api/AuthProvider'
-import { useHttp } from '@src/api/HttpProvider'
+import { API_HOST } from '@src/config'
+import { ONE_SECOND } from '@src/contest/useTimer'
+import { useAuth } from '@src/context/AuthContext'
+import { useHttp } from '@src/context/HttpContext'
 import { useErrorToast } from '@src/hooks/useError'
 import {
   Problem,
   ProblemWithSubmission,
   usePassedUsers,
   useProblems,
-} from '@src/hooks/useProblem'
-import { useStatusColor } from '@src/hooks/useStatusColor'
-import { Submission } from '@src/hooks/useSubmission'
-import { ONE_SECOND } from '@src/hooks/useTimer'
+} from '@src/problem/useProblem'
+import { Submission } from '@src/submission/useSubmission'
+import { useStatusColor } from '@src/theme/useStatusColor'
 
 export type FilterFunction = (problem: ProblemWithSubmission) => boolean
 export interface ProblemTableProps {

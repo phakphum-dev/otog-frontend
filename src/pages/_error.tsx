@@ -1,4 +1,4 @@
-import { Center, Divider, Heading, HStack, Text } from '@chakra-ui/layout'
+import { Center, Divider, HStack, Heading, Text } from '@chakra-ui/layout'
 
 export default function Error({ title = 'Page not found', statusCode = 404 }) {
   return (
@@ -12,4 +12,4 @@ export default function Error({ title = 'Page not found', statusCode = 404 }) {
   )
 }
 
-export { getServerSideCookies as getServerSideProps } from '@src/api'
+export { getServerSideCookies as getServerSideProps } from '@src/context/HttpClient'

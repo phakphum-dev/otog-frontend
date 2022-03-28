@@ -7,12 +7,12 @@ import {
 } from 'react'
 import { SWRConfig } from 'swr'
 
-import { ApiClient } from '.'
 import { ErrorToastOptions } from '../hooks/useError'
+import { HttpClient } from './HttpClient'
 
 import { useToast } from '@chakra-ui/toast'
 
-const HttpContext = createContext({} as ApiClient)
+const HttpContext = createContext({} as HttpClient)
 export const useHttp = () => useContext(HttpContext)
 
 export const HttpProvider = (props: ProviderProps<ErrorToastOptions>) => {
@@ -25,7 +25,7 @@ export const HttpProvider = (props: ProviderProps<ErrorToastOptions>) => {
     }
   }, [errorToast, toast])
 
-  const http = useMemo(() => new ApiClient(null), [])
+  const http = useMemo(() => new HttpClient(null), [])
   return (
     <SWRConfig value={{ fetcher: (url) => http.get(url).then((data) => data) }}>
       <HttpContext.Provider value={http}>{children}</HttpContext.Provider>

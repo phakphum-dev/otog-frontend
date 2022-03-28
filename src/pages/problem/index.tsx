@@ -7,12 +7,12 @@ import { AspectRatio, Heading, Stack, VStack } from '@chakra-ui/layout'
 import { Skeleton } from '@chakra-ui/skeleton'
 
 import { AnnouncementCarousel } from '@src/announcement/components/AnnouncementCarousel'
-import { useAuth } from '@src/api/AuthProvider'
-import { PageContainer } from '@src/components/PageContainer'
-import { FilterFunction, ProblemTable } from '@src/components/ProblemTable'
-import { Title, TitleLayout } from '@src/components/Title'
-import { useProblems } from '@src/hooks/useProblem'
-import { ONE_DAY } from '@src/hooks/useTimer'
+import { PageContainer } from '@src/components/layout/PageContainer'
+import { Title, TitleLayout } from '@src/components/layout/Title'
+import { ONE_DAY } from '@src/contest/useTimer'
+import { useAuth } from '@src/context/AuthContext'
+import { FilterFunction, ProblemTable } from '@src/problem/ProblemTable'
+import { useProblems } from '@src/problem/useProblem'
 
 export default function ProblemPage() {
   const { isAuthenticated } = useAuth()
@@ -122,4 +122,4 @@ const filterButton: {
   },
 ]
 
-export { getServerSideCookies as getServerSideProps } from '@src/api'
+export { getServerSideCookies as getServerSideProps } from '@src/context/HttpClient'

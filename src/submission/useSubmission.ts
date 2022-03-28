@@ -1,17 +1,18 @@
+import { Language } from 'prism-react-renderer'
+import { useEffect, useMemo } from 'react'
 import useSWR, {
-  mutate,
   SWRInfiniteResponseInterface,
+  mutate,
   useSWRInfinite,
 } from 'swr'
 
-import { Language } from 'prism-react-renderer'
-import { Problem } from './useProblem'
-import { User } from './useUser'
-import { useInitialData } from '@src/hooks/useInitialData'
-import { useAuth } from '@src/api/AuthProvider'
-import { isGrading } from './useStatusColor'
-import { ONE_SECOND } from './useTimer'
-import { useEffect, useMemo } from 'react'
+import { ONE_SECOND } from '../contest/useTimer'
+import { Problem } from '../problem/useProblem'
+import { isGrading } from '../theme/useStatusColor'
+
+import { useAuth } from '@src/context/AuthContext'
+import { useInitialData } from '@src/context/InitialDataContext'
+import { User } from '@src/user/types'
 
 export type Status = 'waiting' | 'grading' | 'accept' | 'reject'
 

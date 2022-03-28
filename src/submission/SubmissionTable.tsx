@@ -1,7 +1,7 @@
 import NextLink from 'next/link'
 import { Dispatch, SetStateAction, memo, useEffect, useState } from 'react'
 
-import { CodeModal, ErrorModal } from './Code'
+import { CodeModal, ErrorModal } from '../components/Code'
 
 import {
   Box,
@@ -21,19 +21,19 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 
-import { useAuth } from '@src/api/AuthProvider'
-import { LatestSubmission } from '@src/components/LatestSubmission'
+import { LatestSubmission } from '@src/components/submit/LatestSubmission'
+import { API_HOST } from '@src/config'
+import { ONE_SECOND, toThDate } from '@src/contest/useTimer'
+import { useAuth } from '@src/context/AuthContext'
 import { useOnScreen } from '@src/hooks/useOnScreen'
-import { isGraded, isGrading, useStatusColor } from '@src/hooks/useStatusColor'
 import {
   SubmissionWithProblem,
   useAllSubmissions,
   useSubmissionInfinite,
   useSubmissionRow,
   useSubmissions,
-} from '@src/hooks/useSubmission'
-import { ONE_SECOND, toThDate } from '@src/hooks/useTimer'
-import { API_HOST } from '@src/utils/config'
+} from '@src/submission/useSubmission'
+import { isGraded, isGrading, useStatusColor } from '@src/theme/useStatusColor'
 
 export const SubmissionTable = () => {
   const submissionData = useSubmissions()

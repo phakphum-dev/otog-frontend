@@ -5,16 +5,11 @@ import { ParsedUrlQuery } from 'querystring'
 
 import { UseToastOptions } from '@chakra-ui/toast'
 
+import { API_HOST, API_HOST_SSR, isProduction, isServer } from '@src/config'
 import { getErrorToast } from '@src/hooks/useError'
-import { AuthRes } from '@src/hooks/useUser'
 import { getColorMode } from '@src/theme/ColorMode'
 import { ColorModeProps } from '@src/theme/ColorMode'
-import {
-  API_HOST,
-  API_HOST_SSR,
-  isProduction,
-  isServer,
-} from '@src/utils/config'
+import { AuthRes } from '@src/user/types'
 
 export const Axios = axios.create({
   baseURL: isServer ? API_HOST : API_HOST_SSR,
@@ -41,7 +36,7 @@ export const Axios = axios.create({
 //   (error) => Promise.reject(error)
 // )
 
-class ApiClient {
+class HttpClient {
   axiosInstance: AxiosInstance
   isRefreshing = false
   failedQueue: {
@@ -51,7 +46,7 @@ class ApiClient {
 
   constructor(context: Context | null) {
     this.axiosInstance = axios.create({
-      baseURL: API_HOST,
+      baseURL: isServer ? API_HOST : API_HOST_SSR,
       withCredentials: true,
     })
 
@@ -227,12 +222,12 @@ export type ServerSideProps<T> = CookiesProps &
 
 export async function getServerSideFetch<T = any>(
   context: Context,
-  callback: (apiClient: ApiClient) => Promise<T>
+  callback: (httpClient: HttpClient) => Promise<T>
 ): Promise<GetServerSidePropsResult<ServerSideProps<T>>> {
   const { props } = await getServerSideCookies(context)
-  const api = new ApiClient(context)
+  const client = new HttpClient(context)
   try {
-    const initialData = await callback(api)
+    const initialData = await callback(client)
     const { accessToken = null } = nookies.get(context)
     return {
       props: { ...props, ...initialData, accessToken },
@@ -256,4 +251,4 @@ export const getServerSideCookies = (context: Context) => {
   return { props: { accessToken, colorModeCookie } }
 }
 
-export { API_HOST, ApiClient }
+export { HttpClient }

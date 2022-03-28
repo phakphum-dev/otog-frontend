@@ -18,9 +18,9 @@ import {
   Stack,
 } from '@chakra-ui/react'
 
-import { useAuth } from '@src/api/AuthProvider'
+import { useAuth } from '@src/context/AuthContext'
 import { useErrorToast } from '@src/hooks/useError'
-import { LoginReq } from '@src/hooks/useUser'
+import { LoginReq } from '@src/user/types'
 
 export interface LoginModalProps {
   isOpen: boolean

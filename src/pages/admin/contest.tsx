@@ -33,14 +33,11 @@ import { Select } from '@chakra-ui/select'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
-import { API_HOST, getServerSideCookies } from '@src/api'
-import { getUserData } from '@src/api/AuthProvider'
-import { useHttp } from '@src/api/HttpProvider'
-import { useConfirmModal } from '@src/components/ConfirmModal'
 import { DatePicker } from '@src/components/DatePick'
-import { PageContainer } from '@src/components/PageContainer'
 import { RenderLater } from '@src/components/RenderLater'
-import { Title, TitleLayout } from '@src/components/Title'
+import { PageContainer } from '@src/components/layout/PageContainer'
+import { Title, TitleLayout } from '@src/components/layout/Title'
+import { API_HOST } from '@src/config'
 import {
   Contest,
   ContestMode,
@@ -48,9 +45,13 @@ import {
   GradingMode,
   useContest,
   useContests,
-} from '@src/hooks/useContest'
+} from '@src/contest/useContest'
+import { getUserData } from '@src/context/AuthContext'
+import { useConfirmModal } from '@src/context/ConfirmContext'
+import { getServerSideCookies } from '@src/context/HttpClient'
+import { useHttp } from '@src/context/HttpContext'
 import { useErrorToast } from '@src/hooks/useError'
-import { ProblemWithSubmission, useProblems } from '@src/hooks/useProblem'
+import { ProblemWithSubmission, useProblems } from '@src/problem/useProblem'
 
 export default function AdminContestPage() {
   const [contestId, setContestId] = useState<number>()

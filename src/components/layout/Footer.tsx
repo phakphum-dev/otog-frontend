@@ -2,7 +2,7 @@ import { PageContainer } from './PageContainer'
 
 import { Divider, Flex, Link, Spacer, Text } from '@chakra-ui/layout'
 
-import { CONTACT_LINK, GITHUB_LINK } from '@src/utils/config'
+import { CONTACT_LINK, GITHUB_LINK } from '@src/config'
 
 export const Footer = () => (
   <PageContainer mt={8} pb={4} flex={undefined}>

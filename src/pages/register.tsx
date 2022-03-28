@@ -6,9 +6,9 @@ import Logo from '../../public/logo512.png'
 
 import { Box, Button, Input, Stack } from '@chakra-ui/react'
 
-import { useHttp } from '@src/api/HttpProvider'
 import { CenteredCard } from '@src/components/Login'
-import { PageContainer } from '@src/components/PageContainer'
+import { PageContainer } from '@src/components/layout/PageContainer'
+import { useHttp } from '@src/context/HttpContext'
 import { useErrorToast } from '@src/hooks/useError'
 
 interface CreateUserDTO {
@@ -72,4 +72,4 @@ export default function RegisterPage() {
   )
 }
 
-export { getServerSideCookies as getServerSideProps } from '@src/api'
+export { getServerSideCookies as getServerSideProps } from '@src/context/HttpClient'

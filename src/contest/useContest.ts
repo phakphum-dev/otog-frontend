@@ -1,7 +1,9 @@
 import useSWR from 'swr'
-import { Problem } from './useProblem'
-import { Status } from './useSubmission'
-import { User } from './useUser'
+
+import { Problem } from '../problem/useProblem'
+import { Status } from '../submission/useSubmission'
+
+import { User } from '@src/user/types'
 
 export type ContestMode = 'rated' | 'unrated'
 export type GradingMode = 'acm' | 'classic'

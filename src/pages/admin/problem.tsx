@@ -33,21 +33,22 @@ import { HStack, Spacer, UseDisclosureReturn } from '@chakra-ui/react'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
-import { API_HOST, getServerSideCookies } from '@src/api'
-import { getUserData } from '@src/api/AuthProvider'
-import { useHttp } from '@src/api/HttpProvider'
-import { useConfirmModal } from '@src/components/ConfirmModal'
 import { FileInput } from '@src/components/FileInput'
-import { PageContainer } from '@src/components/PageContainer'
 import { RenderLater } from '@src/components/RenderLater'
-import { Title, TitleLayout } from '@src/components/Title'
+import { PageContainer } from '@src/components/layout/PageContainer'
+import { Title, TitleLayout } from '@src/components/layout/Title'
+import { API_HOST } from '@src/config'
+import { getUserData } from '@src/context/AuthContext'
+import { useConfirmModal } from '@src/context/ConfirmContext'
+import { getServerSideCookies } from '@src/context/HttpClient'
+import { useHttp } from '@src/context/HttpContext'
 import { useErrorToast } from '@src/hooks/useError'
 import { useFileInput } from '@src/hooks/useFileInput'
 import {
   Problem,
   ProblemWithSubmission,
   useProblems,
-} from '@src/hooks/useProblem'
+} from '@src/problem/useProblem'
 
 export default function AdminProblemPage() {
   return (

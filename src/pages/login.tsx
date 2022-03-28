@@ -1,8 +1,9 @@
-import { CenteredCard, LoginForm } from '@src/components/Login'
-import { PageContainer } from '@src/components/PageContainer'
-import { useRouter } from 'next/router'
-import { getServerSideCookies } from '@src/api'
 import { GetServerSideProps } from 'next'
+import { useRouter } from 'next/router'
+
+import { CenteredCard, LoginForm } from '@src/components/Login'
+import { PageContainer } from '@src/components/layout/PageContainer'
+import { getServerSideCookies } from '@src/context/HttpClient'
 
 export default function LoginPage() {
   const router = useRouter()

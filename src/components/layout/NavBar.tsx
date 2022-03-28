@@ -3,9 +3,12 @@ import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { ForwardedRef, useEffect, useRef, useState } from 'react'
 
+<<<<<<< main:src/components/NavBar.tsx
 import Logo from '../../public/logo512.png'
+=======
+import { ToggleColorModeButton } from '../ToggleColorModeButton'
+>>>>>>> :truck: move files to module:src/components/layout/NavBar.tsx
 import { PageContainer } from './PageContainer'
-import { ToggleColorModeButton } from './ToggleColorModeButton'
 
 import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
 import {
@@ -35,8 +38,8 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 
-import { useAuth } from '@src/api/AuthProvider'
-import { useUserProfilePic } from '@src/hooks/useProfilePic'
+import { useAuth } from '@src/context/AuthContext'
+import { useUserProfilePic } from '@src/profile/useProfilePic'
 
 interface ColorOptions {
   normal: {

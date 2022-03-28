@@ -1,14 +1,15 @@
-import { SOCKET_HOST } from '@src/utils/config'
 import {
-  createContext,
   ReactNode,
+  createContext,
   useContext,
   useEffect,
   useState,
 } from 'react'
 import socketIOClient, { Socket } from 'socket.io-client'
-import { useAuth } from '@src/api/AuthProvider'
-import { useHttp } from '@src/api/HttpProvider'
+
+import { SOCKET_HOST } from '@src/config'
+import { useAuth } from '@src/context/AuthContext'
+import { useHttp } from '@src/context/HttpContext'
 
 export interface ConfirmProviderProps {
   socket: Socket | undefined
@@ -30,7 +31,7 @@ export const SocketProvider = ({ children }: { children?: ReactNode }) => {
         socket?.disconnect()
       }
     }
-  }, [isAuthenticated])
+  }, [isAuthenticated, http, socket])
 
   const value = { socket }
   return (

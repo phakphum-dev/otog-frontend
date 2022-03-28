@@ -1,6 +1,8 @@
 import useSWR from 'swr'
-import { Submission } from './useSubmission'
-import { User } from './useUser'
+
+import { Submission } from '../submission/useSubmission'
+
+import { User } from '@src/user/types'
 
 export interface Problem {
   id: number

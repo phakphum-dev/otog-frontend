@@ -1,10 +1,12 @@
+import * as chartjs from 'chart.js'
+import * as Plugin from 'chartjs-plugin-annotation'
 import React from 'react'
 import { Line } from 'react-chartjs-2'
-import * as Plugin from 'chartjs-plugin-annotation'
-import { UserContest } from '@src/hooks/useUser'
-import * as chartjs from 'chart.js'
+
 import { Box } from '@chakra-ui/layout'
-import { ONE_DAY, ONE_MONTH, ONE_WEEK, ONE_YEAR } from '@src/hooks/useTimer'
+
+import { ONE_DAY, ONE_MONTH, ONE_WEEK, ONE_YEAR } from '@src/contest/useTimer'
+import { UserContest } from '@src/user/types'
 
 const ticks = [2500, 2000, 1800, 1650, 1500]
 const annotations = [

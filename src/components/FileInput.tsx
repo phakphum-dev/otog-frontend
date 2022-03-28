@@ -10,7 +10,6 @@ import { FaUpload } from 'react-icons/fa'
 
 import {
   Button,
-  ButtonProps,
   IconButton,
   Input,
   InputGroup,

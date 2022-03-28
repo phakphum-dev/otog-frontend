@@ -10,17 +10,17 @@ import { Button } from '@chakra-ui/button'
 import { Center, Heading, Stack, VStack } from '@chakra-ui/layout'
 import { Tooltip } from '@chakra-ui/tooltip'
 
-import { getServerSideFetch } from '@src/api'
-import { PageContainer } from '@src/components/PageContainer'
-import { TaskCard } from '@src/components/TaskCard'
-import { Title, TitleLayout } from '@src/components/Title'
-import { Contest, useCurrentContest } from '@src/hooks/useContest'
+import { PageContainer } from '@src/components/layout/PageContainer'
+import { Title, TitleLayout } from '@src/components/layout/Title'
+import { TaskCard } from '@src/contest/TaskCard'
+import { Contest, useCurrentContest } from '@src/contest/useContest'
 import {
   toThTimeFormat,
   toTimerFormat,
   useServerTime,
   useTimer,
-} from '@src/hooks/useTimer'
+} from '@src/contest/useTimer'
+import { getServerSideFetch } from '@src/context/HttpClient'
 
 export interface ContestPageProps {
   contest: Contest | null
@@ -151,9 +151,9 @@ export const PostContest = (props: ContestProps) => {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  return getServerSideFetch<ContestPageProps>(context, async (api) => {
-    const contest = await api.get<Contest | null>('contest/now')
-    const serverTime = await api.get<string>('time')
+  return getServerSideFetch<ContestPageProps>(context, async (client) => {
+    const contest = await client.get<Contest | null>('contest/now')
+    const serverTime = await client.get<string>('time')
     return { contest, serverTime }
   })
 }

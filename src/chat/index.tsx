@@ -33,12 +33,12 @@ import { useToast } from '@chakra-ui/toast'
 import { Tooltip, TooltipProps } from '@chakra-ui/tooltip'
 import { SlideFade } from '@chakra-ui/transition'
 
-import { useAuth } from '@src/api/AuthProvider'
-import { Message, useChat } from '@src/hooks/useChat'
+import { Message, useChat } from '@src/chat/useChat'
+import { toThDate } from '@src/contest/useTimer'
+import { useAuth } from '@src/context/AuthContext'
 import { useOnScreen } from '@src/hooks/useOnScreen'
-import { useProfilePic } from '@src/hooks/useProfilePic'
-import { toThDate } from '@src/hooks/useTimer'
-import { useOnlineUsers } from '@src/hooks/useUser'
+import { useProfilePic } from '@src/profile/useProfilePic'
+import { useOnlineUsers } from '@src/user/useUser'
 
 interface ChatButtonProps extends IconButtonProps {
   hasUnread: boolean

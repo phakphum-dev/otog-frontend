@@ -21,7 +21,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 
-import { useAuth } from '@src/api/AuthProvider'
+import { useAuth } from '@src/context/AuthContext'
 
 const MotionStack = motion<StackProps>(Stack)
 

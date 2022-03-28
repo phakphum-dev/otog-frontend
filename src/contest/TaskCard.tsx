@@ -1,8 +1,8 @@
 import Editor from '@monaco-editor/react'
 import { ChangeEvent, FormEvent, memo, useState } from 'react'
 
-import { CodeModal, ErrorModal } from './Code'
-import { FileInput } from './FileInput'
+import { CodeModal, ErrorModal } from '../components/Code'
+import { FileInput } from '../components/FileInput'
 
 import { Button, IconButton } from '@chakra-ui/button'
 import { useDisclosure } from '@chakra-ui/hooks'
@@ -28,18 +28,18 @@ import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 import { Collapse } from '@chakra-ui/transition'
 
-import { API_HOST } from '@src/api'
-import { useHttp } from '@src/api/HttpProvider'
+import { API_HOST } from '@src/config'
+import { ONE_SECOND } from '@src/contest/useTimer'
+import { useHttp } from '@src/context/HttpContext'
 import { useErrorToast } from '@src/hooks/useError'
 import { useFileInput } from '@src/hooks/useFileInput'
 import { useLoading } from '@src/hooks/useLoading'
-import { Problem } from '@src/hooks/useProblem'
-import { isGraded, isGrading, useStatusColor } from '@src/hooks/useStatusColor'
+import { Problem } from '@src/problem/useProblem'
 import {
   SubmissionWithProblem,
   useProblemSubmission,
-} from '@src/hooks/useSubmission'
-import { ONE_SECOND } from '@src/hooks/useTimer'
+} from '@src/submission/useSubmission'
+import { isGraded, isGrading, useStatusColor } from '@src/theme/useStatusColor'
 
 const defaultValue = `#include <iostream>
 
