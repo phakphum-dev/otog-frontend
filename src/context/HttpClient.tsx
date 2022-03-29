@@ -12,7 +12,7 @@ import { ColorModeProps } from '@src/theme/ColorMode'
 import { AuthRes } from '@src/user/types'
 
 export const Axios = axios.create({
-  baseURL: isServer ? API_HOST : API_HOST_SSR,
+  baseURL: isServer ? API_HOST_SSR : API_HOST,
   withCredentials: true,
 })
 
@@ -46,7 +46,7 @@ class HttpClient {
 
   constructor(context: Context | null) {
     this.axiosInstance = axios.create({
-      baseURL: isServer ? API_HOST : API_HOST_SSR,
+      baseURL: isServer ? API_HOST_SSR : API_HOST,
       withCredentials: true,
     })
 
