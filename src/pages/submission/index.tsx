@@ -11,7 +11,7 @@ import { Title, TitleLayout } from '@src/components/layout/Title'
 import { getServerSideFetch } from '@src/context/HttpClient'
 import { InitialDataProvider } from '@src/context/InitialDataContext'
 import { SubmissionTable } from '@src/submission/SubmissionTable'
-import { SubmissionWithProblem } from '@src/submission/useSubmission'
+import { SubmissionWithProblem } from '@src/submission/types'
 
 interface SubmissionPageProps {
   latestSubmission: SubmissionWithProblem

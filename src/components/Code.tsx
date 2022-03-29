@@ -28,8 +28,8 @@ import { API_HOST, APP_HOST } from '@src/config'
 import {
   SubmissionWithProblem,
   SubmissionWithSourceCode,
-  useSubmission,
-} from '@src/submission/useSubmission'
+} from '@src/submission/types'
+import { useSubmission } from '@src/submission/useSubmission'
 import { ONE_SECOND, toThDate } from '@src/utils/time'
 
 export interface CodeModalProps extends Omit<ModalProps, 'children'> {

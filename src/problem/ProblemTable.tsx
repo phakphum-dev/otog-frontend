@@ -6,6 +6,7 @@ import { CodeModal } from '../components/Code'
 import { RenderLater } from '../components/RenderLater'
 import { SubmitButton } from '../submit/SubmitButton'
 import { SubmitModal } from '../submit/SubmitModal'
+import { usePassedUsers, useProblems } from './useProblem'
 
 import {
   Box,
@@ -35,12 +36,8 @@ import { toggleProblem } from '@src/admin/queries/problem'
 import { API_HOST } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
 import { useMutation } from '@src/hooks/useMutation'
-import {
-  ProblemWithSubmission,
-  usePassedUsers,
-  useProblems,
-} from '@src/problem/useProblem'
-import { Submission } from '@src/submission/useSubmission'
+import { ProblemWithSubmission } from '@src/problem/types'
+import { Submission } from '@src/submission/types'
 import { useStatusColor } from '@src/theme/useStatusColor'
 import { ONE_SECOND } from '@src/utils/time'
 

@@ -1,4 +1,4 @@
-import { SubmissionWithProblem } from '@src/submission/useSubmission'
+import { SubmissionWithProblem } from '@src/submission/types'
 
 export type Role = 'user' | 'admin'
 

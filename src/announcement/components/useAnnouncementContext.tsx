@@ -16,7 +16,7 @@ import {
   updateAnnouncement,
   useAnnouncements,
 } from '../queries/useAnnouncements'
-import { Announcement } from './types'
+import { Announcement } from '../types'
 import { createEmptyAnnouncement } from './utils'
 
 import { useToast } from '@chakra-ui/react'

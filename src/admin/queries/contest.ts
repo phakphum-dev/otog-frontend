@@ -1,6 +1,6 @@
-import { Contest, CreateContest } from '@src/contest/useContest'
+import { Contest, CreateContest } from '@src/contest/types'
 import { HttpClient } from '@src/context/HttpClient'
-import { Problem } from '@src/problem/useProblem'
+import { Problem } from '@src/problem/types'
 
 export async function createContest(
   client: HttpClient,

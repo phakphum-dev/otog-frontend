@@ -1,6 +1,6 @@
 import useSWR from 'swr'
 
-import { Announcement } from '../components/types'
+import { Announcement } from '../types'
 
 import { HttpClient } from '@src/context/HttpClient'
 

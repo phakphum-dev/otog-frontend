@@ -32,11 +32,9 @@ import { Collapse } from '@chakra-ui/transition'
 import { API_HOST } from '@src/config'
 import { useLoading } from '@src/hooks/useLoading'
 import { useMutation } from '@src/hooks/useMutation'
-import { Problem } from '@src/problem/useProblem'
-import {
-  SubmissionWithProblem,
-  useProblemSubmission,
-} from '@src/submission/useSubmission'
+import { Problem } from '@src/problem/types'
+import { SubmissionWithProblem } from '@src/submission/types'
+import { useProblemSubmission } from '@src/submission/useSubmission'
 import { useDropFile } from '@src/submit/useDropFile'
 import { isGraded, isGrading, useStatusColor } from '@src/theme/useStatusColor'
 import { ONE_SECOND } from '@src/utils/time'

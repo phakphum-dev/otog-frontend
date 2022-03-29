@@ -1,5 +1,5 @@
 import { HttpClient } from '@src/context/HttpClient'
-import { SubmissionWithProblem } from '@src/submission/useSubmission'
+import { SubmissionWithProblem } from '@src/submission/types'
 
 export async function submitContestProblem(
   client: HttpClient,

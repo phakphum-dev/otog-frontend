@@ -1,5 +1,5 @@
 import { HttpClient } from '@src/context/HttpClient'
-import { Problem } from '@src/problem/useProblem'
+import { Problem } from '@src/problem/types'
 
 export type CreateProblem = Pick<
   Problem,

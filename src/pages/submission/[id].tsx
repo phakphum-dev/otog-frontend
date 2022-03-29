@@ -9,7 +9,7 @@ import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { API_HOST } from '@src/config'
 import { getServerSideFetch } from '@src/context/HttpClient'
-import { SubmissionWithSourceCode } from '@src/submission/useSubmission'
+import { SubmissionWithSourceCode } from '@src/submission/types'
 
 interface SubmissionIdPageProps {
   submission: SubmissionWithSourceCode

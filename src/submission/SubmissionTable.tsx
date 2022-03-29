@@ -2,6 +2,7 @@ import NextLink from 'next/link'
 import { Dispatch, SetStateAction, memo, useEffect, useState } from 'react'
 
 import { CodeModal, ErrorModal } from '../components/Code'
+import { SubmissionWithProblem } from './types'
 
 import {
   Box,
@@ -25,7 +26,6 @@ import { API_HOST } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
 import { useOnScreen } from '@src/hooks/useOnScreen'
 import {
-  SubmissionWithProblem,
   useAllSubmissions,
   useSubmissionInfinite,
   useSubmissionRow,

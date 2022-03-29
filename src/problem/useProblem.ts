@@ -1,26 +1,8 @@
 import useSWR from 'swr'
 
-import { Submission } from '../submission/useSubmission'
+import { Problem, ProblemWithSubmission } from './types'
 
 import { User } from '@src/user/types'
-
-export interface Problem {
-  id: number
-  name: string
-  timeLimit: number
-  memoryLimit: number
-  sname: string
-  score: number
-  show: boolean
-  recentShowTime: string
-  case: string
-  rating: number | null
-}
-
-export type ProblemWithSubmission = Problem & {
-  submission: Submission | null
-  passedCount: number
-}
 
 export function usePassedUsers(problemId: number) {
   return useSWR<User[]>(`problem/${problemId}/user`)

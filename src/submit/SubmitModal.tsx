@@ -24,7 +24,7 @@ import {
 
 import { useLoading } from '@src/hooks/useLoading'
 import { useMutation } from '@src/hooks/useMutation'
-import { Problem } from '@src/problem/useProblem'
+import { Problem } from '@src/problem/types'
 
 export interface SubmitModalProps extends UseDisclosureReturn {
   problem: Problem

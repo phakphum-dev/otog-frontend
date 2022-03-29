@@ -1,4 +1,3 @@
-import { Language } from 'prism-react-renderer'
 import { useCallback, useMemo } from 'react'
 import useSWR, {
   SWRInfiniteResponseInterface,
@@ -6,36 +5,12 @@ import useSWR, {
   useSWRInfinite,
 } from 'swr'
 
-import { Problem } from '../problem/useProblem'
 import { isGrading } from '../theme/useStatusColor'
 import { ONE_SECOND } from '../utils/time'
+import { SubmissionWithProblem, SubmissionWithSourceCode } from './types'
 
 import { useAuth } from '@src/context/AuthContext'
 import { useInitialData } from '@src/context/InitialDataContext'
-import { User } from '@src/user/types'
-
-export type Status = 'waiting' | 'grading' | 'accept' | 'reject'
-
-export interface Submission {
-  id: number
-  user: User
-  timeUsed: number
-  result: string
-  score: number
-  creationDate: string
-  errmsg: string | null
-  contestId: number | null
-  status: Status
-  language: Language
-}
-
-export type SubmissionWithProblem = Submission & {
-  problem: Problem
-}
-
-export type SubmissionWithSourceCode = SubmissionWithProblem & {
-  sourceCode: string
-}
 
 export function useAllSubmissions() {
   return useSWRInfinite<SubmissionWithProblem[]>(
