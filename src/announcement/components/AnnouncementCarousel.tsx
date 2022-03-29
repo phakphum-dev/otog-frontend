@@ -3,10 +3,10 @@ import { useEffect, useMemo, useState } from 'react'
 import { FaPencilAlt, FaPlus } from 'react-icons/fa'
 
 import { useAnnouncements } from '../queries/useAnnouncements'
+import { Announcement } from '../types'
 import { ReadonlyEditor } from './AnnouncementEditor'
 import { AnnouncementModal } from './AnnouncementModal'
 import { HEIGHT, INTERVAL, SHOWUP_DELAY } from './constants'
-import { Announcement } from './types'
 import {
   AnnouncementProvider,
   useAnnouncementContext,
@@ -21,7 +21,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 
-import { useAuth } from '@src/api/AuthProvider'
+import { useAuth } from '@src/context/AuthContext'
 
 const MotionStack = motion<StackProps>(Stack)
 

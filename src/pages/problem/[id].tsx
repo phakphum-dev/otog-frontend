@@ -18,14 +18,15 @@ import {
 import { Select } from '@chakra-ui/select'
 import { Tooltip } from '@chakra-ui/tooltip'
 
-import { API_HOST, getServerSideFetch } from '@src/api'
-import { useHttp } from '@src/api/HttpProvider'
-import { PageContainer } from '@src/components/PageContainer'
-import { Title, TitleLayout } from '@src/components/Title'
-import { useErrorToast } from '@src/hooks/useError'
-import { Problem } from '@src/hooks/useProblem'
-import { SubmissionWithSourceCode } from '@src/hooks/useSubmission'
-import { ONE_SECOND } from '@src/hooks/useTimer'
+import { PageContainer } from '@src/components/layout/PageContainer'
+import { Title, TitleLayout } from '@src/components/layout/Title'
+import { API_HOST } from '@src/config'
+import { getServerSideFetch } from '@src/context/HttpClient'
+import { useMutation } from '@src/hooks/useMutation'
+import { Problem } from '@src/problem/types'
+import { SubmissionWithSourceCode } from '@src/submission/types'
+import { submitProblem } from '@src/submit/queries'
+import { ONE_SECOND } from '@src/utils/time'
 
 const defaultValue = `#include <iostream>
 
@@ -87,8 +88,6 @@ function EditorForm(props: WriteSolutionPageProps) {
   const onChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setLanguage(event.target.value)
   }
-  const http = useHttp()
-  const { onError } = useErrorToast()
 
   const [value, setValue] = useState<string | undefined>(
     submission?.sourceCode ?? defaultValue
@@ -96,20 +95,15 @@ function EditorForm(props: WriteSolutionPageProps) {
   const onEditorChange = (value: string | undefined) => {
     setValue(value)
   }
+  const submitProblemMutation = useMutation(submitProblem)
   const onSubmit = async () => {
     if (!value) return
     const blob = new Blob([value])
     const file = new File([blob], `${problem.id}${extension[language]}`)
-
-    const formData = new FormData()
-    formData.append('sourceCode', file)
-    formData.append('language', language)
     try {
-      await http.post(`submission/problem/${problem.id}`, formData)
+      await submitProblemMutation(problem.id, file, language)
       router.push('/submission')
-    } catch (e: any) {
-      onError(e)
-    }
+    } catch {}
   }
 
   return (
@@ -141,10 +135,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { notFound: true }
   }
   const { accessToken = null } = parseCookies(context)
-  return getServerSideFetch<WriteSolutionPageProps>(context, async (api) => ({
-    problem: await api.get(`problem/${id}`),
-    submission: accessToken
-      ? await api.get(`submission/problem/${id}/latest`)
-      : null,
-  }))
+  return getServerSideFetch<WriteSolutionPageProps>(
+    context,
+    async (client) => ({
+      problem: await client.get(`problem/${id}`),
+      submission: accessToken
+        ? await client.get(`submission/problem/${id}/latest`)
+        : null,
+    })
+  )
 }

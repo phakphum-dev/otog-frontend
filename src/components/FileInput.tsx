@@ -10,7 +10,6 @@ import { FaUpload } from 'react-icons/fa'
 
 import {
   Button,
-  ButtonProps,
   IconButton,
   Input,
   InputGroup,
@@ -54,12 +53,7 @@ export const FileInput = forwardRef(
     }, [isDragActive, onFocus])
     return (
       <InputGroup size={variant}>
-        <input
-          type="file"
-          style={{ display: 'none' }}
-          {...rest}
-          ref={inputRef}
-        />
+        <input type="file" hidden {...rest} ref={inputRef} />
         <Input
           ref={displayInputRef}
           cursor="pointer"

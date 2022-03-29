@@ -1,14 +1,16 @@
+import Head from 'next/head'
+import NextLink from 'next/link'
+import { FaTrophy } from 'react-icons/fa'
+
 import { Button } from '@chakra-ui/button'
 import { Box, Flex, Text } from '@chakra-ui/layout'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
-import { PageContainer } from '@src/components/PageContainer'
-import { Title, TitleLayout } from '@src/components/Title'
-import { useContests } from '@src/hooks/useContest'
-import { toThTimeFormat, toThDate } from '@src/hooks/useTimer'
-import Head from 'next/head'
-import NextLink from 'next/link'
-import { FaTrophy } from 'react-icons/fa'
+
+import { PageContainer } from '@src/components/layout/PageContainer'
+import { Title, TitleLayout } from '@src/components/layout/Title'
+import { useContests } from '@src/contest/useContest'
+import { toThDate, toThTimeFormat } from '@src/utils/time'
 
 export default function ContestHistoryPage() {
   const { data: contests } = useContests()
@@ -68,4 +70,4 @@ export default function ContestHistoryPage() {
   )
 }
 
-export { getServerSideCookies as getServerSideProps } from '@src/api'
+export { getServerSideCookies as getServerSideProps } from '@src/context/HttpClient'

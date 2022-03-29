@@ -1,8 +1,8 @@
 import useSWR from 'swr'
 
-import { Announcement } from '../components/types'
+import { Announcement } from '../types'
 
-import { ApiClient } from '@src/api'
+import { HttpClient } from '@src/context/HttpClient'
 
 export function useAnnouncements() {
   return useSWR<Announcement[]>('announcement')
@@ -10,18 +10,18 @@ export function useAnnouncements() {
 
 type PostAnnouncementBody = Pick<Announcement, 'value'>
 export function createAnnouncement(
-  client: ApiClient,
+  client: HttpClient,
   body: PostAnnouncementBody
 ) {
   return client.post<Announcement>('announcement', body)
 }
 
-export function deleteAnnouncemet(client: ApiClient, announcementId: number) {
-  return client.del(`announcement/${announcementId}`)
+export function deleteAnnouncemet(client: HttpClient, announcementId: number) {
+  return client.del<Announcement>(`announcement/${announcementId}`)
 }
 
 export function toggleAnnouncemet(
-  client: ApiClient,
+  client: HttpClient,
   announcementId: number,
   show: boolean
 ) {
@@ -29,7 +29,7 @@ export function toggleAnnouncemet(
 }
 
 export function updateAnnouncement(
-  client: ApiClient,
+  client: HttpClient,
   announcementId: number,
   announcementData: Announcement
 ) {

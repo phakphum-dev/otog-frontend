@@ -4,27 +4,23 @@ import { useForm } from 'react-hook-form'
 
 import Logo from '../../public/logo512.png'
 
-import { Box, Button, Input, Stack } from '@chakra-ui/react'
+import { Box, Button, Input, Stack, useToast } from '@chakra-ui/react'
 
-import { useHttp } from '@src/api/HttpProvider'
 import { CenteredCard } from '@src/components/Login'
-import { PageContainer } from '@src/components/PageContainer'
-import { useErrorToast } from '@src/hooks/useError'
-
-interface CreateUserDTO {
-  username: string
-  password: string
-  showName: string
-}
+import { PageContainer } from '@src/components/layout/PageContainer'
+import { useMutation } from '@src/hooks/useMutation'
+import { registerUser } from '@src/user/queries'
+import { CreateUser } from '@src/user/types'
 
 export default function RegisterPage() {
   const { register, handleSubmit } = useForm()
   const router = useRouter()
-  const { onError, toast } = useErrorToast()
-  const http = useHttp()
-  const onSubmit = async (createUser: CreateUserDTO) => {
+  const toast = useToast()
+
+  const registerUserMutation = useMutation(registerUser)
+  const onSubmit = async (createUser: CreateUser) => {
     try {
-      await http.post('auth/register', createUser)
+      await registerUserMutation(createUser)
       router.push('/login')
       toast({
         title: 'ลงทะเบียนสำเร็จ',
@@ -32,9 +28,7 @@ export default function RegisterPage() {
         status: 'success',
         isClosable: true,
       })
-    } catch (e: any) {
-      onError(e)
-    }
+    } catch {}
   }
   return (
     <PageContainer>
@@ -72,4 +66,4 @@ export default function RegisterPage() {
   )
 }
 
-export { getServerSideCookies as getServerSideProps } from '@src/api'
+export { getServerSideCookies as getServerSideProps } from '@src/context/HttpClient'

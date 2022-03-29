@@ -24,13 +24,13 @@ import {
   useToast,
 } from '@chakra-ui/react'
 
+import { API_HOST, APP_HOST } from '@src/config'
 import {
   SubmissionWithProblem,
   SubmissionWithSourceCode,
-  useSubmission,
-} from '@src/hooks/useSubmission'
-import { ONE_SECOND, toThDate } from '@src/hooks/useTimer'
-import { API_HOST, APP_HOST } from '@src/utils/config'
+} from '@src/submission/types'
+import { useSubmission } from '@src/submission/useSubmission'
+import { ONE_SECOND, toThDate } from '@src/utils/time'
 
 export interface CodeModalProps extends Omit<ModalProps, 'children'> {
   submissionId: number
@@ -228,9 +228,9 @@ export const CodeHighlight = (props: CodeHighlightProps) => {
           fontSize="12px"
         >
           {tokens.map((line, i) => (
-            <div {...getLineProps({ line, key: i })}>
+            <div {...getLineProps({ line, key: i })} key={i}>
               {line.map((token, key) => (
-                <span {...getTokenProps({ token, key })} />
+                <span {...getTokenProps({ token, key })} key={key} />
               ))}
             </div>
           ))}

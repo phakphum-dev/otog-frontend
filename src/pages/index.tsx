@@ -6,8 +6,8 @@ import ComputerImage from '../../public/computer.svg'
 
 import { Button, Center, HStack, Heading, Stack, Text } from '@chakra-ui/react'
 
-import { getServerSideCookies } from '@src/api'
-import { PageContainer } from '@src/components/PageContainer'
+import { PageContainer } from '@src/components/layout/PageContainer'
+import { getServerSideCookies } from '@src/context/HttpClient'
 
 export default function HomePage() {
   return (

@@ -10,17 +10,14 @@ import { Button } from '@chakra-ui/button'
 import { Center, Heading, Stack, VStack } from '@chakra-ui/layout'
 import { Tooltip } from '@chakra-ui/tooltip'
 
-import { getServerSideFetch } from '@src/api'
-import { PageContainer } from '@src/components/PageContainer'
-import { TaskCard } from '@src/components/TaskCard'
-import { Title, TitleLayout } from '@src/components/Title'
-import { Contest, useCurrentContest } from '@src/hooks/useContest'
-import {
-  toThTimeFormat,
-  toTimerFormat,
-  useServerTime,
-  useTimer,
-} from '@src/hooks/useTimer'
+import { PageContainer } from '@src/components/layout/PageContainer'
+import { Title, TitleLayout } from '@src/components/layout/Title'
+import { TaskCard } from '@src/contest/TaskCard'
+import { Contest } from '@src/contest/types'
+import { useCurrentContest } from '@src/contest/useContest'
+import { getServerSideFetch } from '@src/context/HttpClient'
+import { toThTimeFormat, toTimerFormat } from '@src/utils/time'
+import { useServerTime, useTimer } from '@src/utils/time/useTimer'
 
 export interface ContestPageProps {
   contest: Contest | null
@@ -107,7 +104,7 @@ export const MidContest = (props: ContestProps) => {
     if (remaining <= 0) {
       router.push(`/contest/history/${contest.id}`)
     }
-  }, [remaining])
+  }, [remaining, contest.id, router])
   return (
     <PageContainer maxSize="md">
       <TitleLayout>
@@ -151,9 +148,9 @@ export const PostContest = (props: ContestProps) => {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  return getServerSideFetch<ContestPageProps>(context, async (api) => {
-    const contest = await api.get<Contest | null>('contest/now')
-    const serverTime = await api.get<string>('time')
+  return getServerSideFetch<ContestPageProps>(context, async (client) => {
+    const contest = await client.get<Contest | null>('contest/now')
+    const serverTime = await client.get<string>('time')
     return { contest, serverTime }
   })
 }

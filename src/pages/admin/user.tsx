@@ -24,14 +24,15 @@ import { HStack } from '@chakra-ui/react'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
-import { getServerSideCookies } from '@src/api'
-import { getUserData } from '@src/api/AuthProvider'
-import { useHttp } from '@src/api/HttpProvider'
-import { PageContainer } from '@src/components/PageContainer'
+import { createUser } from '@src/admin/queries/user'
 import { RenderLater } from '@src/components/RenderLater'
-import { Title, TitleLayout } from '@src/components/Title'
-import { useErrorToast } from '@src/hooks/useError'
-import { User, useUsers } from '@src/hooks/useUser'
+import { PageContainer } from '@src/components/layout/PageContainer'
+import { Title, TitleLayout } from '@src/components/layout/Title'
+import { getUserData } from '@src/context/AuthContext'
+import { getServerSideCookies } from '@src/context/HttpClient'
+import { useMutation } from '@src/hooks/useMutation'
+import { User } from '@src/user/types'
+import { useUsers } from '@src/user/useUser'
 
 export default function AdminProblemPage() {
   return (
@@ -67,18 +68,16 @@ export default function AdminProblemPage() {
 const CreateUserModalButton = () => {
   const createModal = useDisclosure()
 
-  const http = useHttp()
-  const { onError } = useErrorToast()
   const { register, reset, handleSubmit } = useForm()
+  // TODO: form type
+  const createUserMutation = useMutation(createUser)
   const onSubmit = async (value: any) => {
     try {
-      await http.post('user', value)
+      await createUserMutation(value)
       mutate('user')
       createModal.onClose()
       reset()
-    } catch (e: any) {
-      onError(e)
-    }
+    } catch {}
   }
 
   return (

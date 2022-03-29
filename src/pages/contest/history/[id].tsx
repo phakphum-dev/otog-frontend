@@ -22,12 +22,13 @@ import {
 } from '@chakra-ui/table'
 import { Tooltip } from '@chakra-ui/tooltip'
 
-import { API_HOST, getServerSideFetch } from '@src/api'
-import { PageContainer } from '@src/components/PageContainer'
-import { Title, TitleLayout } from '@src/components/Title'
-import { ContestScoreboard, UserWithSubmission } from '@src/hooks/useContest'
-import { ONE_SECOND } from '@src/hooks/useTimer'
-import { sum } from '@src/utils'
+import { PageContainer } from '@src/components/layout/PageContainer'
+import { Title, TitleLayout } from '@src/components/layout/Title'
+import { API_HOST } from '@src/config'
+import { ContestScoreboard, UserWithSubmission } from '@src/contest/types'
+import { getServerSideFetch } from '@src/context/HttpClient'
+import { sum } from '@src/utils/sum'
+import { ONE_SECOND } from '@src/utils/time'
 
 const Th = (props: TableColumnHeaderProps) => (
   <THead textAlign="center" {...props} />
@@ -75,7 +76,7 @@ export default function ContestHistory(props: ContestHistoryProps) {
       latestRank = index + 1
       return { ...user, rank: latestRank }
     })
-  }, [])
+  }, [scoreboard])
 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const theme = useTheme()
@@ -186,7 +187,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (Number.isNaN(id)) {
     return { notFound: true }
   }
-  return getServerSideFetch<ContestHistoryProps>(context, async (api) => ({
-    scoreboard: await api.get<ContestScoreboard>(`contest/${id}/scoreboard`),
+  return getServerSideFetch<ContestHistoryProps>(context, async (client) => ({
+    scoreboard: await client.get<ContestScoreboard>(`contest/${id}/scoreboard`),
   }))
 }

@@ -11,7 +11,6 @@ import {
   FaPlusCircle,
   FaSync,
   FaTools,
-  FaTrash,
 } from 'react-icons/fa'
 import { mutate } from 'swr'
 
@@ -19,7 +18,7 @@ import { Button, ButtonGroup, IconButton } from '@chakra-ui/button'
 import { FormControl, FormHelperText, FormLabel } from '@chakra-ui/form-control'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Input } from '@chakra-ui/input'
-import { Box, Flex, Link, Stack, Text } from '@chakra-ui/layout'
+import { Box, Flex, Link, Stack } from '@chakra-ui/layout'
 import {
   Modal,
   ModalBody,
@@ -33,21 +32,24 @@ import { HStack, Spacer, UseDisclosureReturn } from '@chakra-ui/react'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
-import { API_HOST, getServerSideCookies } from '@src/api'
-import { getUserData } from '@src/api/AuthProvider'
-import { useHttp } from '@src/api/HttpProvider'
-import { useConfirmModal } from '@src/components/ConfirmModal'
-import { FileInput } from '@src/components/FileInput'
-import { PageContainer } from '@src/components/PageContainer'
-import { RenderLater } from '@src/components/RenderLater'
-import { Title, TitleLayout } from '@src/components/Title'
-import { useErrorToast } from '@src/hooks/useError'
-import { useFileInput } from '@src/hooks/useFileInput'
 import {
-  Problem,
-  ProblemWithSubmission,
-  useProblems,
-} from '@src/hooks/useProblem'
+  createProblem,
+  deleteProblem,
+  toggleProblem,
+  updateProblem,
+} from '@src/admin/queries/problem'
+import { FileInput } from '@src/components/FileInput'
+import { RenderLater } from '@src/components/RenderLater'
+import { PageContainer } from '@src/components/layout/PageContainer'
+import { Title, TitleLayout } from '@src/components/layout/Title'
+import { API_HOST } from '@src/config'
+import { getUserData } from '@src/context/AuthContext'
+import { useConfirmModal } from '@src/context/ConfirmContext'
+import { getServerSideCookies } from '@src/context/HttpClient'
+import { useFileInput } from '@src/hooks/useFileInput'
+import { useMutation } from '@src/hooks/useMutation'
+import { ProblemWithSubmission } from '@src/problem/types'
+import { useProblems } from '@src/problem/useProblem'
 
 export default function AdminProblemPage() {
   return (
@@ -86,19 +88,17 @@ const CreateProblemModalButton = () => {
   const { resetFile: resetPdfInput, fileInputProps: pdfProps } = useFileInput()
   const { resetFile: resetZipInput, fileInputProps: zipProps } = useFileInput()
 
-  const http = useHttp()
-  const { onError } = useErrorToast()
+  // TODO: refactor form data schema
+  const createProblemMutation = useMutation(createProblem)
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      await http.post('problem', new FormData(e.currentTarget))
+      await createProblemMutation(new FormData(e.currentTarget))
       mutate('problem')
       createModal.onClose()
       resetPdfInput()
       resetZipInput()
-    } catch (e: any) {
-      onError(e)
-    }
+    } catch {}
   }
 
   return (
@@ -210,28 +210,26 @@ const EditProblemModal = (props: EditProblemModalProps) => {
     file: zip,
   } = useFileInput()
 
-  const http = useHttp()
-  const { onError } = useErrorToast()
   const { register, handleSubmit } = useForm({ defaultValues: problem })
 
   // TODO: replace any with other type
+  const updateProblemMutation = useMutation(updateProblem)
   const onSubmit = async (value: any) => {
     try {
       const formData = new FormData()
       Object.keys(value).forEach((key) => formData.append(key, value[key]))
       pdf && formData.append('pdf', pdf)
       zip && formData.append('zip', zip)
-      await http.put(`problem/${problem.id}`, formData)
+      await updateProblemMutation(problem.id, formData)
       mutate('problem')
       editModal.onClose()
       resetPdfInput()
       resetZipInput()
-    } catch (e: any) {
-      onError(e)
-    }
+    } catch {}
   }
 
   const confirm = useConfirmModal()
+  const deleteProblemMutation = useMutation(deleteProblem)
   const onDelete = async () => {
     confirm({
       cancleText: 'ยกเลิก',
@@ -240,12 +238,10 @@ const EditProblemModal = (props: EditProblemModalProps) => {
       subtitle: `คุณยืนยันที่จะลบข้อ ${problem.name} ใช่หรือไม่`,
       onSubmit: async () => {
         try {
-          await http.del(`problem/${problem.id}`)
+          await deleteProblemMutation(problem.id)
           mutate('problem')
           editModal.onClose()
-        } catch (e: any) {
-          onError(e)
-        }
+        } catch {}
       },
     })
   }
@@ -375,17 +371,13 @@ interface ProblemAdminProps {
 const ProblemAdminRow = (props: ProblemAdminProps) => {
   const { problem } = props
   const [isOpen, setOpen] = useState(problem.show)
-  const http = useHttp()
-  const { onError } = useErrorToast()
+  const toggleProblemMutation = useMutation(toggleProblem)
   const onToggle = async () => {
     setOpen((isOpen) => !isOpen)
     try {
-      const { show } = await http.patch<Problem>(`problem/${problem.id}`, {
-        show: !isOpen,
-      })
+      const { show } = await toggleProblemMutation(problem.id, !isOpen)
       setOpen(show)
-    } catch (e: any) {
-      onError(e)
+    } catch {
       setOpen(isOpen)
     }
   }

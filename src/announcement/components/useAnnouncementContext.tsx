@@ -16,13 +16,13 @@ import {
   updateAnnouncement,
   useAnnouncements,
 } from '../queries/useAnnouncements'
-import { Announcement } from './types'
+import { Announcement } from '../types'
 import { createEmptyAnnouncement } from './utils'
 
 import { useToast } from '@chakra-ui/react'
 
-import { useMutation } from '@src/api/useMutation'
-import { useConfirmModal } from '@src/components/ConfirmModal'
+import { useConfirmModal } from '@src/context/ConfirmContext'
+import { useMutation } from '@src/hooks/useMutation'
 
 export type AnnouncementProviderProps = {
   announcements: Announcement[]

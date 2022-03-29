@@ -1,6 +1,6 @@
 import { Descendant } from 'slate'
 
-import { Announcement } from './types'
+import { Announcement } from '../types'
 
 export function createDescendant(value: string): Descendant[] {
   return [

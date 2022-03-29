@@ -12,17 +12,20 @@ export const useOnScreen = (rootMargin = '0px') => {
         ([entry]) => setIntersecting(entry.isIntersecting),
         { rootMargin, threshold: 0 }
       ),
-    []
+    [isClient, rootMargin]
   )
 
-  const ref = useCallback((node: Element | null) => {
-    if (observer) {
-      observer.disconnect()
-      if (node) {
-        observer.observe(node)
+  const ref = useCallback(
+    (node: Element | null) => {
+      if (observer) {
+        observer.disconnect()
+        if (node) {
+          observer.observe(node)
+        }
       }
-    }
-  }, [])
+    },
+    [observer]
+  )
 
   return { ref, isIntersecting, resetIntersecting }
 }
