@@ -1,8 +1,9 @@
 import NextLink from 'next/link'
 import { FormEvent, useEffect } from 'react'
-import { useDropzone } from 'react-dropzone'
 
-import { FileInput } from '../FileInput'
+import { FileInput } from '../components/FileInput'
+import { submitProblem } from './queries'
+import { useDropFile } from './useDropFile'
 
 import {
   Button,
@@ -21,10 +22,8 @@ import {
   UseDisclosureReturn,
 } from '@chakra-ui/react'
 
-import { useHttp } from '@src/context/HttpContext'
-import { useErrorToast } from '@src/hooks/useError'
-import { useFileInput } from '@src/hooks/useFileInput'
 import { useLoading } from '@src/hooks/useLoading'
+import { useMutation } from '@src/hooks/useMutation'
 import { Problem } from '@src/problem/useProblem'
 
 export interface SubmitModalProps extends UseDisclosureReturn {
@@ -42,44 +41,23 @@ export interface SubmitReq {
 export const SubmitModal = (props: SubmitModalProps) => {
   const { problem, onClose, isOpen, onSuccess, submitted = false } = props
 
-  const {
-    acceptedFiles,
-    getRootProps,
-    getInputProps,
-    isDragActive,
-  } = useDropzone({
-    accept: '.c,.cpp,.py',
-    multiple: false,
-  })
-
-  const draggedFile = acceptedFiles[0]
-  const inputProps = getInputProps({})
-  const { file, resetFile, fileInputProps } = useFileInput(inputProps)
-  useEffect(() => {
-    if (draggedFile) {
-      resetFile(draggedFile)
-    }
-  }, [resetFile, draggedFile])
+  const { file, resetFile, fileInputProps, getRootProps } = useDropFile()
   useEffect(() => {
     resetFile()
-  }, [resetFile, problem])
+  }, [resetFile, problem.id])
 
-  const http = useHttp()
-  const { onError } = useErrorToast()
+  const submitProblemMutation = useMutation(submitProblem)
   const { isLoading, onLoad, onLoaded } = useLoading()
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (isLoading || !file) return
     try {
       onLoad()
-      const formData = new FormData(e.currentTarget)
-      formData.set('sourceCode', file)
-      await http.post(`submission/problem/${problem.id}`, formData)
+      const language = new FormData(e.currentTarget).get('language') as string
+      await submitProblemMutation(problem.id, file, language)
       resetFile()
       onSuccess?.()
       onClose()
-    } catch (e: any) {
-      onError(e)
     } finally {
       onLoaded()
     }
@@ -97,11 +75,7 @@ export const SubmitModal = (props: SubmitModalProps) => {
               <Stack>
                 <FormControl>
                   <FormLabel>อัปโหลด</FormLabel>
-                  <FileInput
-                    name="sourceCode"
-                    isDragActive={isDragActive}
-                    {...fileInputProps}
-                  />
+                  <FileInput name="sourceCode" {...fileInputProps} />
                 </FormControl>
                 <FormControl>
                   <FormLabel>ภาษา</FormLabel>

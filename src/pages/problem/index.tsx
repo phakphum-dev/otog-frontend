@@ -9,10 +9,10 @@ import { Skeleton } from '@chakra-ui/skeleton'
 import { AnnouncementCarousel } from '@src/announcement/components/AnnouncementCarousel'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
-import { ONE_DAY } from '@src/contest/useTimer'
 import { useAuth } from '@src/context/AuthContext'
 import { FilterFunction, ProblemTable } from '@src/problem/ProblemTable'
 import { useProblems } from '@src/problem/useProblem'
+import { ONE_DAY } from '@src/utils/time'
 
 export default function ProblemPage() {
   const { isAuthenticated } = useAuth()

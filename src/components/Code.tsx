@@ -25,12 +25,12 @@ import {
 } from '@chakra-ui/react'
 
 import { API_HOST, APP_HOST } from '@src/config'
-import { ONE_SECOND, toThDate } from '@src/contest/useTimer'
 import {
   SubmissionWithProblem,
   SubmissionWithSourceCode,
   useSubmission,
 } from '@src/submission/useSubmission'
+import { ONE_SECOND, toThDate } from '@src/utils/time'
 
 export interface CodeModalProps extends Omit<ModalProps, 'children'> {
   submissionId: number

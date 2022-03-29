@@ -10,7 +10,7 @@ import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { useContests } from '@src/contest/useContest'
-import { toThDate, toThTimeFormat } from '@src/contest/useTimer'
+import { toThDate, toThTimeFormat } from '@src/utils/time'
 
 export default function ContestHistoryPage() {
   const { data: contests } = useContests()

@@ -5,8 +5,8 @@ import { Line } from 'react-chartjs-2'
 
 import { Box } from '@chakra-ui/layout'
 
-import { ONE_DAY, ONE_MONTH, ONE_WEEK, ONE_YEAR } from '@src/contest/useTimer'
 import { UserContest } from '@src/user/types'
+import { ONE_DAY, ONE_MONTH, ONE_WEEK, ONE_YEAR } from '@src/utils/time'
 
 const ticks = [2500, 2000, 1800, 1650, 1500]
 const annotations = [

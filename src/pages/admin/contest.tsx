@@ -33,6 +33,12 @@ import { Select } from '@chakra-ui/select'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
+import {
+  createContest,
+  deleteContest,
+  toggleContestProblem,
+  updateContest,
+} from '@src/admin/queries/contest'
 import { DatePicker } from '@src/components/DatePick'
 import { RenderLater } from '@src/components/RenderLater'
 import { PageContainer } from '@src/components/layout/PageContainer'
@@ -41,7 +47,6 @@ import { API_HOST } from '@src/config'
 import {
   Contest,
   ContestMode,
-  CreateContest,
   GradingMode,
   useContest,
   useContests,
@@ -49,8 +54,7 @@ import {
 import { getUserData } from '@src/context/AuthContext'
 import { useConfirmModal } from '@src/context/ConfirmContext'
 import { getServerSideCookies } from '@src/context/HttpClient'
-import { useHttp } from '@src/context/HttpContext'
-import { useErrorToast } from '@src/hooks/useError'
+import { useMutation } from '@src/hooks/useMutation'
 import { ProblemWithSubmission, useProblems } from '@src/problem/useProblem'
 
 export default function AdminContestPage() {
@@ -120,8 +124,7 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
     }
   }, [contest, reset])
 
-  const http = useHttp()
-  const { onError } = useErrorToast()
+  const updateContestMutation = useMutation(updateContest)
   const onSubmit = async (value: {
     name: string
     gradingMode: GradingMode
@@ -133,16 +136,15 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
       timeEnd: endDate.toISOString(),
     }
     try {
-      await http.put<Contest>(`contest/${contest.id}`, body)
+      await updateContestMutation(contest.id, body)
       await mutate('contest')
       await mutate(`contest/${contest.id}`)
       editModal.onClose()
-    } catch (e: any) {
-      onError(e)
-    }
+    } catch {}
   }
 
   const confirm = useConfirmModal()
+  const deleteContestMutation = useMutation(deleteContest)
   const onDelete = () => {
     confirm({
       title: `ยืนยันลบการแข่งขัน`,
@@ -151,13 +153,11 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
       cancleText: 'ยกเลิก',
       onSubmit: async () => {
         try {
-          await http.del(`contest/${contest.id}`)
+          await deleteContestMutation(contest.id)
           mutate('contest')
           editModal.onClose()
           setContestId(0)
-        } catch (e: any) {
-          onError(e)
-        }
+        } catch {}
       },
     })
   }
@@ -250,8 +250,7 @@ const CreateContestModalButton = (props: CreateContestModalButtonProps) => {
   const [endDate, setEndDate] = useState<Date>(new Date())
 
   const { register, handleSubmit } = useForm()
-  const http = useHttp()
-  const { onError } = useErrorToast()
+  const createContestMutation = useMutation(createContest)
   const onSubmit = async (value: {
     name: string
     gradingMode: GradingMode
@@ -263,13 +262,11 @@ const CreateContestModalButton = (props: CreateContestModalButtonProps) => {
       timeEnd: endDate.toISOString(),
     }
     try {
-      const { id } = await http.post<Contest, CreateContest>('contest', body)
+      const { id } = await createContestMutation(body)
       setContestId(id)
       mutate('contest')
       createModal.onClose()
-    } catch (e: any) {
-      onError(e)
-    }
+    } catch {}
   }
   return (
     <>
@@ -400,22 +397,18 @@ const ContestProblemRow = (props: ContestProblemRowProps) => {
   useEffect(() => {
     setOpen(initialValue)
   }, [initialValue])
-  const http = useHttp()
-  const { onError } = useErrorToast()
 
+  const toggleContestProblemMutation = useMutation(toggleContestProblem)
   const onClick = async () => {
     setOpen((isOpen) => !isOpen)
     try {
-      const { show } = await http.patch<{ show: boolean }>(
-        `contest/${contestId}`,
-        {
-          problemId: problem.id,
-          show: !isOpen,
-        }
+      const { show } = await toggleContestProblemMutation(
+        contestId,
+        problem.id,
+        !isOpen
       )
       setOpen(show)
-    } catch (e: any) {
-      onError(e)
+    } catch {
       setOpen(isOpen)
     }
   }

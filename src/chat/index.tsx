@@ -34,11 +34,11 @@ import { Tooltip, TooltipProps } from '@chakra-ui/tooltip'
 import { SlideFade } from '@chakra-ui/transition'
 
 import { Message, useChat } from '@src/chat/useChat'
-import { toThDate } from '@src/contest/useTimer'
 import { useAuth } from '@src/context/AuthContext'
 import { useOnScreen } from '@src/hooks/useOnScreen'
 import { useProfilePic } from '@src/profile/useProfilePic'
 import { useOnlineUsers } from '@src/user/useUser'
+import { toThDate } from '@src/utils/time'
 
 interface ChatButtonProps extends IconButtonProps {
   hasUnread: boolean

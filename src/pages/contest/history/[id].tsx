@@ -26,9 +26,9 @@ import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { API_HOST } from '@src/config'
 import { ContestScoreboard, UserWithSubmission } from '@src/contest/useContest'
-import { ONE_SECOND } from '@src/contest/useTimer'
 import { getServerSideFetch } from '@src/context/HttpClient'
-import { sum } from '@src/utils'
+import { sum } from '@src/utils/sum'
+import { ONE_SECOND } from '@src/utils/time'
 
 const Th = (props: TableColumnHeaderProps) => (
   <THead textAlign="center" {...props} />

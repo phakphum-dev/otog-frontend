@@ -1,6 +1,3 @@
-import { useEffect, useState } from 'react'
-import useSWR from 'swr'
-
 export function toThDate(date: string) {
   return new Date(date).toLocaleDateString('th-TH', {
     hour: 'numeric',
@@ -31,38 +28,8 @@ export function toThTimeFormat(ms: number) {
     .join(' ')
 }
 
-const getRemaining = (start: string, end: string) =>
+export const getRemaining = (start: string, end: string) =>
   new Date(end).getTime() - new Date(start).getTime()
-
-export function useTimer(start: string, end: string) {
-  const [remaining, setRemaining] = useState(() => getRemaining(start, end))
-
-  useEffect(() => {
-    if (start && end) {
-      setRemaining(getRemaining(start, end))
-    }
-  }, [start, end])
-
-  const shouldInterval = remaining > 0
-  useEffect(() => {
-    if (shouldInterval) {
-      const interval = setInterval(() => {
-        setRemaining((current) => current - ONE_SECOND)
-      }, ONE_SECOND)
-      return () => {
-        clearInterval(interval)
-      }
-    }
-  }, [shouldInterval])
-  return remaining
-}
-
-export function useServerTime(intialTime?: string) {
-  return useSWR<string>('time', {
-    initialData: intialTime,
-    revalidateOnMount: true,
-  })
-}
 
 export const ONE_SECOND = 1000
 export const ONE_MINUTE = 60 * ONE_SECOND

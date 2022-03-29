@@ -17,7 +17,7 @@ export function createAnnouncement(
 }
 
 export function deleteAnnouncemet(client: HttpClient, announcementId: number) {
-  return client.del(`announcement/${announcementId}`)
+  return client.del<Announcement>(`announcement/${announcementId}`)
 }
 
 export function toggleAnnouncemet(

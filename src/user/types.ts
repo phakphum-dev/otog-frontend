@@ -10,6 +10,10 @@ export interface User {
   rating: number
 }
 
+export type CreateUser = Pick<User, 'showName' | 'username'> & {
+  password: string
+}
+
 export interface LoginReq {
   username: string
   password: string

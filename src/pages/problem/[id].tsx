@@ -21,12 +21,12 @@ import { Tooltip } from '@chakra-ui/tooltip'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { API_HOST } from '@src/config'
-import { ONE_SECOND } from '@src/contest/useTimer'
 import { getServerSideFetch } from '@src/context/HttpClient'
-import { useHttp } from '@src/context/HttpContext'
-import { useErrorToast } from '@src/hooks/useError'
+import { useMutation } from '@src/hooks/useMutation'
 import { Problem } from '@src/problem/useProblem'
 import { SubmissionWithSourceCode } from '@src/submission/useSubmission'
+import { submitProblem } from '@src/submit/queries'
+import { ONE_SECOND } from '@src/utils/time'
 
 const defaultValue = `#include <iostream>
 
@@ -88,8 +88,6 @@ function EditorForm(props: WriteSolutionPageProps) {
   const onChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setLanguage(event.target.value)
   }
-  const http = useHttp()
-  const { onError } = useErrorToast()
 
   const [value, setValue] = useState<string | undefined>(
     submission?.sourceCode ?? defaultValue
@@ -97,20 +95,15 @@ function EditorForm(props: WriteSolutionPageProps) {
   const onEditorChange = (value: string | undefined) => {
     setValue(value)
   }
+  const submitProblemMutation = useMutation(submitProblem)
   const onSubmit = async () => {
     if (!value) return
     const blob = new Blob([value])
     const file = new File([blob], `${problem.id}${extension[language]}`)
-
-    const formData = new FormData()
-    formData.append('sourceCode', file)
-    formData.append('language', language)
     try {
-      await http.post(`submission/problem/${problem.id}`, formData)
+      await submitProblemMutation(problem.id, file, language)
       router.push('/submission')
-    } catch (e: any) {
-      onError(e)
-    }
+    } catch {}
   }
 
   return (

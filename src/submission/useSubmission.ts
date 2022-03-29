@@ -6,9 +6,9 @@ import useSWR, {
   useSWRInfinite,
 } from 'swr'
 
-import { ONE_SECOND } from '../contest/useTimer'
 import { Problem } from '../problem/useProblem'
 import { isGrading } from '../theme/useStatusColor'
+import { ONE_SECOND } from '../utils/time'
 
 import { useAuth } from '@src/context/AuthContext'
 import { useInitialData } from '@src/context/InitialDataContext'

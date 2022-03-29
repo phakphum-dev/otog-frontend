@@ -14,13 +14,9 @@ import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { TaskCard } from '@src/contest/TaskCard'
 import { Contest, useCurrentContest } from '@src/contest/useContest'
-import {
-  toThTimeFormat,
-  toTimerFormat,
-  useServerTime,
-  useTimer,
-} from '@src/contest/useTimer'
 import { getServerSideFetch } from '@src/context/HttpClient'
+import { toThTimeFormat, toTimerFormat } from '@src/utils/time'
+import { useServerTime, useTimer } from '@src/utils/time/useTimer'
 
 export interface ContestPageProps {
   contest: Contest | null

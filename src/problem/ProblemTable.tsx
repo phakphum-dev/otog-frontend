@@ -4,8 +4,8 @@ import { memo, useEffect, useMemo, useState } from 'react'
 
 import { CodeModal } from '../components/Code'
 import { RenderLater } from '../components/RenderLater'
-import { SubmitButton } from '../components/submit/SubmitButton'
-import { SubmitModal } from '../components/submit/SubmitModal'
+import { SubmitButton } from '../submit/SubmitButton'
+import { SubmitModal } from '../submit/SubmitModal'
 
 import {
   Box,
@@ -31,19 +31,18 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 
+import { toggleProblem } from '@src/admin/queries/problem'
 import { API_HOST } from '@src/config'
-import { ONE_SECOND } from '@src/contest/useTimer'
 import { useAuth } from '@src/context/AuthContext'
-import { useHttp } from '@src/context/HttpContext'
-import { useErrorToast } from '@src/hooks/useError'
+import { useMutation } from '@src/hooks/useMutation'
 import {
-  Problem,
   ProblemWithSubmission,
   usePassedUsers,
   useProblems,
 } from '@src/problem/useProblem'
 import { Submission } from '@src/submission/useSubmission'
 import { useStatusColor } from '@src/theme/useStatusColor'
+import { ONE_SECOND } from '@src/utils/time'
 
 export type FilterFunction = (problem: ProblemWithSubmission) => boolean
 export interface ProblemTableProps {
@@ -200,25 +199,19 @@ const ProblemRow = (props: ProblemRowProps) => {
   const { isAdmin } = useAuth()
 
   const bg = useStatusColor(problem.submission)
-  const http = useHttp()
-  const { onError } = useErrorToast()
 
   const [show, setShow] = useState(problem.show)
   useEffect(() => {
     setShow(problem.show)
   }, [problem.show])
+
+  const toggleProblemMutation = useMutation(toggleProblem)
   const onToggle = async () => {
     setShow((show) => !show)
     try {
-      const { show: newValue } = await http.patch<Problem>(
-        `problem/${problem.id}`,
-        {
-          show: !show,
-        }
-      )
+      const { show: newValue } = await toggleProblemMutation(problem.id, !show)
       setShow(newValue)
-    } catch (e: any) {
-      onError(e)
+    } catch {
       setShow(show)
     }
   }

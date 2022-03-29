@@ -3,6 +3,7 @@ import { ChangeEvent, FormEvent, memo, useState } from 'react'
 
 import { CodeModal, ErrorModal } from '../components/Code'
 import { FileInput } from '../components/FileInput'
+import { submitContestProblem } from './queries'
 
 import { Button, IconButton } from '@chakra-ui/button'
 import { useDisclosure } from '@chakra-ui/hooks'
@@ -29,17 +30,16 @@ import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 import { Collapse } from '@chakra-ui/transition'
 
 import { API_HOST } from '@src/config'
-import { ONE_SECOND } from '@src/contest/useTimer'
-import { useHttp } from '@src/context/HttpContext'
-import { useErrorToast } from '@src/hooks/useError'
-import { useFileInput } from '@src/hooks/useFileInput'
 import { useLoading } from '@src/hooks/useLoading'
+import { useMutation } from '@src/hooks/useMutation'
 import { Problem } from '@src/problem/useProblem'
 import {
   SubmissionWithProblem,
   useProblemSubmission,
 } from '@src/submission/useSubmission'
+import { useDropFile } from '@src/submit/useDropFile'
 import { isGraded, isGrading, useStatusColor } from '@src/theme/useStatusColor'
+import { ONE_SECOND } from '@src/utils/time'
 
 const defaultValue = `#include <iostream>
 
@@ -122,39 +122,33 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
   const { problem, contestId } = props
 
   const { mutate } = useProblemSubmission(problem.id)
-  const { resetFile, fileInputProps } = useFileInput()
 
-  const http = useHttp()
-  const { onError } = useErrorToast()
+  const { file, fileInputProps, resetFile, getRootProps } = useDropFile()
   const { isLoading, onLoad, onLoaded } = useLoading()
+  const submitContestProblemMutataion = useMutation(submitContestProblem)
   const onFileSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (isLoading) return
-    const formData = new FormData(e.currentTarget)
-    formData.append('contestId', `${contestId}`)
+    if (isLoading || !file) return
     try {
       onLoad()
-      await http.post(`submission/problem/${problem.id}`, formData)
+      const language = new FormData(e.currentTarget).get('language') as string
+      await submitContestProblemMutataion(problem.id, contestId, file, language)
       mutate()
       resetFile()
-    } catch (e: any) {
-      onError(e)
     } finally {
       onLoaded()
     }
   }
   return (
     <form onSubmit={onFileSubmit}>
-      <Stack
-        direction={{ base: 'column', sm: 'row' }}
-        spacing={{ base: 2, sm: 8, md: 20 }}
-      >
+      <Stack direction={{ base: 'column', sm: 'row' }} spacing={2}>
         <Select name="language" size="sm" flex={1}>
           <option value="cpp">C++</option>
           <option value="c">C</option>
           <option value="python">Python</option>
         </Select>
-        <HStack justify="flex-end">
+        <Spacer />
+        <HStack justify="flex-end" {...getRootProps()}>
           <FileInput
             required
             name="sourceCode"
@@ -193,27 +187,18 @@ export const ContestEditorForm = (props: ContestEditorFormProps) => {
     setValue(value)
   }
 
-  const http = useHttp()
-  const { onError } = useErrorToast()
+  const submitContestProblemMutataion = useMutation(submitContestProblem)
   const { isLoading, onLoad, onLoaded } = useLoading()
   const onSubmit = async () => {
-    if (!isLoading && value) {
-      try {
-        onLoad()
-        const blob = new Blob([value])
-        const file = new File([blob], `${problem.id}${extension[language]}`)
-
-        const formData = new FormData()
-        formData.append('contestId', `${contestId}`)
-        formData.append('sourceCode', file)
-        formData.append('language', language)
-        await http.post(`submission/problem/${problem.id}`, formData)
-        mutate()
-      } catch (e: any) {
-        onError(e)
-      } finally {
-        onLoaded()
-      }
+    if (isLoading || !value) return
+    try {
+      onLoad()
+      const blob = new Blob([value])
+      const file = new File([blob], `${problem.id}${extension[language]}`)
+      await submitContestProblemMutataion(problem.id, contestId, file, language)
+      mutate()
+    } finally {
+      onLoaded()
     }
   }
 

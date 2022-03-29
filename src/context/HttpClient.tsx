@@ -197,8 +197,8 @@ class HttpClient {
     return (await this.axiosInstance.patch<T>(url, data, config)).data
   }
 
-  async del(url: string, config?: AxiosRequestConfig) {
-    await this.axiosInstance.delete(url, config)
+  async del<T>(url: string, config?: AxiosRequestConfig) {
+    return (await this.axiosInstance.delete<T>(url, config)).data
   }
 
   // this will be set only on client

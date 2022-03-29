@@ -16,6 +16,7 @@ export interface Problem {
   case: string
   rating: number | null
 }
+
 export type ProblemWithSubmission = Problem & {
   submission: Submission | null
   passedCount: number
