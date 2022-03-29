@@ -24,11 +24,7 @@ import {
 import { useAuth } from '@src/context/AuthContext'
 import { storage } from '@src/firebase'
 import { useErrorToast } from '@src/hooks/useError'
-<<<<<<< main:src/components/ImageCropModal.tsx
-import { useUserProfilePic } from '@src/hooks/useProfilePic'
-=======
 import { useUserProfilePic } from '@src/profile/useProfilePic'
->>>>>>> :truck: move files to module:src/profile/ImageCropModal.tsx
 
 interface ImageUploadModalProps {
   isOpen: boolean

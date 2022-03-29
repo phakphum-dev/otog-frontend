@@ -3,11 +3,8 @@ import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { ForwardedRef, useEffect, useRef, useState } from 'react'
 
-<<<<<<< main:src/components/NavBar.tsx
-import Logo from '../../public/logo512.png'
-=======
+import Logo from '../../../public/logo512.png'
 import { ToggleColorModeButton } from '../ToggleColorModeButton'
->>>>>>> :truck: move files to module:src/components/layout/NavBar.tsx
 import { PageContainer } from './PageContainer'
 
 import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
