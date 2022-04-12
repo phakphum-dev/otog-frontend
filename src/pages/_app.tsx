@@ -16,7 +16,7 @@ import { AuthProvider } from '@src/context/AuthContext'
 import { ConfirmModalProvider } from '@src/context/ConfirmContext'
 import { HttpProvider } from '@src/context/HttpContext'
 import { SocketProvider } from '@src/context/SocketContext'
-import { ErrorToastOptions } from '@src/hooks/useError'
+import { useErrorEffect } from '@src/hooks/useErrorToast'
 import '@src/styles/nprogress.css'
 import { theme } from '@src/theme'
 
@@ -29,7 +29,7 @@ const TopProgressBar = dynamic(
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const { colorModeCookie, accessToken, errorToast, ...props } = pageProps
-
+  useErrorEffect(errorToast)
   return (
     <>
       <Head>
@@ -52,7 +52,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         colorModeManager={cookieStorageManager(colorModeCookie as string)}
       >
         <ConfirmModalProvider>
-          <HttpProvider value={errorToast as ErrorToastOptions}>
+          <HttpProvider>
             <AuthProvider value={accessToken as string}>
               <SocketProvider>
                 <TopProgressBar />

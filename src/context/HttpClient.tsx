@@ -6,7 +6,7 @@ import { ParsedUrlQuery } from 'querystring'
 import { UseToastOptions } from '@chakra-ui/toast'
 
 import { API_HOST, API_HOST_SSR, isProduction, isServer } from '@src/config'
-import { getErrorToast } from '@src/hooks/useError'
+import { getErrorToast } from '@src/hooks/useErrorToast'
 import { getColorMode } from '@src/theme/ColorMode'
 import { ColorModeProps } from '@src/theme/ColorMode'
 import { AuthRes } from '@src/user/types'
@@ -161,6 +161,10 @@ class HttpClient {
     }
   }
 
+  getAccessToken() {
+    return nookies.get(null).accessToken
+  }
+
   setNewToken(accessToken: string, context: Context | null = null) {
     nookies.set(context, 'accessToken', accessToken, { path: '/' })
   }
@@ -205,9 +209,6 @@ class HttpClient {
   /* eslint-disable @typescript-eslint/no-empty-function */
   openLoginModal() {}
   updateOnLogout() {}
-  getAccessToken() {
-    return nookies.get(null).accessToken
-  }
 }
 
 export type Context = GetServerSidePropsContext<ParsedUrlQuery>

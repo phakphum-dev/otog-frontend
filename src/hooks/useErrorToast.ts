@@ -1,5 +1,7 @@
-import { useToast, UseToastOptions } from '@chakra-ui/toast'
 import { AxiosError } from 'axios'
+import { useCallback, useEffect } from 'react'
+
+import { UseToastOptions, useToast } from '@chakra-ui/toast'
 
 export type ErrorToastOptions = UseToastOptions & {
   code: number | null
@@ -7,9 +9,7 @@ export type ErrorToastOptions = UseToastOptions & {
 
 export function useErrorToast() {
   const toast = useToast()
-  const onError = (e: any) => {
-    toast(getErrorToast(e))
-  }
+  const onError = useCallback((e: any) => toast(getErrorToast(e)), [toast])
   return { onError, toast }
 }
 
@@ -111,4 +111,13 @@ export function getErrorToast(e: any): ErrorToastOptions {
     isClosable: true,
     code: null,
   }
+}
+
+export function useErrorEffect(errorToast: ErrorToastOptions) {
+  const toast = useToast()
+  useEffect(() => {
+    if (errorToast) {
+      toast(errorToast)
+    }
+  }, [errorToast, toast])
 }

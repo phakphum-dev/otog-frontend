@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react'
 
 import { useAuth } from '@src/context/AuthContext'
-import { useErrorToast } from '@src/hooks/useError'
+import { useErrorToast } from '@src/hooks/useErrorToast'
 import { LoginReq } from '@src/user/types'
 
 export interface LoginModalProps {

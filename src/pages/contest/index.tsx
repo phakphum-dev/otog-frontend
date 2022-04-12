@@ -10,6 +10,7 @@ import { Button } from '@chakra-ui/button'
 import { Center, Heading, Stack, VStack } from '@chakra-ui/layout'
 import { Tooltip } from '@chakra-ui/tooltip'
 
+import { AnnouncementCarousel } from '@src/announcement/components/AnnouncementCarousel'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { TaskCard } from '@src/contest/TaskCard'
@@ -107,6 +108,7 @@ export const MidContest = (props: ContestProps) => {
   }, [remaining, contest.id, router])
   return (
     <PageContainer maxSize="md">
+      <AnnouncementCarousel />
       <TitleLayout>
         <Tooltip label={contest.name} hasArrow placement="top">
           <Title icon={FaTrophy} noOfLines={1}>
