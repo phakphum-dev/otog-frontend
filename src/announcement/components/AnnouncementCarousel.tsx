@@ -25,7 +25,12 @@ import { useAuth } from '@src/context/AuthContext'
 
 const MotionStack = motion<StackProps>(Stack)
 
-export const AnnouncementCarousel = () => {
+export interface AnnouncementCarouselProps {
+  defaultShow?: boolean
+}
+
+export const AnnouncementCarousel = (props: AnnouncementCarouselProps) => {
+  const { defaultShow = false } = props
   const [show, setShow] = useState(false)
   const { isAuthenticated, isAdmin } = useAuth()
 
@@ -42,10 +47,13 @@ export const AnnouncementCarousel = () => {
 
   useEffect(() => {
     if (isAuthenticated && (filteredAnnouncements.length > 0 || isAdmin)) {
-      const timeout = setTimeout(() => setShow(true), SHOWUP_DELAY)
+      const timeout = setTimeout(
+        () => setShow(true),
+        defaultShow ? 0 : SHOWUP_DELAY
+      )
       return () => clearTimeout(timeout)
     }
-  }, [isAdmin, isAuthenticated, filteredAnnouncements])
+  }, [isAdmin, isAuthenticated, filteredAnnouncements, defaultShow])
 
   return (
     <Collapse in={show}>

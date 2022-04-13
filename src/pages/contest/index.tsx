@@ -108,7 +108,7 @@ export const MidContest = (props: ContestProps) => {
   }, [remaining, contest.id, router])
   return (
     <PageContainer maxSize="md">
-      <AnnouncementCarousel />
+      <AnnouncementCarousel defaultShow={true} />
       <TitleLayout>
         <Tooltip label={contest.name} hasArrow placement="top">
           <Title icon={FaTrophy} noOfLines={1}>
