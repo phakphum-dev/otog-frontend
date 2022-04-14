@@ -1,44 +1,23 @@
-import NextLink from 'next/link'
-import {
-  ChangeEvent,
-  Children,
-  KeyboardEvent,
-  ReactElement,
-  cloneElement,
-  memo,
-  useEffect,
-  useState,
-} from 'react'
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
 import { IoChatbubbleEllipses, IoSend } from 'react-icons/io5'
 
-import { Avatar } from '@chakra-ui/avatar'
+import { ChatMessage } from './components/ChatMessage'
+
 import { Button, IconButton, IconButtonProps } from '@chakra-ui/button'
 import { useColorModeValue } from '@chakra-ui/color-mode'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { SmallCloseIcon } from '@chakra-ui/icons'
-import {
-  Box,
-  Circle,
-  Code,
-  Flex,
-  HStack,
-  Heading,
-  Link,
-  Text,
-  VStack,
-} from '@chakra-ui/layout'
+import { Box, Circle, Flex, HStack, Heading, Text } from '@chakra-ui/layout'
 import { Spinner } from '@chakra-ui/spinner'
 import { Textarea } from '@chakra-ui/textarea'
 import { useToast } from '@chakra-ui/toast'
 import { Tooltip, TooltipProps } from '@chakra-ui/tooltip'
 import { SlideFade } from '@chakra-ui/transition'
 
-import { Message, useChat } from '@src/chat/useChat'
+import { useChat } from '@src/chat/useChat'
 import { useAuth } from '@src/context/AuthContext'
 import { useOnScreen } from '@src/hooks/useOnScreen'
-import { useProfilePic } from '@src/profile/useProfilePic'
 import { useOnlineUsers } from '@src/user/useUser'
-import { toThDate } from '@src/utils/time'
 
 interface ChatButtonProps extends IconButtonProps {
   hasUnread: boolean
@@ -90,13 +69,18 @@ const OnlineUsersTooltip = (props: TooltipProps) => {
           {onlineUsers.slice(0, MAX_LENGTH).map((user) => (
             <HStack key={user.id}>
               <Circle size={2} bg="green.400" />
-              <Text maxW={300}>{user.showName}</Text>
+              <Text maxW={275}>{user.showName}</Text>
             </HStack>
           ))}
           {onlineUsers.length > MAX_LENGTH && (
-            <HStack>
-              <Text>(ยังมีชีวิตอยู่ทั้งหมด {onlineUsers.length} คน)</Text>
-            </HStack>
+            <>
+              <HStack>
+                <Text>...</Text>
+              </HStack>
+              <HStack>
+                <Text>(ยังมีชีวิตอยู่ทั้งหมด {onlineUsers.length} คน)</Text>
+              </HStack>
+            </>
           )}
         </Flex>
       }
@@ -176,17 +160,11 @@ export const Chat = () => {
                 {newMessages.map((message, index) => (
                   <ChatMessage
                     key={message.id}
-                    message={message}
-                    sameUserAbove={
-                      message.user.id ===
-                      (index && newMessages[index - 1].user.id)
+                    messageAbove={
+                      index === 0 ? messages?.[0] : newMessages[index - 1]
                     }
-                    sameUserBelow={
-                      message.user.id ===
-                      (index + 1 === newMessages.length
-                        ? 0
-                        : newMessages[index + 1].user.id)
-                    }
+                    messageData={message}
+                    messageBelow={newMessages[index + 1]}
                   />
                 ))}
               </Flex>
@@ -194,15 +172,10 @@ export const Chat = () => {
                 {messages?.map((message, index) => (
                   <ChatMessage
                     key={message.id}
-                    message={message}
-                    sameUserAbove={
-                      message.user.id ===
-                      (index + 1 === messages.length
-                        ? 0
-                        : messages[index + 1].user.id)
-                    }
-                    sameUserBelow={
-                      message.user.id === (index && messages[index - 1].user.id)
+                    messageAbove={messages[index + 1]}
+                    messageData={message}
+                    messageBelow={
+                      index === 0 ? newMessages[0] : messages[index - 1]
                     }
                   />
                 ))}
@@ -286,139 +259,5 @@ const ChatInput = (props: ChatInputProps) => {
         onClick={onSubmit}
       />
     </HStack>
-  )
-}
-
-interface ChatMessageProps {
-  message: Message
-  sameUserAbove?: boolean
-  sameUserBelow?: boolean
-}
-
-const ChatMessage = memo(
-  (props: ChatMessageProps) => {
-    const { message, sameUserAbove = false, sameUserBelow = false } = props
-
-    const { user } = useAuth()
-    const isMyself = user?.id === message.user.id
-    const isOther = !isMyself
-    const displayName = isOther && !sameUserAbove
-    const displayAvatar = isOther && !sameUserBelow
-
-    const bg = useColorModeValue('gray.100', 'gray.800')
-    const borderColor = useColorModeValue('gray.100', 'whiteAlpha.300')
-
-    return (
-      <Flex
-        direction={isOther ? 'row' : 'row-reverse'}
-        mt={sameUserAbove ? 0.5 : 2}
-        align="flex-end"
-      >
-        {displayAvatar ? (
-          <SmallAvatar userId={message.user.id} />
-        ) : (
-          isOther && <Box minW={6} mr={1} />
-        )}
-        <VStack align="flex-start" spacing={0}>
-          {displayName && (
-            <Text fontSize="xs" color="gray.500" px={1}>
-              {message.user.showName}
-            </Text>
-          )}
-          <Text
-            title={toThDate(message.creationDate)}
-            px={2}
-            py={1}
-            rounded={16}
-            {...{
-              [isMyself ? 'ml' : 'mr']: 2,
-              ...(sameUserAbove && {
-                [isMyself ? 'roundedTopRight' : 'roundedTopLeft']: 6,
-              }),
-              ...(sameUserBelow && {
-                [isMyself ? 'roundedBottomRight' : 'roundedBottomLeft']: 6,
-              }),
-            }}
-            borderWidth="1px"
-            bg={isMyself ? 'otog' : bg}
-            color={isMyself ? 'white' : undefined}
-            borderColor={isMyself ? 'otog' : borderColor}
-            whiteSpace="pre-wrap"
-            wordBreak="break-word"
-          >
-            {formatParser(message.message)}
-          </Text>
-        </VStack>
-      </Flex>
-    )
-  },
-  (prevProps, nextProps) =>
-    prevProps.message.id === nextProps.message.id &&
-    prevProps.sameUserAbove === nextProps.sameUserAbove &&
-    prevProps.sameUserBelow === nextProps.sameUserBelow
-)
-
-const SmallAvatar = ({ userId }: { userId: number }) => {
-  const { url } = useProfilePic(userId, { small: true })
-  return (
-    <NextLink href={`/profile/${userId}`} passHref>
-      <Avatar as="a" size="xs" mr={1} src={url} />
-    </NextLink>
-  )
-}
-
-const MessageCode = (token: string) => (
-  <Code color="inherit" bg={useColorModeValue('transparent', 'blackAlpha.300')}>
-    {token}
-  </Code>
-)
-
-const matcher: Record<
-  string,
-  { match: string; formatter: (token: string) => ReactElement }
-> = {
-  _: { match: '_', formatter: (token) => <i>{token}</i> },
-  '~': { match: '~', formatter: (token) => <s>{token}</s> },
-  '*': { match: '*', formatter: (token) => <b>{token}</b> },
-  '`': {
-    match: '`',
-    formatter: MessageCode,
-  },
-  '[': {
-    match: ']',
-    formatter: (token) => (
-      <Link href={token} isExternal textDecor="underline" color="inherit">
-        {token}
-      </Link>
-    ),
-  },
-}
-
-const formatted = (token: string, format: string) => {
-  return matcher[format]?.formatter(token) ?? <>{token}</>
-}
-
-const formatParser = (message: string) => {
-  const tokens: ReactElement[] = []
-  let token = ''
-  let format = ''
-  for (let i = 0; i < message.length; i++) {
-    if (format && matcher[format].match === message[i]) {
-      tokens.push(formatted(token.slice(1), format))
-      format = ''
-      token = ''
-    } else if (!format && message[i] in matcher) {
-      tokens.push(<>{token}</>)
-      format = message[i]
-      token = message[i]
-    } else {
-      token += message[i]
-    }
-  }
-  if (token) {
-    tokens.push(<>{token}</>)
-  }
-  return Children.map(tokens, (child, index) =>
-    cloneElement(child, { key: index })
   )
 }
