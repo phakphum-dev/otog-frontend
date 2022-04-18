@@ -1,4 +1,5 @@
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios'
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
+import * as cookie from 'cookie'
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
 import nookies from 'nookies'
 import { ParsedUrlQuery } from 'querystring'
@@ -6,10 +7,12 @@ import { ParsedUrlQuery } from 'querystring'
 import { UseToastOptions } from '@chakra-ui/toast'
 
 import { API_HOST, API_HOST_SSR, isProduction, isServer } from '@src/config'
-import { getErrorToast } from '@src/hooks/useError'
+import { getErrorToast } from '@src/hooks/useErrorToast'
 import { getColorMode } from '@src/theme/ColorMode'
 import { ColorModeProps } from '@src/theme/ColorMode'
 import { AuthRes } from '@src/user/types'
+import { omit } from '@src/utils/omit'
+import { serializeCookies } from '@src/utils/serializeCookie'
 
 export const Axios = axios.create({
   baseURL: isServer ? API_HOST_SSR : API_HOST,
@@ -75,8 +78,7 @@ class HttpClient {
         return response
       },
       async (error) => {
-        if (error.isAxiosError) {
-          error = error as AxiosError
+        if (axios.isAxiosError(error)) {
           const originalRequest = error.config
           // console.log(
           //   'error response :',
@@ -92,7 +94,7 @@ class HttpClient {
                 .then(() => {
                   return this.axiosInstance(originalRequest)
                 })
-                .catch((e: any) => {
+                .catch((e: unknown) => {
                   return Promise.reject(e)
                 })
             }
@@ -105,20 +107,19 @@ class HttpClient {
                 await this.refreshToken(context)
                 this.processQueue(null)
                 return this.axiosInstance(originalRequest)
-              } catch (e: any) {
+              } catch (e: unknown) {
                 this.processQueue(e)
                 // remove token if failed to refresh token
-                if (e.isAxiosError) {
-                  if (e.response?.status === 403) {
-                    this.removeToken(context)
-                    this.updateOnLogout()
-                    return Promise.reject(e)
-                  }
+                if (axios.isAxiosError(e) && e.response?.status === 403) {
+                  this.removeToken(context)
+                  this.updateOnLogout()
                 }
+                return Promise.reject(e)
               } finally {
                 this.isRefreshing = false
               }
             }
+
             // if token doesn't exists and not logging in then open up login modal
             else if (error.config.url !== 'auth/login') {
               this.removeToken(context)
@@ -140,37 +141,57 @@ class HttpClient {
       headers: {
         Authorization: `Bearer ${accessToken}`,
         ...(refreshToken && {
-          cookie: `RID=${refreshToken}; HttpOnly ${
-            isProduction ? '; Secure' : ''
-          }`,
+          cookie: cookie.serialize('RID', refreshToken, {
+            httpOnly: true,
+            secure: isProduction,
+          }),
         }),
       },
     })
     if (response.status === 200) {
-      const { accessToken } = response.data
-      const { 'set-cookie': refreshToken } = response.headers
+      const { accessToken: newAccessToken } = response.data
       if (context) {
-        // set request header for retrying on original request
-        context.req.headers.cookie = `accessToken=${accessToken}; ${refreshToken}`
-
+        const refreshTokenCookie = response.headers['set-cookie']
         // set response header to set new token on client-side
-        context.res.setHeader('Set-cookie', refreshToken)
+        context.res.setHeader('set-cookie', [
+          refreshTokenCookie,
+          cookie.serialize('accessToken', newAccessToken, {
+            path: '/',
+            secure: isProduction,
+          }),
+        ])
+        // set request header for retrying on original request
+        context.req.headers.cookie = `accessToken=${newAccessToken}; ${refreshTokenCookie}`
+      } else {
+        this.setAccessToken(newAccessToken)
       }
-      this.setNewToken(accessToken, context)
-      return accessToken
     }
   }
 
-  setNewToken(accessToken: string, context: Context | null = null) {
-    nookies.set(context, 'accessToken', accessToken, { path: '/' })
+  getAccessToken() {
+    return nookies.get(null).accessToken
+  }
+
+  setAccessToken(accessToken: string, context: Context | null = null) {
+    nookies.set(context, 'accessToken', accessToken, {
+      path: '/',
+      secure: isProduction,
+    })
   }
 
   removeToken(context: Context | null = null) {
     nookies.destroy(context, 'accessToken', { path: '/' })
     nookies.destroy(context, 'RID', { path: '/' })
+    if (context) {
+      // omit accessToken from default request header
+      let cookies = cookie.parse(context.req.headers.cookie as string)
+      cookies = omit('RID', cookies)
+      cookies = omit('accessToken', cookies)
+      context.req.headers.cookie = serializeCookies(cookies)
+    }
   }
 
-  processQueue(error: any) {
+  processQueue(error: unknown) {
     this.failedQueue.forEach((promise) => {
       if (error) {
         promise.reject(error)
@@ -205,9 +226,6 @@ class HttpClient {
   /* eslint-disable @typescript-eslint/no-empty-function */
   openLoginModal() {}
   updateOnLogout() {}
-  getAccessToken() {
-    return nookies.get(null).accessToken
-  }
 }
 
 export type Context = GetServerSidePropsContext<ParsedUrlQuery>
@@ -224,17 +242,17 @@ export async function getServerSideFetch<T = any>(
   context: Context,
   callback: (httpClient: HttpClient) => Promise<T>
 ): Promise<GetServerSidePropsResult<ServerSideProps<T>>> {
-  const { props } = await getServerSideCookies(context)
   const client = new HttpClient(context)
   try {
     const initialData = await callback(client)
-    const { accessToken = null } = nookies.get(context)
+    const { props } = getServerSideCookies(context)
     return {
-      props: { ...props, ...initialData, accessToken },
+      props: { ...props, ...initialData },
     }
   } catch (error: any) {
     const errorToast = getErrorToast(error)
-    console.error(error?.toJSON() ?? error)
+    console.error(error?.toJSON?.() ?? error)
+    const { props } = getServerSideCookies(context)
     return {
       props: { ...props, errorToast },
     }

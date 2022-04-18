@@ -11,7 +11,7 @@ import { Box, HStack } from '@chakra-ui/layout'
 import { UploadFileButton } from '@src/components/FileInput'
 import { useAuth } from '@src/context/AuthContext'
 import { storage } from '@src/firebase'
-import { useErrorToast } from '@src/hooks/useError'
+import { useErrorToast } from '@src/hooks/useErrorToast'
 import {
   ImageCropModal,
   createImageFromFile,

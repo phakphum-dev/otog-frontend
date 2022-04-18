@@ -4,19 +4,18 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 
 import '../styles/globals.css'
-import Error from './_error'
 
 import { ChakraProvider } from '@chakra-ui/provider'
 import { Flex, cookieStorageManager } from '@chakra-ui/react'
 
 import { Chat } from '@src/chat'
+import { ErrorToaster } from '@src/components/ErrorToaster'
 import { Footer } from '@src/components/layout/Footer'
 import { NavBar } from '@src/components/layout/NavBar'
 import { AuthProvider } from '@src/context/AuthContext'
 import { ConfirmModalProvider } from '@src/context/ConfirmContext'
 import { HttpProvider } from '@src/context/HttpContext'
 import { SocketProvider } from '@src/context/SocketContext'
-import { ErrorToastOptions } from '@src/hooks/useError'
 import '@src/styles/nprogress.css'
 import { theme } from '@src/theme'
 
@@ -29,7 +28,6 @@ const TopProgressBar = dynamic(
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const { colorModeCookie, accessToken, errorToast, ...props } = pageProps
-
   return (
     <>
       <Head>
@@ -52,20 +50,14 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         colorModeManager={cookieStorageManager(colorModeCookie as string)}
       >
         <ConfirmModalProvider>
-          <HttpProvider value={errorToast as ErrorToastOptions}>
+          <HttpProvider>
             <AuthProvider value={accessToken as string}>
               <SocketProvider>
                 <TopProgressBar />
                 <Flex direction="column" minH="100vh">
                   <NavBar />
-                  {errorToast ? (
-                    <Error
-                      title={errorToast.title}
-                      statusCode={errorToast.code}
-                    />
-                  ) : (
-                    <Component {...props} />
-                  )}
+                  <Component {...props} />
+                  <ErrorToaster errorToast={errorToast} />
                   <Chat />
                   <Footer />
                 </Flex>

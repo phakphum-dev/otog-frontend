@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import { HttpClient } from '../context/HttpClient'
 import { useHttp } from '../context/HttpContext'
 
-import { useErrorToast } from '@src/hooks/useError'
+import { useErrorToast } from '@src/hooks/useErrorToast'
 
 export function useMutation<T = any, D extends any[] = any[]>(
   onTry: (client: HttpClient, ...args: D) => Promise<T>,

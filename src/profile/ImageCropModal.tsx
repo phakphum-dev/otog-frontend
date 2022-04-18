@@ -23,7 +23,7 @@ import {
 
 import { useAuth } from '@src/context/AuthContext'
 import { storage } from '@src/firebase'
-import { useErrorToast } from '@src/hooks/useError'
+import { useErrorToast } from '@src/hooks/useErrorToast'
 import { useUserProfilePic } from '@src/profile/useProfilePic'
 
 interface ImageUploadModalProps {

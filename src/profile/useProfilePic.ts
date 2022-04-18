@@ -17,6 +17,9 @@ export const useProfilePic = (
     userId ? [userId, small] : null,
     fetcher,
     {
+      onError: (error) => {
+        if (error.code === 'storage/object-not-found') return
+      },
       revalidateOnMount: auto,
       revalidateOnFocus: false,
       shouldRetryOnError: false,

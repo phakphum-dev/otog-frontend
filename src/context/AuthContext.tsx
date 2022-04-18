@@ -1,13 +1,21 @@
 import jwtDecode, { JwtPayload } from 'jwt-decode'
 import { useRouter } from 'next/router'
-import { ProviderProps, createContext, useContext, useEffect } from 'react'
+import {
+  ProviderProps,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+} from 'react'
 import { cache } from 'swr'
 
 import { useHttp } from './HttpContext'
 
-import { useDisclosure, useForceUpdate } from '@chakra-ui/hooks'
+import { useDisclosure } from '@chakra-ui/hooks'
 
 import { LoginModal } from '@src/components/Login'
+import { isServer } from '@src/config'
+import { useForceUpdate } from '@src/hooks/useForceUpdate'
 import { AuthRes, LoginReq, User } from '@src/user/types'
 
 export interface AuthProviderProps {
@@ -36,32 +44,42 @@ export const useAuth = () => useContext(AuthContext)
 export const AuthProvider = (props: AuthValueProps) => {
   const { value: accessToken, children } = props
 
-  const user = getUserData(accessToken)
+  const http = useHttp()
+  const user = getUserData(isServer ? accessToken : http.getAccessToken())
   const isAuthenticated = !!user
   const isAdmin = user?.role === 'admin'
 
   const forceUpdate = useForceUpdate()
 
-  const http = useHttp()
-  const login = async (credentials: LoginReq) => {
-    const { accessToken } = await http.post<AuthRes>(`auth/login`, credentials)
-    http.setNewToken(accessToken)
-    cache.clear()
-  }
+  const login = useCallback(
+    async (credentials: LoginReq) => {
+      const { accessToken } = await http.post<AuthRes>(
+        `auth/login`,
+        credentials
+      )
+      http.setAccessToken(accessToken)
+      cache.clear()
+    },
+    [http]
+  )
 
   const router = useRouter()
-  const logout = () => {
+  const logout = useCallback(() => {
     http.removeToken()
     cache.clear()
     router.push('/login')
-  }
+  }, [router, http])
+  const updateOnLogout = useCallback(() => {
+    cache.clear()
+    forceUpdate()
+  }, [forceUpdate])
 
   const loginModal = useDisclosure()
 
   useEffect(() => {
     http.openLoginModal = loginModal.onOpen
-    http.updateOnLogout = forceUpdate
-  }, [http, loginModal.onOpen, forceUpdate])
+    http.updateOnLogout = updateOnLogout
+  }, [http, loginModal.onOpen, updateOnLogout])
 
   const value = {
     login,

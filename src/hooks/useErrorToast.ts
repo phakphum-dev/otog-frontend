@@ -1,5 +1,7 @@
-import { useToast, UseToastOptions } from '@chakra-ui/toast'
-import { AxiosError } from 'axios'
+import axios from 'axios'
+import { useCallback } from 'react'
+
+import { UseToastOptions, useToast } from '@chakra-ui/toast'
 
 export type ErrorToastOptions = UseToastOptions & {
   code: number | null
@@ -7,15 +9,20 @@ export type ErrorToastOptions = UseToastOptions & {
 
 export function useErrorToast() {
   const toast = useToast()
-  const onError = (e: any) => {
-    toast(getErrorToast(e))
-  }
+  const onError = useCallback(
+    (error: unknown) => {
+      const toastData = getErrorToast(error)
+      if (!toastData.id || !toast.isActive(toastData.id)) {
+        toast(toastData)
+      }
+    },
+    [toast]
+  )
   return { onError, toast }
 }
 
-export function getErrorToast(e: any): ErrorToastOptions {
-  if (e.isAxiosError) {
-    const error = e as AxiosError
+export function getErrorToast(error: any): ErrorToastOptions {
+  if (axios.isAxiosError(error)) {
     const url = error.config.url
     switch (error.response?.status) {
       case 401:
@@ -26,6 +33,7 @@ export function getErrorToast(e: any): ErrorToastOptions {
             status: 'error',
             isClosable: true,
             code: 401,
+            id: 4010,
           }
         }
         return {
@@ -33,6 +41,7 @@ export function getErrorToast(e: any): ErrorToastOptions {
           status: 'warning',
           duration: 2000,
           code: 401,
+          id: 4011,
         }
       case 403:
         if (url === 'auth/refresh/token') {
@@ -42,6 +51,7 @@ export function getErrorToast(e: any): ErrorToastOptions {
             status: 'info',
             isClosable: true,
             code: 403,
+            id: 4030,
           }
         }
         return {
@@ -49,6 +59,7 @@ export function getErrorToast(e: any): ErrorToastOptions {
           status: 'error',
           duration: 2000,
           code: 403,
+          id: 4031,
         }
       case 409:
         /*eslint-disable no-case-declarations*/
@@ -61,6 +72,7 @@ export function getErrorToast(e: any): ErrorToastOptions {
               status: 'error',
               isClosable: true,
               code: 409,
+              id: 4090,
             }
           }
           if (message === 'showName was taken.') {
@@ -70,6 +82,7 @@ export function getErrorToast(e: any): ErrorToastOptions {
               status: 'error',
               isClosable: true,
               code: 409,
+              id: 4091,
             }
           }
         }
@@ -79,6 +92,7 @@ export function getErrorToast(e: any): ErrorToastOptions {
             status: 'error',
             isClosable: true,
             code: 409,
+            id: 4092,
           }
         }
         return {
@@ -86,12 +100,14 @@ export function getErrorToast(e: any): ErrorToastOptions {
           status: 'error',
           isClosable: true,
           code: 409,
+          id: 4093,
         }
       case undefined: {
         return {
           title: 'ไม่สามารถติดต่อกับเซิฟเวอร์ได้',
           status: 'error',
           code: 503,
+          id: 5030,
         }
       }
     }
@@ -103,7 +119,7 @@ export function getErrorToast(e: any): ErrorToastOptions {
       code: error.response?.status ?? null,
     }
   }
-  const error = new Error(e)
+  error = new Error(error)
   return {
     title: error.name,
     description: error.message,

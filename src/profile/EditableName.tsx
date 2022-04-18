@@ -10,7 +10,7 @@ import { HStack } from '@chakra-ui/layout'
 
 import { useAuth } from '@src/context/AuthContext'
 import { useHttp } from '@src/context/HttpContext'
-import { useErrorToast } from '@src/hooks/useError'
+import { useErrorToast } from '@src/hooks/useErrorToast'
 import { useMutation } from '@src/hooks/useMutation'
 import { editShowname } from '@src/user/queries'
 import { UserProfile } from '@src/user/types'
