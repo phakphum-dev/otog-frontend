@@ -2,16 +2,9 @@ import { useCallback, useEffect, useMemo, useReducer } from 'react'
 import { mutate, useSWRInfinite } from 'swr'
 
 import { useAuth } from '../context/AuthContext'
+import { Message } from './types'
 
 import { useSocket } from '@src/context/SocketContext'
-import { User } from '@src/user/types'
-
-export type Message = {
-  id: number
-  message: string
-  creationDate: string
-  user: Omit<User, 'role' | 'username'>
-}
 
 const useLoadChat = () => {
   const { isAuthenticated } = useAuth()
