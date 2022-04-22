@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { FaUser } from 'react-icons/fa'
+import { FaTasks, FaUser } from 'react-icons/fa'
 
 import { Stack } from '@chakra-ui/layout'
 
@@ -12,6 +12,7 @@ import { getServerSideFetch } from '@src/context/HttpClient'
 import { EditableName } from '@src/profile/EditableName'
 import { Graph } from '@src/profile/Graph'
 import { ProfilePicture, ProfileUpload } from '@src/profile/ProfilePicture'
+import { ProfileSubmissionTable } from '@src/submission/SubmissionTable'
 import { UserProfile } from '@src/user/types'
 
 export interface ProfilePageProps {
@@ -33,13 +34,19 @@ export default function ProfilePage(props: ProfilePageProps) {
           <EditableName userData={userData} />
         </Title>
       </TitleLayout>
-      <Stack direction={{ base: 'column', md: 'row' }} spacing={8}>
-        {user?.id === Number(id) ? (
-          <ProfileUpload />
-        ) : (
-          <ProfilePicture userId={id} />
+      <Stack>
+        <Stack direction={{ base: 'column', md: 'row' }} spacing={8}>
+          {user?.id === id ? <ProfileUpload /> : <ProfilePicture userId={id} />}
+          <Graph userContest={userData.attendedContest} />
+        </Stack>
+        {user?.role === 'admin' && (
+          <Stack>
+            <TitleLayout>
+              <Title icon={FaTasks}>ผลตรวจ</Title>
+            </TitleLayout>
+            <ProfileSubmissionTable userId={id} />{' '}
+          </Stack>
         )}
-        <Graph userContest={userData.attendedContest} />
       </Stack>
     </PageContainer>
   )
