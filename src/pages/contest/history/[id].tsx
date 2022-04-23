@@ -53,9 +53,10 @@ const fontSize: Record<number, string> = {
 
 export interface ContestHistoryProps {
   scoreboard: ContestScoreboard
-  scoreboardPrize: Record<Prize, MiniSubmission[]>
+  scoreboardPrize: ContestPrize
 }
 
+type ContestPrize = Record<Prize, MiniSubmission[]>
 type Prize = typeof prizes[number]
 const prizes = [
   'firstBlood',
@@ -305,6 +306,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
   return getServerSideFetch<ContestHistoryProps>(context, async (client) => ({
     scoreboard: await client.get<ContestScoreboard>(`contest/${id}/scoreboard`),
-    scoreboardPrize: await client.get(`contest/${id}/prize`),
+    scoreboardPrize: await client.get<ContestPrize>(`contest/${id}/prize`),
   }))
 }
