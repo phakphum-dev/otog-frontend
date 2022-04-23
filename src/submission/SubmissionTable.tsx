@@ -60,6 +60,28 @@ export const SubmissionTable = () => {
   )
 }
 
+export interface SubmissionTableProps {
+  userId: number
+}
+
+export const ProfileSubmissionTable = ({ userId }: SubmissionTableProps) => {
+  const submissionData = useSubmissions(userId)
+  const { submissions, loadMore, hasMore } = useSubmissionInfinite(
+    submissionData
+  )
+  return submissions ? (
+    <SubmissionTableBase
+      submissions={submissions}
+      loadMore={loadMore}
+      hasMore={hasMore}
+    />
+  ) : (
+    <Flex justify="center" py={16}>
+      <Spinner size="xl" />
+    </Flex>
+  )
+}
+
 export const AllSubmissionTable = () => {
   const submissionData = useAllSubmissions()
   const { submissions, loadMore, hasMore } = useSubmissionInfinite(

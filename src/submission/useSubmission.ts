@@ -30,7 +30,7 @@ export function useAllSubmissions() {
   )
 }
 
-export function useSubmissions() {
+export function useSubmissions(userId?: number) {
   const { user } = useAuth()
   return useSWRInfinite<SubmissionWithProblem[]>(
     (pageIndex, previousPageData) => {
@@ -41,10 +41,10 @@ export function useSubmissions() {
 
       // first page, we don't have `previousPageData`
       if (pageIndex === 0 || !previousPageData)
-        return `submission/user/${user.id}`
+        return `submission/user/${userId ?? user.id}`
 
       // add the cursor to the API endpoint
-      return `submission/user/${user.id}?offset=${
+      return `submission/user/${userId ?? user.id}?offset=${
         previousPageData[previousPageData?.length - 1].id
       }`
     },
