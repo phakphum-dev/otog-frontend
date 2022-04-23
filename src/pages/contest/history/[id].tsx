@@ -3,7 +3,6 @@ import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import NextLink from 'next/link'
 import React, { useMemo } from 'react'
-import { IconType } from 'react-icons'
 import { CgDetailsLess, CgDetailsMore } from 'react-icons/cg'
 import { FaMedal, FaTrophy } from 'react-icons/fa'
 
@@ -227,7 +226,7 @@ export default function ContestHistory(props: ContestHistoryProps) {
         </Table>
       </Box>
 
-      <TitleLayout>
+      <TitleLayout mt={32}>
         <Title icon={FaMedal}>รางวัล</Title>
       </TitleLayout>
       <Box overflowX="auto">
