@@ -2,8 +2,8 @@ import Head from 'next/head'
 import NextLink from 'next/link'
 import { FaTrophy } from 'react-icons/fa'
 
-import { Button } from '@chakra-ui/button'
 import { Box, Flex, Text } from '@chakra-ui/layout'
+import { Link } from '@chakra-ui/react'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
@@ -41,9 +41,9 @@ export default function ContestHistoryPage() {
                   <Td>{contest.id}</Td>
                   <Td>
                     <NextLink href={`/contest/history/${contest.id}`} passHref>
-                      <Button as="a" variant="link" px={1} color="otog">
+                      <Link as="a" px={1}>
                         {contest.name}
-                      </Button>
+                      </Link>
                     </NextLink>
                   </Td>
                   <Td>

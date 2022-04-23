@@ -4,11 +4,12 @@ import Head from 'next/head'
 import NextLink from 'next/link'
 import React, { useMemo } from 'react'
 import { CgDetailsLess, CgDetailsMore } from 'react-icons/cg'
-import { FaTrophy } from 'react-icons/fa'
+import { FaMedal, FaTrophy } from 'react-icons/fa'
 
 import { ButtonGroup, IconButton } from '@chakra-ui/button'
 import { useDisclosure } from '@chakra-ui/hooks'
-import { Box, Link } from '@chakra-ui/layout'
+import { Box, Link, Stack } from '@chakra-ui/layout'
+import { Text } from '@chakra-ui/react'
 import { HTMLChakraProps, useTheme } from '@chakra-ui/system'
 import {
   Td as TData,
@@ -51,13 +52,59 @@ const fontSize: Record<number, string> = {
 
 export interface ContestHistoryProps {
   scoreboard: ContestScoreboard
+  scoreboardPrize: ContestPrize
 }
 
-export default function ContestHistory(props: ContestHistoryProps) {
-  const { scoreboard } = props
+type ContestPrize = Record<Prize, MiniSubmission[]>
+type Prize = typeof prizes[number]
+const prizes = [
+  'firstBlood',
+  'fasterThanLight',
+  'passedInOne',
+  'oneManSolve',
+] as const
 
-  const getTotalScore = (user: UserWithSubmission) =>
-    sum(user.submissions.map((submission) => submission.score))
+const prizeDescription: Record<
+  Prize,
+  { name: string; description: string; emoji: string }
+> = {
+  firstBlood: {
+    name: 'First Blood',
+    description: 'The first user that passed the task.',
+    emoji: '💀',
+  },
+  fasterThanLight: {
+    name: 'Faster Than Light',
+    description: 'The user that solved the task with fastest algorithm.',
+    emoji: '⚡️',
+  },
+  passedInOne: {
+    name: 'Passed In One',
+    description: 'The user that passed the task in one submission.',
+    emoji: '🎯',
+  },
+  oneManSolve: {
+    name: 'One Man Solve',
+    description: 'The only one user that passed the task.',
+    emoji: '🏅',
+  },
+}
+
+type MiniSubmission = {
+  id: number
+  problem: {
+    id: number
+  }
+  user: {
+    id: number
+    showName: string
+  }
+}
+const getTotalScore = (user: UserWithSubmission) =>
+  sum(user.submissions.map((submission) => submission.score))
+
+export default function ContestHistory(props: ContestHistoryProps) {
+  const { scoreboard, scoreboardPrize } = props
 
   const users = useMemo(() => {
     const scored = scoreboard.users.map((user) => ({
@@ -151,7 +198,7 @@ export default function ContestHistory(props: ContestHistoryProps) {
                 }}
               >
                 <Td>{user.rank}</Td>
-                <Td maxW={300} isTruncated>
+                <Td maxW={300} isTruncated={!isOpen}>
                   <NextLink href={`/profile/${user.id}`}>
                     <Link variant="hidden">{user.showName}</Link>
                   </NextLink>
@@ -178,6 +225,75 @@ export default function ContestHistory(props: ContestHistoryProps) {
           </Tbody>
         </Table>
       </Box>
+
+      <TitleLayout mt={32}>
+        <Title icon={FaMedal}>รางวัล</Title>
+      </TitleLayout>
+      <Box overflowX="auto">
+        <Table variant="simple">
+          <Thead>
+            <Tr whiteSpace="nowrap">
+              <Th />
+              {scoreboard.problems.map((problem) => (
+                <Th key={problem.id}>
+                  <Link
+                    isExternal
+                    href={`${API_HOST}problem/doc/${problem.id}`}
+                    variant="hidden"
+                  >
+                    {problem.name}
+                  </Link>
+                </Th>
+              ))}
+            </Tr>
+          </Thead>
+          <Tbody sx={{ td: { lineHeight: 'normal' } }}>
+            {prizes.map((prize) => {
+              return (
+                <Tr key={prize}>
+                  <Td textAlign="left" whiteSpace="nowrap">
+                    <Tooltip
+                      hasArrow
+                      label={prizeDescription[prize].description}
+                      placement="top"
+                      closeOnClick={false}
+                      shouldWrapChildren
+                    >
+                      {prizeDescription[prize].emoji}{' '}
+                      {prizeDescription[prize].name}
+                    </Tooltip>
+                  </Td>
+                  {scoreboard.problems.map((problem) => {
+                    const submissions = scoreboardPrize[prize].filter(
+                      (submission) => problem.id === submission.problem.id
+                    )
+                    return (
+                      <Td key={problem.id}>
+                        <Stack>
+                          {submissions.length === 0 ? (
+                            <Text>-</Text>
+                          ) : (
+                            submissions.map((submission) => (
+                              <NextLink
+                                href={`/profile/${submission.user.id}`}
+                                key={submission.id}
+                              >
+                                <Link variant="hidden" maxW={250} isTruncated>
+                                  {submission.user.showName}
+                                </Link>
+                              </NextLink>
+                            ))
+                          )}
+                        </Stack>
+                      </Td>
+                    )
+                  })}
+                </Tr>
+              )
+            })}
+          </Tbody>
+        </Table>
+      </Box>
     </PageContainer>
   )
 }
@@ -189,5 +305,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
   return getServerSideFetch<ContestHistoryProps>(context, async (client) => ({
     scoreboard: await client.get<ContestScoreboard>(`contest/${id}/scoreboard`),
+    scoreboardPrize: await client.get<ContestPrize>(`contest/${id}/prize`),
   }))
 }
