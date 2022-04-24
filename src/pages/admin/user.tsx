@@ -20,18 +20,18 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/modal'
-import { HStack } from '@chakra-ui/react'
+import { HStack, Select, UseDisclosureReturn } from '@chakra-ui/react'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
-import { createUser } from '@src/admin/queries/user'
+import { createUser, editUser } from '@src/admin/queries/user'
 import { RenderLater } from '@src/components/RenderLater'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { getUserData } from '@src/context/AuthContext'
 import { getServerSideCookies } from '@src/context/HttpClient'
 import { useMutation } from '@src/hooks/useMutation'
-import { User } from '@src/user/types'
+import { EditUser, User } from '@src/user/types'
 import { useUsers } from '@src/user/useUser'
 
 export default function AdminProblemPage() {
@@ -135,6 +135,77 @@ const CreateUserModalButton = () => {
   )
 }
 
+interface EditUserModalProps {
+  user: User
+  editModal: UseDisclosureReturn
+}
+const EditUserModalButton = (props: EditUserModalProps) => {
+  const { user, editModal } = props
+  const { register, reset, handleSubmit } = useForm<EditUser>({
+    defaultValues: user,
+  })
+  const editUserMutation = useMutation(editUser)
+  const onSubmit = async (value: EditUser) => {
+    try {
+      await editUserMutation(user.id, value)
+      mutate('user')
+      editModal.onClose()
+      reset()
+    } catch {}
+  }
+
+  return (
+    <Modal {...editModal} size="sm">
+      <ModalOverlay />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <ModalContent>
+          <ModalHeader>แก้ไขผู้ใช้งาน</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Stack>
+              <FormControl>
+                <FormLabel>ชื่อผู้ใช้</FormLabel>
+                <Input
+                  isRequired
+                  {...register('username')}
+                  placeholder="ชื่อผู้ใช้"
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>รหัสผ่าน</FormLabel>
+                <Input
+                  isRequired
+                  {...register('password')}
+                  placeholder="รหัสผ่าน"
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>ชื่อที่ใช้แสดง</FormLabel>
+                <Input
+                  isRequired
+                  {...register('showName')}
+                  placeholder="ชื่อที่ใช้แสดง"
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>สถานะ</FormLabel>
+                <Select {...register('role')}>
+                  <option value="admin">Admin</option>
+                  <option value="user">User</option>
+                </Select>
+              </FormControl>
+            </Stack>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="green" type="submit">
+              บันทึก
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </form>
+    </Modal>
+  )
+}
 const UserAdminTable = () => {
   const { data: users } = useUsers()
   return users ? (
@@ -194,9 +265,9 @@ const UserAdminRow = (props: ProblemAdminProps) => {
           icon={<FaPencilAlt />}
           aria-label="config"
           colorScheme="blue"
-          disabled
           onClick={editModal.onOpen}
         />
+        <EditUserModalButton editModal={editModal} user={user} />
       </Td>
     </Tr>
   )
