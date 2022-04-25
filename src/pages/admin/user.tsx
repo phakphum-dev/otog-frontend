@@ -20,18 +20,19 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/modal'
-import { HStack } from '@chakra-ui/react'
+import { HStack, Select, UseDisclosureReturn } from '@chakra-ui/react'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
-import { createUser } from '@src/admin/queries/user'
+import { createUser, editUser } from '@src/admin/queries/user'
 import { RenderLater } from '@src/components/RenderLater'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { getUserData } from '@src/context/AuthContext'
 import { getServerSideCookies } from '@src/context/HttpClient'
 import { useMutation } from '@src/hooks/useMutation'
-import { User } from '@src/user/types'
+import { registerUser } from '@src/user/queries'
+import { CreateUser, EditUser, User } from '@src/user/types'
 import { useUsers } from '@src/user/useUser'
 
 export default function AdminProblemPage() {
@@ -70,8 +71,8 @@ const CreateUserModalButton = () => {
 
   const { register, reset, handleSubmit } = useForm()
   // TODO: form type
-  const createUserMutation = useMutation(createUser)
-  const onSubmit = async (value: any) => {
+  const createUserMutation = useMutation(registerUser)
+  const onSubmit = async (value: CreateUser) => {
     try {
       await createUserMutation(value)
       mutate('user')
@@ -135,6 +136,73 @@ const CreateUserModalButton = () => {
   )
 }
 
+interface EditUserModalProps {
+  user: User
+  editModal: UseDisclosureReturn
+}
+const EditUserModalButton = (props: EditUserModalProps) => {
+  const { user, editModal } = props
+  const { register, reset, handleSubmit } = useForm<EditUser>({
+    defaultValues: user,
+  })
+  const editUserMutation = useMutation(editUser)
+  const onSubmit = async (value: EditUser) => {
+    try {
+      await editUserMutation(user.id, value)
+      mutate('user')
+      editModal.onClose()
+      reset({ ...value, password: '' })
+    } catch {}
+  }
+
+  return (
+    <Modal {...editModal} size="sm">
+      <ModalOverlay />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <ModalContent>
+          <ModalHeader>แก้ไขผู้ใช้งาน</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Stack>
+              <FormControl>
+                <FormLabel>ชื่อผู้ใช้</FormLabel>
+                <Input
+                  isRequired
+                  {...register('username')}
+                  placeholder="ชื่อผู้ใช้"
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>รหัสผ่าน</FormLabel>
+                <Input {...register('password')} placeholder="รหัสผ่าน" />
+              </FormControl>
+              <FormControl>
+                <FormLabel>ชื่อที่ใช้แสดง</FormLabel>
+                <Input
+                  isRequired
+                  {...register('showName')}
+                  placeholder="ชื่อที่ใช้แสดง"
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>สถานะ</FormLabel>
+                <Select {...register('role')}>
+                  <option value="admin">Admin</option>
+                  <option value="user">User</option>
+                </Select>
+              </FormControl>
+            </Stack>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="green" type="submit">
+              บันทึก
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </form>
+    </Modal>
+  )
+}
 const UserAdminTable = () => {
   const { data: users } = useUsers()
   return users ? (
@@ -145,6 +213,7 @@ const UserAdminTable = () => {
             <Th>#</Th>
             <Th>ชื่อผู้ใช้</Th>
             <Th>ชื่อที่ใช้แสดง</Th>
+            <Th>สถานะ</Th>
             <Th>แก้ไข</Th>
           </Tr>
         </Thead>
@@ -179,24 +248,25 @@ const UserAdminRow = (props: ProblemAdminProps) => {
   return (
     <Tr>
       <Td>{user.id}</Td>
-      <Td>
+      <Td maxW={200}>
         <NextLink href={`/profile/${user.id}`}>
           <Link variant="hidden">{user.username}</Link>
         </NextLink>
       </Td>
-      <Td maxW={300}>
+      <Td maxW={200}>
         <NextLink href={`/profile/${user.id}`}>
           <Link variant="hidden">{user.showName}</Link>
         </NextLink>
       </Td>
+      <Td textTransform="capitalize">{user.role}</Td>
       <Td>
         <IconButton
           icon={<FaPencilAlt />}
           aria-label="config"
           colorScheme="blue"
-          disabled
           onClick={editModal.onOpen}
         />
+        <EditUserModalButton editModal={editModal} user={user} />
       </Td>
     </Tr>
   )
