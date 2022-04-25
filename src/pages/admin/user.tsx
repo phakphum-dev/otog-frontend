@@ -31,7 +31,8 @@ import { Title, TitleLayout } from '@src/components/layout/Title'
 import { getUserData } from '@src/context/AuthContext'
 import { getServerSideCookies } from '@src/context/HttpClient'
 import { useMutation } from '@src/hooks/useMutation'
-import { EditUser, User } from '@src/user/types'
+import { registerUser } from '@src/user/queries'
+import { CreateUser, EditUser, User } from '@src/user/types'
 import { useUsers } from '@src/user/useUser'
 
 export default function AdminProblemPage() {
@@ -70,8 +71,8 @@ const CreateUserModalButton = () => {
 
   const { register, reset, handleSubmit } = useForm()
   // TODO: form type
-  const createUserMutation = useMutation(createUser)
-  const onSubmit = async (value: any) => {
+  const createUserMutation = useMutation(registerUser)
+  const onSubmit = async (value: CreateUser) => {
     try {
       await createUserMutation(value)
       mutate('user')
@@ -150,7 +151,7 @@ const EditUserModalButton = (props: EditUserModalProps) => {
       await editUserMutation(user.id, value)
       mutate('user')
       editModal.onClose()
-      reset()
+      reset({ ...value, password: '' })
     } catch {}
   }
 
@@ -212,6 +213,7 @@ const UserAdminTable = () => {
             <Th>#</Th>
             <Th>ชื่อผู้ใช้</Th>
             <Th>ชื่อที่ใช้แสดง</Th>
+            <Th>สถานะ</Th>
             <Th>แก้ไข</Th>
           </Tr>
         </Thead>
@@ -246,16 +248,17 @@ const UserAdminRow = (props: ProblemAdminProps) => {
   return (
     <Tr>
       <Td>{user.id}</Td>
-      <Td>
+      <Td maxW={200}>
         <NextLink href={`/profile/${user.id}`}>
           <Link variant="hidden">{user.username}</Link>
         </NextLink>
       </Td>
-      <Td maxW={300}>
+      <Td maxW={200}>
         <NextLink href={`/profile/${user.id}`}>
           <Link variant="hidden">{user.showName}</Link>
         </NextLink>
       </Td>
+      <Td textTransform="capitalize">{user.role}</Td>
       <Td>
         <IconButton
           icon={<FaPencilAlt />}
