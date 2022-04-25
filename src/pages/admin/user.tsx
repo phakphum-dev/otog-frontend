@@ -173,11 +173,7 @@ const EditUserModalButton = (props: EditUserModalProps) => {
               </FormControl>
               <FormControl>
                 <FormLabel>รหัสผ่าน</FormLabel>
-                <Input
-                  isRequired
-                  {...register('password')}
-                  placeholder="รหัสผ่าน"
-                />
+                <Input {...register('password')} placeholder="รหัสผ่าน" />
               </FormControl>
               <FormControl>
                 <FormLabel>ชื่อที่ใช้แสดง</FormLabel>

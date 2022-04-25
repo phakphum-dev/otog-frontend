@@ -15,7 +15,7 @@ export type CreateUser = Pick<User, 'showName' | 'username'> & {
 }
 
 export type EditUser = Pick<User, 'username' | 'role' | 'showName'> & {
-  password: string
+  password?: string
 }
 
 export interface LoginReq {
