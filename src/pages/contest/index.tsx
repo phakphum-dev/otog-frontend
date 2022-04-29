@@ -13,6 +13,7 @@ import { Tooltip } from '@chakra-ui/tooltip'
 import { AnnouncementCarousel } from '@src/announcement/components/AnnouncementCarousel'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
+import { OFFLINE_MODE } from '@src/config'
 import { TaskCard } from '@src/contest/TaskCard'
 import { Contest } from '@src/contest/types'
 import { useCurrentContest } from '@src/contest/useContest'
@@ -138,7 +139,14 @@ export const PostContest = (props: ContestProps) => {
           <Heading textAlign="center">
             การแข่งขัน {contest.name} จบลงแล้ว
           </Heading>
-          <NextLink href={`/contest/history/${contest.id}`} passHref>
+          <NextLink
+            href={
+              OFFLINE_MODE
+                ? '/easter_egg.gif'
+                : `/contest/history/${contest.id}`
+            }
+            passHref
+          >
             <Button as="a" variant="otog">
               สรุปผลการแข่งขัน
             </Button>

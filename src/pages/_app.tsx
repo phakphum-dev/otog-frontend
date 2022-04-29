@@ -1,3 +1,4 @@
+import { loader } from '@monaco-editor/react'
 import 'focus-visible/dist/focus-visible'
 import { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
@@ -12,6 +13,7 @@ import { Chat } from '@src/chat'
 import { ErrorToaster } from '@src/components/ErrorToaster'
 import { Footer } from '@src/components/layout/Footer'
 import { NavBar } from '@src/components/layout/NavBar'
+import { OFFLINE_MODE } from '@src/config'
 import { AuthProvider } from '@src/context/AuthContext'
 import { ConfirmModalProvider } from '@src/context/ConfirmContext'
 import { HttpProvider } from '@src/context/HttpContext'
@@ -25,6 +27,14 @@ const TopProgressBar = dynamic(
     ssr: false,
   }
 )
+
+if (OFFLINE_MODE) {
+  loader.config({
+    paths: {
+      vs: '/vs',
+    },
+  })
+}
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const { colorModeCookie, accessToken, errorToast, ...props } = pageProps
@@ -58,7 +68,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                   <NavBar />
                   <Component {...props} />
                   <ErrorToaster errorToast={errorToast} />
-                  <Chat />
+                  {!OFFLINE_MODE && <Chat />}
                   <Footer />
                 </Flex>
               </SocketProvider>

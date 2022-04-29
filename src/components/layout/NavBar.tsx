@@ -35,6 +35,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 
+import { OFFLINE_MODE } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
 import { useUserProfilePic } from '@src/profile/useProfilePic'
 
@@ -92,11 +93,18 @@ export const NavBar = () => {
   const { isAuthenticated, user, logout, isAdmin } = useAuth()
   const { url } = useUserProfilePic({ small: true })
 
-  const entries = [
-    { href: '/problem', title: 'โจทย์' },
-    { href: isAdmin ? '/submission/all' : '/submission', title: 'ผลตรวจ' },
-    { href: '/contest', title: 'แข่งขัน' },
-  ]
+  const entries =
+    !OFFLINE_MODE || isAdmin
+      ? [
+          { href: '/problem', title: 'โจทย์' },
+          {
+            href: isAdmin ? '/submission/all' : '/submission',
+            title: 'ผลตรวจ',
+          },
+
+          { href: '/contest', title: 'แข่งขัน' },
+        ]
+      : []
 
   return (
     <>
@@ -253,7 +261,7 @@ const DrawerButton = forwardRef(
 )
 
 const AvatarMenu = () => {
-  const { user, logout } = useAuth()
+  const { user, isAdmin, logout } = useAuth()
   const { url } = useUserProfilePic({ small: true })
   const [isClient, setClient] = useState(false)
   useEffect(() => {
@@ -261,15 +269,18 @@ const AvatarMenu = () => {
   }, [])
   return (
     <Menu>
+      {OFFLINE_MODE && !isAdmin && <Text p={2}>สวัสดี {user?.showName}</Text>}
       <MenuButton as={Button} variant="link" rightIcon={<ChevronDownIcon />}>
         <Avatar size="xs" src={url} />
       </MenuButton>
       {/* fix render menulist on ssr */}
       {isClient && (
         <MenuList>
-          <NextLink href={`/profile/${user?.id}`} passHref>
-            <MenuItem as="a">โปรไฟล์</MenuItem>
-          </NextLink>
+          {!OFFLINE_MODE && (
+            <NextLink href={`/profile/${user?.id}`} passHref>
+              <MenuItem as="a">โปรไฟล์</MenuItem>
+            </NextLink>
+          )}
           <MenuItem color="red.500" onClick={logout}>
             ออกจากระบบ
           </MenuItem>

@@ -1,6 +1,7 @@
 export const isServer = typeof window === 'undefined'
 export const isDevelopment = process.env.NODE_ENV === 'development'
 export const isProduction = process.env.NODE_ENV === 'production'
+export const OFFLINE_MODE = process.env.NEXT_PUBLIC_OFFLINE_MODE === 'true'
 export const APP_HOST = process.env.NEXT_PUBLIC_APP_HOST as string
 export const API_HOST = process.env.NEXT_PUBLIC_API_HOST as string
 export const API_HOST_SSR = process.env.NEXT_PUBLIC_API_HOST_SSR as string

@@ -7,6 +7,7 @@ import ComputerImage from '../../public/computer.svg'
 import { Button, Center, HStack, Heading, Stack, Text } from '@chakra-ui/react'
 
 import { PageContainer } from '@src/components/layout/PageContainer'
+import { OFFLINE_MODE } from '@src/config'
 import { getServerSideCookies } from '@src/context/HttpClient'
 
 export default function HomePage() {
@@ -46,6 +47,14 @@ export default function HomePage() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  if (OFFLINE_MODE) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/login',
+      },
+    }
+  }
   const serverSideCookies = getServerSideCookies(context)
   if (serverSideCookies.props.accessToken) {
     return {
