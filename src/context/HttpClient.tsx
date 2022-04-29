@@ -6,13 +6,21 @@ import { ParsedUrlQuery } from 'querystring'
 
 import { UseToastOptions } from '@chakra-ui/toast'
 
-import { API_HOST, API_HOST_SSR, isProduction, isServer } from '@src/config'
+import {
+  API_HOST,
+  API_HOST_SSR,
+  OFFLINE_MODE,
+  isProduction,
+  isServer,
+} from '@src/config'
 import { getErrorToast } from '@src/hooks/useErrorToast'
 import { getColorMode } from '@src/theme/ColorMode'
 import { ColorModeProps } from '@src/theme/ColorMode'
 import { AuthRes } from '@src/user/types'
 import { omit } from '@src/utils/omit'
 import { serializeCookies } from '@src/utils/serializeCookie'
+
+const secure = !OFFLINE_MODE && isProduction
 
 export const Axios = axios.create({
   baseURL: isServer ? API_HOST_SSR : API_HOST,
@@ -143,7 +151,7 @@ class HttpClient {
         ...(refreshToken && {
           cookie: cookie.serialize('RID', refreshToken, {
             httpOnly: true,
-            secure: isProduction,
+            secure,
           }),
         }),
       },
@@ -157,7 +165,7 @@ class HttpClient {
           refreshTokenCookie,
           cookie.serialize('accessToken', newAccessToken, {
             path: '/',
-            secure: isProduction,
+            secure,
           }),
         ])
         // set request header for retrying on original request
@@ -175,7 +183,7 @@ class HttpClient {
   setAccessToken(accessToken: string, context: Context | null = null) {
     nookies.set(context, 'accessToken', accessToken, {
       path: '/',
-      secure: isProduction,
+      secure,
     })
   }
 
