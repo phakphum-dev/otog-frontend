@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 
 import { CenteredCard, LoginForm } from '@src/components/Login'
 import { PageContainer } from '@src/components/layout/PageContainer'
+import { OFFLINE_MODE } from '@src/config'
 import { getServerSideCookies } from '@src/context/HttpClient'
 
 export default function LoginPage() {
@@ -10,7 +11,11 @@ export default function LoginPage() {
   return (
     <PageContainer>
       <CenteredCard>
-        <LoginForm onSuccess={() => router.replace('/problem')} />
+        <LoginForm
+          onSuccess={() =>
+            router.replace(OFFLINE_MODE ? '/contest' : '/problem')
+          }
+        />
       </CenteredCard>
     </PageContainer>
   )
@@ -22,7 +27,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       redirect: {
         permanent: false,
-        destination: '/problem',
+        destination: OFFLINE_MODE ? '/contest' : '/problem',
       },
     }
   }

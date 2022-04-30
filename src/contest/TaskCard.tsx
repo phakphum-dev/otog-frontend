@@ -29,7 +29,7 @@ import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 import { Collapse } from '@chakra-ui/transition'
 
-import { API_HOST } from '@src/config'
+import { API_HOST, OFFLINE_MODE } from '@src/config'
 import { useLoading } from '@src/hooks/useLoading'
 import { useMutation } from '@src/hooks/useMutation'
 import { Problem } from '@src/problem/types'
@@ -143,7 +143,9 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
         <Select name="language" size="sm" flex={1}>
           <option value="cpp">C++</option>
           <option value="c">C</option>
-          <option value="python">Python</option>
+          <option value="python" disabled={OFFLINE_MODE}>
+            Python
+          </option>
         </Select>
         <Spacer />
         <HStack justify="flex-end" {...getRootProps()}>
@@ -213,7 +215,9 @@ export const ContestEditorForm = (props: ContestEditorFormProps) => {
         <Select name="language" size="sm" flex={1} onChange={onSelectChange}>
           <option value="cpp">C++</option>
           <option value="c">C</option>
-          <option value="python">Python</option>
+          <option value="python" disabled={OFFLINE_MODE}>
+            Python
+          </option>
         </Select>
         <Spacer />
         <Box flex={1}>

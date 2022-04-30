@@ -18,6 +18,7 @@ import {
   Stack,
 } from '@chakra-ui/react'
 
+import { OFFLINE_MODE } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
 import { useErrorToast } from '@src/hooks/useErrorToast'
 import { LoginReq } from '@src/user/types'
@@ -91,10 +92,14 @@ export const LoginForm = (props: LoginFormProps) => {
         <Button type="submit" variant="otog">
           เข้าสู่ระบบ
         </Button>
-        <Divider />
-        <NextLink href="/register" passHref>
-          <Button as="a">ลงทะเบียน</Button>
-        </NextLink>
+        {!OFFLINE_MODE && (
+          <>
+            <Divider />
+            <NextLink href="/register" passHref>
+              <Button as="a">ลงทะเบียน</Button>
+            </NextLink>
+          </>
+        )}
       </Stack>
     </form>
   )
