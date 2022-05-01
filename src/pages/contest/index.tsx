@@ -104,7 +104,11 @@ export const MidContest = (props: ContestProps) => {
   const router = useRouter()
   useEffect(() => {
     if (remaining <= 0) {
-      router.push(`/contest/history/${contest.id}`)
+      if (OFFLINE_MODE) {
+        mutate('time')
+      } else {
+        router.push(`/contest/history/${contest.id}`)
+      }
     }
   }, [remaining, contest.id, router])
   return (
