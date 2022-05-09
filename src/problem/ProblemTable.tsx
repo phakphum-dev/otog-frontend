@@ -1,7 +1,6 @@
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import { PropsWithChildren, memo, useEffect, useMemo, useState } from 'react'
-import { FaArrowDown, FaArrowUp } from 'react-icons/fa'
+import { memo, useEffect, useMemo, useState } from 'react'
 
 import { CodeModal } from '../components/Code'
 import { RenderLater } from '../components/RenderLater'
@@ -13,7 +12,6 @@ import {
   Box,
   Button,
   Flex,
-  HStack,
   Link,
   Modal,
   ModalBody,
@@ -25,10 +23,8 @@ import {
   Spinner,
   Stack,
   Table,
-  TableColumnHeaderProps,
   Tbody,
   Td,
-  Text,
   Th,
   Thead,
   Tr,
@@ -37,6 +33,8 @@ import {
 } from '@chakra-ui/react'
 
 import { toggleProblem } from '@src/admin/queries/problem'
+import { SortTh, useSortedTable } from '@src/components/SortableTable'
+import { problemSortFuncs } from '@src/components/SortableTable/utils'
 import { API_HOST } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
 import { useMutation } from '@src/hooks/useMutation'
@@ -49,13 +47,6 @@ export type FilterFunction = (problem: ProblemWithSubmission) => boolean
 export interface ProblemTableProps {
   filter: FilterFunction
 }
-
-export type SortingFunction = (
-  problem1: ProblemWithSubmission,
-  problem2: ProblemWithSubmission
-) => number
-
-export type SortingOrder = 'desc' | 'asc'
 
 export const ProblemTable = (props: ProblemTableProps) => {
   const { filter } = props
@@ -79,7 +70,7 @@ export const ProblemTable = (props: ProblemTableProps) => {
       ...problem,
       submission: problem.submission?.id ? problem.submission : null,
     }))
-    filteredProblems.sort(sortingFunctions[sortFuncName])
+    filteredProblems.sort(problemSortFuncs[sortFuncName])
     if (sortOrder === 'desc') {
       filteredProblems.reverse()
     }
@@ -150,93 +141,7 @@ export const ProblemTable = (props: ProblemTableProps) => {
     </Flex>
   )
 }
-// default is ascending
-const sortingFunctions: Record<string, SortingFunction> = {
-  id: (p1, p2) => p1.id - p2.id,
-  status: (p1, p2) => {
-    if (p1.show === p2.show) {
-      return p1.id - p2.id
-    }
-    return Number(p1.show) - Number(p2.show)
-  },
-  passed: (p1, p2) => p1.passedCount - p2.passedCount,
-  sent: (p1, p2) => {
-    const val1 = getSubmissionValue(p1.submission)
-    const val2 = getSubmissionValue(p2.submission)
-    if (val1 === val2) {
-      return p1.id - p2.id
-    }
-    return val1 - val2
-  },
-}
 
-function getSubmissionValue(submission: Submission | null) {
-  if (submission === null) {
-    return 0
-  }
-  if (submission.status === 'accept') {
-    return 3
-  }
-  if (submission.status === 'reject') {
-    return 2
-  }
-  return 1
-}
-const useSortedTable = (
-  initialSortName: string,
-  initialOrder: SortingOrder
-) => {
-  const [sortFuncName, setSortFuncName] = useState(initialSortName)
-  const [sortOrder, setSortOrder] = useState<SortingOrder>(initialOrder)
-  const setSortFunction = (sortName: string, defaultOrder?: SortingOrder) => {
-    if (sortFuncName === sortName) {
-      if (sortOrder === 'desc') {
-        setSortOrder('asc')
-      } else {
-        setSortOrder('desc')
-      }
-    } else if (defaultOrder) {
-      setSortOrder(defaultOrder)
-    }
-    setSortFuncName(sortName)
-  }
-  return { sortFuncName, sortOrder, setSortFunction }
-}
-
-type TableHeadProps = PropsWithChildren<
-  TableColumnHeaderProps &
-    ReturnType<typeof useSortedTable> & {
-      sortBy: string
-      defaultOrder?: SortingOrder
-      centered?: boolean
-    }
->
-export const SortTh = (props: TableHeadProps) => {
-  const {
-    setSortFunction,
-    sortFuncName,
-    sortOrder,
-    sortBy,
-    defaultOrder = 'desc',
-    centered = false,
-    children,
-    ...rest
-  } = props
-  return (
-    <Th {...rest}>
-      <Link
-        variant="head"
-        onClick={() => setSortFunction(sortBy, defaultOrder)}
-      >
-        <HStack justify={centered ? 'center' : undefined}>
-          <Text>{children}</Text>
-          {sortFuncName === sortBy &&
-            (sortOrder === 'desc' ? <FaArrowDown /> : <FaArrowUp />)}
-        </HStack>
-      </Link>
-    </Th>
-  )
-}
 interface ModalProblemProps {
   onSubmitOpen: () => void
   setModalProblem: (problem: ProblemWithSubmission | undefined) => void
