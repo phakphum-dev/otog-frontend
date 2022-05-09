@@ -15,7 +15,12 @@ export const problemSortFuncs: Record<string, SortProblemFunction> = {
     }
     return Number(p1.show) - Number(p2.show)
   },
-  passed: (p1, p2) => p1.passedCount - p2.passedCount,
+  passed: (p1, p2) => {
+    if (p1.passedCount === p2.passedCount) {
+      return p1.id - p2.id
+    }
+    return p1.passedCount - p2.passedCount
+  },
   sent: (p1, p2) => {
     const val1 = getSubmissionValue(p1.submission)
     const val2 = getSubmissionValue(p2.submission)
