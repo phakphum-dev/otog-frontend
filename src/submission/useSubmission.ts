@@ -1,9 +1,6 @@
 import { useCallback, useMemo } from 'react'
-import useSWR, {
-  SWRInfiniteResponseInterface,
-  mutate,
-  useSWRInfinite,
-} from 'swr'
+import useSWR, { mutate } from 'swr'
+import useSWRInfinite, { SWRInfiniteResponse } from 'swr/infinite'
 
 import { isGrading } from '../theme/useStatusColor'
 import { ONE_SECOND } from '../utils/time'
@@ -53,7 +50,7 @@ export function useSubmissions(userId?: number) {
 }
 
 export function useSubmissionInfinite(
-  submissionData: SWRInfiniteResponseInterface<SubmissionWithProblem[], any>
+  submissionData: SWRInfiniteResponse<SubmissionWithProblem[], any>
 ) {
   const { data: submissionsList, setSize, isValidating, size } = submissionData
   // useEffect(
@@ -83,7 +80,7 @@ export function useSubmissionRow(initialSubmission: SubmissionWithProblem) {
   return useSWR<SubmissionWithProblem>(
     isGrading(initialSubmission) ? `/submission/${initialSubmission.id}` : null,
     {
-      initialData: initialSubmission,
+      fallbackData: initialSubmission,
       revalidateOnMount: true,
       onSuccess: (data, key) => {
         if (isGrading(data)) {
@@ -102,11 +99,11 @@ export function useSubmission(submissionId: number) {
 
 export function useLatestSubmission() {
   const { isAuthenticated } = useAuth()
-  const initialData = useInitialData()
+  const fallbackData = useInitialData()
   return useSWR<SubmissionWithProblem>(
     isAuthenticated ? 'submission/latest' : null,
     {
-      initialData,
+      fallbackData,
       revalidateOnMount: true,
     }
   )

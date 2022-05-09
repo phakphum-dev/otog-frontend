@@ -92,9 +92,7 @@ export const ProblemTable = (props: ProblemTableProps) => {
             <SortTh px={7} w={22} sortBy="id" {...sortingProps}>
               #
             </SortTh>
-            <Th sortBy="name" {...sortingProps}>
-              ชื่อ
-            </Th>
+            <Th>ชื่อ</Th>
             {isAdmin && (
               <SortTh w={22} centered sortBy="status" {...sortingProps}>
                 สถานะ

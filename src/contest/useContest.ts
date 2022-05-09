@@ -3,7 +3,7 @@ import useSWR from 'swr'
 import { Contest, ContestScoreboard } from './types'
 
 export function useCurrentContest(initialContest?: Contest | null) {
-  return useSWR<Contest | null>('contest/now', { initialData: initialContest })
+  return useSWR<Contest | null>('contest/now', { fallbackData: initialContest })
 }
 
 export function useContest(contestId: number | undefined) {

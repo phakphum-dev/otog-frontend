@@ -7,7 +7,7 @@ export const useProfilePic = (
   userId: number | undefined,
   { small = false, auto = true } = {}
 ) => {
-  const fetcher = async (userId: number, small: boolean): Promise<string> =>
+  const fetcher = async ([userId, small]: [number, boolean]): Promise<string> =>
     storage
       .ref('images')
       .child(`${userId}${small ? '_32' : ''}.jpeg`)
