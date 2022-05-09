@@ -117,6 +117,12 @@ const components: ThemeComponents = {
         transitionDuration: '0s',
         color: mode('gray.300', 'whiteAlpha.400')(props),
       }),
+      head: (props) => ({
+        _hover: {
+          color: mode('gray.900', 'gray.100')(props),
+          textDecoration: 'none',
+        },
+      }),
     },
   },
   Button: {

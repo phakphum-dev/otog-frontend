@@ -106,6 +106,7 @@ export function getErrorToast(error: any): ErrorToastOptions {
         return {
           title: 'ไม่สามารถติดต่อกับเซิฟเวอร์ได้',
           status: 'error',
+          isClosable: true,
           code: 503,
           id: 5030,
         }

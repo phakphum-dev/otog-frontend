@@ -1,6 +1,7 @@
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import { memo, useEffect, useMemo, useState } from 'react'
+import { PropsWithChildren, memo, useEffect, useMemo, useState } from 'react'
+import { FaArrowDown, FaArrowUp } from 'react-icons/fa'
 
 import { CodeModal } from '../components/Code'
 import { RenderLater } from '../components/RenderLater'
@@ -12,6 +13,7 @@ import {
   Box,
   Button,
   Flex,
+  HStack,
   Link,
   Modal,
   ModalBody,
@@ -23,8 +25,10 @@ import {
   Spinner,
   Stack,
   Table,
+  TableColumnHeaderProps,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
@@ -46,6 +50,13 @@ export interface ProblemTableProps {
   filter: FilterFunction
 }
 
+export type SortingFunction = (
+  problem1: ProblemWithSubmission,
+  problem2: ProblemWithSubmission
+) => number
+
+export type SortingOrder = 'desc' | 'asc'
+
 export const ProblemTable = (props: ProblemTableProps) => {
   const { filter } = props
 
@@ -58,12 +69,22 @@ export const ProblemTable = (props: ProblemTableProps) => {
   const passedModal = useDisclosure()
 
   const { data: problems } = useProblems()
-  const filteredProblems = useMemo(() => {
-    return problems?.filter(filter).map((problem) => ({
+
+  const sortingProps = useSortedTable('id', 'desc')
+  const { sortFuncName, sortOrder } = sortingProps
+
+  const sortedProblems = useMemo(() => {
+    if (problems === undefined) return undefined
+    const filteredProblems = problems.filter(filter).map((problem) => ({
       ...problem,
       submission: problem.submission?.id ? problem.submission : null,
     }))
-  }, [problems, filter])
+    filteredProblems.sort(sortingFunctions[sortFuncName])
+    if (sortOrder === 'desc') {
+      filteredProblems.reverse()
+    }
+    return filteredProblems
+  }, [problems, filter, sortFuncName, sortOrder])
 
   const router = useRouter()
   const onSubmitSuccess = () => {
@@ -72,31 +93,33 @@ export const ProblemTable = (props: ProblemTableProps) => {
 
   const { isAdmin } = useAuth()
 
-  return filteredProblems ? (
+  return sortedProblems ? (
     <Box overflowX="auto">
       <Table variant="simple">
         <Thead>
           <Tr>
-            <Th px={7} w={22}>
+            <SortTh px={7} w={22} sortBy="id" {...sortingProps}>
               #
+            </SortTh>
+            <Th sortBy="name" {...sortingProps}>
+              ชื่อ
             </Th>
-            <Th>ชื่อ</Th>
             {isAdmin && (
-              <Th w={22} textAlign="center">
+              <SortTh w={22} centered sortBy="status" {...sortingProps}>
                 สถานะ
-              </Th>
+              </SortTh>
             )}
-            <Th px={7} w={22} textAlign="center">
+            <SortTh px={7} w={22} centered sortBy="passed" {...sortingProps}>
               ผ่าน
-            </Th>
-            <Th w={22} textAlign="center">
+            </SortTh>
+            <SortTh w={22} centered sortBy="sent" {...sortingProps}>
               ส่ง
-            </Th>
+            </SortTh>
           </Tr>
         </Thead>
         <Tbody>
           <ProblemsRows
-            problems={filteredProblems}
+            problems={sortedProblems}
             onSubmitOpen={submitModal.onOpen}
             setModalProblem={setModalProblem}
             onCodeOpen={codeModal.onOpen}
@@ -127,7 +150,93 @@ export const ProblemTable = (props: ProblemTableProps) => {
     </Flex>
   )
 }
+// default is ascending
+const sortingFunctions: Record<string, SortingFunction> = {
+  id: (p1, p2) => p1.id - p2.id,
+  status: (p1, p2) => {
+    if (p1.show === p2.show) {
+      return p1.id - p2.id
+    }
+    return Number(p1.show) - Number(p2.show)
+  },
+  passed: (p1, p2) => p1.passedCount - p2.passedCount,
+  sent: (p1, p2) => {
+    const val1 = getSubmissionValue(p1.submission)
+    const val2 = getSubmissionValue(p2.submission)
+    if (val1 === val2) {
+      return p1.id - p2.id
+    }
+    return val1 - val2
+  },
+}
 
+function getSubmissionValue(submission: Submission | null) {
+  if (submission === null) {
+    return 0
+  }
+  if (submission.status === 'accept') {
+    return 3
+  }
+  if (submission.status === 'reject') {
+    return 2
+  }
+  return 1
+}
+const useSortedTable = (
+  initialSortName: string,
+  initialOrder: SortingOrder
+) => {
+  const [sortFuncName, setSortFuncName] = useState(initialSortName)
+  const [sortOrder, setSortOrder] = useState<SortingOrder>(initialOrder)
+  const setSortFunction = (sortName: string, defaultOrder?: SortingOrder) => {
+    if (sortFuncName === sortName) {
+      if (sortOrder === 'desc') {
+        setSortOrder('asc')
+      } else {
+        setSortOrder('desc')
+      }
+    } else if (defaultOrder) {
+      setSortOrder(defaultOrder)
+    }
+    setSortFuncName(sortName)
+  }
+  return { sortFuncName, sortOrder, setSortFunction }
+}
+
+type TableHeadProps = PropsWithChildren<
+  TableColumnHeaderProps &
+    ReturnType<typeof useSortedTable> & {
+      sortBy: string
+      defaultOrder?: SortingOrder
+      centered?: boolean
+    }
+>
+export const SortTh = (props: TableHeadProps) => {
+  const {
+    setSortFunction,
+    sortFuncName,
+    sortOrder,
+    sortBy,
+    defaultOrder = 'desc',
+    centered = false,
+    children,
+    ...rest
+  } = props
+  return (
+    <Th {...rest}>
+      <Link
+        variant="head"
+        onClick={() => setSortFunction(sortBy, defaultOrder)}
+      >
+        <HStack justify={centered ? 'center' : undefined}>
+          <Text>{children}</Text>
+          {sortFuncName === sortBy &&
+            (sortOrder === 'desc' ? <FaArrowDown /> : <FaArrowUp />)}
+        </HStack>
+      </Link>
+    </Th>
+  )
+}
 interface ModalProblemProps {
   onSubmitOpen: () => void
   setModalProblem: (problem: ProblemWithSubmission | undefined) => void
