@@ -33,6 +33,8 @@ import {
 } from '@chakra-ui/react'
 
 import { toggleProblem } from '@src/admin/queries/problem'
+import { SortTh, useSortedTable } from '@src/components/SortableTable'
+import { problemSortFuncs } from '@src/components/SortableTable/utils'
 import { API_HOST } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
 import { useMutation } from '@src/hooks/useMutation'
@@ -58,12 +60,22 @@ export const ProblemTable = (props: ProblemTableProps) => {
   const passedModal = useDisclosure()
 
   const { data: problems } = useProblems()
-  const filteredProblems = useMemo(() => {
-    return problems?.filter(filter).map((problem) => ({
+
+  const sortingProps = useSortedTable('id', 'desc')
+  const { sortFuncName, sortOrder } = sortingProps
+
+  const sortedProblems = useMemo(() => {
+    if (problems === undefined) return undefined
+    const filteredProblems = problems.filter(filter).map((problem) => ({
       ...problem,
       submission: problem.submission?.id ? problem.submission : null,
     }))
-  }, [problems, filter])
+    filteredProblems.sort(problemSortFuncs[sortFuncName])
+    if (sortOrder === 'desc') {
+      filteredProblems.reverse()
+    }
+    return filteredProblems
+  }, [problems, filter, sortFuncName, sortOrder])
 
   const router = useRouter()
   const onSubmitSuccess = () => {
@@ -72,31 +84,33 @@ export const ProblemTable = (props: ProblemTableProps) => {
 
   const { isAdmin } = useAuth()
 
-  return filteredProblems ? (
+  return sortedProblems ? (
     <Box overflowX="auto">
       <Table variant="simple">
         <Thead>
           <Tr>
-            <Th px={7} w={22}>
+            <SortTh px={7} w={22} sortBy="id" {...sortingProps}>
               #
+            </SortTh>
+            <Th sortBy="name" {...sortingProps}>
+              ชื่อ
             </Th>
-            <Th>ชื่อ</Th>
             {isAdmin && (
-              <Th w={22} textAlign="center">
+              <SortTh w={22} centered sortBy="status" {...sortingProps}>
                 สถานะ
-              </Th>
+              </SortTh>
             )}
-            <Th px={7} w={22} textAlign="center">
+            <SortTh px={7} w={22} centered sortBy="passed" {...sortingProps}>
               ผ่าน
-            </Th>
-            <Th w={22} textAlign="center">
+            </SortTh>
+            <SortTh w={22} centered sortBy="sent" {...sortingProps}>
               ส่ง
-            </Th>
+            </SortTh>
           </Tr>
         </Thead>
         <Tbody>
           <ProblemsRows
-            problems={filteredProblems}
+            problems={sortedProblems}
             onSubmitOpen={submitModal.onOpen}
             setModalProblem={setModalProblem}
             onCodeOpen={codeModal.onOpen}

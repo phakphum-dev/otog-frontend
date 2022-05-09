@@ -2,7 +2,7 @@ import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import NextLink from 'next/link'
 import { parseCookies } from 'nookies'
-import { PropsWithChildren, memo, useEffect, useState } from 'react'
+import { PropsWithChildren, useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import {
   FaEye,
@@ -41,6 +41,8 @@ import {
 } from '@src/admin/queries/contest'
 import { DatePicker } from '@src/components/DatePick'
 import { RenderLater } from '@src/components/RenderLater'
+import { SortTh, useSortedTable } from '@src/components/SortableTable'
+import { problemSortFuncs } from '@src/components/SortableTable/utils'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { API_HOST } from '@src/config'
@@ -339,22 +341,47 @@ interface ContestTableProps {
   contest: Contest
 }
 
-const ContestTable = memo(function ContestTable(props: ContestTableProps) {
+const ContestTable = function ContestTable(props: ContestTableProps) {
   const { contest } = props
   const { data: problems } = useProblems()
   const openProblemIds = contest.problems.map((problem) => problem.id)
-  return problems ? (
+  const sortingProps = useSortedTable('id', 'desc')
+  const { sortOrder, sortFuncName } = sortingProps
+  const sortedProblems = useMemo(() => {
+    if (problems === undefined) return undefined
+    if (sortFuncName === 'show') {
+      problems.sort((p1, p2) => {
+        const val1 = Number(openProblemIds.includes(p1.id))
+        const val2 = Number(openProblemIds.includes(p2.id))
+        if (val1 === val2) {
+          return p1.id - p2.id
+        }
+        return val1 - val2
+      })
+    } else {
+      problems.sort(problemSortFuncs[sortFuncName])
+    }
+    if (sortOrder === 'desc') {
+      problems.reverse()
+    }
+    return [...problems]
+  }, [problems, sortFuncName, sortOrder, openProblemIds])
+  return sortedProblems ? (
     <Box overflowX="auto">
       <Table>
         <Thead>
           <Tr>
-            <Th>#</Th>
+            <SortTh sortBy="id" {...sortingProps}>
+              #
+            </SortTh>
             <Th>ชื่อ</Th>
-            <Th>แก้ไข</Th>
+            <SortTh sortBy="show" {...sortingProps}>
+              แก้ไข
+            </SortTh>
           </Tr>
         </Thead>
         <Tbody>
-          {problems.slice(0, 100).map((problem) => (
+          {sortedProblems.slice(0, 100).map((problem) => (
             <ContestProblemRow
               isOpen={openProblemIds.includes(problem.id)}
               contestId={contest.id}
@@ -362,7 +389,7 @@ const ContestTable = memo(function ContestTable(props: ContestTableProps) {
               key={problem.id}
             />
           ))}
-          {problems.slice(100).map((problem, index) => (
+          {sortedProblems.slice(100).map((problem, index) => (
             <RenderLater key={problem.id} delay={~~(index / 100)}>
               <ContestProblemRow
                 isOpen={openProblemIds.includes(problem.id)}
@@ -379,7 +406,7 @@ const ContestTable = memo(function ContestTable(props: ContestTableProps) {
       <Spinner size="xl" />
     </Flex>
   )
-})
+}
 
 interface ContestProblemRowProps {
   contestId: number
@@ -404,6 +431,7 @@ const ContestProblemRow = (props: ContestProblemRowProps) => {
         !isOpen
       )
       setOpen(show)
+      mutate(`contest/${contestId}`)
     } catch {
       setOpen(isOpen)
     }
