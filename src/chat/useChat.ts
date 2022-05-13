@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useReducer } from 'react'
-import { mutate, useSWRInfinite } from 'swr'
+import { mutate } from 'swr'
+import useSWRInfinite from 'swr/infinite'
 
 import { useAuth } from '../context/AuthContext'
 import { Message } from './types'

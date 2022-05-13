@@ -1,9 +1,6 @@
-import { useCallback, useMemo } from 'react'
-import useSWR, {
-  SWRInfiniteResponseInterface,
-  mutate,
-  useSWRInfinite,
-} from 'swr'
+import { useCallback, useEffect } from 'react'
+import useSWR, { mutate } from 'swr'
+import useSWRInfinite, { SWRInfiniteResponse } from 'swr/infinite'
 
 import { isGrading } from '../theme/useStatusColor'
 import { ONE_SECOND } from '../utils/time'
@@ -16,17 +13,16 @@ export function useAllSubmissions() {
   return useSWRInfinite<SubmissionWithProblem[]>(
     (pageIndex, previousPageData) => {
       // reached the end
-      if (previousPageData && !previousPageData.length) return null
+      if (previousPageData?.length === 0) return null
 
       // first page, we don't have `previousPageData`
       if (pageIndex === 0 || !previousPageData) return 'submission'
 
       // add the cursor to the API endpoint
       return `submission?offset=${
-        previousPageData[previousPageData?.length - 1].id
+        previousPageData[previousPageData.length - 1].id
       }`
-    },
-    { revalidateOnMount: true, revalidateAll: true }
+    }
   )
 }
 
@@ -37,43 +33,37 @@ export function useSubmissions(userId?: number) {
       if (!user) return null
 
       // reached the end
-      if (previousPageData && !previousPageData.length) return null
+      if (previousPageData?.length === 0) return null
 
+      const id = userId ?? user.id
       // first page, we don't have `previousPageData`
-      if (pageIndex === 0 || !previousPageData)
-        return `submission/user/${userId ?? user.id}`
+      if (pageIndex === 0 || !previousPageData) return `submission/user/${id}`
 
       // add the cursor to the API endpoint
-      return `submission/user/${userId ?? user.id}?offset=${
-        previousPageData[previousPageData?.length - 1].id
+      return `submission/user/${id}?offset=${
+        previousPageData[previousPageData.length - 1].id
       }`
-    },
-    { revalidateOnMount: true, revalidateAll: true }
+    }
   )
 }
 
-export function useSubmissionInfinite(
-  submissionData: SWRInfiniteResponseInterface<SubmissionWithProblem[], any>
+export function useInfiniteSubmissionTable(
+  submissionsResponse: SWRInfiniteResponse<SubmissionWithProblem[], any>
 ) {
-  const { data: submissionsList, setSize, isValidating, size } = submissionData
-  // useEffect(
-  //   () => () => {
-  //     setSize(1)
-  //   },
-  //   []
-  // )
-  const submissions = useMemo(
-    () => submissionsList?.flatMap((submissions) => submissions),
-    [submissionsList]
+  const { data: submissionsList, setSize, isValidating } = submissionsResponse
+  useEffect(
+    () => () => {
+      setSize(1)
+    },
+    [setSize]
   )
   const hasMore =
-    isValidating || (submissionsList && submissionsList.length === size)
+    isValidating || submissionsList![submissionsList!.length - 1].length > 0
   const loadMore = useCallback(() => {
     setSize((size) => size + 1)
   }, [setSize])
   return {
-    ...submissionData,
-    submissions,
+    submissionsList,
     hasMore,
     loadMore,
   }
@@ -83,7 +73,7 @@ export function useSubmissionRow(initialSubmission: SubmissionWithProblem) {
   return useSWR<SubmissionWithProblem>(
     isGrading(initialSubmission) ? `/submission/${initialSubmission.id}` : null,
     {
-      initialData: initialSubmission,
+      fallbackData: initialSubmission,
       revalidateOnMount: true,
       onSuccess: (data, key) => {
         if (isGrading(data)) {
@@ -102,11 +92,11 @@ export function useSubmission(submissionId: number) {
 
 export function useLatestSubmission() {
   const { isAuthenticated } = useAuth()
-  const initialData = useInitialData()
+  const fallbackData = useInitialData()
   return useSWR<SubmissionWithProblem>(
     isAuthenticated ? 'submission/latest' : null,
     {
-      initialData,
+      fallbackData,
       revalidateOnMount: true,
     }
   )

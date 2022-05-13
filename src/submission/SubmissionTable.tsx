@@ -27,7 +27,7 @@ import { useAuth } from '@src/context/AuthContext'
 import { useOnScreen } from '@src/hooks/useOnScreen'
 import {
   useAllSubmissions,
-  useSubmissionInfinite,
+  useInfiniteSubmissionTable,
   useSubmissionRow,
   useSubmissions,
 } from '@src/submission/useSubmission'
@@ -36,26 +36,17 @@ import { isGraded, isGrading, useStatusColor } from '@src/theme/useStatusColor'
 import { ONE_SECOND, toThDate } from '@src/utils/time'
 
 export const SubmissionTable = () => {
-  const submissionData = useSubmissions()
-  const { mutate, submissions, loadMore, hasMore } = useSubmissionInfinite(
-    submissionData
+  const submissionsResponse = useSubmissions()
+  const { mutate } = submissionsResponse
+  const infiniteSubmissionTableProps = useInfiniteSubmissionTable(
+    submissionsResponse
   )
   return (
     <>
       <HStack mb={4}>
         <LatestSubmission onSuccess={mutate} />
       </HStack>
-      {submissions ? (
-        <SubmissionTableBase
-          submissions={submissions}
-          loadMore={loadMore}
-          hasMore={hasMore}
-        />
-      ) : (
-        <Flex justify="center" py={16}>
-          <Spinner size="xl" />
-        </Flex>
-      )}
+      <InfiniteSubmissionTable {...infiniteSubmissionTableProps} />
     </>
   )
 }
@@ -65,50 +56,29 @@ export interface SubmissionTableProps {
 }
 
 export const ProfileSubmissionTable = ({ userId }: SubmissionTableProps) => {
-  const submissionData = useSubmissions(userId)
-  const { submissions, loadMore, hasMore } = useSubmissionInfinite(
-    submissionData
+  const submissionsResponse = useSubmissions(userId)
+  const infiniteSubmissionTableProps = useInfiniteSubmissionTable(
+    submissionsResponse
   )
-  return submissions ? (
-    <SubmissionTableBase
-      submissions={submissions}
-      loadMore={loadMore}
-      hasMore={hasMore}
-    />
-  ) : (
-    <Flex justify="center" py={16}>
-      <Spinner size="xl" />
-    </Flex>
-  )
+  return <InfiniteSubmissionTable {...infiniteSubmissionTableProps} />
 }
 
 export const AllSubmissionTable = () => {
-  const submissionData = useAllSubmissions()
-  const { submissions, loadMore, hasMore } = useSubmissionInfinite(
-    submissionData
+  const submissionsResponse = useAllSubmissions()
+  const infiniteSubmissionTableProps = useInfiniteSubmissionTable(
+    submissionsResponse
   )
-
-  return submissions ? (
-    <SubmissionTableBase
-      submissions={submissions}
-      loadMore={loadMore}
-      hasMore={hasMore}
-    />
-  ) : (
-    <Flex justify="center" py={16}>
-      <Spinner size="xl" />
-    </Flex>
-  )
+  return <InfiniteSubmissionTable {...infiniteSubmissionTableProps} />
 }
 
 interface SubmissionTableBaseProps {
-  submissions: SubmissionWithProblem[]
+  submissionsList: Array<SubmissionWithProblem[]> | undefined
   loadMore?: () => void
   hasMore?: boolean
 }
 
-export const SubmissionTableBase = (props: SubmissionTableBaseProps) => {
-  const { submissions, loadMore, hasMore } = props
+export const InfiniteSubmissionTable = (props: SubmissionTableBaseProps) => {
+  const { submissionsList, loadMore, hasMore = false } = props
   const codeDisclosure = useDisclosure()
   const [submissionId, setSubmissionId] = useState<number>(0)
   const { ref, isIntersecting } = useOnScreen()
@@ -117,6 +87,14 @@ export const SubmissionTableBase = (props: SubmissionTableBaseProps) => {
       loadMore?.()
     }
   }, [isIntersecting, loadMore, hasMore])
+
+  if (!submissionsList) {
+    return (
+      <Flex justify="center" py={16}>
+        <Spinner size="xl" />
+      </Flex>
+    )
+  }
 
   return (
     <Box overflowX="auto">
@@ -132,11 +110,17 @@ export const SubmissionTableBase = (props: SubmissionTableBaseProps) => {
           </Tr>
         </Thead>
         <Tbody>
-          <SubmissionRows
-            submissions={submissions}
-            onOpen={codeDisclosure.onOpen}
-            setSubmissionId={setSubmissionId}
-          />
+          {submissionsList.map(
+            (submissions) =>
+              submissions.length > 0 && (
+                <SubmissionRows
+                  key={submissions[0].id}
+                  submissions={submissions}
+                  onOpen={codeDisclosure.onOpen}
+                  setSubmissionId={setSubmissionId}
+                />
+              )
+          )}
         </Tbody>
       </Table>
       {hasMore && (
@@ -158,23 +142,16 @@ interface SubmissionRowsProps extends ModalSubmissionProps {
   submissions: SubmissionWithProblem[]
 }
 
-const SubmissionRows = memo(
-  (props: SubmissionRowsProps) => {
-    const { submissions, ...rest } = props
-    return (
-      <>
-        {submissions.map((submission) => (
-          <SubmissionRow
-            submission={submission}
-            key={submission.id}
-            {...rest}
-          />
-        ))}
-      </>
-    )
-  },
-  (prevProps, nextProps) => prevProps.submissions === nextProps.submissions
-)
+const SubmissionRows = memo((props: SubmissionRowsProps) => {
+  const { submissions, ...rest } = props
+  return (
+    <>
+      {submissions.map((submission) => (
+        <SubmissionRow submission={submission} key={submission.id} {...rest} />
+      ))}
+    </>
+  )
+})
 
 interface SubmissionRowProps extends ModalSubmissionProps {
   submission: SubmissionWithProblem

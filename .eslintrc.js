@@ -29,6 +29,7 @@ module.exports = {
     'react/jsx-key': 'warn',
     '@typescript-eslint/no-var-requires': 'warn',
     'no-empty': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
   },
   settings: {
     react: {

@@ -7,7 +7,7 @@ import {
   useContext,
   useEffect,
 } from 'react'
-import { cache } from 'swr'
+import { useSWRConfig } from 'swr'
 
 import { useHttp } from './HttpContext'
 
@@ -48,6 +48,7 @@ export const AuthProvider = (props: AuthValueProps) => {
   const user = getUserData(isServer ? accessToken : http.getAccessToken())
   const isAuthenticated = !!user
   const isAdmin = user?.role === 'admin'
+  const { cache } = useSWRConfig()
 
   const forceUpdate = useForceUpdate()
 
@@ -60,7 +61,7 @@ export const AuthProvider = (props: AuthValueProps) => {
       http.setAccessToken(accessToken)
       cache.clear()
     },
-    [http]
+    [http, cache]
   )
 
   const router = useRouter()
@@ -68,11 +69,11 @@ export const AuthProvider = (props: AuthValueProps) => {
     http.removeToken()
     cache.clear()
     router.push('/login')
-  }, [router, http])
+  }, [router, http, cache])
   const updateOnLogout = useCallback(() => {
     cache.clear()
     forceUpdate()
-  }, [forceUpdate])
+  }, [forceUpdate, cache])
 
   const loginModal = useDisclosure()
 

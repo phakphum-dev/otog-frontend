@@ -28,7 +28,7 @@ export function useTimer(start: string, end: string) {
 
 export function useServerTime(intialTime?: string) {
   return useSWR<string>('time', {
-    initialData: intialTime,
+    fallbackData: intialTime,
     revalidateOnMount: true,
   })
 }

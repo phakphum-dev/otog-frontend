@@ -44,7 +44,7 @@ export default function ProfilePage(props: ProfilePageProps) {
             <TitleLayout>
               <Title icon={FaTasks}>ผลตรวจ</Title>
             </TitleLayout>
-            <ProfileSubmissionTable userId={id} />{' '}
+            <ProfileSubmissionTable userId={id} />
           </Stack>
         )}
       </Stack>
