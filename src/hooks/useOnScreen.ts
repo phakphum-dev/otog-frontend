@@ -7,11 +7,12 @@ export const useOnScreen = (rootMargin = '0px') => {
 
   const observer = useMemo(
     () =>
-      isClient &&
-      new IntersectionObserver(
-        ([entry]) => setIntersecting(entry.isIntersecting),
-        { rootMargin, threshold: 0 }
-      ),
+      isClient
+        ? new IntersectionObserver(
+            ([entry]) => setIntersecting(entry.isIntersecting),
+            { rootMargin, threshold: 0 }
+          )
+        : undefined,
     [isClient, rootMargin]
   )
 
