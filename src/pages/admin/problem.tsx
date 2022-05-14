@@ -164,16 +164,11 @@ const CreateProblemModalButton = () => {
                 </FormControl>
                 <FormControl>
                   <FormLabel>โจทย์ (PDF)</FormLabel>
-                  <FileInput required name="pdf" accept=".pdf" {...pdfProps} />
+                  <FileInput name="pdf" accept=".pdf" {...pdfProps} />
                 </FormControl>
                 <FormControl>
                   <FormLabel>เทสต์เคส (ZIP)</FormLabel>
-                  <FileInput
-                    required
-                    name="zip"
-                    accept=".zip,.zpi"
-                    {...zipProps}
-                  />
+                  <FileInput name="zip" accept=".zip,.zpi" {...zipProps} />
                   <FormHelperText>
                     Testcase Files อยู่ในรูปแบบ 1.in, 1.sol, ...
                   </FormHelperText>
