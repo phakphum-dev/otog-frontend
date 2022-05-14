@@ -208,7 +208,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
           {submission.problem.name}
         </Link>
       </Td>
-      <Td maxW={345}>
+      <Td maxW={345} wordBreak="break-all">
         {submission.errmsg && (isAdmin || user?.id === submission.user.id) ? (
           <>
             <Button px={1} variant="ghost" onClick={errorDisclosure.onOpen}>
