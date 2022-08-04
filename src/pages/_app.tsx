@@ -13,7 +13,8 @@ import { Chat } from '@src/chat'
 import { ErrorToaster } from '@src/components/ErrorToaster'
 import { Footer } from '@src/components/layout/Footer'
 import { NavBar } from '@src/components/layout/NavBar'
-import { OFFLINE_MODE } from '@src/config'
+import { OFFLINE_MODE, SEGMENT_API_KEY } from '@src/config'
+import { AnalyticsProvider } from '@src/context/AnalyticsContext'
 import { AuthProvider } from '@src/context/AuthContext'
 import { ConfirmModalProvider } from '@src/context/ConfirmContext'
 import { HttpProvider } from '@src/context/HttpContext'
@@ -63,14 +64,16 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           <HttpProvider>
             <AuthProvider value={accessToken as string}>
               <SocketProvider>
-                <TopProgressBar />
-                <Flex direction="column" minH="100vh">
-                  <NavBar />
-                  <Component {...props} />
-                  <ErrorToaster errorToast={errorToast} />
-                  {!OFFLINE_MODE && <Chat />}
-                  <Footer />
-                </Flex>
+                <AnalyticsProvider apiKey={SEGMENT_API_KEY}>
+                  <TopProgressBar />
+                  <Flex direction="column" minH="100vh">
+                    <NavBar />
+                    <Component {...props} />
+                    <ErrorToaster errorToast={errorToast} />
+                    {!OFFLINE_MODE && <Chat />}
+                    <Footer />
+                  </Flex>
+                </AnalyticsProvider>
               </SocketProvider>
             </AuthProvider>
           </HttpProvider>
