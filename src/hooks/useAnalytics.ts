@@ -3,10 +3,9 @@ import { useEffect } from 'react'
 
 import { analytics } from '@src/analytics'
 
-export const SegmentAnalytics = () => {
+export const useAnalytics = () => {
   const router = useRouter()
   useEffect(() => {
     analytics.page(router.pathname)
   }, [router.pathname])
-  return <></>
 }

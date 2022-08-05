@@ -11,14 +11,14 @@ import { Flex, cookieStorageManager } from '@chakra-ui/react'
 
 import { Chat } from '@src/chat'
 import { ErrorToaster } from '@src/components/ErrorToaster'
-import { SegmentAnalytics } from '@src/components/SegmentAnalytics'
 import { Footer } from '@src/components/layout/Footer'
 import { NavBar } from '@src/components/layout/NavBar'
-import { OFFLINE_MODE, SEGMENT_API_KEY } from '@src/config'
+import { OFFLINE_MODE } from '@src/config'
 import { AuthProvider } from '@src/context/AuthContext'
 import { ConfirmModalProvider } from '@src/context/ConfirmContext'
 import { HttpProvider } from '@src/context/HttpContext'
 import { SocketProvider } from '@src/context/SocketContext'
+import { useAnalytics } from '@src/hooks/useAnalytics'
 import '@src/styles/nprogress.css'
 import { theme } from '@src/theme'
 
@@ -39,6 +39,7 @@ if (OFFLINE_MODE) {
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const { colorModeCookie, accessToken, errorToast, ...props } = pageProps
+  useAnalytics()
   return (
     <>
       <Head>
@@ -64,7 +65,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           <HttpProvider>
             <AuthProvider value={accessToken as string}>
               <SocketProvider>
-                <SegmentAnalytics />
                 <TopProgressBar />
                 <Flex direction="column" minH="100vh">
                   <NavBar />
