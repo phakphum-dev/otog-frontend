@@ -29,6 +29,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set up environment
+        run: |
+          echo "NEXT_PUBLIC_SEGMENT_API_KEY = ${{ secrets.SEGMENT_API_KEY}}" >> .env.local
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
