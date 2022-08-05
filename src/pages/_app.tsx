@@ -18,6 +18,7 @@ import { AuthProvider } from '@src/context/AuthContext'
 import { ConfirmModalProvider } from '@src/context/ConfirmContext'
 import { HttpProvider } from '@src/context/HttpContext'
 import { SocketProvider } from '@src/context/SocketContext'
+import { useAnalytics } from '@src/hooks/useAnalytics'
 import '@src/styles/nprogress.css'
 import { theme } from '@src/theme'
 
@@ -38,6 +39,7 @@ if (OFFLINE_MODE) {
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const { colorModeCookie, accessToken, errorToast, ...props } = pageProps
+  useAnalytics()
   return (
     <>
       <Head>

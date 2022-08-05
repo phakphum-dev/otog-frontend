@@ -8,6 +8,7 @@ export const API_HOST_SSR = process.env.NEXT_PUBLIC_API_HOST_SSR as string
 export const SOCKET_HOST = process.env.NEXT_PUBLIC_SOCKET_HOST as string
 export const CONTACT_LINK = process.env.NEXT_PUBLIC_CONTACT_LINK as string
 export const GITHUB_LINK = process.env.NEXT_PUBLIC_GITHUB_LINK as string
+export const SEGMENT_API_KEY = process.env.NEXT_PUBLIC_SEGMENT_API_KEY as string
 
 export const getFirebaseConfig = (base64: string | undefined): any => {
   if (base64) {
