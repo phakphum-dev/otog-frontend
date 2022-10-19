@@ -24,8 +24,8 @@ import { API_HOST } from '@src/config'
 import { getServerSideFetch } from '@src/context/HttpClient'
 import { useMutation } from '@src/hooks/useMutation'
 import { Problem } from '@src/problem/types'
+import { submitProblem } from '@src/submission/submit/queries'
 import { SubmissionWithSourceCode } from '@src/submission/types'
-import { submitProblem } from '@src/submit/queries'
 import { ONE_SECOND } from '@src/utils/time'
 
 const defaultValue = `#include <iostream>
