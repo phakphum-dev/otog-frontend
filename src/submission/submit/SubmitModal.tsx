@@ -1,7 +1,7 @@
 import NextLink from 'next/link'
 import { FormEvent, useEffect } from 'react'
 
-import { FileInput } from '../components/FileInput'
+import { FileInput } from '../../components/FileInput'
 import { submitProblem } from './queries'
 import { useDropFile } from './useDropFile'
 
