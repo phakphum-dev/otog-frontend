@@ -4,8 +4,8 @@ import { memo, useEffect, useMemo, useState } from 'react'
 
 import { CodeModal } from '../components/Code'
 import { RenderLater } from '../components/RenderLater'
-import { SubmitButton } from '../submit/SubmitButton'
-import { SubmitModal } from '../submit/SubmitModal'
+import { SubmitButton } from '../submission/submit/SubmitButton'
+import { SubmitModal } from '../submission/submit/SubmitModal'
 import { usePassedUsers, useProblems } from './useProblem'
 
 import {

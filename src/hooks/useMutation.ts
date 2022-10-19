@@ -1,7 +1,6 @@
 import { useCallback } from 'react'
 
-import { HttpClient } from '../context/HttpClient'
-import { useHttp } from '../context/HttpContext'
+import { HttpClient, http } from '../context/HttpClient'
 
 import { useErrorToast } from '@src/hooks/useErrorToast'
 
@@ -9,12 +8,11 @@ export function useMutation<T = any, D extends any[] = any[]>(
   onTry: (client: HttpClient, ...args: D) => Promise<T>,
   onCatch?: (e: any) => void
 ) {
-  const client = useHttp()
   const { onError } = useErrorToast()
   return useCallback(
     (...args: D) => {
       try {
-        return onTry(client, ...args)
+        return onTry(http, ...args)
       } catch (e: any) {
         if (onCatch) {
           onCatch(e)
@@ -24,6 +22,6 @@ export function useMutation<T = any, D extends any[] = any[]>(
         throw e
       }
     },
-    [client, onTry, onCatch, onError]
+    [onTry, onCatch, onError]
   )
 }

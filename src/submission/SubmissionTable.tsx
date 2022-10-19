@@ -25,13 +25,13 @@ import {
 import { API_HOST } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
 import { useOnScreen } from '@src/hooks/useOnScreen'
+import { LatestSubmission } from '@src/submission/submit/LatestSubmission'
 import {
   useAllSubmissions,
   useInfiniteSubmissionTable,
   useSubmissionRow,
   useSubmissions,
 } from '@src/submission/useSubmission'
-import { LatestSubmission } from '@src/submit/LatestSubmission'
 import { isGraded, isGrading, useStatusColor } from '@src/theme/useStatusColor'
 import { ONE_SECOND, toThDate } from '@src/utils/time'
 

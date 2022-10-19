@@ -9,7 +9,7 @@ import { EditIcon } from '@chakra-ui/icons'
 import { HStack } from '@chakra-ui/layout'
 
 import { useAuth } from '@src/context/AuthContext'
-import { useHttp } from '@src/context/HttpContext'
+import { http } from '@src/context/HttpClient'
 import { useErrorToast } from '@src/hooks/useErrorToast'
 import { useMutation } from '@src/hooks/useMutation'
 import { editShowname } from '@src/user/queries'
@@ -24,7 +24,6 @@ export const EditableName = (props: EditableNameProps) => {
   const { user } = useAuth()
 
   // TODO: refractor refreshToken
-  const http = useHttp()
   const { onError } = useErrorToast()
   const editShownameMutation = useMutation(editShowname)
   const onSubmit = async (showName: string) => {

@@ -47,7 +47,7 @@ export const Axios = axios.create({
 //   (error) => Promise.reject(error)
 // )
 
-class HttpClient {
+export class HttpClient {
   axiosInstance: AxiosInstance
   isRefreshing = false
   failedQueue: {
@@ -243,19 +243,21 @@ export type ServerSideProps<T> = CookiesProps &
     | {
         errorToast?: UseToastOptions
       }
-    | T
+    | {
+        fallback: T
+      }
   )
 
 export async function getServerSideFetch<T = any>(
   context: Context,
   callback: (httpClient: HttpClient) => Promise<T>
 ): Promise<GetServerSidePropsResult<ServerSideProps<T>>> {
-  const client = new HttpClient(context)
   try {
-    const initialData = await callback(client)
+    const http = new HttpClient(context)
+    const fallback = await callback(http)
     const { props } = getServerSideCookies(context)
     return {
-      props: { ...props, ...initialData },
+      props: { ...props, fallback },
     }
   } catch (error: any) {
     const errorToast = getErrorToast(error)
@@ -277,4 +279,4 @@ export const getServerSideCookies = (context: Context) => {
   return { props: { accessToken, colorModeCookie } }
 }
 
-export { HttpClient }
+export const http = new HttpClient(null)

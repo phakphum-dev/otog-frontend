@@ -7,9 +7,10 @@ import {
 } from 'react'
 import socketIOClient, { Socket } from 'socket.io-client'
 
+import { http } from './HttpClient'
+
 import { OFFLINE_MODE, SOCKET_HOST } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
-import { useHttp } from '@src/context/HttpContext'
 
 export interface ConfirmProviderProps {
   socket: Socket | undefined
@@ -20,7 +21,6 @@ const SocketContext = createContext({} as ConfirmProviderProps)
 export const SocketProvider = ({ children }: { children?: ReactNode }) => {
   const [socket, setSocket] = useState<Socket>()
   const { isAuthenticated } = useAuth()
-  const http = useHttp()
   useEffect(() => {
     if (!OFFLINE_MODE && isAuthenticated) {
       const socketClient = socketIOClient(SOCKET_HOST, {
@@ -31,7 +31,7 @@ export const SocketProvider = ({ children }: { children?: ReactNode }) => {
         socketClient.disconnect()
       }
     }
-  }, [isAuthenticated, http])
+  }, [isAuthenticated])
 
   const value = { socket }
   return (

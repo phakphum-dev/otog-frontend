@@ -9,7 +9,7 @@ import {
 } from 'react'
 import { useSWRConfig } from 'swr'
 
-import { useHttp } from './HttpContext'
+import { http } from './HttpClient'
 
 import { useDisclosure } from '@chakra-ui/hooks'
 
@@ -44,7 +44,6 @@ export const useAuth = () => useContext(AuthContext)
 export const AuthProvider = (props: AuthValueProps) => {
   const { value: accessToken, children } = props
 
-  const http = useHttp()
   const user = getUserData(isServer ? accessToken : http.getAccessToken())
   const isAuthenticated = !!user
   const isAdmin = user?.role === 'admin'
@@ -61,7 +60,7 @@ export const AuthProvider = (props: AuthValueProps) => {
       http.setAccessToken(accessToken)
       cache.clear()
     },
-    [http, cache]
+    [cache]
   )
 
   const router = useRouter()
@@ -69,7 +68,7 @@ export const AuthProvider = (props: AuthValueProps) => {
     http.removeToken()
     cache.clear()
     router.push('/login')
-  }, [router, http, cache])
+  }, [router, cache])
   const updateOnLogout = useCallback(() => {
     cache.clear()
     forceUpdate()
@@ -80,7 +79,7 @@ export const AuthProvider = (props: AuthValueProps) => {
   useEffect(() => {
     http.openLoginModal = loginModal.onOpen
     http.updateOnLogout = updateOnLogout
-  }, [http, loginModal.onOpen, updateOnLogout])
+  }, [loginModal.onOpen, updateOnLogout])
 
   const value = {
     login,
