@@ -1,4 +1,4 @@
-import { HttpClient } from '@src/context/HttpClient'
+import { http } from '@src/context/HttpClient'
 import { Problem } from '@src/problem/types'
 
 export type CreateProblem = Pick<
@@ -7,26 +7,18 @@ export type CreateProblem = Pick<
 >
 
 // TODO: type safe
-export async function createProblem(client: HttpClient, formData: FormData) {
-  return client.post<Problem>('problem', formData)
+export async function createProblem(formData: FormData) {
+  return http.post<Problem>('problem', formData)
 }
 
-export async function updateProblem(
-  client: HttpClient,
-  problemId: number,
-  formData: FormData
-) {
-  return client.put<Problem>(`problem/${problemId}`, formData)
+export async function updateProblem(problemId: number, formData: FormData) {
+  return http.put<Problem>(`problem/${problemId}`, formData)
 }
 
-export async function toggleProblem(
-  client: HttpClient,
-  problemId: number,
-  show: boolean
-) {
-  return client.patch<Problem>(`problem/${problemId}`, { show })
+export async function toggleProblem(problemId: number, show: boolean) {
+  return http.patch<Problem>(`problem/${problemId}`, { show })
 }
 
-export async function deleteProblem(client: HttpClient, problemId: number) {
-  return client.del<Problem>(`problem/${problemId}`)
+export async function deleteProblem(problemId: number) {
+  return http.del<Problem>(`problem/${problemId}`)
 }

@@ -1,8 +1,7 @@
-import { HttpClient } from '@src/context/HttpClient'
+import { http } from '@src/context/HttpClient'
 import { SubmissionWithProblem } from '@src/submission/types'
 
 export async function submitContestProblem(
-  client: HttpClient,
   problemId: number,
   contestId: number,
   file: File,
@@ -12,7 +11,7 @@ export async function submitContestProblem(
   formData.set('sourceCode', file)
   formData.set('language', language)
   formData.set('contestId', `${contestId}`)
-  return client.post<SubmissionWithProblem>(
+  return http.post<SubmissionWithProblem>(
     `submission/problem/${problemId}`,
     formData
   )
