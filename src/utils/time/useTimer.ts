@@ -3,6 +3,8 @@ import useSWR from 'swr'
 
 import { ONE_SECOND, getRemaining } from '.'
 
+import { http } from '@src/context/HttpClient'
+
 export function useTimer(start: string, end: string) {
   const [remaining, setRemaining] = useState(() => getRemaining(start, end))
 
@@ -26,9 +28,10 @@ export function useTimer(start: string, end: string) {
   return remaining
 }
 
-export function useServerTime(intialTime?: string) {
-  return useSWR<string>('time', {
-    fallbackData: intialTime,
-    revalidateOnMount: true,
-  })
+export async function getServerTime() {
+  return http.get<string>('time')
+}
+
+export function useServerTime() {
+  return useSWR<string>('time', getServerTime, { revalidateOnMount: true })
 }

@@ -6,6 +6,8 @@ import { parseCookies } from 'nookies'
 import { ChangeEvent, useState } from 'react'
 import { FaLightbulb } from 'react-icons/fa'
 
+import { getProblem, keyProblem, useProblem } from '../queries'
+
 import { Button } from '@chakra-ui/button'
 import {
   Link,
@@ -21,9 +23,14 @@ import { Tooltip } from '@chakra-ui/tooltip'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { API_HOST } from '@src/config'
-import { getServerSideFetch } from '@src/context/HttpClient'
+import { getServerSide } from '@src/context/HttpClient'
 import { useMutation } from '@src/hooks/useMutation'
 import { Problem } from '@src/problem/types'
+import {
+  getLatestProblemSubmission,
+  keyLatestProblemSubmission,
+  useSubmission,
+} from '@src/submission/queries'
 import { submitProblem } from '@src/submission/submit/queries'
 import { SubmissionWithSourceCode } from '@src/submission/types'
 import { ONE_SECOND } from '@src/utils/time'
@@ -47,11 +54,13 @@ export interface WriteSolutionPageProps {
   problem: Problem
 }
 
-export default function WriteSolutionPage(props: WriteSolutionPageProps) {
-  const { problem } = props
+export default function WriteSolutionPage() {
   const router = useRouter()
   const id = Number(router.query.id)
-
+  const { data: problem } = useProblem(id)
+  if (!problem) {
+    return null
+  }
   return (
     <PageContainer maxSize="md">
       <Head>
@@ -73,15 +82,17 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
             </Text>
           </VStack>
         </TitleLayout>
-        <EditorForm {...props} />
+        <EditorForm problem={problem} />
       </Stack>
     </PageContainer>
   )
 }
 
-function EditorForm(props: WriteSolutionPageProps) {
-  const { submission, problem } = props
+function EditorForm(props: { problem: Problem }) {
+  const { problem } = props
   const router = useRouter()
+  const id = Number(router.query.id)
+  const { data: submission } = useSubmission(id)
   const [language, setLanguage] = useState<string>(
     submission?.language ?? 'cpp'
   )
@@ -135,13 +146,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { notFound: true }
   }
   const { accessToken = null } = parseCookies(context)
-  return getServerSideFetch<WriteSolutionPageProps>(
-    context,
-    async (client) => ({
-      problem: await client.get(`problem/${id}`),
-      submission: accessToken
-        ? await client.get(`submission/problem/${id}/latest`)
-        : null,
-    })
-  )
+  return getServerSide(context, async () => {
+    const problem = getProblem(id)
+    const submission = accessToken ? getLatestProblemSubmission(id) : null
+    return {
+      [keyProblem(id)]: await problem,
+      [keyLatestProblemSubmission(id)]: await submission,
+    }
+  })
 }

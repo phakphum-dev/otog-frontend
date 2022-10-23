@@ -2,6 +2,7 @@ import { HTMLMotionProps, motion } from 'framer-motion'
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import NextLink from 'next/link'
+import { useRouter } from 'next/router'
 import React, { useMemo } from 'react'
 import { CgDetailsLess, CgDetailsMore } from 'react-icons/cg'
 import { FaMedal, FaTrophy } from 'react-icons/fa'
@@ -26,8 +27,20 @@ import { Tooltip } from '@chakra-ui/tooltip'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { API_HOST } from '@src/config'
-import { ContestScoreboard, UserWithSubmission } from '@src/contest/types'
-import { getServerSideFetch } from '@src/context/HttpClient'
+import {
+  getContestPrize,
+  getContestScoreboard,
+  keyContestPrize,
+  keyContestScoreboard,
+  useContestPrize,
+  useContestScoreboard,
+} from '@src/contest/queries'
+import {
+  UserWithSubmission,
+  prizeDescription,
+  prizes,
+} from '@src/contest/types'
+import { getServerSide } from '@src/context/HttpClient'
 import { sum } from '@src/utils/sum'
 import { ONE_SECOND } from '@src/utils/time'
 
@@ -50,64 +63,16 @@ const fontSize: Record<number, string> = {
   5: 'xl',
 }
 
-export interface ContestHistoryProps {
-  scoreboard: ContestScoreboard
-  scoreboardPrize: ContestPrize
-}
-
-type ContestPrize = Record<Prize, MiniSubmission[]>
-type Prize = typeof prizes[number]
-const prizes = [
-  'firstBlood',
-  'fasterThanLight',
-  'passedInOne',
-  'oneManSolve',
-] as const
-
-const prizeDescription: Record<
-  Prize,
-  { name: string; description: string; emoji: string }
-> = {
-  firstBlood: {
-    name: 'First Blood',
-    description: 'The first user that passed the task.',
-    emoji: '💀',
-  },
-  fasterThanLight: {
-    name: 'Faster Than Light',
-    description: 'The user that solved the task with fastest algorithm.',
-    emoji: '⚡️',
-  },
-  passedInOne: {
-    name: 'Passed In One',
-    description: 'The user that passed the task in one submission.',
-    emoji: '🎯',
-  },
-  oneManSolve: {
-    name: 'One Man Solve',
-    description: 'The only one user that passed the task.',
-    emoji: '🏅',
-  },
-}
-
-type MiniSubmission = {
-  id: number
-  problem: {
-    id: number
-  }
-  user: {
-    id: number
-    showName: string
-  }
-}
 const getTotalScore = (user: UserWithSubmission) =>
   sum(user.submissions.map((submission) => submission.score))
 
-export default function ContestHistory(props: ContestHistoryProps) {
-  const { scoreboard, scoreboardPrize } = props
-
+export default function ContestHistory() {
+  const router = useRouter()
+  const id = Number(router.query.id)
+  const { data: scoreboard } = useContestScoreboard(id)
+  const { data: scoreboardPrize } = useContestPrize(id)
   const users = useMemo(() => {
-    const scored = scoreboard.users.map((user) => ({
+    const scored = scoreboard!.users.map((user) => ({
       ...user,
       totalScore: getTotalScore(user),
     }))
@@ -131,11 +96,11 @@ export default function ContestHistory(props: ContestHistoryProps) {
   return (
     <PageContainer>
       <Head>
-        <title>Contest History #{scoreboard.id} | OTOG</title>
+        <title>Contest History #{scoreboard!.id} | OTOG</title>
       </Head>
       <TitleLayout>
         <Title icon={FaTrophy} noOfLines={1}>
-          {scoreboard.name}
+          {scoreboard!.name}
         </Title>
         <ButtonGroup isAttached variant="outline">
           <IconButton
@@ -160,7 +125,7 @@ export default function ContestHistory(props: ContestHistoryProps) {
               <Th>ชื่อ</Th>
               <Th>คะแนนรวม</Th>
               {isOpen &&
-                scoreboard.problems.map((problem, index) => (
+                scoreboard!.problems.map((problem, index) => (
                   <Th key={problem.id}>
                     <Tooltip
                       hasArrow
@@ -205,7 +170,7 @@ export default function ContestHistory(props: ContestHistoryProps) {
                 </Td>
                 <Td>{getTotalScore(user)}</Td>
                 {isOpen &&
-                  scoreboard.problems.map((problem) => {
+                  scoreboard!.problems.map((problem) => {
                     const submission = user.submissions.find(
                       (submission) => submission.problemId === problem.id
                     )
@@ -234,7 +199,7 @@ export default function ContestHistory(props: ContestHistoryProps) {
           <Thead>
             <Tr whiteSpace="nowrap">
               <Th />
-              {scoreboard.problems.map((problem) => (
+              {scoreboard!.problems.map((problem) => (
                 <Th key={problem.id}>
                   <Link
                     isExternal
@@ -263,8 +228,8 @@ export default function ContestHistory(props: ContestHistoryProps) {
                       {prizeDescription[prize].name}
                     </Tooltip>
                   </Td>
-                  {scoreboard.problems.map((problem) => {
-                    const submissions = scoreboardPrize[prize].filter(
+                  {scoreboard!.problems.map((problem) => {
+                    const submissions = scoreboardPrize![prize].filter(
                       (submission) => problem.id === submission.problem.id
                     )
                     return (
@@ -303,8 +268,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (Number.isNaN(id)) {
     return { notFound: true }
   }
-  return getServerSideFetch<ContestHistoryProps>(context, async (client) => ({
-    scoreboard: await client.get<ContestScoreboard>(`contest/${id}/scoreboard`),
-    scoreboardPrize: await client.get<ContestPrize>(`contest/${id}/prize`),
-  }))
+  return getServerSide(context, async () => {
+    const scoreboard = getContestScoreboard(id)
+    const contestPrize = getContestPrize(id)
+    return {
+      [keyContestScoreboard(id)]: await scoreboard,
+      [keyContestPrize(id)]: await contestPrize,
+    }
+  })
 }

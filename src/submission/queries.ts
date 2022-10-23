@@ -7,7 +7,7 @@ import { ONE_SECOND } from '../utils/time'
 import { SubmissionWithProblem, SubmissionWithSourceCode } from './types'
 
 import { useAuth } from '@src/context/AuthContext'
-import { useInitialData } from '@src/context/InitialDataContext'
+import { http } from '@src/context/HttpClient'
 
 export function useAllSubmissions() {
   return useSWRInfinite<SubmissionWithProblem[]>(
@@ -22,7 +22,8 @@ export function useAllSubmissions() {
       return `submission?offset=${
         previousPageData[previousPageData.length - 1].id
       }`
-    }
+    },
+    { fallbackData: [] }
   )
 }
 
@@ -43,7 +44,8 @@ export function useSubmissions(userId?: number) {
       return `submission/user/${id}?offset=${
         previousPageData[previousPageData.length - 1].id
       }`
-    }
+    },
+    { fallbackData: [] }
   )
 }
 
@@ -71,7 +73,7 @@ export function useInfiniteSubmissionTable(
 
 export function useSubmissionRow(initialSubmission: SubmissionWithProblem) {
   return useSWR<SubmissionWithProblem>(
-    isGrading(initialSubmission) ? `/submission/${initialSubmission.id}` : null,
+    isGrading(initialSubmission) ? `submission/${initialSubmission.id}` : null,
     {
       fallbackData: initialSubmission,
       revalidateOnMount: true,
@@ -84,30 +86,48 @@ export function useSubmissionRow(initialSubmission: SubmissionWithProblem) {
   )
 }
 
+export function keySubmission(submissionId: number) {
+  return `submission/${submissionId}`
+}
+
+export function getSubmission(submissionId: number) {
+  return http.get<SubmissionWithSourceCode>(keySubmission(submissionId))
+}
+
 export function useSubmission(submissionId: number) {
-  return useSWR<SubmissionWithSourceCode>(
-    submissionId === 0 ? null : `submission/${submissionId}`
+  return useSWR(submissionId === 0 ? null : keySubmission(submissionId), () =>
+    getSubmission(submissionId)
   )
+}
+
+export async function getLatestSubmission() {
+  return http.get<SubmissionWithProblem>('submission/latest')
 }
 
 export function useLatestSubmission() {
   const { isAuthenticated } = useAuth()
-  const fallbackData = useInitialData()
   return useSWR<SubmissionWithProblem>(
     isAuthenticated ? 'submission/latest' : null,
-    {
-      fallbackData,
-      revalidateOnMount: true,
-    }
+    getLatestSubmission,
+    { revalidateOnMount: true }
   )
 }
 
-export function useProblemSubmission(problemId: number) {
+export function keyLatestProblemSubmission(problemId: number) {
+  return `submission/problem/${problemId}/latest`
+}
+
+export async function getLatestProblemSubmission(problemId: number) {
+  return http.get<SubmissionWithSourceCode>(
+    keyLatestProblemSubmission(problemId)
+  )
+}
+
+export function useLatestProblemSubmission(problemId: number) {
   const { isAuthenticated } = useAuth()
-  return useSWR<SubmissionWithSourceCode>(
-    isAuthenticated && problemId
-      ? `submission/problem/${problemId}/latest`
-      : null,
+  return useSWR(
+    isAuthenticated && problemId ? keyLatestProblemSubmission(problemId) : null,
+    getLatestProblemSubmission,
     {
       revalidateOnFocus: false,
       onSuccess: (data, key) => {

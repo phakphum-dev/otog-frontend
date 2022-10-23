@@ -91,7 +91,7 @@ export const NavBar = () => {
   const color = useColorModeValue('gray.800', 'white')
 
   const { isAuthenticated, user, logout, isAdmin } = useAuth()
-  const { url } = useUserProfilePic({ small: true })
+  const { url } = useUserProfilePic(true)
 
   const entries =
     !OFFLINE_MODE || isAdmin
@@ -262,7 +262,7 @@ const DrawerButton = forwardRef(
 
 const AvatarMenu = () => {
   const { user, isAdmin, logout } = useAuth()
-  const { url } = useUserProfilePic({ small: true })
+  const { url } = useUserProfilePic(true)
   const [isClient, setClient] = useState(false)
   useEffect(() => {
     setClient(true)

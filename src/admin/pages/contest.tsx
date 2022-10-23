@@ -46,14 +46,14 @@ import { problemSortFuncs } from '@src/components/SortableTable/utils'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { API_HOST } from '@src/config'
+import { useContest, useContests } from '@src/contest/queries'
 import { Contest, ContestMode, GradingMode } from '@src/contest/types'
-import { useContest, useContests } from '@src/contest/useContest'
 import { getUserData } from '@src/context/AuthContext'
 import { useConfirmModal } from '@src/context/ConfirmContext'
 import { getServerSideCookies } from '@src/context/HttpClient'
 import { useMutation } from '@src/hooks/useMutation'
+import { useProblems } from '@src/problem/queries'
 import { ProblemWithSubmission } from '@src/problem/types'
-import { useProblems } from '@src/problem/useProblem'
 
 export default function AdminContestPage() {
   const [contestId, setContestId] = useState<number>()

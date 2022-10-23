@@ -6,7 +6,7 @@ import { HStack, Link, Text } from '@chakra-ui/layout'
 
 import { API_HOST } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
-import { useLatestSubmission } from '@src/submission/useSubmission'
+import { useLatestSubmission } from '@src/submission/queries'
 
 export interface LatestSubmissionProps {
   onSuccess?: () => void

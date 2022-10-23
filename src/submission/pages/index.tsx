@@ -4,47 +4,41 @@ import NextLink from 'next/link'
 import { parseCookies } from 'nookies'
 import { FaTasks } from 'react-icons/fa'
 
+import { getLatestSubmission } from '../queries'
+
 import { Button } from '@chakra-ui/button'
 
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
-import { getServerSideFetch } from '@src/context/HttpClient'
-import { InitialDataProvider } from '@src/context/InitialDataContext'
+import { getServerSide } from '@src/context/HttpClient'
 import { SubmissionTable } from '@src/submission/SubmissionTable'
-import { SubmissionWithProblem } from '@src/submission/types'
 
-interface SubmissionPageProps {
-  latestSubmission: SubmissionWithProblem
-}
-
-export default function SubmissionPage(props: SubmissionPageProps) {
-  const { latestSubmission } = props
+export default function SubmissionPage() {
   return (
-    <InitialDataProvider value={latestSubmission}>
-      <PageContainer>
-        <Head>
-          <title>Submission | OTOG</title>
-        </Head>
-        <TitleLayout>
-          <Title icon={FaTasks}>ผลตรวจ</Title>
-          <NextLink href="/submission/all" passHref>
-            <Button as="a" variant="outline">
-              ผลตรวจรวม
-            </Button>
-          </NextLink>
-        </TitleLayout>
-        <SubmissionTable />
-      </PageContainer>
-    </InitialDataProvider>
+    <PageContainer>
+      <Head>
+        <title>Submission | OTOG</title>
+      </Head>
+      <TitleLayout>
+        <Title icon={FaTasks}>ผลตรวจ</Title>
+        <NextLink href="/submission/all" passHref>
+          <Button as="a" variant="outline">
+            ผลตรวจรวม
+          </Button>
+        </NextLink>
+      </TitleLayout>
+      <SubmissionTable />
+    </PageContainer>
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { accessToken = null } = parseCookies(context)
   if (accessToken) {
-    return getServerSideFetch<SubmissionPageProps>(context, async (client) => ({
-      latestSubmission: await client.get('submission/latest'),
-    }))
+    return getServerSide(context, async () => {
+      const latestSubmission = getLatestSubmission()
+      return { latestSubmission: await latestSubmission }
+    })
   }
   return {
     redirect: {

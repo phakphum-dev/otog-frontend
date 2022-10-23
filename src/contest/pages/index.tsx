@@ -15,20 +15,19 @@ import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { OFFLINE_MODE } from '@src/config'
 import { TaskCard } from '@src/contest/TaskCard'
+import { getCurrentContest, useCurrentContest } from '@src/contest/queries'
 import { Contest } from '@src/contest/types'
-import { useCurrentContest } from '@src/contest/useContest'
-import { getServerSideFetch } from '@src/context/HttpClient'
+import { getServerSide } from '@src/context/HttpClient'
 import { toThTimeFormat, toTimerFormat } from '@src/utils/time'
-import { useServerTime, useTimer } from '@src/utils/time/useTimer'
+import {
+  getServerTime,
+  useServerTime,
+  useTimer,
+} from '@src/utils/time/useTimer'
 
-export interface ContestPageProps {
-  contest: Contest | null
-  serverTime: string
-}
-
-export default function ContestPage(props: ContestPageProps) {
-  const { contest, serverTime } = props
-  const { data: currentContest } = useCurrentContest(contest)
+export default function ContestPage() {
+  const { data: serverTime } = useServerTime()
+  const { data: currentContest } = useCurrentContest()
 
   return (
     <>
@@ -36,7 +35,7 @@ export default function ContestPage(props: ContestPageProps) {
         <title>Contest | OTOG</title>
       </Head>
       {currentContest ? (
-        <ContestRouter contest={currentContest} time={serverTime} />
+        <ContestRouter contest={currentContest} time={serverTime!} />
       ) : (
         <PageContainer display="flex">
           <Center flex={1}>
@@ -59,7 +58,7 @@ export interface ContestProps {
 
 export const ContestRouter = (props: ContestProps) => {
   const { contest, time } = props
-  const { data: serverTime } = useServerTime(time)
+  const { data: serverTime } = useServerTime()
   const currentTime = new Date(serverTime || time)
   const startTime = new Date(contest.timeStart)
   const endTime = new Date(contest.timeEnd)
@@ -74,7 +73,7 @@ export const ContestRouter = (props: ContestProps) => {
 
 export const PreContest = (props: ContestProps) => {
   const { contest, time } = props
-  const { data: serverTime } = useServerTime(time)
+  const { data: serverTime } = useServerTime()
   const remaining = useTimer(serverTime || time, contest.timeStart)
   useEffect(() => {
     if (remaining <= 0) {
@@ -98,9 +97,9 @@ export const PreContest = (props: ContestProps) => {
 }
 
 export const MidContest = (props: ContestProps) => {
-  const { contest, time } = props
-  const { data: serverTime } = useServerTime(time)
-  const remaining = useTimer(serverTime || time, contest.timeEnd)
+  const { contest } = props
+  const { data: serverTime } = useServerTime()
+  const remaining = useTimer(serverTime!, contest.timeEnd)
   const router = useRouter()
   useEffect(() => {
     if (remaining <= 0) {
@@ -162,9 +161,9 @@ export const PostContest = (props: ContestProps) => {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  return getServerSideFetch<ContestPageProps>(context, async (client) => {
-    const contest = await client.get<Contest | null>('contest/now')
-    const serverTime = await client.get<string>('time')
-    return { contest, serverTime }
+  return getServerSide(context, async () => {
+    const contest = getCurrentContest()
+    const time = getServerTime()
+    return { 'contest/now': await contest, time: await time }
   })
 }

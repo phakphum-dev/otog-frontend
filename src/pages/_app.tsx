@@ -16,7 +16,7 @@ import { NavBar } from '@src/components/layout/NavBar'
 import { OFFLINE_MODE } from '@src/config'
 import { AuthProvider } from '@src/context/AuthContext'
 import { ConfirmModalProvider } from '@src/context/ConfirmContext'
-import { HttpProvider } from '@src/context/HttpContext'
+import { SWRProvider } from '@src/context/SWRContext'
 import { SocketProvider } from '@src/context/SocketContext'
 import { useAnalytics } from '@src/hooks/useAnalytics'
 import '@src/styles/nprogress.css'
@@ -38,7 +38,13 @@ if (OFFLINE_MODE) {
 }
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  const { colorModeCookie, accessToken, errorToast, ...props } = pageProps
+  const {
+    colorModeCookie,
+    accessToken,
+    errorToast,
+    fallback,
+    ...props
+  } = pageProps
   useAnalytics()
   return (
     <>
@@ -62,7 +68,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         colorModeManager={cookieStorageManager(colorModeCookie as string)}
       >
         <ConfirmModalProvider>
-          <HttpProvider>
+          <SWRProvider fallback={fallback}>
             <AuthProvider value={accessToken as string}>
               <SocketProvider>
                 <TopProgressBar />
@@ -75,7 +81,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 </Flex>
               </SocketProvider>
             </AuthProvider>
-          </HttpProvider>
+          </SWRProvider>
         </ConfirmModalProvider>
       </ChakraProvider>
     </>

@@ -33,9 +33,9 @@ import { API_HOST, OFFLINE_MODE } from '@src/config'
 import { useLoading } from '@src/hooks/useLoading'
 import { useMutation } from '@src/hooks/useMutation'
 import { Problem } from '@src/problem/types'
+import { useLatestProblemSubmission } from '@src/submission/queries'
 import { useDropFile } from '@src/submission/submit/useDropFile'
 import { SubmissionWithProblem } from '@src/submission/types'
-import { useProblemSubmission } from '@src/submission/useSubmission'
 import { isGraded, isGrading, useStatusColor } from '@src/theme/useStatusColor'
 import { ONE_SECOND } from '@src/utils/time'
 
@@ -56,7 +56,7 @@ export const TaskCard = memo((props: TaskCardProps) => {
   const { problem } = props
   const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: true })
   const { isOpen: isEditorOpen, onToggle: onEditorToggle } = useDisclosure()
-  const { data: submission } = useProblemSubmission(problem.id)
+  const { data: submission } = useLatestProblemSubmission(problem.id)
 
   return (
     <Box rounded="lg" boxShadow="sm" borderWidth="1px">
@@ -119,7 +119,7 @@ export type ContestFileFormProps = TaskCardProps
 export const ContestFileForm = (props: ContestFileFormProps) => {
   const { problem, contestId } = props
 
-  const { mutate } = useProblemSubmission(problem.id)
+  const { mutate } = useLatestProblemSubmission(problem.id)
 
   const { file, fileInputProps, resetFile, getRootProps } = useDropFile()
   const { isLoading, onLoad, onLoaded } = useLoading()
@@ -175,7 +175,7 @@ export type ContestEditorFormProps = TaskCardProps
 
 export const ContestEditorForm = (props: ContestEditorFormProps) => {
   const { problem, contestId } = props
-  const { mutate } = useProblemSubmission(problem.id)
+  const { mutate } = useLatestProblemSubmission(problem.id)
 
   const [language, setLanguage] = useState<string>('cpp')
   const onSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {

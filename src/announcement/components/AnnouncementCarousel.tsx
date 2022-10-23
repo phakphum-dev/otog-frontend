@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import { useEffect, useMemo, useState } from 'react'
 import { FaPencilAlt, FaPlus } from 'react-icons/fa'
 
-import { useAnnouncements } from '../queries/useAnnouncements'
+import { useAnnouncements } from '../queries'
 import { Announcement } from '../types'
 import { ReadonlyEditor } from './AnnouncementEditor'
 import { AnnouncementModal } from './AnnouncementModal'

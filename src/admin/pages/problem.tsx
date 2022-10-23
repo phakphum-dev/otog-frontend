@@ -48,8 +48,8 @@ import { useConfirmModal } from '@src/context/ConfirmContext'
 import { getServerSideCookies } from '@src/context/HttpClient'
 import { useFileInput } from '@src/hooks/useFileInput'
 import { useMutation } from '@src/hooks/useMutation'
+import { useProblems } from '@src/problem/queries'
 import { ProblemWithSubmission } from '@src/problem/types'
-import { useProblems } from '@src/problem/useProblem'
 
 export default function AdminProblemPage() {
   return (

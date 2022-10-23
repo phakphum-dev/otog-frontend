@@ -24,7 +24,7 @@ import { HStack, Select, UseDisclosureReturn } from '@chakra-ui/react'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
-import { createUser, editUser } from '@src/admin/queries/user'
+import { editUser } from '@src/admin/queries/user'
 import { RenderLater } from '@src/components/RenderLater'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
@@ -32,8 +32,8 @@ import { getUserData } from '@src/context/AuthContext'
 import { getServerSideCookies } from '@src/context/HttpClient'
 import { useMutation } from '@src/hooks/useMutation'
 import { registerUser } from '@src/user/queries'
+import { useUsers } from '@src/user/queries'
 import { CreateUser, EditUser, User } from '@src/user/types'
-import { useUsers } from '@src/user/useUser'
 
 export default function AdminProblemPage() {
   return (

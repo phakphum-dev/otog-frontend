@@ -15,7 +15,7 @@ import {
   deleteAnnouncemet,
   updateAnnouncement,
   useAnnouncements,
-} from '../queries/useAnnouncements'
+} from '../queries'
 import { Announcement } from '../types'
 import { createEmptyAnnouncement } from './utils'
 

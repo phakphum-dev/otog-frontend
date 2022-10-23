@@ -54,14 +54,22 @@ export class HttpClient {
     resolve: (value?: any | PromiseLike<any>) => void
     reject: (reason?: any) => void
   }[] = []
+  requestInterceptor?: number
+  responseInterceptor?: number
 
-  constructor(context: Context | null) {
+  constructor(context: Context | null = null) {
     this.axiosInstance = axios.create({
       baseURL: isServer ? API_HOST_SSR : API_HOST,
       withCredentials: true,
     })
+    this.setContext(context)
+  }
 
-    this.axiosInstance.interceptors.request.use(
+  setContext(context: Context | null) {
+    if (this.requestInterceptor !== undefined) {
+      this.axiosInstance.interceptors.request.eject(this.requestInterceptor)
+    }
+    this.requestInterceptor = this.axiosInstance.interceptors.request.use(
       async (request) => {
         // always request to server with accessToken if exists
         const { accessToken } = nookies.get(context)
@@ -75,7 +83,10 @@ export class HttpClient {
       (error) => Promise.reject(error)
     )
 
-    this.axiosInstance.interceptors.response.use(
+    if (this.responseInterceptor !== undefined) {
+      this.axiosInstance.interceptors.response.eject(this.responseInterceptor)
+    }
+    this.responseInterceptor = this.axiosInstance.interceptors.response.use(
       (response) => {
         // console.log(
         //   'response :',
@@ -248,13 +259,13 @@ export type ServerSideProps<T> = CookiesProps &
       }
   )
 
-export async function getServerSideFetch<T = any>(
+export async function getServerSide<T = any>(
   context: Context,
-  callback: (httpClient: HttpClient) => Promise<T>
+  callback: () => Promise<T>
 ): Promise<GetServerSidePropsResult<ServerSideProps<T>>> {
   try {
-    const http = new HttpClient(context)
-    const fallback = await callback(http)
+    http.setContext(context)
+    const fallback = await callback()
     const { props } = getServerSideCookies(context)
     return {
       props: { ...props, fallback },
@@ -279,4 +290,4 @@ export const getServerSideCookies = (context: Context) => {
   return { props: { accessToken, colorModeCookie } }
 }
 
-export const http = new HttpClient(null)
+export const http = new HttpClient()

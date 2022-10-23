@@ -1,6 +1,9 @@
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { FaTasks } from 'react-icons/fa'
+
+import { getSubmission, keySubmission, useSubmission } from '../queries'
 
 import { Link } from '@chakra-ui/react'
 
@@ -8,19 +11,16 @@ import { SubmissionContent } from '@src/components/Code'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { API_HOST } from '@src/config'
-import { getServerSideFetch } from '@src/context/HttpClient'
-import { SubmissionWithSourceCode } from '@src/submission/types'
+import { getServerSide } from '@src/context/HttpClient'
 
-interface SubmissionIdPageProps {
-  submission: SubmissionWithSourceCode
-}
-
-export default function SubmissionPage(props: SubmissionIdPageProps) {
-  const { submission } = props
+export default function SubmissionPage() {
+  const router = useRouter()
+  const id = Number(router.query.id)
+  const { data: submission } = useSubmission(id)
   return (
     <PageContainer maxSize="md">
       <Head>
-        <title>Submission #{submission.id} | OTOG</title>
+        <title>Submission #{submission!.id} | OTOG</title>
       </Head>
       <TitleLayout>
         <Title icon={FaTasks}>
@@ -30,7 +30,7 @@ export default function SubmissionPage(props: SubmissionIdPageProps) {
             isExternal
             href={`${API_HOST}problem/doc/${submission?.problem.id}`}
           >
-            {submission.problem.name}
+            {submission!.problem.name}
           </Link>
         </Title>
       </TitleLayout>
@@ -43,7 +43,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (Number.isNaN(id)) {
     return { notFound: true }
   }
-  return getServerSideFetch<SubmissionIdPageProps>(context, async (client) => ({
-    submission: await client.get(`submission/${id}`),
-  }))
+  return getServerSide(context, async () => {
+    const submission = getSubmission(id)
+    return { [keySubmission(id)]: await submission }
+  })
 }

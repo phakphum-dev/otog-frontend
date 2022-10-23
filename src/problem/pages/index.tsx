@@ -1,3 +1,4 @@
+import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { Dispatch, SetStateAction, memo, useState } from 'react'
 import { FaPuzzlePiece } from 'react-icons/fa'
@@ -7,11 +8,14 @@ import { AspectRatio, Heading, Stack, VStack } from '@chakra-ui/layout'
 import { Skeleton } from '@chakra-ui/skeleton'
 
 import { AnnouncementCarousel } from '@src/announcement/components/AnnouncementCarousel'
+import { getAnnouncements } from '@src/announcement/queries'
+import { ClientOnly } from '@src/components/ClientOnly'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { useAuth } from '@src/context/AuthContext'
+import { getServerSide } from '@src/context/HttpClient'
 import { FilterFunction, ProblemTable } from '@src/problem/ProblemTable'
-import { useProblems } from '@src/problem/useProblem'
+import { getProblems, useProblems } from '@src/problem/queries'
 import { ONE_DAY } from '@src/utils/time'
 
 export default function ProblemPage() {
@@ -30,7 +34,9 @@ export default function ProblemPage() {
         <Title icon={FaPuzzlePiece}>โจทย์</Title>
       </TitleLayout>
       {isAuthenticated && <Buttons setFilter={setFilter} />}
-      <ProblemTable filter={filter} />
+      <ClientOnly>
+        <ProblemTable filter={filter} />
+      </ClientOnly>
     </PageContainer>
   )
 }
@@ -122,4 +128,13 @@ const filterButton: {
   },
 ]
 
-export { getServerSideCookies as getServerSideProps } from '@src/context/HttpClient'
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return getServerSide(context, async () => {
+    const problem = getProblems()
+    const announcement = getAnnouncements()
+    return {
+      problem: await problem,
+      announcement: await announcement,
+    }
+  })
+}

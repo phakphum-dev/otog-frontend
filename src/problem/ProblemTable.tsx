@@ -3,10 +3,9 @@ import { useRouter } from 'next/router'
 import { memo, useEffect, useMemo, useState } from 'react'
 
 import { CodeModal } from '../components/Code'
-import { RenderLater } from '../components/RenderLater'
 import { SubmitButton } from '../submission/submit/SubmitButton'
 import { SubmitModal } from '../submission/submit/SubmitModal'
-import { usePassedUsers, useProblems } from './useProblem'
+import { usePassedUsers, useProblems } from './queries'
 
 import {
   Box,
@@ -159,18 +158,9 @@ const ProblemsRows = memo(
 
     return (
       <>
-        {problems.slice(0, 100).map((problem) => (
-          <ProblemRow key={problem.id} problem={problem} {...rest} />
-        ))}
-        {problems.slice(100).map((problem, index) => (
-          <RenderLater key={problem.id} delay={~~(index / 100)}>
-            <ProblemRow problem={problem} {...rest} />
-          </RenderLater>
-        ))}
-        {/* 
         {problems.map((problem) => (
           <ProblemRow key={problem.id} problem={problem} {...rest} />
-        ))} */}
+        ))}
       </>
     )
   },

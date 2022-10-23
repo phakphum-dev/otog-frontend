@@ -17,7 +17,7 @@ import { SlideFade } from '@chakra-ui/transition'
 import { useChat } from '@src/chat/useChat'
 import { useAuth } from '@src/context/AuthContext'
 import { useOnScreen } from '@src/hooks/useOnScreen'
-import { useOnlineUsers } from '@src/user/useUser'
+import { useOnlineUsers } from '@src/user/queries'
 
 interface ChatButtonProps extends IconButtonProps {
   hasUnread: boolean

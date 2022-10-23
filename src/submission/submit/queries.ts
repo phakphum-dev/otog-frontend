@@ -1,8 +1,7 @@
-import { HttpClient } from '@src/context/HttpClient'
+import { http } from '@src/context/HttpClient'
 import { SubmissionWithProblem } from '@src/submission/types'
 
 export async function submitProblem(
-  client: HttpClient,
   problemId: number,
   file: File,
   language: string
@@ -10,7 +9,7 @@ export async function submitProblem(
   const formData = new FormData()
   formData.set('sourceCode', file)
   formData.set('language', language)
-  return client.post<SubmissionWithProblem>(
+  return http.post<SubmissionWithProblem>(
     `submission/problem/${problemId}`,
     formData
   )
