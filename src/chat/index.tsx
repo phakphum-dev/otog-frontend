@@ -69,7 +69,9 @@ const OnlineUsersTooltip = (props: TooltipProps) => {
           {onlineUsers.slice(0, MAX_LENGTH).map((user) => (
             <HStack key={user.id}>
               <Circle size={2} bg="green.400" />
-              <Text maxW={275}>{user.showName}</Text>
+              <Text maxW={275} noOfLines={3}>
+                {user.showName}
+              </Text>
             </HStack>
           ))}
           {onlineUsers.length > MAX_LENGTH && (

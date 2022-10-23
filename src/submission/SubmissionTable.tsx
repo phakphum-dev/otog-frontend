@@ -193,7 +193,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
       </Td>
       <Td maxW={300}>
         <NextLink href={`/profile/${submission.user.id}`}>
-          <Link variant="hidden">
+          <Link variant="hidden" noOfLines={3}>
             {submission.user.showName}
             {isAdmin && ` (${submission.user.username})`}
           </Link>

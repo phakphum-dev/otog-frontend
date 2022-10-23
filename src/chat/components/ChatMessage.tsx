@@ -77,7 +77,13 @@ export const ChatMessage = memo(
           )}
           <VStack align="flex-start" spacing={0}>
             {displayName && (
-              <Text fontSize="xs" color="gray.500" px={1} maxW={270}>
+              <Text
+                fontSize="xs"
+                color="gray.500"
+                px={1}
+                maxW={270}
+                noOfLines={3}
+              >
                 {sender.showName}
               </Text>
             )}

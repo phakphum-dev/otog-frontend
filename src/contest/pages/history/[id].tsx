@@ -165,7 +165,9 @@ export default function ContestHistory() {
                 <Td>{user.rank}</Td>
                 <Td maxW={300} noOfLines={!isOpen ? 1 : undefined}>
                   <NextLink href={`/profile/${user.id}`}>
-                    <Link variant="hidden">{user.showName}</Link>
+                    <Link variant="hidden" noOfLines={3}>
+                      {user.showName}
+                    </Link>
                   </NextLink>
                 </Td>
                 <Td>{getTotalScore(user)}</Td>

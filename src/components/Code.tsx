@@ -128,7 +128,9 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
           )}
         </TextSkeleton>
         <TextSkeleton w={24}>
-          {submission && <Text>ผู้ส่ง: {submission.user.showName}</Text>}
+          {submission && (
+            <Text noOfLines={3}>ผู้ส่ง: {submission.user.showName}</Text>
+          )}
         </TextSkeleton>
         <TextSkeleton w={36}>
           {submission && <Text>ผลตรวจที่: {submission.id}</Text>}
