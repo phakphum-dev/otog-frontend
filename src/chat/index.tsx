@@ -29,7 +29,7 @@ const ChatButton = ({ hasUnread, ...props }: ChatButtonProps) => (
   <Box position="fixed" bottom={5} right={5} zIndex={100}>
     <Box position="relative" zIndex={101}>
       {hasUnread && (
-        <Circle position="absolute" top={1} right={1} boxSize={2} bg="orange" />
+        <Circle position="absolute" top={1} right={1} size={2} bg="orange" />
       )}
     </Box>
     <OnlineUsersTooltip placement="top-end">

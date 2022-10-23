@@ -181,7 +181,7 @@ export const NavBar = () => {
                     <DrawerButton as="a">
                       <HStack py={2}>
                         <Avatar size="xs" src={url} />
-                        <Text isTruncated> {user.showName}</Text>
+                        <Text noOfLines={1}> {user.showName}</Text>
                       </HStack>
                     </DrawerButton>
                   </NextLink>

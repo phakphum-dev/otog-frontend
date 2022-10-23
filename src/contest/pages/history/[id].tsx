@@ -163,7 +163,7 @@ export default function ContestHistory() {
                 }}
               >
                 <Td>{user.rank}</Td>
-                <Td maxW={300} isTruncated={!isOpen}>
+                <Td maxW={300} noOfLines={!isOpen ? 1 : undefined}>
                   <NextLink href={`/profile/${user.id}`}>
                     <Link variant="hidden">{user.showName}</Link>
                   </NextLink>
@@ -243,7 +243,7 @@ export default function ContestHistory() {
                                 href={`/profile/${submission.user.id}`}
                                 key={submission.id}
                               >
-                                <Link variant="hidden" maxW={250} isTruncated>
+                                <Link variant="hidden" maxW={250} noOfLines={1}>
                                   {submission.user.showName}
                                 </Link>
                               </NextLink>

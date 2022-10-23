@@ -9,8 +9,11 @@ import { useSocket } from '@src/context/SocketContext'
 
 const useLoadChat = () => {
   const { isAuthenticated } = useAuth()
-  const fetcher = useCallback(
-    (pageIndex, previousPageData) => {
+
+  const { data: oldMessages, setSize, isValidating } = useSWRInfinite<
+    Message[]
+  >(
+    (pageIndex: number, previousPageData) => {
       if (!isAuthenticated) return null
       // reached the end
       if (previousPageData && !previousPageData.length) return null
@@ -19,12 +22,8 @@ const useLoadChat = () => {
       // add the cursor to the API endpoint
       return `chat?offset=${previousPageData[previousPageData?.length - 1].id}`
     },
-    [isAuthenticated]
+    { revalidateOnFocus: false, revalidateOnReconnect: false }
   )
-
-  const { data: oldMessages, setSize, isValidating } = useSWRInfinite<
-    Message[]
-  >(fetcher, { revalidateOnFocus: false, revalidateOnReconnect: false })
 
   const messages = useMemo(() => oldMessages?.flatMap((messages) => messages), [
     oldMessages,

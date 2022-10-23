@@ -7,7 +7,7 @@ import Head from 'next/head'
 import '../styles/globals.css'
 
 import { ChakraProvider } from '@chakra-ui/provider'
-import { Flex, cookieStorageManager } from '@chakra-ui/react'
+import { Flex, cookieStorageManagerSSR } from '@chakra-ui/react'
 
 import { Chat } from '@src/chat'
 import { ErrorToaster } from '@src/components/ErrorToaster'
@@ -19,6 +19,7 @@ import { ConfirmModalProvider } from '@src/context/ConfirmContext'
 import { SWRProvider } from '@src/context/SWRContext'
 import { SocketProvider } from '@src/context/SocketContext'
 import { useAnalytics } from '@src/hooks/useAnalytics'
+import { ErrorToastOptions } from '@src/hooks/useErrorToast'
 import '@src/styles/nprogress.css'
 import { theme } from '@src/theme'
 
@@ -37,7 +38,14 @@ if (OFFLINE_MODE) {
   })
 }
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+type MyAppProps = AppProps<{
+  colorModeCookie: string
+  accessToken: string
+  errorToast: ErrorToastOptions
+  fallback: { [key: string]: string }
+}>
+
+export default function MyApp({ Component, pageProps }: MyAppProps) {
   const {
     colorModeCookie,
     accessToken,
@@ -65,11 +73,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <ChakraProvider
         theme={theme}
-        colorModeManager={cookieStorageManager(colorModeCookie as string)}
+        colorModeManager={cookieStorageManagerSSR(colorModeCookie)}
       >
         <ConfirmModalProvider>
           <SWRProvider fallback={fallback}>
-            <AuthProvider value={accessToken as string}>
+            <AuthProvider value={accessToken}>
               <SocketProvider>
                 <TopProgressBar />
                 <Flex direction="column" minH="100vh">
