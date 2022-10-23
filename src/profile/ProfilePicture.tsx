@@ -94,7 +94,7 @@ export interface ProfilePictureProps {
 
 export const ProfilePicture = (props: ProfilePictureProps) => {
   const { userId } = props
-  const { url } = useProfilePic(userId, { auto: true })
+  const { url } = useProfilePic(userId)
   return <Picture url={url} />
 }
 

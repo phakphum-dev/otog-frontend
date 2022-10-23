@@ -1,4 +1,4 @@
-import useSWR from 'swr'
+import useSWRImmutable from 'swr/immutable'
 
 import { useAuth } from '@src/context/AuthContext'
 import { storage } from '@src/firebase'
@@ -13,18 +13,14 @@ async function getProfileUrl({ userId, small }: ProfileKey): Promise<string> {
   return url
 }
 
-export const useProfilePic = (
-  userId: number | undefined,
-  { small = false, auto = false } = {}
-) => {
-  const { data: url, mutate: fetchUrl } = useSWR(
+export const useProfilePic = (userId: number | undefined, small = false) => {
+  const { data: url, mutate: fetchUrl } = useSWRImmutable(
     userId ? { userId, small } : null,
     getProfileUrl,
     {
       onError: (error) => {
         if (error.code === 'storage/object-not-found') return
       },
-      revalidateOnMount: auto,
       revalidateOnFocus: false,
       shouldRetryOnError: false,
     }
@@ -35,5 +31,5 @@ export const useProfilePic = (
 
 export const useUserProfilePic = (small = false) => {
   const { user } = useAuth()
-  return useProfilePic(user?.id, { small })
+  return useProfilePic(user?.id, small)
 }
