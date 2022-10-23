@@ -55,8 +55,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (Number.isNaN(id)) {
     return { notFound: true }
   }
-  const user = getUser(id)
-  return getServerSide(context, async () => ({
-    [unstable_serialize(keyUser(id))]: await user,
-  }))
+  return getServerSide(context, async () => {
+    const user = getUser(id)
+    return {
+      [unstable_serialize(keyUser(id))]: await user,
+    }
+  })
 }

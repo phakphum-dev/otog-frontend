@@ -226,7 +226,7 @@ export interface GraphProps {
 
 export const Graph = ({ userContest }: GraphProps) => {
   return (
-    <Box flex={1}>
+    <Box flex={1} sx={{ '.iframe': { display: 'none' } }}>
       <Line
         data={Data(userContest)}
         options={option(userContest)}
