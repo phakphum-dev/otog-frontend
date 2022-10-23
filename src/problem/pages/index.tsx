@@ -15,7 +15,7 @@ import { Title, TitleLayout } from '@src/components/layout/Title'
 import { useAuth } from '@src/context/AuthContext'
 import { getServerSide } from '@src/context/HttpClient'
 import { FilterFunction, ProblemTable } from '@src/problem/ProblemTable'
-import { getProblems, useProblems } from '@src/problem/queries'
+import { useProblems } from '@src/problem/queries'
 import { ONE_DAY } from '@src/utils/time'
 
 export default function ProblemPage() {
@@ -130,10 +130,8 @@ const filterButton: {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return getServerSide(context, async () => {
-    const problem = getProblems()
     const announcement = getAnnouncements()
     return {
-      problem: await problem,
       announcement: await announcement,
     }
   })
