@@ -116,7 +116,11 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
     <Stack>
       <div>
         <TextSkeleton w={40}>
-          {submission && <Text>ผลตรวจ: {submission.result}</Text>}
+          {submission && (
+            <Text>
+              ผลตรวจ: <code>{submission.result}</code>
+            </Text>
+          )}
         </TextSkeleton>
         <TextSkeleton w={18}>
           {submission && <Text>คะแนน: {submission.score}</Text>}
