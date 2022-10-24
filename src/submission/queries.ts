@@ -73,7 +73,7 @@ export function useInfiniteSubmissionTable(
 
 export function useSubmissionRow(initialSubmission: SubmissionWithProblem) {
   return useSWR<SubmissionWithProblem>(
-    isGrading(initialSubmission) ? `submission/${initialSubmission.id}` : null,
+    isGrading(initialSubmission) ? `/submission/${initialSubmission.id}` : null,
     {
       fallbackData: initialSubmission,
       revalidateOnMount: true,
