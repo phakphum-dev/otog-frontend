@@ -127,7 +127,7 @@ export function useLatestProblemSubmission(problemId: number) {
   const { isAuthenticated } = useAuth()
   return useSWR(
     isAuthenticated && problemId ? keyLatestProblemSubmission(problemId) : null,
-    getLatestProblemSubmission,
+    () => getLatestProblemSubmission(problemId),
     {
       revalidateOnFocus: false,
       onSuccess: (data, key) => {
