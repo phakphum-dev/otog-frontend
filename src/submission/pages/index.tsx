@@ -37,7 +37,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (accessToken) {
     return getServerSide(context, async () => {
       const latestSubmission = getLatestSubmission()
-      return { latestSubmission: await latestSubmission }
+      return { 'submission/latest': await latestSubmission }
     })
   }
   return {
