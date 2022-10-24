@@ -6,8 +6,7 @@ import Head from 'next/head'
 
 import '../styles/globals.css'
 
-import { ChakraProvider } from '@chakra-ui/provider'
-import { Flex, cookieStorageManagerSSR } from '@chakra-ui/react'
+import { ChakraProvider, Flex, cookieStorageManagerSSR } from '@chakra-ui/react'
 
 import { Chat } from '@src/chat'
 import { ErrorToaster } from '@src/components/ErrorToaster'
