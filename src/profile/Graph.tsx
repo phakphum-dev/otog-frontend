@@ -1,6 +1,5 @@
 import * as chartjs from 'chart.js'
 import * as Plugin from 'chartjs-plugin-annotation'
-import React from 'react'
 import { Line } from 'react-chartjs-2'
 
 import { Box } from '@chakra-ui/layout'
@@ -226,7 +225,7 @@ export interface GraphProps {
 
 export const Graph = ({ userContest }: GraphProps) => {
   return (
-    <Box flex={1} sx={{ '.iframe': { display: 'none' } }}>
+    <Box flex={1} sx={{ iframe: { visibility: 'hidden' } }}>
       <Line
         data={Data(userContest)}
         options={option(userContest)}
