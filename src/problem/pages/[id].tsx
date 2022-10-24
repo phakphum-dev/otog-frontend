@@ -49,17 +49,12 @@ const extension: Record<string, string> = {
   python: '.py',
 }
 
-export interface WriteSolutionPageProps {
-  submission: SubmissionWithSourceCode | null
-  problem: Problem
-}
-
 export default function WriteSolutionPage() {
   const router = useRouter()
   const id = Number(router.query.id)
   const { data: problem } = useProblem(id)
   const { data: submission } = useLatestProblemSubmission(id)
-  if (!problem || !submission) {
+  if (!problem) {
     return null
   }
   return (
@@ -91,7 +86,7 @@ export default function WriteSolutionPage() {
 
 function EditorForm(props: {
   problem: Problem
-  submission: SubmissionWithSourceCode
+  submission?: SubmissionWithSourceCode | null
 }) {
   const { problem, submission } = props
   const router = useRouter()
