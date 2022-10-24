@@ -29,7 +29,7 @@ import { Problem } from '@src/problem/types'
 import {
   getLatestProblemSubmission,
   keyLatestProblemSubmission,
-  useSubmission,
+  useLatestProblemSubmission,
 } from '@src/submission/queries'
 import { submitProblem } from '@src/submission/submit/queries'
 import { SubmissionWithSourceCode } from '@src/submission/types'
@@ -58,7 +58,8 @@ export default function WriteSolutionPage() {
   const router = useRouter()
   const id = Number(router.query.id)
   const { data: problem } = useProblem(id)
-  if (!problem) {
+  const { data: submission } = useLatestProblemSubmission(id)
+  if (!problem || !submission) {
     return null
   }
   return (
@@ -82,17 +83,18 @@ export default function WriteSolutionPage() {
             </Text>
           </VStack>
         </TitleLayout>
-        <EditorForm problem={problem} />
+        <EditorForm problem={problem} submission={submission} />
       </Stack>
     </PageContainer>
   )
 }
 
-function EditorForm(props: { problem: Problem }) {
-  const { problem } = props
+function EditorForm(props: {
+  problem: Problem
+  submission: SubmissionWithSourceCode
+}) {
+  const { problem, submission } = props
   const router = useRouter()
-  const id = Number(router.query.id)
-  const { data: submission } = useSubmission(id)
   const [language, setLanguage] = useState<string>(
     submission?.language ?? 'cpp'
   )
