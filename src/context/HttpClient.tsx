@@ -251,9 +251,10 @@ export class HttpClient {
 
 export type Context = GetServerSidePropsContext<ParsedUrlQuery>
 
-export function withCookies<T extends GetServerSidePropsResult<P>, P = any>(
-  callback: (context: Context) => Promise<T>
-): GetServerSideProps {
+export function withCookies<
+  P,
+  T extends GetServerSidePropsResult<P> = GetServerSidePropsResult<P>
+>(callback: (context: Context) => Promise<T>): GetServerSideProps {
   return async (context) => {
     const cookies = getServerSideCookies(context)
     try {

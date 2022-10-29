@@ -25,11 +25,7 @@ import { API_HOST } from '@src/config'
 import { withCookies } from '@src/context/HttpClient'
 import { useMutation } from '@src/hooks/useMutation'
 import { Problem } from '@src/problem/types'
-import {
-  getLatestProblemSubmission,
-  keyLatestProblemSubmission,
-  useLatestProblemSubmission,
-} from '@src/submission/queries'
+import { getLatestProblemSubmission } from '@src/submission/queries'
 import { submitProblem } from '@src/submission/submit/queries'
 import { SubmissionWithSourceCode } from '@src/submission/types'
 import { ONE_SECOND } from '@src/utils/time'
@@ -48,11 +44,15 @@ const extension: Record<string, string> = {
   python: '.py',
 }
 
-export default function WriteSolutionPage() {
+export interface WriteSolutionPageProps {
+  submission: SubmissionWithSourceCode | null
+}
+
+export default function WriteSolutionPage(props: WriteSolutionPageProps) {
+  const { submission } = props
   const router = useRouter()
   const id = Number(router.query.id)
   const { data: problem } = useProblem(id)
-  const { data: submission } = useLatestProblemSubmission(id)
   if (!problem) {
     return null
   }
@@ -136,20 +136,22 @@ function EditorForm(props: {
   )
 }
 
-export const getServerSideProps = withCookies(async (context) => {
-  const id = Number(context.query.id)
-  if (Number.isNaN(id)) {
-    return { notFound: true }
-  }
-  const { accessToken = null } = parseCookies(context)
-  const problem = getProblem(id)
-  const submission = accessToken ? getLatestProblemSubmission(id) : null
-  return {
-    props: {
-      fallback: {
-        [keyProblem(id)]: await problem,
-        [keyLatestProblemSubmission(id)]: await submission,
+export const getServerSideProps = withCookies<WriteSolutionPageProps>(
+  async (context) => {
+    const id = Number(context.query.id)
+    if (Number.isNaN(id)) {
+      return { notFound: true }
+    }
+    const { accessToken = null } = parseCookies(context)
+    const problem = getProblem(id)
+    const submission = accessToken ? getLatestProblemSubmission(id) : null
+    return {
+      props: {
+        submission: await submission,
+        fallback: {
+          [keyProblem(id)]: await problem,
+        },
       },
-    },
+    }
   }
-})
+)
