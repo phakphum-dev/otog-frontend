@@ -1,5 +1,4 @@
 import Editor from '@monaco-editor/react'
-import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { parseCookies } from 'nookies'
@@ -23,7 +22,7 @@ import { Tooltip } from '@chakra-ui/tooltip'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { API_HOST } from '@src/config'
-import { getServerSide } from '@src/context/HttpClient'
+import { withCookies } from '@src/context/HttpClient'
 import { useMutation } from '@src/hooks/useMutation'
 import { Problem } from '@src/problem/types'
 import {
@@ -137,18 +136,20 @@ function EditorForm(props: {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps = withCookies(async (context) => {
   const id = Number(context.query.id)
   if (Number.isNaN(id)) {
     return { notFound: true }
   }
   const { accessToken = null } = parseCookies(context)
-  return getServerSide(context, async () => {
-    const problem = getProblem(id)
-    const submission = accessToken ? getLatestProblemSubmission(id) : null
-    return {
-      [keyProblem(id)]: await problem,
-      [keyLatestProblemSubmission(id)]: await submission,
-    }
-  })
-}
+  const problem = getProblem(id)
+  const submission = accessToken ? getLatestProblemSubmission(id) : null
+  return {
+    props: {
+      fallback: {
+        [keyProblem(id)]: await problem,
+        [keyLatestProblemSubmission(id)]: await submission,
+      },
+    },
+  }
+})

@@ -1,4 +1,3 @@
-import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { FaTasks, FaUser } from 'react-icons/fa'
@@ -9,7 +8,7 @@ import { Stack } from '@chakra-ui/layout'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { useAuth } from '@src/context/AuthContext'
-import { getServerSide } from '@src/context/HttpClient'
+import { withCookies } from '@src/context/HttpClient'
 import { EditableName } from '@src/profile/EditableName'
 import { Graph } from '@src/profile/Graph'
 import { ProfilePicture, ProfileUpload } from '@src/profile/ProfilePicture'
@@ -50,15 +49,17 @@ export default function ProfilePage() {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps = withCookies(async (context) => {
   const id = Number(context.query.id)
   if (Number.isNaN(id)) {
     return { notFound: true }
   }
-  return getServerSide(context, async () => {
-    const user = getUser(id)
-    return {
-      [unstable_serialize(keyUser(id))]: await user,
-    }
-  })
-}
+  const user = getUser(id)
+  return {
+    props: {
+      fallback: {
+        [unstable_serialize(keyUser(id))]: await user,
+      },
+    },
+  }
+})

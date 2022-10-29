@@ -1,10 +1,12 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
 import * as cookie from 'cookie'
-import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
+import {
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  GetServerSidePropsResult,
+} from 'next'
 import nookies from 'nookies'
 import { ParsedUrlQuery } from 'querystring'
-
-import { UseToastOptions } from '@chakra-ui/toast'
 
 import {
   API_HOST,
@@ -249,33 +251,24 @@ export class HttpClient {
 
 export type Context = GetServerSidePropsContext<ParsedUrlQuery>
 
-export type ServerSideProps<T> = CookiesProps &
-  (
-    | {
-        errorToast?: UseToastOptions
+export function withCookies<T extends GetServerSidePropsResult<P>, P = any>(
+  callback: (context: Context) => Promise<T>
+): GetServerSideProps {
+  return async (context) => {
+    const cookies = getServerSideCookies(context)
+    try {
+      http.setContext(context)
+      const result = await callback(context)
+      if ('props' in result) {
+        return { props: { ...cookies.props, ...result.props } }
       }
-    | {
-        fallback: T
+      return result
+    } catch (error: any) {
+      const errorToast = getErrorToast(error)
+      console.error(error?.toJSON?.() ?? error)
+      return {
+        props: { ...cookies.props, errorToast },
       }
-  )
-
-export async function getServerSide<T = any>(
-  context: Context,
-  callback: () => Promise<T>
-): Promise<GetServerSidePropsResult<ServerSideProps<T>>> {
-  try {
-    http.setContext(context)
-    const fallback = await callback()
-    const { props } = getServerSideCookies(context)
-    return {
-      props: { ...props, fallback },
-    }
-  } catch (error: any) {
-    const errorToast = getErrorToast(error)
-    console.error(error?.toJSON?.() ?? error)
-    const { props } = getServerSideCookies(context)
-    return {
-      props: { ...props, errorToast },
     }
   }
 }

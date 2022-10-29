@@ -1,4 +1,3 @@
-import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
@@ -17,7 +16,7 @@ import { OFFLINE_MODE } from '@src/config'
 import { TaskCard } from '@src/contest/TaskCard'
 import { getCurrentContest, useCurrentContest } from '@src/contest/queries'
 import { Contest } from '@src/contest/types'
-import { getServerSide } from '@src/context/HttpClient'
+import { withCookies } from '@src/context/HttpClient'
 import { toThTimeFormat, toTimerFormat } from '@src/utils/time'
 import {
   getServerTime,
@@ -160,10 +159,15 @@ export const PostContest = (props: ContestProps) => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  return getServerSide(context, async () => {
-    const contest = getCurrentContest()
-    const time = getServerTime()
-    return { 'contest/now': await contest, time: await time }
-  })
-}
+export const getServerSideProps = withCookies(async () => {
+  const contest = getCurrentContest()
+  const time = getServerTime()
+  return {
+    props: {
+      fallback: {
+        'contest/now': await contest,
+        time: await time,
+      },
+    },
+  }
+})

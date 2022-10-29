@@ -1,4 +1,3 @@
-import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { FaTasks } from 'react-icons/fa'
@@ -11,7 +10,7 @@ import { SubmissionContent } from '@src/components/Code'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { API_HOST } from '@src/config'
-import { getServerSide } from '@src/context/HttpClient'
+import { withCookies } from '@src/context/HttpClient'
 
 export default function SubmissionPage() {
   const router = useRouter()
@@ -38,13 +37,11 @@ export default function SubmissionPage() {
     </PageContainer>
   )
 }
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps = withCookies(async (context) => {
   const id = Number(context.query.id)
   if (Number.isNaN(id)) {
     return { notFound: true }
   }
-  return getServerSide(context, async () => {
-    const submission = getSubmission(id)
-    return { [keySubmission(id)]: await submission }
-  })
-}
+  const submission = getSubmission(id)
+  return { props: { fallback: { [keySubmission(id)]: await submission } } }
+})

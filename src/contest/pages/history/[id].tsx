@@ -1,5 +1,4 @@
 import { HTMLMotionProps, motion } from 'framer-motion'
-import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
@@ -40,7 +39,7 @@ import {
   prizeDescription,
   prizes,
 } from '@src/contest/types'
-import { getServerSide } from '@src/context/HttpClient'
+import { withCookies } from '@src/context/HttpClient'
 import { sum } from '@src/utils/sum'
 import { ONE_SECOND } from '@src/utils/time'
 
@@ -265,17 +264,19 @@ export default function ContestHistory() {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps = withCookies(async (context) => {
   const id = Number(context.query.id)
   if (Number.isNaN(id)) {
     return { notFound: true }
   }
-  return getServerSide(context, async () => {
-    const scoreboard = getContestScoreboard(id)
-    const contestPrize = getContestPrize(id)
-    return {
-      [keyContestScoreboard(id)]: await scoreboard,
-      [keyContestPrize(id)]: await contestPrize,
-    }
-  })
-}
+  const scoreboard = getContestScoreboard(id)
+  const contestPrize = getContestPrize(id)
+  return {
+    props: {
+      fallback: {
+        [keyContestScoreboard(id)]: await scoreboard,
+        [keyContestPrize(id)]: await contestPrize,
+      },
+    },
+  }
+})

@@ -1,4 +1,3 @@
-import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import NextLink from 'next/link'
 import { parseCookies } from 'nookies'
@@ -10,7 +9,7 @@ import { Button } from '@chakra-ui/button'
 
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
-import { getServerSide } from '@src/context/HttpClient'
+import { withCookies } from '@src/context/HttpClient'
 import { SubmissionTable } from '@src/submission/SubmissionTable'
 
 export default function SubmissionPage() {
@@ -32,13 +31,15 @@ export default function SubmissionPage() {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps = withCookies(async (context) => {
   const { accessToken = null } = parseCookies(context)
   if (accessToken) {
-    return getServerSide(context, async () => {
-      const latestSubmission = getLatestSubmission()
-      return { 'submission/latest': await latestSubmission }
-    })
+    const latestSubmission = getLatestSubmission()
+    return {
+      props: {
+        fallback: { 'submission/latest': await latestSubmission },
+      },
+    }
   }
   return {
     redirect: {
@@ -46,4 +47,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       destination: '/submission/all',
     },
   }
-}
+})

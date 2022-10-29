@@ -1,4 +1,3 @@
-import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { Dispatch, SetStateAction, memo, useState } from 'react'
 import { FaPuzzlePiece } from 'react-icons/fa'
@@ -13,7 +12,7 @@ import { ClientOnly } from '@src/components/ClientOnly'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { useAuth } from '@src/context/AuthContext'
-import { getServerSide } from '@src/context/HttpClient'
+import { withCookies } from '@src/context/HttpClient'
 import { FilterFunction, ProblemTable } from '@src/problem/ProblemTable'
 import { useProblems } from '@src/problem/queries'
 import { ONE_DAY } from '@src/utils/time'
@@ -128,11 +127,13 @@ const filterButton: {
   },
 ]
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  return getServerSide(context, async () => {
-    const announcement = getAnnouncements()
-    return {
-      announcement: await announcement,
-    }
-  })
-}
+export const getServerSideProps = withCookies(async () => {
+  const announcement = getAnnouncements()
+  return {
+    props: {
+      fallback: {
+        announcement: await announcement,
+      },
+    },
+  }
+})
