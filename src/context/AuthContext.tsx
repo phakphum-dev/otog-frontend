@@ -47,7 +47,8 @@ export const AuthProvider = (props: AuthValueProps) => {
   const user = getUserData(isServer ? accessToken : http.getAccessToken())
   const isAuthenticated = !!user
   const isAdmin = user?.role === 'admin'
-  const { cache } = useSWRConfig()
+  // SWR cache is Map by default
+  const cache = useSWRConfig().cache as Map<string, any>
 
   const forceUpdate = useForceUpdate()
 
