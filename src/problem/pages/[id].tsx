@@ -17,7 +17,6 @@ import {
   VStack,
 } from '@chakra-ui/layout'
 import { Select } from '@chakra-ui/select'
-import { Tooltip } from '@chakra-ui/tooltip'
 
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
@@ -63,11 +62,7 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
       </Head>
       <Stack>
         <TitleLayout>
-          <Tooltip label={problem.name} hasArrow placement="top">
-            <Title icon={FaLightbulb} noOfLines={1}>
-              {problem.name}
-            </Title>
-          </Tooltip>
+          <Title icon={FaLightbulb}>{problem.name}</Title>
           <VStack align="flex-end" spacing={0}>
             <Link isExternal href={`${API_HOST}problem/doc/${problem.id}`}>
               [ดาวน์โหลด]

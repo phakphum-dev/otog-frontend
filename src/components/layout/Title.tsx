@@ -1,29 +1,28 @@
-import Icon from '@chakra-ui/icon'
-import { Flex, FlexProps, Heading, HStack, TextProps } from '@chakra-ui/layout'
-import { forwardRef } from '@chakra-ui/system'
-import { ForwardedRef } from 'react'
+import clsx from 'clsx'
+import { ReactNode } from 'react'
 import { IconType } from 'react-icons'
 
-interface TitleProps extends TextProps {
+import Icon from '@chakra-ui/icon'
+
+type TitleProps = {
   icon: IconType
+  lineClamp?: boolean
+  children: ReactNode | string
 }
 
-export const Title = forwardRef(
-  (props: TitleProps, ref: ForwardedRef<HTMLHeadingElement>) => {
-    const { icon, children, noOfLines, ...rest } = props
-    return (
-      <Heading {...rest} ref={ref}>
-        <HStack>
-          <Icon as={icon} />
-          <Heading noOfLines={noOfLines}>{children}</Heading>
-        </HStack>
-      </Heading>
-    )
-  }
-)
-
-export function TitleLayout(props: FlexProps) {
+export const Title = ({ icon, lineClamp = false, children }: TitleProps) => {
   return (
-    <Flex justify="space-between" align="flex-end" mt={8} mb={4} {...props} />
+    <h2 className="flex items-center font-bold text-3xl md:text-4xl">
+      <Icon as={icon} />
+      <div className={clsx('ml-2', lineClamp && 'line-clamp-1')}>
+        {children}
+      </div>
+    </h2>
+  )
+}
+
+export function TitleLayout({ children }: { children?: ReactNode }) {
+  return (
+    <div className="mt-8 mb-4 flex justify-between items-end">{children}</div>
   )
 }

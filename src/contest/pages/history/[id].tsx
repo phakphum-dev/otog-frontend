@@ -98,7 +98,7 @@ export default function ContestHistory() {
         <title>Contest History #{scoreboard!.id} | OTOG</title>
       </Head>
       <TitleLayout>
-        <Title icon={FaTrophy} noOfLines={1}>
+        <Title icon={FaTrophy} lineClamp>
           {scoreboard!.name}
         </Title>
         <ButtonGroup isAttached variant="outline">
@@ -192,7 +192,7 @@ export default function ContestHistory() {
         </Table>
       </Box>
 
-      <TitleLayout mt={32}>
+      <TitleLayout>
         <Title icon={FaMedal}>รางวัล</Title>
       </TitleLayout>
       <Box overflowX="auto">

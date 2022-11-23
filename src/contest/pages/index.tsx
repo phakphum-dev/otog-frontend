@@ -7,7 +7,6 @@ import { mutate } from 'swr'
 
 import { Button } from '@chakra-ui/button'
 import { Center, Heading, Stack, VStack } from '@chakra-ui/layout'
-import { Tooltip } from '@chakra-ui/tooltip'
 
 import { AnnouncementCarousel } from '@src/announcement/components/AnnouncementCarousel'
 import { PageContainer } from '@src/components/layout/PageContainer'
@@ -113,11 +112,9 @@ export const MidContest = (props: ContestProps) => {
     <PageContainer maxSize="md">
       <AnnouncementCarousel defaultShow={true} />
       <TitleLayout>
-        <Tooltip label={contest.name} hasArrow placement="top">
-          <Title icon={FaTrophy} noOfLines={1}>
-            {contest.name}
-          </Title>
-        </Tooltip>
+        <Title icon={FaTrophy} lineClamp>
+          {contest.name}
+        </Title>
         <Heading as="h2" whiteSpace="nowrap">
           {toTimerFormat(remaining)}
         </Heading>
