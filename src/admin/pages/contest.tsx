@@ -107,13 +107,19 @@ interface EditContestModalButtonProps {
   setContestId: (contestId: number) => void
 }
 
+type UpdataContestData = {
+  name: string
+  gradingMode: GradingMode
+  mode: ContestMode
+}
+
 const EditContestModalButton = (props: EditContestModalButtonProps) => {
   const { contest, setContestId } = props
   const editModal = useDisclosure()
   const [startDate, setStartDate] = useState<Date>(new Date())
   const [endDate, setEndDate] = useState<Date>(new Date())
 
-  const { register, handleSubmit, reset } = useForm()
+  const { register, handleSubmit, reset } = useForm<UpdataContestData>()
   useEffect(() => {
     if (contest) {
       reset(contest)
@@ -123,11 +129,7 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
   }, [contest, reset])
 
   const updateContestMutation = useMutation(updateContest)
-  const onSubmit = async (value: {
-    name: string
-    gradingMode: GradingMode
-    mode: ContestMode
-  }) => {
+  const onSubmit = async (value: UpdataContestData) => {
     const body = {
       ...value,
       timeStart: startDate.toISOString(),
@@ -247,13 +249,9 @@ const CreateContestModalButton = (props: CreateContestModalButtonProps) => {
   const [startDate, setStartDate] = useState<Date>(new Date())
   const [endDate, setEndDate] = useState<Date>(new Date())
 
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit } = useForm<UpdataContestData>()
   const createContestMutation = useMutation(createContest)
-  const onSubmit = async (value: {
-    name: string
-    gradingMode: GradingMode
-    mode: ContestMode
-  }) => {
+  const onSubmit = async (value: UpdataContestData) => {
     const body = {
       ...value,
       timeStart: startDate.toISOString(),

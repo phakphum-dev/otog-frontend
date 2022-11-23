@@ -69,7 +69,7 @@ export default function AdminProblemPage() {
 const CreateUserModalButton = () => {
   const createModal = useDisclosure()
 
-  const { register, reset, handleSubmit } = useForm()
+  const { register, reset, handleSubmit } = useForm<CreateUser>()
   // TODO: form type
   const createUserMutation = useMutation(registerUser)
   const onSubmit = async (value: CreateUser) => {

@@ -54,7 +54,7 @@ export interface LoginFormProps {
 
 export const LoginForm = (props: LoginFormProps) => {
   const { onSuccess } = props
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit } = useForm<LoginReq>()
   const { onError, toast } = useErrorToast()
   const { login } = useAuth()
   const onSubmit = async (credentials: LoginReq) => {

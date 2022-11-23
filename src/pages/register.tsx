@@ -13,7 +13,7 @@ import { registerUser } from '@src/user/queries'
 import { CreateUser } from '@src/user/types'
 
 export default function RegisterPage() {
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit } = useForm<CreateUser>()
   const router = useRouter()
   const toast = useToast()
 
