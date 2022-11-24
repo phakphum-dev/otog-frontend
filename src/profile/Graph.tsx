@@ -1,14 +1,42 @@
-import * as chartjs from 'chart.js'
-import * as Plugin from 'chartjs-plugin-annotation'
+import {
+  CategoryScale,
+  Chart,
+  ChartData,
+  ChartOptions,
+  LineController,
+  LineElement,
+  LinearScale,
+  PointElement,
+  ScatterDataPoint,
+  TimeScale,
+  TooltipItem,
+} from 'chart.js'
+import { Tooltip } from 'chart.js'
+import 'chartjs-adapter-luxon'
+import { AnnotationOptions } from 'chartjs-plugin-annotation'
+// shoule be import from 'chartjs-plugin-annotation'
+import Annotation from 'node_modules/chartjs-plugin-annotation/dist/chartjs-plugin-annotation.esm.js'
 import { Line } from 'react-chartjs-2'
 
 import { Box } from '@chakra-ui/layout'
 
 import { UserContest } from '@src/user/types'
-import { ONE_DAY, ONE_MONTH, ONE_WEEK, ONE_YEAR } from '@src/utils/time'
+import { ONE_MONTH, ONE_WEEK, ONE_YEAR } from '@src/utils/time'
+
+Chart.register(
+  LineController,
+  CategoryScale,
+  TimeScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip,
+  Annotation
+)
+// Annotation_
 
 const ticks = [2500, 2000, 1800, 1650, 1500]
-const annotations = [
+const annotations: AnnotationOptions[] = [
   {
     drawTime: 'beforeDatasetsDraw',
     type: 'box',
@@ -21,8 +49,6 @@ const annotations = [
   {
     drawTime: 'beforeDatasetsDraw',
     type: 'box',
-    xScaleID: 'x-axis-0',
-    yScaleID: 'y-axis-0',
     yMin: 2000,
     yMax: 2500,
     backgroundColor: 'rgba(174, 129, 255, 0.5)',
@@ -31,8 +57,6 @@ const annotations = [
   {
     drawTime: 'beforeDatasetsDraw',
     type: 'box',
-    xScaleID: 'x-axis-0',
-    yScaleID: 'y-axis-0',
     yMin: 1800,
     yMax: 2000,
     backgroundColor: 'rgba(255, 0, 0, 0.5)',
@@ -41,8 +65,6 @@ const annotations = [
   {
     drawTime: 'beforeDatasetsDraw',
     type: 'box',
-    xScaleID: 'x-axis-0',
-    yScaleID: 'y-axis-0',
     yMin: 1650,
     yMax: 1800,
     backgroundColor: 'rgba(249, 38, 114, 0.5)',
@@ -51,8 +73,6 @@ const annotations = [
   {
     drawTime: 'beforeDatasetsDraw',
     type: 'box',
-    xScaleID: 'x-axis-0',
-    yScaleID: 'y-axis-0',
     yMin: 1500,
     yMax: 1650,
     backgroundColor: 'rgba(166, 226, 46, 0.5)',
@@ -61,8 +81,6 @@ const annotations = [
   {
     drawTime: 'beforeDatasetsDraw',
     type: 'box',
-    xScaleID: 'x-axis-0',
-    yScaleID: 'y-axis-0',
     yMin: 1000,
     yMax: 1500,
     backgroundColor: 'rgba(102, 217, 239, 0.5)',
@@ -70,12 +88,7 @@ const annotations = [
   },
 ]
 
-type Point = {
-  x: number
-  y: number
-}
-
-const median = (arr: Point[]) => {
+const median = (arr: ScatterDataPoint[]) => {
   if (arr.length === 0) return 1500
   const mid = Math.floor(arr.length / 2),
     nums = [...arr].sort((a, b) => a.y - b.y)
@@ -85,21 +98,10 @@ const median = (arr: Point[]) => {
 }
 
 // assuming that points are sorted
-const minX = (points: Point[]) =>
-  points.length === 0
-    ? null
-    : points.length === 1
-    ? points[0].x - ONE_DAY
-    : points[0].x
+const minX = (points: ScatterDataPoint[]) => points[0]?.x
+const maxX = (points: ScatterDataPoint[]) => points[points.length - 1]?.x
 
-const maxX = (points: Point[]) =>
-  points.length === 0
-    ? null
-    : points.length === 1
-    ? points[0].x + ONE_DAY
-    : points[points.length - 1].x
-
-const changeUnit = (points: Point[]) => {
+const getUnit = (points: ScatterDataPoint[]) => {
   if (points.length <= 1) return 'day'
   const mn = points[0].x
   const mx = points[points.length - 1].x
@@ -111,19 +113,32 @@ const changeUnit = (points: Point[]) => {
   else return 'year'
 }
 
-function toPoints(graphData: UserContest[]) {
-  return graphData.map(({ timeEnd, detail: { ratingAfterUpdate } }) => ({
-    x: new Date(timeEnd).getTime(),
-    y: ratingAfterUpdate,
+function getPoints(graphData: UserContest[]) {
+  return graphData.map((contest) => ({
+    x: new Date(contest.timeEnd).getTime(),
+    y: contest.detail.ratingAfterUpdate,
+    label: {
+      title: `• ${contest.id} ${contest.name}`,
+      rank: `Rank: ${contest.detail.rank}`,
+      rating: `Rating: ${contest.detail.ratingAfterUpdate}`,
+    },
   }))
 }
 
-function Data(graphData: UserContest[]): chartjs.ChartData {
+type PointData = ScatterDataPoint & {
+  label: {
+    title: string
+    rank: string
+    rating: string
+  }
+}
+
+function getChartData(graphData: UserContest[]): ChartData<'line'> {
   return {
     datasets: [
       {
         fill: false,
-        lineTension: 0.1,
+        tension: 0.1,
         borderCapStyle: 'round',
         borderDash: [],
         borderDashOffset: 0.0,
@@ -137,86 +152,77 @@ function Data(graphData: UserContest[]): chartjs.ChartData {
         pointHoverBorderWidth: 3,
         pointRadius: 5,
         pointHitRadius: 10,
-        data:
-          graphData.length === 0 ? [{ x: Date.now() }] : toPoints(graphData),
+        data: getPoints(graphData),
       },
     ],
-    labels: graphData.map((contest) => [
-      `• ${contest.id} ${contest.name}`,
-      `Rank: ${contest.detail.rank}`,
-      `Rating: ${contest.detail.ratingAfterUpdate}`,
-    ]),
+    labels: graphData.map((contest) => ({
+      title: `• ${contest.id} ${contest.name}`,
+      rank: `Rank: ${contest.detail.rank}`,
+      rating: `Rating: ${contest.detail.ratingAfterUpdate}`,
+    })),
   }
 }
 
-function option(graphData: UserContest[]) {
-  const points = toPoints(graphData)
+function getChartOptions(graphData: UserContest[]): ChartOptions<'line'> {
+  const points = getPoints(graphData)
   return {
-    legend: {
-      display: false,
-    },
     responsive: true,
-    tooltips: {
-      callbacks: {
-        title: ([tooltipItem], { labels }) => {
-          const label = (labels as string[][])[
-            tooltipItem.index as number
-          ] as string[]
-          return label[0]
+    plugins: {
+      annotation: { annotations },
+      tooltip: {
+        callbacks: {
+          title: (tooltipItem: TooltipItem<'line'>[]) => {
+            const data = tooltipItem[0].dataset.data[
+              tooltipItem[0].dataIndex
+            ] as PointData
+            return data.label.title
+          },
+          label: (tooltipItem: TooltipItem<'line'>) => {
+            const data = tooltipItem.dataset.data[
+              tooltipItem.dataIndex
+            ] as PointData
+            return [data.label.rank, data.label.rating]
+          },
         },
-        label: (tooltipItem, { labels }) => {
-          const label = (labels as string[][])[
-            tooltipItem.index as number
-          ] as string[]
-          return label.slice(1)
-        },
+        backgroundColor: 'rgba(255,255,255,0.83)',
+        titleFont: { size: 16 },
+        titleColor: '#ff851b',
+        bodyColor: '#000',
+        bodyFont: { size: 14 },
+        displayColors: false,
+        enabled: true,
       },
-      backgroundColor: 'rgba(255,255,255,0.83)',
-      titleFontSize: 16,
-      titleFontColor: '#ff851b',
-      bodyFontColor: '#000',
-      bodyFontSize: 14,
-      displayColors: false,
     },
     scales: {
-      xAxes: [
-        {
-          type: 'time',
-          time: {
-            unit: changeUnit(points),
-          },
-          ticks: {
-            min: minX(points),
-            max: maxX(points),
-          },
-          gridLines: {
-            lineWidth: 1,
-            color: 'rgba(0,0,0,0.1)',
+      x: {
+        type: 'time',
+        time: { unit: getUnit(points) },
+        offset: true,
+        min: minX(points),
+        max: maxX(points),
+        grid: {
+          lineWidth: 1,
+          color: 'rgba(0,0,0,0.1)',
+        },
+      },
+      y: {
+        stacked: true,
+        ticks: {
+          autoSkip: false,
+          callback: (value: string | number) => {
+            if (ticks.includes(value as number)) return value
+            return null
           },
         },
-      ],
-      yAxes: [
-        {
-          stacked: true,
-          ticks: {
-            autoSkip: false,
-            min: 1200,
-            suggestedMax: median(points) + 300,
-          },
-          afterBuildTicks: function (scale) {
-            return (scale.ticks = ticks)
-          },
-          gridLines: {
-            lineWidth: 0,
-            color: 'rgba(0,0,0,0.1)',
-          },
+        suggestedMin: 1200,
+        suggestedMax: median(points) + 300,
+        grid: {
+          lineWidth: 1,
+          color: 'rgba(0,0,0,0.1)',
         },
-      ],
+      },
     },
-    annotation: {
-      annotations,
-    },
-  } as chartjs.ChartOptions
+  }
 }
 
 export interface GraphProps {
@@ -227,9 +233,8 @@ export const Graph = ({ userContest }: GraphProps) => {
   return (
     <Box flex={1} sx={{ iframe: { visibility: 'hidden' } }}>
       <Line
-        data={Data(userContest)}
-        options={option(userContest)}
-        plugins={[Plugin]}
+        data={getChartData(userContest)}
+        options={getChartOptions(userContest)}
       />
     </Box>
   )
