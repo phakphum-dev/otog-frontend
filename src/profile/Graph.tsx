@@ -207,12 +207,8 @@ function getChartOptions(graphData: UserContest[]): ChartOptions<'line'> {
       },
       y: {
         stacked: true,
-        ticks: {
-          autoSkip: false,
-          callback: (value: string | number) => {
-            if (ticks.includes(value as number)) return value
-            return null
-          },
+        afterBuildTicks(axis) {
+          axis.ticks = ticks.map((value) => ({ value }))
         },
         suggestedMin: 1200,
         suggestedMax: median(points) + 300,
