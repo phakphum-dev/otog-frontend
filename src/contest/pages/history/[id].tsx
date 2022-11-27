@@ -8,7 +8,7 @@ import { FaMedal, FaTrophy } from 'react-icons/fa'
 
 import { ButtonGroup, IconButton } from '@chakra-ui/button'
 import { useDisclosure } from '@chakra-ui/hooks'
-import { Box, Link, Stack } from '@chakra-ui/layout'
+import { Box, Stack } from '@chakra-ui/layout'
 import { Text } from '@chakra-ui/react'
 import { HTMLChakraProps, useTheme } from '@chakra-ui/system'
 import {
@@ -40,6 +40,7 @@ import {
   prizes,
 } from '@src/contest/types'
 import { withCookies } from '@src/context/HttpClient'
+import { Link } from '@src/ui/Link'
 import { sum } from '@src/utils/sum'
 import { ONE_SECOND } from '@src/utils/time'
 
@@ -164,7 +165,7 @@ export default function ContestHistory() {
                 <Td>{user.rank}</Td>
                 <Td maxW={300} noOfLines={!isOpen ? 1 : undefined}>
                   <NextLink href={`/profile/${user.id}`}>
-                    <Link variant="hidden" noOfLines={3}>
+                    <Link className="line-clamp-3" variant="hidden">
                       {user.showName}
                     </Link>
                   </NextLink>
@@ -244,7 +245,10 @@ export default function ContestHistory() {
                                 href={`/profile/${submission.user.id}`}
                                 key={submission.id}
                               >
-                                <Link variant="hidden" maxW={250} noOfLines={1}>
+                                <Link
+                                  className="max-w-[250px] line-clamp-1"
+                                  variant="hidden"
+                                >
                                   {submission.user.showName}
                                 </Link>
                               </NextLink>

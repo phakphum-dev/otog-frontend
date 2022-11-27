@@ -8,14 +8,7 @@ import { FaLightbulb } from 'react-icons/fa'
 import { getProblem, keyProblem, useProblem } from '../queries'
 
 import { Button } from '@chakra-ui/button'
-import {
-  Link,
-  SimpleGrid,
-  Spacer,
-  Stack,
-  Text,
-  VStack,
-} from '@chakra-ui/layout'
+import { SimpleGrid, Spacer, Stack, Text, VStack } from '@chakra-ui/layout'
 import { Select } from '@chakra-ui/select'
 
 import { PageContainer } from '@src/components/layout/PageContainer'
@@ -27,6 +20,7 @@ import { Problem } from '@src/problem/types'
 import { getLatestProblemSubmission } from '@src/submission/queries'
 import { submitProblem } from '@src/submission/submit/queries'
 import { SubmissionWithSourceCode } from '@src/submission/types'
+import { Link } from '@src/ui/Link'
 import { ONE_SECOND } from '@src/utils/time'
 
 const defaultValue = `#include <iostream>

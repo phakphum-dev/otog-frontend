@@ -1,13 +1,9 @@
 import { PropsWithChildren, useState } from 'react'
 import { FaArrowDown, FaArrowUp } from 'react-icons/fa'
 
-import {
-  HStack,
-  Link,
-  TableColumnHeaderProps,
-  Text,
-  Th,
-} from '@chakra-ui/react'
+import { HStack, TableColumnHeaderProps, Text, Th } from '@chakra-ui/react'
+
+import { Link } from '@src/ui/Link'
 
 export type SortingOrder = 'desc' | 'asc'
 

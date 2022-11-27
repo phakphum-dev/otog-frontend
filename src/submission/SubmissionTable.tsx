@@ -9,7 +9,6 @@ import {
   Button,
   Flex,
   HStack,
-  Link,
   Spinner,
   Table,
   Tbody,
@@ -33,6 +32,7 @@ import {
 } from '@src/submission/queries'
 import { LatestSubmission } from '@src/submission/submit/LatestSubmission'
 import { isGraded, isGrading, useStatusColor } from '@src/theme/useStatusColor'
+import { Link } from '@src/ui/Link'
 import { ONE_SECOND, toThDate } from '@src/utils/time'
 
 export const SubmissionTable = () => {
@@ -193,7 +193,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
       </Td>
       <Td maxW={300}>
         <NextLink href={`/profile/${submission.user.id}`}>
-          <Link variant="hidden" noOfLines={3}>
+          <Link className="line-clamp-3" variant="hidden">
             {submission.user.showName}
             {isAdmin && ` (${submission.user.username})`}
           </Link>

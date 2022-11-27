@@ -10,7 +10,7 @@ import { Button, IconButton } from '@chakra-ui/button'
 import { FormControl, FormLabel } from '@chakra-ui/form-control'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Input } from '@chakra-ui/input'
-import { Box, Flex, Link, Stack } from '@chakra-ui/layout'
+import { Box, Flex, Stack } from '@chakra-ui/layout'
 import {
   Modal,
   ModalBody,
@@ -31,6 +31,7 @@ import { Title, TitleLayout } from '@src/components/layout/Title'
 import { getUserData } from '@src/context/AuthContext'
 import { getServerSideCookies } from '@src/context/HttpClient'
 import { useMutation } from '@src/hooks/useMutation'
+import { Link } from '@src/ui/Link'
 import { registerUser } from '@src/user/queries'
 import { useUsers } from '@src/user/queries'
 import { CreateUser, EditUser, User } from '@src/user/types'

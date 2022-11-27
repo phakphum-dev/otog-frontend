@@ -11,7 +11,6 @@ import {
   Box,
   Button,
   Flex,
-  Link,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -40,6 +39,7 @@ import { useMutation } from '@src/hooks/useMutation'
 import { ProblemWithSubmission } from '@src/problem/types'
 import { Submission } from '@src/submission/types'
 import { useStatusColor } from '@src/theme/useStatusColor'
+import { Link } from '@src/ui/Link'
 import { ONE_SECOND } from '@src/utils/time'
 
 export type FilterFunction = (problem: ProblemWithSubmission) => boolean
@@ -279,7 +279,7 @@ const PassedModal = (props: PassedModalProps) => {
             {users ? (
               users.map((user) => (
                 <NextLink href={`/profile/${user.id}`} key={user.id}>
-                  <Link variant="hidden" maxW={300}>
+                  <Link className="max-w-[300px]" variant="hidden">
                     {user.showName}
                   </Link>
                 </NextLink>

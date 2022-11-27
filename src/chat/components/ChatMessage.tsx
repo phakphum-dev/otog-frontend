@@ -8,7 +8,6 @@ import {
   Box,
   Code,
   Flex,
-  Link,
   Text,
   VStack,
   useColorModeValue,
@@ -16,6 +15,7 @@ import {
 
 import { useAuth } from '@src/context/AuthContext'
 import { useProfilePic } from '@src/profile/useProfilePic'
+import { Link } from '@src/ui/Link'
 import { toThDate } from '@src/utils/time'
 
 export interface ChatMessageProps {
@@ -164,7 +164,7 @@ const matcher: Record<
   '[': {
     match: ']',
     formatter: (token) => (
-      <Link href={token} isExternal textDecor="underline" color="inherit">
+      <Link href={token} isExternal className="underline text-inherit">
         {token}
       </Link>
     ),

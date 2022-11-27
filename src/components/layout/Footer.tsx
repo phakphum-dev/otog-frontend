@@ -1,33 +1,31 @@
 import { PageContainer } from './PageContainer'
 
-import { Divider, Flex, Link, Spacer, Text } from '@chakra-ui/layout'
-
 import { CONTACT_LINK, GITHUB_LINK, OFFLINE_MODE } from '@src/config'
+import { Link } from '@src/ui/Link'
 
 export const Footer = () => (
   <PageContainer mt={8} pb={4} flex={undefined}>
-    <Divider mb={2} />
-    <Flex direction={{ base: 'column', sm: 'row' }}>
+    <hr className="mb-2" />
+    <div className="flex flex-col sm:flex-row justify-between">
       {OFFLINE_MODE ? (
-        <Text>หากมีข้อสงสัย กรุณายกมือถาม</Text>
+        <span>หากมีข้อสงสัย กรุณายกมือถาม</span>
       ) : (
-        <Text>
+        <span>
           หากมีข้อแนะนำ หรือข้อสงสัย{' '}
-          <Link href={CONTACT_LINK} isExternal>
+          <Link href={GITHUB_LINK} isExternal>
             ติดต่อเรา
           </Link>
-        </Text>
+        </span>
       )}
-      <Spacer />
-      <Text>
+      <span>
         {OFFLINE_MODE ? (
           '© 2022 Phakphum Dev Team'
         ) : (
-          <Link variant="hidden" href={GITHUB_LINK} isExternal>
+          <Link variant="hidden" href={CONTACT_LINK} isExternal>
             © 2022 Phakphum Dev Team
           </Link>
         )}
-      </Text>
-    </Flex>
+      </span>
+    </div>
   </PageContainer>
 )

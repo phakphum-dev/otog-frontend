@@ -3,13 +3,13 @@ import NextLink from 'next/link'
 import { FaTrophy } from 'react-icons/fa'
 
 import { Box, Flex, Text } from '@chakra-ui/layout'
-import { Link } from '@chakra-ui/react'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { useContests } from '@src/contest/queries'
+import { Link } from '@src/ui/Link'
 import { toThDate, toThTimeFormat } from '@src/utils/time'
 
 export default function ContestHistoryPage() {
@@ -41,9 +41,7 @@ export default function ContestHistoryPage() {
                   <Td>{contest.id}</Td>
                   <Td>
                     <NextLink href={`/contest/history/${contest.id}`} passHref>
-                      <Link as="a" px={1}>
-                        {contest.name}
-                      </Link>
+                      <Link className="px-1">{contest.name}</Link>
                     </NextLink>
                   </Td>
                   <Td>

@@ -4,13 +4,12 @@ import { FaTasks } from 'react-icons/fa'
 
 import { getSubmission, keySubmission, useSubmission } from '../queries'
 
-import { Link } from '@chakra-ui/react'
-
 import { SubmissionContent } from '@src/components/Code'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { API_HOST } from '@src/config'
 import { withCookies } from '@src/context/HttpClient'
+import { Link } from '@src/ui/Link'
 
 export default function SubmissionPage() {
   const router = useRouter()

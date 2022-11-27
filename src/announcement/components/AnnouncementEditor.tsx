@@ -40,10 +40,11 @@ import {
   Code,
   HStack,
   IconButton,
-  Link,
   Stack,
   Text,
 } from '@chakra-ui/react'
+
+import { Link } from '@src/ui/Link'
 
 type CustomText = {
   text: string

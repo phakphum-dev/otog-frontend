@@ -19,7 +19,6 @@ import {
   Divider,
   HStack,
   Heading,
-  Link,
   Spacer,
   Stack,
   Text,
@@ -37,6 +36,7 @@ import { useLatestProblemSubmission } from '@src/submission/queries'
 import { useDropFile } from '@src/submission/submit/useDropFile'
 import { SubmissionWithProblem } from '@src/submission/types'
 import { isGraded, isGrading, useStatusColor } from '@src/theme/useStatusColor'
+import { Link } from '@src/ui/Link'
 import { ONE_SECOND } from '@src/utils/time'
 
 const defaultValue = `#include <iostream>
