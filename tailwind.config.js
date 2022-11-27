@@ -30,7 +30,7 @@ const colors = {
 }
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
-  darkMode: ['class', '[data-mode="dark"]'],
+  darkMode: ['class', '[data-theme="dark"]'],
   theme: {
     extend: { colors },
   },
