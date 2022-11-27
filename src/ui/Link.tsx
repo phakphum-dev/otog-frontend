@@ -9,7 +9,8 @@ const linkStyles = cva(
       variant: {
         default: 'text-otog',
         hidden: 'hover:text-otog',
-        close: 'text-gray-300 dark:text-alpha-400 hover:text-otog',
+        close:
+          'text-gray-300 dark:text-alpha-400 hover:text-otog hover:dark:text-otog',
         head:
           'hover:text-gray-900 hover:dark:text-gray-100 hover:no-underline transition-colors',
       },
