@@ -164,7 +164,7 @@ const matcher: Record<
   '[': {
     match: ']',
     formatter: (token) => (
-      <Link href={token} isExternal className="underline text-inherit">
+      <Link href={token} isExternal className="underline !text-inherit">
         {token}
       </Link>
     ),

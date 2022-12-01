@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { VariantProps, cva } from 'cva'
 import { AnchorHTMLAttributes, PropsWithChildren } from 'react'
 
@@ -38,7 +37,7 @@ export const Link = ({
   return (
     // eslint-disable-next-line react/jsx-no-target-blank
     <a
-      className={clsx(linkStyles({ variant }), className)}
+      className={linkStyles({ variant, className })}
       href={href}
       target={isExternal ? '_blank' : undefined}
       rel={isExternal ? 'noopener' : undefined}
