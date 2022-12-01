@@ -3,7 +3,6 @@ import Cropper from 'react-easy-crop'
 import { Area } from 'react-easy-crop/types'
 import { mutate } from 'swr'
 
-import { Button } from '@chakra-ui/button'
 import { Box, HStack, Stack } from '@chakra-ui/layout'
 import {
   Modal,
@@ -25,6 +24,7 @@ import { useAuth } from '@src/context/AuthContext'
 import { storage } from '@src/firebase'
 import { useErrorToast } from '@src/hooks/useErrorToast'
 import { useUserProfilePic } from '@src/profile/useProfilePic'
+import { Button } from '@src/ui/Button'
 
 interface ImageUploadModalProps {
   isOpen: boolean
@@ -192,7 +192,7 @@ export const ImageCropModal = (props: ImageUploadModalProps) => {
 
         <ModalFooter>
           <HStack>
-            <Button variant="otog" onClick={uploadCroppedImage}>
+            <Button colorScheme="otog" onClick={uploadCroppedImage}>
               เสร็จสิ้น
             </Button>
           </HStack>

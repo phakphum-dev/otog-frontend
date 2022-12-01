@@ -5,12 +5,11 @@ import { FaTasks } from 'react-icons/fa'
 
 import { getLatestSubmission } from '../queries'
 
-import { Button } from '@chakra-ui/button'
-
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { withCookies } from '@src/context/HttpClient'
 import { SubmissionTable } from '@src/submission/SubmissionTable'
+import { Button } from '@src/ui/Button'
 
 export default function SubmissionPage() {
   return (

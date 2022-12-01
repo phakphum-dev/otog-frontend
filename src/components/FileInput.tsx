@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import {
   ForwardedRef,
   forwardRef,
@@ -9,16 +10,15 @@ import { DropzoneInputProps } from 'react-dropzone'
 import { FaUpload } from 'react-icons/fa'
 
 import {
-  Button,
   IconButton,
   Input,
   InputGroup,
   InputProps,
   InputRightElement,
-  useColorModeValue,
 } from '@chakra-ui/react'
 
 import { FileInputRef } from '@src/hooks/useFileInput'
+import { Button } from '@src/ui/Button'
 
 export type UploadFileProps = DropzoneInputProps & {
   fileName?: string
@@ -64,9 +64,11 @@ export const FileInput = forwardRef(
         />
         <InputRightElement w={100} zIndex={0} justifyContent="end">
           <Button
-            borderRadius={variant === 'md' ? '0 4px 4px 0' : '0 2px 2px 0'}
-            color={useColorModeValue('gray.600', 'white')}
-            fontWeight="normal"
+            className={clsx(
+              '!rounded-l-none !font-normal text-gray-60 dark:text-white',
+              variant === 'md' && '!rounded-md',
+              variant === 'sm' && '!rounded-sm'
+            )}
             onClick={onClick}
             size={variant}
           >

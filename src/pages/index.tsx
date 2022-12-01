@@ -4,11 +4,12 @@ import NextLink from 'next/link'
 
 import ComputerImage from '../../public/computer.svg'
 
-import { Button, Center, HStack, Heading, Stack, Text } from '@chakra-ui/react'
+import { Center, HStack, Heading, Stack, Text } from '@chakra-ui/react'
 
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { OFFLINE_MODE } from '@src/config'
 import { getServerSideCookies } from '@src/context/HttpClient'
+import { Button } from '@src/ui/Button'
 
 export default function HomePage() {
   return (
@@ -27,12 +28,12 @@ export default function HomePage() {
           </Text>
           <HStack spacing={4}>
             <NextLink href="/register" passHref>
-              <Button as="a" variant="otog" width="100px">
+              <Button as="a" className="w-[100px]" colorScheme="otog">
                 Sign Up
               </Button>
             </NextLink>
             <NextLink href="/login" passHref>
-              <Button as="a" width="100px" variant="outline">
+              <Button as="a" className="w-[100px]" variant="outline">
                 Sign in
               </Button>
             </NextLink>

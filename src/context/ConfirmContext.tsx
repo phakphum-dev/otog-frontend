@@ -1,3 +1,5 @@
+import { ReactNode, createContext, useContext, useRef, useState } from 'react'
+
 import {
   AlertDialog,
   AlertDialogBody,
@@ -5,11 +7,11 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
-  Button,
   HStack,
   useDisclosure,
 } from '@chakra-ui/react'
-import { createContext, ReactNode, useContext, useRef, useState } from 'react'
+
+import { Button } from '@src/ui/Button'
 
 export interface ConfirmProviderProps {
   onConfirm: (props: ConfirmModalProps) => void

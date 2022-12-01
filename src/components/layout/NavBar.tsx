@@ -1,7 +1,8 @@
+import clsx from 'clsx'
 import Image from 'next/image'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import { ForwardedRef, useEffect, useRef, useState } from 'react'
+import { ForwardedRef, useEffect, useRef } from 'react'
 
 import Logo from '../../../public/logo512.png'
 import { ToggleColorModeButton } from '../ToggleColorModeButton'
@@ -11,8 +12,6 @@ import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
 import {
   Avatar,
   Box,
-  Button,
-  ButtonProps,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -38,42 +37,12 @@ import {
 import { OFFLINE_MODE } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
 import { useUserProfilePic } from '@src/profile/useProfilePic'
+import { Button, ButtonProps } from '@src/ui/Button'
+import { Link, LinkProps } from '@src/ui/Link'
 
-interface ColorOptions {
-  normal: {
-    light: string
-    dark: string
-  }
-  active: {
-    light: string
-    dark: string
-  }
-}
-
-const defaultOptions: ColorOptions = {
-  normal: {
-    light: 'gray.500',
-    dark: 'gray.400',
-  },
-  active: {
-    light: 'gray.800',
-    dark: 'white',
-  },
-}
-
-function useActiveColor(href: string, options: ColorOptions = defaultOptions) {
-  const normalColor = useColorModeValue(
-    options?.normal.light,
-    options?.normal.dark
-  )
-  const activeColor = useColorModeValue(
-    options?.active.light,
-    options?.active.dark
-  )
+function usePathActive(href: string) {
   const { pathname } = useRouter()
-  const isActive = href.split('/')[1] === pathname.split('/')[1]
-  const color = isActive ? activeColor : normalColor
-  return { color, normalColor, activeColor, isActive }
+  return href.split('/')[1] === pathname.split('/')[1]
 }
 
 export const NavBar = () => {
@@ -88,7 +57,6 @@ export const NavBar = () => {
   }, [isMobile, pathname, onClose])
 
   const bg = useColorModeValue('white', 'gray.800')
-  const color = useColorModeValue('gray.800', 'white')
 
   const { isAuthenticated, user, logout, isAdmin } = useAuth()
   const { url } = useUserProfilePic(true)
@@ -122,7 +90,7 @@ export const NavBar = () => {
         <PageContainer>
           <Flex>
             <NextLink href={isAdmin ? '/admin/contest' : '/'} passHref>
-              <Button as="a" variant="link" color={color} _hover={{ color }}>
+              <Link className="text-gray-800 dark:text-white">
                 <HStack cursor="pointer">
                   <Image src={Logo} width={32} height={32} />
                   <Heading size="md" py={2}>
@@ -136,7 +104,7 @@ export const NavBar = () => {
                     </Box>
                   </Heading>
                 </HStack>
-              </Button>
+              </Link>
             </NextLink>
             <Spacer />
             <IconButton
@@ -190,7 +158,7 @@ export const NavBar = () => {
                   <DrawerItem key={item.href} {...item} />
                 ))}
                 {isAuthenticated ? (
-                  <DrawerButton color="red.500" onClick={logout}>
+                  <DrawerButton className="!text-red-500" onClick={logout}>
                     ออกจากระบบ
                   </DrawerButton>
                 ) : (
@@ -206,38 +174,46 @@ export const NavBar = () => {
     </>
   )
 }
-interface ItemProps extends ButtonProps {
+interface ItemProps {
   active?: boolean
   href: string
   title: string
 }
 
-const NavItem = (props: ItemProps) => {
+const NavItem = (props: ItemProps & LinkProps) => {
   const { href, title, ...rest } = props
-  const { color, activeColor } = useActiveColor(href)
+  const isActive = usePathActive(href)
   return (
     <NextLink href={href} passHref>
-      <Button
-        as="a"
-        p={2}
-        variant="link"
-        fontWeight="normal"
-        color={color}
-        _hover={{ color: activeColor }}
+      <Link
+        className={clsx(
+          'p-2 font-normal hover:text-gray-800 hover:dark:text-white !no-underline',
+          isActive
+            ? 'text-gray-800 dark:text-white'
+            : 'text-gray-500 dark:text-gray-400'
+        )}
         {...rest}
       >
         {title}
-      </Button>
+      </Link>
     </NextLink>
   )
 }
 
-const DrawerItem = (props: ItemProps) => {
-  const { href, title, ...rest } = props
-  const { color } = useActiveColor(href)
+const DrawerItem = (props: ItemProps & ButtonProps) => {
+  const { href, title, active, ...rest } = props
+  const isActive = usePathActive(href) || active
   return (
     <NextLink href={href} passHref>
-      <DrawerButton {...rest} as="a" fontWeight="normal" color={color}>
+      <DrawerButton
+        as="a"
+        className={
+          isActive
+            ? 'text-gray-800 dark:text-white'
+            : 'text-gray-500 dark:text-gray-400'
+        }
+        {...rest}
+      >
         {title}
       </DrawerButton>
     </NextLink>
@@ -245,15 +221,16 @@ const DrawerItem = (props: ItemProps) => {
 }
 
 const DrawerButton = forwardRef(
-  (props: ButtonProps, ref: ForwardedRef<HTMLButtonElement>) => {
+  (
+    { className, ...props }: ButtonProps,
+    ref: ForwardedRef<HTMLButtonElement>
+  ) => {
     return (
       <Button
         ref={ref}
         variant="ghost"
-        justifyContent="flex-start"
-        fontWeight="normal"
-        width="100%"
-        px={2}
+        fullWidth
+        className={clsx('!px-2 !justify-start font-normal', className)}
         {...props}
       />
     )
@@ -263,29 +240,28 @@ const DrawerButton = forwardRef(
 const AvatarMenu = () => {
   const { user, isAdmin, logout } = useAuth()
   const { url } = useUserProfilePic(true)
-  const [isClient, setClient] = useState(false)
-  useEffect(() => {
-    setClient(true)
-  }, [])
   return (
-    <Menu>
+    <Menu isLazy>
       {OFFLINE_MODE && !isAdmin && <Text p={2}>สวัสดี {user?.showName}</Text>}
-      <MenuButton as={Button} variant="link" rightIcon={<ChevronDownIcon />}>
+      <MenuButton
+        as={Button}
+        className="!px-2"
+        variant="ghost"
+        rightIcon={<ChevronDownIcon />}
+      >
         <Avatar size="xs" src={url} />
       </MenuButton>
       {/* fix render menulist on ssr */}
-      {isClient && (
-        <MenuList>
-          {!OFFLINE_MODE && (
-            <NextLink href={`/profile/${user?.id}`} passHref>
-              <MenuItem as="a">โปรไฟล์</MenuItem>
-            </NextLink>
-          )}
-          <MenuItem color="red.500" onClick={logout}>
-            ออกจากระบบ
-          </MenuItem>
-        </MenuList>
-      )}
+      <MenuList>
+        {!OFFLINE_MODE && (
+          <NextLink href={`/profile/${user?.id}`} passHref>
+            <MenuItem as="a">โปรไฟล์</MenuItem>
+          </NextLink>
+        )}
+        <MenuItem color="red.500" onClick={logout}>
+          ออกจากระบบ
+        </MenuItem>
+      </MenuList>
     </Menu>
   )
 }

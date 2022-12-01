@@ -3,7 +3,7 @@ import { IoChatbubbleEllipses, IoSend } from 'react-icons/io5'
 
 import { ChatMessage } from './components/ChatMessage'
 
-import { Button, IconButton, IconButtonProps } from '@chakra-ui/button'
+import { IconButton, IconButtonProps } from '@chakra-ui/button'
 import { useColorModeValue } from '@chakra-ui/color-mode'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { SmallCloseIcon } from '@chakra-ui/icons'
@@ -17,6 +17,7 @@ import { SlideFade } from '@chakra-ui/transition'
 import { useChat } from '@src/chat/useChat'
 import { useAuth } from '@src/context/AuthContext'
 import { useOnScreen } from '@src/hooks/useOnScreen'
+import { Button } from '@src/ui/Button'
 import { useOnlineUsers } from '@src/user/queries'
 
 interface ChatButtonProps extends IconButtonProps {
@@ -137,12 +138,10 @@ export const Chat = () => {
           >
             <OnlineUsersTooltip placement="top-start">
               <Button
-                p={6}
+                className="!p-6 rounded-b-none justify-between"
                 onClick={onClose}
-                borderBottomRadius={0}
-                justifyContent="space-between"
                 rightIcon={<SmallCloseIcon />}
-                variant="otog"
+                colorScheme="otog"
               >
                 <Heading as="h3" size="sm">
                   OTOG Chat

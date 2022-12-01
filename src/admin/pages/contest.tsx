@@ -14,7 +14,7 @@ import {
 } from 'react-icons/fa'
 import { mutate } from 'swr'
 
-import { Button, IconButton } from '@chakra-ui/button'
+import { IconButton } from '@chakra-ui/button'
 import { FormControl, FormLabel } from '@chakra-ui/form-control'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Input } from '@chakra-ui/input'
@@ -54,6 +54,7 @@ import { getServerSideCookies } from '@src/context/HttpClient'
 import { useMutation } from '@src/hooks/useMutation'
 import { useProblems } from '@src/problem/queries'
 import { ProblemWithSubmission } from '@src/problem/types'
+import { Button } from '@src/ui/Button'
 import { Link } from '@src/ui/Link'
 
 export default function AdminContestPage() {

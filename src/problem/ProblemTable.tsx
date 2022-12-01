@@ -9,7 +9,6 @@ import { usePassedUsers, useProblems } from './queries'
 
 import {
   Box,
-  Button,
   Flex,
   Modal,
   ModalBody,
@@ -39,6 +38,7 @@ import { useMutation } from '@src/hooks/useMutation'
 import { ProblemWithSubmission } from '@src/problem/types'
 import { Submission } from '@src/submission/types'
 import { useStatusColor } from '@src/theme/useStatusColor'
+import { Button } from '@src/ui/Button'
 import { Link } from '@src/ui/Link'
 import { ONE_SECOND } from '@src/utils/time'
 

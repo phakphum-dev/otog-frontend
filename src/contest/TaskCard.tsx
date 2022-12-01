@@ -1,11 +1,12 @@
 import Editor from '@monaco-editor/react'
+import clsx from 'clsx'
 import { ChangeEvent, FormEvent, memo, useState } from 'react'
 
 import { CodeModal, ErrorModal } from '../components/Code'
 import { FileInput } from '../components/FileInput'
 import { submitContestProblem } from './queries'
 
-import { Button, IconButton } from '@chakra-ui/button'
+import { IconButton } from '@chakra-ui/button'
 import { useDisclosure } from '@chakra-ui/hooks'
 import {
   ChevronDownIcon,
@@ -36,6 +37,7 @@ import { useLatestProblemSubmission } from '@src/submission/queries'
 import { useDropFile } from '@src/submission/submit/useDropFile'
 import { SubmissionWithProblem } from '@src/submission/types'
 import { isGraded, isGrading, useStatusColor } from '@src/theme/useStatusColor'
+import { Button } from '@src/ui/Button'
 import { Link } from '@src/ui/Link'
 import { ONE_SECOND } from '@src/utils/time'
 
@@ -61,11 +63,12 @@ export const TaskCard = memo((props: TaskCardProps) => {
   return (
     <Box rounded="lg" boxShadow="sm" borderWidth="1px">
       <Button
-        p={{ base: 2, sm: 6 }}
-        justifyContent="space-between"
-        borderBottomRadius={isOpen ? 0 : 'md'}
+        className={clsx(
+          '!p-2 sm:!p-6 justify-between',
+          isOpen && 'rounded-b-none'
+        )}
+        fullWidth
         variant="ghost"
-        width="100%"
         onClick={onToggle}
         rightIcon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
       >
@@ -156,7 +159,7 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
             variant="sm"
             {...fileInputProps}
           />
-          <Button variant="otog" size="sm" type="submit">
+          <Button colorScheme="otog" size="sm" type="submit">
             ส่ง
           </Button>
         </HStack>
@@ -220,11 +223,14 @@ export const ContestEditorForm = (props: ContestEditorFormProps) => {
           </option>
         </Select>
         <Spacer />
-        <Box flex={1}>
-          <Button variant="otog" size="sm" width="100%" onClick={onSubmit}>
-            ส่ง
-          </Button>
-        </Box>
+        <Button
+          className="flex-1"
+          colorScheme="otog"
+          size="sm"
+          onClick={onSubmit}
+        >
+          ส่ง
+        </Button>
       </Stack>
     </Stack>
   )

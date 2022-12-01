@@ -7,7 +7,6 @@ import Logo from '../../public/logo512.png'
 import {
   Box,
   BoxProps,
-  Button,
   Divider,
   Input,
   Modal,
@@ -21,6 +20,7 @@ import {
 import { OFFLINE_MODE } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
 import { useErrorToast } from '@src/hooks/useErrorToast'
+import { Button } from '@src/ui/Button'
 import { LoginReq } from '@src/user/types'
 
 export interface LoginModalProps {
@@ -89,7 +89,7 @@ export const LoginForm = (props: LoginFormProps) => {
           placeholder="รหัสผ่าน"
           required
         />
-        <Button type="submit" variant="otog">
+        <Button type="submit" colorScheme="otog">
           เข้าสู่ระบบ
         </Button>
         {!OFFLINE_MODE && (

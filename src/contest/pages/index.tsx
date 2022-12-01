@@ -5,7 +5,6 @@ import { useEffect } from 'react'
 import { FaTrophy } from 'react-icons/fa'
 import { mutate } from 'swr'
 
-import { Button } from '@chakra-ui/button'
 import { Center, Heading, Stack, VStack } from '@chakra-ui/layout'
 
 import { AnnouncementCarousel } from '@src/announcement/components/AnnouncementCarousel'
@@ -16,6 +15,7 @@ import { TaskCard } from '@src/contest/TaskCard'
 import { getCurrentContest, useCurrentContest } from '@src/contest/queries'
 import { Contest } from '@src/contest/types'
 import { withCookies } from '@src/context/HttpClient'
+import { Button } from '@src/ui/Button'
 import { toThTimeFormat, toTimerFormat } from '@src/utils/time'
 import {
   getServerTime,
@@ -146,7 +146,7 @@ export const PostContest = (props: ContestProps) => {
             }
             passHref
           >
-            <Button as="a" variant="otog">
+            <Button as="a" colorScheme="otog">
               สรุปผลการแข่งขัน
             </Button>
           </NextLink>

@@ -2,7 +2,6 @@ import { AnnouncementEditor } from './AnnouncementEditor'
 import { useAnnouncementContext } from './useAnnouncementContext'
 
 import {
-  Button,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -11,6 +10,8 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react'
+
+import { Button } from '@src/ui/Button'
 
 interface AnnouncementModalProps {
   isOpen: boolean
@@ -31,7 +32,7 @@ export const AnnouncementModal = (props: AnnouncementModalProps) => {
 
         <ModalFooter>
           <Button
-            mr={3}
+            className="mr-3"
             colorScheme="red"
             variant="ghost"
             onClick={deleteIndex}

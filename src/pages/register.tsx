@@ -4,11 +4,12 @@ import { useForm } from 'react-hook-form'
 
 import Logo from '../../public/logo512.png'
 
-import { Box, Button, Input, Stack, useToast } from '@chakra-ui/react'
+import { Box, Input, Stack, useToast } from '@chakra-ui/react'
 
 import { CenteredCard } from '@src/components/Login'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { useMutation } from '@src/hooks/useMutation'
+import { Button } from '@src/ui/Button'
 import { registerUser } from '@src/user/queries'
 import { CreateUser } from '@src/user/types'
 
@@ -56,7 +57,7 @@ export default function RegisterPage() {
               required
               placeholder="ชื่อที่ใช้แสดง"
             />
-            <Button variant="otog" type="submit">
+            <Button colorScheme="otog" type="submit">
               ลงทะเบียน
             </Button>
           </Stack>

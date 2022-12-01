@@ -6,7 +6,6 @@ import { SubmissionWithProblem } from './types'
 
 import {
   Box,
-  Button,
   Flex,
   HStack,
   Spinner,
@@ -32,6 +31,7 @@ import {
 } from '@src/submission/queries'
 import { LatestSubmission } from '@src/submission/submit/LatestSubmission'
 import { isGraded, isGrading, useStatusColor } from '@src/theme/useStatusColor'
+import { Button } from '@src/ui/Button'
 import { Link } from '@src/ui/Link'
 import { ONE_SECOND, toThDate } from '@src/utils/time'
 

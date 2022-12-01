@@ -2,7 +2,8 @@ import Head from 'next/head'
 import { Dispatch, SetStateAction, memo, useState } from 'react'
 import { FaPuzzlePiece } from 'react-icons/fa'
 
-import { Button, ButtonProps } from '@chakra-ui/button'
+import { ProblemWithSubmission } from '../types'
+
 import { AspectRatio, Heading, Stack, VStack } from '@chakra-ui/layout'
 import { Skeleton } from '@chakra-ui/skeleton'
 
@@ -15,6 +16,7 @@ import { useAuth } from '@src/context/AuthContext'
 import { withCookies } from '@src/context/HttpClient'
 import { FilterFunction, ProblemTable } from '@src/problem/ProblemTable'
 import { useProblems } from '@src/problem/queries'
+import { Button, ButtonProps } from '@src/ui/Button'
 import { ONE_DAY } from '@src/utils/time'
 
 export default function ProblemPage() {
@@ -76,7 +78,7 @@ const OtogButton = ({
   ...props
 }: ButtonProps & { label: string }) => (
   <AspectRatio flex={1} ratio={5 / 4}>
-    <Button rounded="lg" {...props}>
+    <Button className="rounded-lg" {...props}>
       <VStack spacing={{ base: 0, sm: 2 }}>
         <Heading
           as="h6"
@@ -93,39 +95,37 @@ const OtogButton = ({
   </AspectRatio>
 )
 
-const filterButton: {
-  filter: FilterFunction
-  colorScheme: string
-  label: string
-}[] = [
+const filterButton = [
   {
     filter: () => true,
     colorScheme: 'gray',
     label: 'ทั้งหมด',
   },
   {
-    filter: (problem) => problem.submission?.status === 'accept',
-    colorScheme: 'btn_green',
+    filter: (problem: ProblemWithSubmission) =>
+      problem.submission?.status === 'accept',
+    colorScheme: 'otog-green',
     label: 'ผ่านแล้ว',
   },
   {
-    filter: (problem) => problem.submission?.status === 'reject',
-    colorScheme: 'btn_red',
+    filter: (problem: ProblemWithSubmission) =>
+      problem.submission?.status === 'reject',
+    colorScheme: 'otog-red',
     label: 'ยังไม่ผ่าน',
   },
   {
-    filter: (problem) => !problem.submission?.id,
-    colorScheme: 'btn_orange',
+    filter: (problem: ProblemWithSubmission) => !problem.submission?.id,
+    colorScheme: 'otog-orange',
     label: 'ยังไม่ส่ง',
   },
   {
-    filter: (problem) =>
+    filter: (problem: ProblemWithSubmission) =>
       problem.show &&
       Date.now() - new Date(problem.recentShowTime).getTime() < ONE_DAY,
-    colorScheme: 'btn_blue',
+    colorScheme: 'otog-blue',
     label: 'โจทย์วันนี้',
   },
-]
+] as const
 
 export const getServerSideProps = withCookies(async () => {
   const announcement = getAnnouncements()

@@ -6,7 +6,6 @@ import { submitProblem } from './queries'
 import { useDropFile } from './useDropFile'
 
 import {
-  Button,
   FormControl,
   FormLabel,
   HStack,
@@ -25,6 +24,7 @@ import {
 import { useLoading } from '@src/hooks/useLoading'
 import { useMutation } from '@src/hooks/useMutation'
 import { Problem } from '@src/problem/types'
+import { Button } from '@src/ui/Button'
 
 export interface SubmitModalProps extends UseDisclosureReturn {
   problem: Problem
@@ -93,7 +93,7 @@ export const SubmitModal = (props: SubmitModalProps) => {
                 <NextLink href={`/problem/${problem.id}`} passHref>
                   <Button as="a">{submitted ? 'แก้ไข' : 'ใหม่'}</Button>
                 </NextLink>
-                <Button variant="otog" type="submit">
+                <Button colorScheme="otog" type="submit">
                   ส่ง
                 </Button>
               </HStack>
