@@ -1,11 +1,9 @@
+import clsx from 'clsx'
 import Head from 'next/head'
 import { Dispatch, SetStateAction, memo, useState } from 'react'
 import { FaPuzzlePiece } from 'react-icons/fa'
 
 import { ProblemWithSubmission } from '../types'
-
-import { AspectRatio, Heading, Stack, VStack } from '@chakra-ui/layout'
-import { Skeleton } from '@chakra-ui/skeleton'
 
 import { AnnouncementCarousel } from '@src/announcement/components/AnnouncementCarousel'
 import { getAnnouncements } from '@src/announcement/queries'
@@ -48,52 +46,51 @@ export interface ButtonsProps {
 
 export const Buttons = memo((props: ButtonsProps) => {
   const { setFilter } = props
-  const { data: problems } = useProblems()
-
+  const { data: problems, isLoading } = useProblems()
   return (
-    <Stack direction="row" mb={4} spacing={{ base: 2, md: 3 }}>
+    <div className="mb-4 flex space-x-2 md:space-x-3">
       {filterButton.map(({ filter, ...props }) => (
-        <Skeleton
-          flex={1}
-          rounded="lg"
-          isLoaded={!!problems}
+        <OtogButton
           key={props.colorScheme}
-        >
-          <OtogButton
-            key={props.colorScheme}
-            onClick={() => setFilter(() => filter)}
-            {...props}
-          >
-            {problems?.filter(filter).length}
-          </OtogButton>
-        </Skeleton>
+          onClick={() => setFilter(() => filter)}
+          isLoading={isLoading}
+          number={problems?.filter(filter).length}
+          {...props}
+        />
       ))}
-    </Stack>
+    </div>
   )
 })
 
+type OtogButton = ButtonProps & {
+  label: string
+  isLoading: boolean
+  number?: number
+}
+
 const OtogButton = ({
   label,
-  children,
+  number,
+  colorScheme,
+  isLoading,
   ...props
-}: ButtonProps & { label: string }) => (
-  <AspectRatio flex={1} ratio={5 / 4}>
-    <Button className="rounded-lg" {...props}>
-      <VStack spacing={{ base: 0, sm: 2 }}>
-        <Heading
-          as="h6"
-          fontSize={{ base: 'md', md: 'lg' }}
-          display={{ base: 'none', sm: 'block' }}
-        >
-          {label}
-        </Heading>
-        <Heading as="h3" fontSize={{ base: '3xl', md: '4xl' }}>
-          {children}
-        </Heading>
-      </VStack>
+}: OtogButton) => {
+  return (
+    <Button
+      className={clsx(
+        'flex-1 aspect-5/4 rounded-lg h-full flex-col',
+        isLoading && 'animate-pulse'
+      )}
+      colorScheme={isLoading ? 'gray' : colorScheme}
+      {...props}
+    >
+      <h6 className="sm:mb-2 text-base md:text-lg hidden sm:block">
+        {!isLoading && label}
+      </h6>
+      <h3 className="text-3xl md:text-4xl font-bold">{number}</h3>
     </Button>
-  </AspectRatio>
-)
+  )
+}
 
 const filterButton = [
   {
