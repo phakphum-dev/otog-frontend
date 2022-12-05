@@ -11,7 +11,6 @@ import { PageContainer } from './PageContainer'
 import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
 import {
   Avatar,
-  Box,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -30,7 +29,6 @@ import {
   VStack,
   forwardRef,
   useBreakpointValue,
-  useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react'
 
@@ -56,8 +54,6 @@ export const NavBar = () => {
     onClose()
   }, [isMobile, pathname, onClose])
 
-  const bg = useColorModeValue('white', 'gray.800')
-
   const { isAuthenticated, user, logout, isAdmin } = useAuth()
   const { url } = useUserProfilePic(true)
 
@@ -76,17 +72,7 @@ export const NavBar = () => {
 
   return (
     <>
-      <Box
-        zIndex={50}
-        position="fixed"
-        py={2}
-        h={14}
-        top={0}
-        left={0}
-        w="100%"
-        bg={bg}
-        boxShadow="base"
-      >
+      <div className="z-50 fixed py-2 h-14 top-0 left-0 w-full bg-white dark:bg-gray-800 shadow-md">
         <PageContainer>
           <Flex>
             <NextLink href={isAdmin ? '/admin/contest' : '/'} passHref>
@@ -94,14 +80,10 @@ export const NavBar = () => {
                 <HStack cursor="pointer">
                   <Image src={Logo} width={32} height={32} />
                   <Heading size="md" py={2}>
-                    <Box
-                      display={{ base: 'none', md: 'inline-block', xl: 'none' }}
-                    >
-                      OTOG
-                    </Box>
-                    <Box display={{ base: 'none', xl: 'inline-block' }}>
+                    <div className="hidden md:inline-block xl:hidden">OTOG</div>
+                    <div className="hidden xl:inline-block">
                       One Tambon One Grader
-                    </Box>
+                    </div>
                   </Heading>
                 </HStack>
               </Link>
@@ -132,7 +114,7 @@ export const NavBar = () => {
             </HStack>
           </Flex>
         </PageContainer>
-      </Box>
+      </div>
       <Drawer
         isOpen={isMobile && isOpen}
         placement="right"
@@ -170,7 +152,7 @@ export const NavBar = () => {
           </DrawerContent>
         </DrawerOverlay>
       </Drawer>
-      <Box bg="transparend" h={14} w="100%" />
+      <div className="h-14 w-full bg-transparent" />
     </>
   )
 }

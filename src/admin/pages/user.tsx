@@ -10,7 +10,7 @@ import { IconButton } from '@chakra-ui/button'
 import { FormControl, FormLabel } from '@chakra-ui/form-control'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Input } from '@chakra-ui/input'
-import { Box, Flex, Stack } from '@chakra-ui/layout'
+import { Flex, Stack } from '@chakra-ui/layout'
 import {
   Modal,
   ModalBody,
@@ -208,7 +208,7 @@ const EditUserModalButton = (props: EditUserModalProps) => {
 const UserAdminTable = () => {
   const { data: users } = useUsers()
   return users ? (
-    <Box overflowX="auto">
+    <div className="overflow-x-auto">
       <Table>
         <Thead>
           <Tr>
@@ -230,7 +230,7 @@ const UserAdminTable = () => {
           ))}
         </Tbody>
       </Table>
-    </Box>
+    </div>
   ) : (
     <Flex justify="center" py={16}>
       <Spinner size="xl" />

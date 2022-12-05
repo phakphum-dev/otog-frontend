@@ -2,7 +2,7 @@ import Head from 'next/head'
 import NextLink from 'next/link'
 import { FaTrophy } from 'react-icons/fa'
 
-import { Box, Flex, Text } from '@chakra-ui/layout'
+import { Flex, Text } from '@chakra-ui/layout'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
@@ -24,7 +24,7 @@ export default function ContestHistoryPage() {
         <Title icon={FaTrophy}>ประวัติการแข่งขัน</Title>
       </TitleLayout>
       {contests ? (
-        <Box overflowX="auto">
+        <div className="overflow-x-auto">
           <Table>
             <Thead>
               <Tr>
@@ -58,7 +58,7 @@ export default function ContestHistoryPage() {
               ))}
             </Tbody>
           </Table>
-        </Box>
+        </div>
       ) : (
         <Flex justify="center" py={16}>
           <Spinner size="xl" />

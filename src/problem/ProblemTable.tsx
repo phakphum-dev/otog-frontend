@@ -8,7 +8,6 @@ import { SubmitModal } from '../submission/submit/SubmitModal'
 import { usePassedUsers, useProblems } from './queries'
 
 import {
-  Box,
   Flex,
   Modal,
   ModalBody,
@@ -84,7 +83,7 @@ export const ProblemTable = (props: ProblemTableProps) => {
   const { isAdmin } = useAuth()
 
   return sortedProblems ? (
-    <Box overflowX="auto">
+    <div className="overflow-x-auto">
       <Table variant="simple">
         <Thead>
           <Tr>
@@ -131,7 +130,7 @@ export const ProblemTable = (props: ProblemTableProps) => {
       {modalPassed && (
         <PassedModal {...passedModal} modalPassed={modalPassed} />
       )}
-    </Box>
+    </div>
   ) : (
     <Flex justify="center" py={16}>
       <Spinner size="xl" color="gray.300" />

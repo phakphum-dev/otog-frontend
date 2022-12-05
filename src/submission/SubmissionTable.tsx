@@ -5,7 +5,6 @@ import { CodeModal, ErrorModal } from '../components/Code'
 import { SubmissionWithProblem } from './types'
 
 import {
-  Box,
   Flex,
   HStack,
   Spinner,
@@ -97,7 +96,7 @@ export const InfiniteSubmissionTable = (props: SubmissionTableBaseProps) => {
   }
 
   return (
-    <Box overflowX="auto">
+    <div className="overflow-x-auto">
       <Table variant="simple">
         <Thead>
           <Tr>
@@ -129,7 +128,7 @@ export const InfiniteSubmissionTable = (props: SubmissionTableBaseProps) => {
         </Flex>
       )}
       <CodeModal submissionId={submissionId} {...codeDisclosure} />
-    </Box>
+    </div>
   )
 }
 
@@ -187,7 +186,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
             placement="top"
             label={toThDate(submission.creationDate)}
           >
-            <Box px={1}>{submission.id}</Box>
+            <div className="px-1">{submission.id}</div>
           </Tooltip>
         )}
       </Td>

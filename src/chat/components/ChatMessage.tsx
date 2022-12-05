@@ -5,7 +5,6 @@ import { Message } from '../types'
 
 import {
   Avatar,
-  Box,
   Code,
   Flex,
   Text,
@@ -73,7 +72,7 @@ export const ChatMessage = memo(
           {displayAvatar ? (
             <SmallAvatar userId={sender.id} />
           ) : (
-            isOther && <Box minW={6} mr={1} />
+            isOther && <div className="min-w-6 mr-1" />
           )}
           <VStack align="flex-start" spacing={0}>
             {displayName && (

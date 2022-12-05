@@ -1,12 +1,11 @@
 import Image from 'next/image'
 import NextLink from 'next/link'
+import { ReactNode } from 'react'
 import { useForm } from 'react-hook-form'
 
 import Logo from '../../public/logo512.png'
 
 import {
-  Box,
-  BoxProps,
   Divider,
   Input,
   Modal,
@@ -73,9 +72,9 @@ export const LoginForm = (props: LoginFormProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={4}>
-        <Box boxSize={100} mx="auto">
+        <div className="mx-auto w-[100px]">
           <Image src={Logo} />
-        </Box>
+        </div>
         <Input
           {...register('username')}
           type="text"
@@ -105,17 +104,10 @@ export const LoginForm = (props: LoginFormProps) => {
   )
 }
 
-export const CenteredCard = (props: BoxProps) => {
+export const CenteredCard = ({ children }: { children: ReactNode }) => {
   return (
-    <Box
-      p={4}
-      my={16}
-      mx="auto"
-      w="max-content"
-      boxShadow="md"
-      borderWidth="1px"
-      borderRadius="md"
-      {...props}
-    />
+    <div className="p-4 my-16 mx-auto w-max shadow-md border rounded-md">
+      {children}
+    </div>
   )
 }

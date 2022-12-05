@@ -118,6 +118,10 @@ module.exports = {
       aspectRatio: {
         '5/4': '5 / 4',
       },
+      zIndex: {
+        100: '100',
+        101: '101',
+      },
     },
   },
   plugins: [require('@tailwindcss/line-clamp')],

@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import Highlight, { Language, defaultProps } from 'prism-react-renderer'
 import theme from 'prism-react-renderer/themes/vsDark'
 import { PropsWithChildren, useEffect } from 'react'
@@ -5,7 +6,6 @@ import { FaRegShareSquare } from 'react-icons/fa'
 
 import { CopyIcon } from '@chakra-ui/icons'
 import {
-  Box,
   HStack,
   IconButton,
   Link,
@@ -148,7 +148,7 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
           {submission && <Text>ผลตรวจที่: {submission.id}</Text>}
         </TextSkeleton>
       </div>
-      <Box position="relative">
+      <div className="relative">
         <Skeleton isLoaded={isLoaded} h={isLoaded ? 'auto' : 80} rounded="lg">
           {submission && (
             <>
@@ -173,7 +173,7 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
             </>
           )}
         </Skeleton>
-      </Box>
+      </div>
     </Stack>
   )
 }
@@ -232,14 +232,9 @@ export const CodeHighlight = (props: CodeHighlightProps) => {
       theme={theme}
     >
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
-        <Box
-          as="pre"
-          className={className}
+        <pre
           style={{ ...style, tabSize: 4 }}
-          padding={4}
-          rounded="md"
-          overflowX="auto"
-          fontSize="12px"
+          className={clsx(className, 'p-4 rounded-md overflow-x-auto text-xs')}
         >
           {tokens.map((line, i) => (
             <div {...getLineProps({ line, key: i })} key={i}>
@@ -248,7 +243,7 @@ export const CodeHighlight = (props: CodeHighlightProps) => {
               ))}
             </div>
           ))}
-        </Box>
+        </pre>
       )}
     </Highlight>
   )

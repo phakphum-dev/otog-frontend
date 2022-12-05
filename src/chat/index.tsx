@@ -7,7 +7,7 @@ import { IconButton, IconButtonProps } from '@chakra-ui/button'
 import { useColorModeValue } from '@chakra-ui/color-mode'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { SmallCloseIcon } from '@chakra-ui/icons'
-import { Box, Circle, Flex, HStack, Heading, Text } from '@chakra-ui/layout'
+import { Circle, Flex, HStack, Heading, Text } from '@chakra-ui/layout'
 import { Spinner } from '@chakra-ui/spinner'
 import { Textarea } from '@chakra-ui/textarea'
 import { useToast } from '@chakra-ui/toast'
@@ -27,12 +27,12 @@ interface ChatButtonProps extends IconButtonProps {
 const MAX_LENGTH = 15
 
 const ChatButton = ({ hasUnread, ...props }: ChatButtonProps) => (
-  <Box position="fixed" bottom={5} right={5} zIndex={100}>
-    <Box position="relative" zIndex={101}>
+  <div className="fixed bottom-5 right-5 z-100">
+    <div className="relative z-101">
       {hasUnread && (
         <Circle position="absolute" top={1} right={1} size={2} bg="orange" />
       )}
-    </Box>
+    </div>
     <OnlineUsersTooltip placement="top-end">
       <IconButton
         isRound
@@ -57,7 +57,7 @@ const ChatButton = ({ hasUnread, ...props }: ChatButtonProps) => (
         {...props}
       />
     </OnlineUsersTooltip>
-  </Box>
+  </div>
 )
 
 const OnlineUsersTooltip = (props: TooltipProps) => {
@@ -125,7 +125,7 @@ export const Chat = () => {
         onClick={onToggle}
         hasUnread={hasUnread}
       />
-      <Box position="fixed" bottom={0} right={[0, null, 4]} zIndex={100}>
+      <div className="fixed bottom-0 right-0 md:right-4 z-100">
         <SlideFade in={isOpen} style={{ zIndex: 100 }} unmountOnExit={true}>
           <Flex
             width="320px"
@@ -192,7 +192,7 @@ export const Chat = () => {
             </Flex>
           </Flex>
         </SlideFade>
-      </Box>
+      </div>
     </>
   )
 }

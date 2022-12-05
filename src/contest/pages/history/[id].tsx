@@ -8,7 +8,7 @@ import { FaMedal, FaTrophy } from 'react-icons/fa'
 
 import { ButtonGroup, IconButton } from '@chakra-ui/button'
 import { useDisclosure } from '@chakra-ui/hooks'
-import { Box, Stack } from '@chakra-ui/layout'
+import { Stack } from '@chakra-ui/layout'
 import { Text } from '@chakra-ui/react'
 import { HTMLChakraProps, useTheme } from '@chakra-ui/system'
 import {
@@ -117,7 +117,7 @@ export default function ContestHistory() {
           />
         </ButtonGroup>
       </TitleLayout>
-      <Box overflowX="auto">
+      <div className="overflow-x-auto">
         <Table variant={isOpen ? 'simple' : 'unstyled'}>
           <Thead>
             <Tr whiteSpace="nowrap">
@@ -191,12 +191,12 @@ export default function ContestHistory() {
             ))}
           </Tbody>
         </Table>
-      </Box>
+      </div>
 
       <TitleLayout>
         <Title icon={FaMedal}>รางวัล</Title>
       </TitleLayout>
-      <Box overflowX="auto">
+      <div className="overflow-auto">
         <Table variant="simple">
           <Thead>
             <Tr whiteSpace="nowrap">
@@ -263,7 +263,7 @@ export default function ContestHistory() {
             })}
           </Tbody>
         </Table>
-      </Box>
+      </div>
     </PageContainer>
   )
 }

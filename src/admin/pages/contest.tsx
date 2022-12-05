@@ -18,7 +18,7 @@ import { IconButton } from '@chakra-ui/button'
 import { FormControl, FormLabel } from '@chakra-ui/form-control'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Input } from '@chakra-ui/input'
-import { Box, Flex, Spacer, Stack } from '@chakra-ui/layout'
+import { Flex, Spacer, Stack } from '@chakra-ui/layout'
 import {
   Modal,
   ModalBody,
@@ -367,7 +367,7 @@ const ContestTable = function ContestTable(props: ContestTableProps) {
     return [...problems]
   }, [problems, sortFuncName, sortOrder, openProblemIds])
   return sortedProblems ? (
-    <Box overflowX="auto">
+    <div className="overflow-x-auto">
       <Table>
         <Thead>
           <Tr>
@@ -400,7 +400,7 @@ const ContestTable = function ContestTable(props: ContestTableProps) {
           ))}
         </Tbody>
       </Table>
-    </Box>
+    </div>
   ) : (
     <Flex justify="center" py={16}>
       <Spinner size="xl" />

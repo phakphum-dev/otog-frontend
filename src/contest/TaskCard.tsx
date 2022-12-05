@@ -16,7 +16,6 @@ import {
 } from '@chakra-ui/icons'
 import {
   Badge,
-  Box,
   Divider,
   HStack,
   Heading,
@@ -61,7 +60,7 @@ export const TaskCard = memo((props: TaskCardProps) => {
   const { data: submission } = useLatestProblemSubmission(problem.id)
 
   return (
-    <Box rounded="lg" boxShadow="sm" borderWidth="1px">
+    <div className="rounded-lg shadow-sm border">
       <Button
         className={clsx(
           '!p-2 sm:!p-6 justify-between',
@@ -85,7 +84,7 @@ export const TaskCard = memo((props: TaskCardProps) => {
         <Divider />
         <Stack p={{ base: 2, sm: 6 }} pt={{ sm: 4 }} spacing={4}>
           <HStack>
-            <Box flex={1}>
+            <div className="flex-1">
               <Link isExternal href={`${API_HOST}problem/doc/${problem.id}`}>
                 [ดาวน์โหลด]
               </Link>
@@ -93,7 +92,7 @@ export const TaskCard = memo((props: TaskCardProps) => {
                 ({problem.timeLimit / ONE_SECOND} วินาที {problem.memoryLimit}{' '}
                 MB)
               </Text>
-            </Box>
+            </div>
             <IconButton
               aria-label="toggle-code-editor"
               icon={isEditorOpen ? <CloseIcon /> : <EditIcon />}
@@ -113,7 +112,7 @@ export const TaskCard = memo((props: TaskCardProps) => {
           </Collapse>
         </Stack>
       </Collapse>
-    </Box>
+    </div>
   )
 })
 
@@ -248,7 +247,7 @@ export const TaskSubmissionTable = (props: TaskSubmissionTableProps) => {
   const codeDisclosure = useDisclosure()
 
   return (
-    <Box overflowX="auto">
+    <div className="overflow-x-auto">
       <Table size="sm">
         <Thead>
           <Tr>
@@ -300,6 +299,6 @@ export const TaskSubmissionTable = (props: TaskSubmissionTableProps) => {
           </Tr>
         </Tbody>
       </Table>
-    </Box>
+    </div>
   )
 }

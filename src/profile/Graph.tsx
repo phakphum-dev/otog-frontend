@@ -18,8 +18,6 @@ import { AnnotationOptions } from 'chartjs-plugin-annotation'
 import Annotation from 'node_modules/chartjs-plugin-annotation/dist/chartjs-plugin-annotation.esm.js'
 import { Line } from 'react-chartjs-2'
 
-import { Box } from '@chakra-ui/layout'
-
 import { UserContest } from '@src/user/types'
 import { ONE_MONTH, ONE_WEEK, ONE_YEAR } from '@src/utils/time'
 
@@ -227,11 +225,11 @@ export interface GraphProps {
 
 export const Graph = ({ userContest }: GraphProps) => {
   return (
-    <Box flex={1} sx={{ iframe: { visibility: 'hidden' } }}>
+    <div className="flex-1">
       <Line
         data={getChartData(userContest)}
         options={getChartOptions(userContest)}
       />
-    </Box>
+    </div>
   )
 }

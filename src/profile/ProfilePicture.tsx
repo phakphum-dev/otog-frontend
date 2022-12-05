@@ -6,7 +6,7 @@ import { IconButton } from '@chakra-ui/button'
 import { useDisclosure } from '@chakra-ui/hooks'
 import Icon from '@chakra-ui/icon'
 import { Img } from '@chakra-ui/image'
-import { Box, HStack } from '@chakra-ui/layout'
+import { HStack } from '@chakra-ui/layout'
 
 import { UploadFileButton } from '@src/components/FileInput'
 import { useAuth } from '@src/context/AuthContext'
@@ -67,7 +67,7 @@ export const ProfileUpload = () => {
 
   return (
     <div>
-      <Box position="relative" boxSize="xs" flex={1}>
+      <div className="relative flex-1 w-80">
         <Picture url={url} />
         <HStack position="absolute" top={2} right={2}>
           <UploadFileButton accept=".png,.jpg,.jpeg" onChange={onFileSelect} />
@@ -83,7 +83,7 @@ export const ProfileUpload = () => {
             </>
           )}
         </HStack>
-      </Box>
+      </div>
     </div>
   )
 }

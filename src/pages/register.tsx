@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 
 import Logo from '../../public/logo512.png'
 
-import { Box, Input, Stack, useToast } from '@chakra-ui/react'
+import { Input, Stack, useToast } from '@chakra-ui/react'
 
 import { CenteredCard } from '@src/components/Login'
 import { PageContainer } from '@src/components/layout/PageContainer'
@@ -36,9 +36,9 @@ export default function RegisterPage() {
       <CenteredCard>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={4}>
-            <Box boxSize={100} mx="auto">
+            <div className="mx-auto w-[100px]">
               <Image src={Logo} />
-            </Box>
+            </div>
             <Input
               {...register('username')}
               type="username"
