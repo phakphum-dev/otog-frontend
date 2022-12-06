@@ -131,7 +131,7 @@ export const ProblemTable = (props: ProblemTableProps) => {
       )}
     </div>
   ) : (
-    <div className="flex justify-start py-16">
+    <div className="flex justify-center py-16">
       <Spinner size="xl" color="gray.300" />
     </div>
   )
