@@ -5,7 +5,6 @@ import { CodeModal, ErrorModal } from '../components/Code'
 import { SubmissionWithProblem } from './types'
 
 import {
-  Flex,
   HStack,
   Spinner,
   Table,
@@ -89,9 +88,9 @@ export const InfiniteSubmissionTable = (props: SubmissionTableBaseProps) => {
 
   if (!submissionsList) {
     return (
-      <Flex justify="center" py={16}>
+      <div className="flex justify-center py-12">
         <Spinner size="xl" />
-      </Flex>
+      </div>
     )
   }
 
@@ -123,9 +122,9 @@ export const InfiniteSubmissionTable = (props: SubmissionTableBaseProps) => {
         </Tbody>
       </Table>
       {hasMore && (
-        <Flex justify="center" py={6}>
+        <div className="flex justify-center py-6">
           <Spinner size="lg" ref={ref} />
-        </Flex>
+        </div>
       )}
       <CodeModal submissionId={submissionId} {...codeDisclosure} />
     </div>

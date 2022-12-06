@@ -16,7 +16,6 @@ import {
   DrawerCloseButton,
   DrawerContent,
   DrawerOverlay,
-  Flex,
   HStack,
   Heading,
   IconButton,
@@ -74,7 +73,7 @@ export const NavBar = () => {
     <>
       <div className="z-50 fixed py-2 h-14 top-0 left-0 w-full bg-white dark:bg-gray-800 shadow-md">
         <PageContainer>
-          <Flex>
+          <div className="flex">
             <NextLink href={isAdmin ? '/admin/contest' : '/'} passHref>
               <Link className="text-gray-800 dark:text-white">
                 <HStack cursor="pointer">
@@ -112,7 +111,7 @@ export const NavBar = () => {
                 display={{ base: 'none', md: 'inline-flex' }}
               />
             </HStack>
-          </Flex>
+          </div>
         </PageContainer>
       </div>
       <Drawer

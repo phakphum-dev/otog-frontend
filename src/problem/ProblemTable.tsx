@@ -8,7 +8,6 @@ import { SubmitModal } from '../submission/submit/SubmitModal'
 import { usePassedUsers, useProblems } from './queries'
 
 import {
-  Flex,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -132,9 +131,9 @@ export const ProblemTable = (props: ProblemTableProps) => {
       )}
     </div>
   ) : (
-    <Flex justify="center" py={16}>
+    <div className="flex justify-start py-16">
       <Spinner size="xl" color="gray.300" />
-    </Flex>
+    </div>
   )
 }
 
@@ -284,9 +283,9 @@ const PassedModal = (props: PassedModalProps) => {
                 </NextLink>
               ))
             ) : (
-              <Flex justify="center">
+              <div className="flex justify-center">
                 <Spinner />
-              </Flex>
+              </div>
             )}
           </Stack>
         </ModalBody>

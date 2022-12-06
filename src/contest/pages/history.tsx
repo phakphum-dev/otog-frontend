@@ -2,7 +2,7 @@ import Head from 'next/head'
 import NextLink from 'next/link'
 import { FaTrophy } from 'react-icons/fa'
 
-import { Flex, Text } from '@chakra-ui/layout'
+import { Text } from '@chakra-ui/layout'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
@@ -60,9 +60,9 @@ export default function ContestHistoryPage() {
           </Table>
         </div>
       ) : (
-        <Flex justify="center" py={16}>
+        <div className="flex justify-center py-16">
           <Spinner size="xl" />
-        </Flex>
+        </div>
       )}
     </PageContainer>
   )

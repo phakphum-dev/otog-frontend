@@ -7,7 +7,7 @@ import { IconButton, IconButtonProps } from '@chakra-ui/button'
 import { useColorModeValue } from '@chakra-ui/color-mode'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { SmallCloseIcon } from '@chakra-ui/icons'
-import { Circle, Flex, HStack, Heading, Text } from '@chakra-ui/layout'
+import { Circle, HStack, Heading, Text } from '@chakra-ui/layout'
 import { Spinner } from '@chakra-ui/spinner'
 import { Textarea } from '@chakra-ui/textarea'
 import { useToast } from '@chakra-ui/toast'
@@ -66,7 +66,7 @@ const OnlineUsersTooltip = (props: TooltipProps) => {
     <Tooltip
       hasArrow
       label={
-        <Flex flexDir="column" justify="flex-start">
+        <div className="flex flex-col justify-start">
           {onlineUsers.slice(0, MAX_LENGTH).map((user) => (
             <HStack key={user.id}>
               <Circle size={2} bg="green.400" />
@@ -85,7 +85,7 @@ const OnlineUsersTooltip = (props: TooltipProps) => {
               </HStack>
             </>
           )}
-        </Flex>
+        </div>
       }
       {...props}
     />
@@ -95,8 +95,6 @@ const OnlineUsersTooltip = (props: TooltipProps) => {
 }
 
 export const Chat = () => {
-  const bg = useColorModeValue('white', 'gray.800')
-
   const { isOpen, onClose, onToggle } = useDisclosure()
   const {
     emitChat,
@@ -127,15 +125,7 @@ export const Chat = () => {
       />
       <div className="fixed bottom-0 right-0 md:right-4 z-100">
         <SlideFade in={isOpen} style={{ zIndex: 100 }} unmountOnExit={true}>
-          <Flex
-            width="320px"
-            height="420px"
-            direction="column"
-            rounded="lg"
-            borderBottomRadius={0}
-            boxShadow="md"
-            bg={bg}
-          >
+          <div className="flex flex-col w-[320px] h-[420px] rounded-lg rounded-b-none shadow-md bg-white dark:bg-gray-800">
             <OnlineUsersTooltip placement="top-start">
               <Button
                 className="!p-6 rounded-b-none justify-between"
@@ -148,16 +138,8 @@ export const Chat = () => {
                 </Heading>
               </Button>
             </OnlineUsersTooltip>
-            <Flex
-              direction="column-reverse"
-              px={2}
-              flex={1}
-              overflowY="auto"
-              overflowX="hidden"
-              borderWidth="1px"
-              borderY="unset"
-            >
-              <Flex direction="column">
+            <div className="flex flex-col-reverse px-2 flex-1 overflow-y-auto overflow-x-hidden border border-y-0">
+              <div className="flex flex-col">
                 {newMessages.map((message, index) => (
                   <ChatMessage
                     key={message.id}
@@ -168,8 +150,8 @@ export const Chat = () => {
                     messageBelow={newMessages[index + 1]}
                   />
                 ))}
-              </Flex>
-              <Flex direction="column-reverse">
+              </div>
+              <div className="flex flex-col-reverse">
                 {messages?.map((message, index) => (
                   <ChatMessage
                     key={message.id}
@@ -180,17 +162,17 @@ export const Chat = () => {
                     }
                   />
                 ))}
-              </Flex>
+              </div>
               {hasMore && (
-                <Flex justify="center" py={2} ref={ref}>
+                <div className="flex justify-center py-2" ref={ref}>
                   <Spinner />
-                </Flex>
+                </div>
               )}
-            </Flex>
-            <Flex borderWidth="1px" borderY="unset">
+            </div>
+            <div className="flex border border-y-0">
               <ChatInput emitMessage={emitChat} onClose={onClose} />
-            </Flex>
-          </Flex>
+            </div>
+          </div>
         </SlideFade>
       </div>
     </>

@@ -1,16 +1,10 @@
+import clsx from 'clsx'
 import NextLink from 'next/link'
 import { Children, ReactElement, cloneElement, memo } from 'react'
 
 import { Message } from '../types'
 
-import {
-  Avatar,
-  Code,
-  Flex,
-  Text,
-  VStack,
-  useColorModeValue,
-} from '@chakra-ui/react'
+import { Avatar, Code, Text, VStack, useColorModeValue } from '@chakra-ui/react'
 
 import { useAuth } from '@src/context/AuthContext'
 import { useProfilePic } from '@src/profile/useProfilePic'
@@ -55,19 +49,21 @@ export const ChatMessage = memo(
     return (
       <div>
         {shouldDisplayDate && (
-          <Flex justify="center" fontSize="xs" color="gray.500" mt={2}>
+          <div className="flex justify-center text-xs text-gray-500 mt-2">
             {new Date(creationDate).toLocaleDateString('th-TH', {
               minute: '2-digit',
               hour: '2-digit',
               day: 'numeric',
               month: 'short',
             })}
-          </Flex>
+          </div>
         )}
-        <Flex
-          direction={isOther ? 'row' : 'row-reverse'}
-          mt={groupedWithTop ? 0.5 : 2}
-          align="flex-end"
+        <div
+          className={clsx(
+            'flex align-end',
+            isOther ? 'flex-row' : 'flex-row-reverse',
+            groupedWithTop ? 'mt-0.5' : 'mt-2'
+          )}
         >
           {displayAvatar ? (
             <SmallAvatar userId={sender.id} />
@@ -122,7 +118,7 @@ export const ChatMessage = memo(
               </Text>
             )}
           </VStack>
-        </Flex>
+        </div>
       </div>
     )
   },

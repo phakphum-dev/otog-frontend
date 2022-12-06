@@ -6,7 +6,7 @@ import Head from 'next/head'
 
 import '../styles/globals.css'
 
-import { ChakraProvider, Flex, cookieStorageManagerSSR } from '@chakra-ui/react'
+import { ChakraProvider, cookieStorageManagerSSR } from '@chakra-ui/react'
 
 import { Chat } from '@src/chat'
 import { ErrorToaster } from '@src/components/ErrorToaster'
@@ -79,13 +79,13 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
             <AuthProvider value={accessToken}>
               <SocketProvider>
                 <TopProgressBar />
-                <Flex direction="column" minH="100vh">
+                <div className="flex flex-col min-h-screen">
                   <NavBar />
                   <Component {...props} />
                   <ErrorToaster errorToast={errorToast} />
                   {!OFFLINE_MODE && <Chat />}
                   <Footer />
-                </Flex>
+                </div>
               </SocketProvider>
             </AuthProvider>
           </SWRProvider>

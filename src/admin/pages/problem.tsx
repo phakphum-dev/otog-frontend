@@ -18,7 +18,7 @@ import { ButtonGroup, IconButton } from '@chakra-ui/button'
 import { FormControl, FormHelperText, FormLabel } from '@chakra-ui/form-control'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Input } from '@chakra-ui/input'
-import { Flex, Stack } from '@chakra-ui/layout'
+import { Stack } from '@chakra-ui/layout'
 import {
   Modal,
   ModalBody,
@@ -75,9 +75,9 @@ export default function AdminProblemPage() {
       </TitleLayout>
 
       <Stack spacing={4}>
-        <Flex justify="flex-end">
+        <div className="flex justify-end">
           <CreateProblemModalButton />
-        </Flex>
+        </div>
         <ProblemAdminTable />
       </Stack>
     </PageContainer>
@@ -314,7 +314,7 @@ const EditProblemModal = (props: EditProblemModalProps) => {
             </Stack>
           </ModalBody>
           <ModalFooter>
-            <Flex w="100%">
+            <div className="flex w-full">
               <Button colorScheme="red" onClick={onDelete} variant="ghost">
                 ลบ
               </Button>
@@ -322,7 +322,7 @@ const EditProblemModal = (props: EditProblemModalProps) => {
               <Button colorScheme="green" type="submit">
                 แก้ไข
               </Button>
-            </Flex>
+            </div>
           </ModalFooter>
         </ModalContent>
       </form>
@@ -355,9 +355,9 @@ const ProblemAdminTable = () => {
       </Table>
     </div>
   ) : (
-    <Flex justify="center" py={16}>
+    <div className="flex justify-center py-16">
       <Spinner size="xl" />
-    </Flex>
+    </div>
   )
 }
 

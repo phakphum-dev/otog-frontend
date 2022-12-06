@@ -18,7 +18,7 @@ import { IconButton } from '@chakra-ui/button'
 import { FormControl, FormLabel } from '@chakra-ui/form-control'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Input } from '@chakra-ui/input'
-import { Flex, Spacer, Stack } from '@chakra-ui/layout'
+import { Spacer, Stack } from '@chakra-ui/layout'
 import {
   Modal,
   ModalBody,
@@ -83,7 +83,7 @@ export default function AdminContestPage() {
         </HStack>
       </TitleLayout>
       <Stack spacing={4}>
-        <Flex>
+        <div className="flex">
           <HStack>
             <SelectContestModalButton setContestId={setContest}>
               {contest?.name ?? 'เลือกการแข่งขัน'}
@@ -97,7 +97,7 @@ export default function AdminContestPage() {
           </HStack>
           <Spacer />
           <CreateContestModalButton setContestId={setContest} />
-        </Flex>
+        </div>
         {contest && <ContestTable contest={contest} />}
       </Stack>
     </PageContainer>
@@ -224,7 +224,7 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
               </Stack>
             </ModalBody>
             <ModalFooter>
-              <Flex w="100%">
+              <div className="flex w-full">
                 <Button colorScheme="red" variant="ghost" onClick={onDelete}>
                   ลบ
                 </Button>
@@ -232,7 +232,7 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
                 <Button colorScheme="green" type="submit">
                   บันทึก
                 </Button>
-              </Flex>
+              </div>
             </ModalFooter>
           </ModalContent>
         </form>
@@ -402,9 +402,9 @@ const ContestTable = function ContestTable(props: ContestTableProps) {
       </Table>
     </div>
   ) : (
-    <Flex justify="center" py={16}>
+    <div className="flex justify-center py-16">
       <Spinner size="xl" />
-    </Flex>
+    </div>
   )
 }
 

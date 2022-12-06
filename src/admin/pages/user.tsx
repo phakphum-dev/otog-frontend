@@ -10,7 +10,7 @@ import { IconButton } from '@chakra-ui/button'
 import { FormControl, FormLabel } from '@chakra-ui/form-control'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Input } from '@chakra-ui/input'
-import { Flex, Stack } from '@chakra-ui/layout'
+import { Stack } from '@chakra-ui/layout'
 import {
   Modal,
   ModalBody,
@@ -59,9 +59,9 @@ export default function AdminProblemPage() {
       </TitleLayout>
 
       <Stack spacing={4}>
-        <Flex justify="flex-end">
+        <div className="flex justfy-end">
           <CreateUserModalButton />
-        </Flex>
+        </div>
         <UserAdminTable />
       </Stack>
     </PageContainer>
@@ -232,9 +232,9 @@ const UserAdminTable = () => {
       </Table>
     </div>
   ) : (
-    <Flex justify="center" py={16}>
+    <div className="flex justify-center py-16">
       <Spinner size="xl" />
-    </Flex>
+    </div>
   )
 }
 
