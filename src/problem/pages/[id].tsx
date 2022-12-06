@@ -54,7 +54,7 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
       <Head>
         <title>Problem {id} | OTOG</title>
       </Head>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-2">
         <TitleLayout>
           <Title icon={FaLightbulb}>{problem.name}</Title>
           <VStack align="flex-end" spacing={0}>

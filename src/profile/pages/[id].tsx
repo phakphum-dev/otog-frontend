@@ -29,13 +29,13 @@ export default function ProfilePage() {
           <EditableName userData={userData!} />
         </Title>
       </TitleLayout>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-2">
         <div className="flex flex-col md:flex-row gap-8">
           {user?.id === id ? <ProfileUpload /> : <ProfilePicture userId={id} />}
           <Graph userContest={userData!.attendedContest} />
         </div>
         {user?.role === 'admin' && (
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-2">
             <TitleLayout>
               <Title icon={FaTasks}>ผลตรวจ</Title>
             </TitleLayout>

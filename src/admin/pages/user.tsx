@@ -98,7 +98,7 @@ const CreateUserModalButton = () => {
             <ModalHeader>เพิ่มผู้ใช้งาน</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-2">
                 <FormControl>
                   <FormLabel>ชื่อผู้ใช้</FormLabel>
                   <Input
@@ -164,7 +164,7 @@ const EditUserModalButton = (props: EditUserModalProps) => {
           <ModalHeader>แก้ไขผู้ใช้งาน</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-2">
               <FormControl>
                 <FormLabel>ชื่อผู้ใช้</FormLabel>
                 <Input

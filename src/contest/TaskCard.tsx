@@ -204,7 +204,7 @@ export const ContestEditorForm = (props: ContestEditorFormProps) => {
   }
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-2">
       <Editor
         height="60vh"
         language={language}

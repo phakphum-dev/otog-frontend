@@ -71,7 +71,7 @@ export const SubmitModal = (props: SubmitModalProps) => {
             <ModalHeader>{problem.name}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-2">
                 <FormControl>
                   <FormLabel>อัปโหลด</FormLabel>
                   <FileInput name="sourceCode" {...fileInputProps} />

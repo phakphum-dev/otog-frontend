@@ -160,7 +160,7 @@ export const ImageCropModal = (props: ImageUploadModalProps) => {
         <ModalHeader>แก้ไข</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-2">
             <div className="relative w-full h-[400px]">
               <Cropper
                 aspect={1}

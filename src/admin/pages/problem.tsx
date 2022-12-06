@@ -118,7 +118,7 @@ const CreateProblemModalButton = () => {
             <ModalHeader>เพิ่มโจทย์</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-2">
                 <FormControl>
                   <FormLabel>ชื่อโจทย์</FormLabel>
                   <Input isRequired name="name" placeholder="ชื่อโจทย์" />
@@ -250,7 +250,7 @@ const EditProblemModal = (props: EditProblemModalProps) => {
           <ModalHeader>แก้ไข {problem.name}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-2">
               <FormControl>
                 <FormLabel>ชื่อโจทย์</FormLabel>
                 <Input

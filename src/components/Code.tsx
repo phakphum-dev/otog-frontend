@@ -112,7 +112,7 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
   }, [toast, hasLinkCopied])
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-2">
       <div>
         <TextSkeleton w={40}>
           {submission && (

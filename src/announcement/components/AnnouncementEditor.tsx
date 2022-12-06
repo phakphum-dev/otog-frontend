@@ -251,7 +251,7 @@ export const AnnouncementEditor = () => {
     }
   }
   return (
-    <div className="flex flex-col gap-1 py-4">
+    <div className="flex flex-col gap-2 py-4">
       <Slate
         editor={editor}
         value={currentAnnouncement.value}
@@ -311,7 +311,7 @@ export const AnnouncementEditor = () => {
         </HStack>
         <hr />
         <div
-          className={`flex flex-col gap-1 justify-center w-full h-[${HEIGHT}px] overflow-hidden text-center`}
+          className={`flex flex-col gap-2 justify-center w-full h-[${HEIGHT}px] overflow-hidden text-center`}
         >
           <Editable
             placeholder="Enter announcement…"

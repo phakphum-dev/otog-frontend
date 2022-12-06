@@ -272,7 +272,7 @@ const PassedModal = (props: PassedModalProps) => {
         <ModalHeader>ผู้ที่ผ่านข้อที่ {modalPassed}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-2">
             {users ? (
               users.map((user) => (
                 <NextLink href={`/profile/${user.id}`} key={user.id}>

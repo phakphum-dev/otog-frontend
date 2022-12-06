@@ -180,7 +180,7 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
             <ModalHeader>แก้ไขการแข่งขัน</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-2">
                 <FormControl>
                   <FormLabel>ชื่อการแข่งขัน</FormLabel>
                   <Input
@@ -282,7 +282,7 @@ const CreateContestModalButton = (props: CreateContestModalButtonProps) => {
             <ModalHeader>สร้างการแข่งขัน</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-2">
                 <FormControl>
                   <FormLabel>ชื่อการแข่งขัน</FormLabel>
                   <Input
@@ -484,7 +484,7 @@ const SelectContestModalButton = (props: SelectContestModalButtonProps) => {
           <ModalHeader>เลือกการแข่งขัน</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-2">
               {contests?.map((contest) => (
                 <Button
                   key={contest.id}
