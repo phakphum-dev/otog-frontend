@@ -220,7 +220,7 @@ const ChatInput = (props: ChatInputProps) => {
     }
   }
   return (
-    <div className="flex gap-1 flex-1">
+    <div className="flex gap-1 flex-1 p-2">
       <Textarea
         rows={1}
         rounded={16}
