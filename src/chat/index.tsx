@@ -7,7 +7,7 @@ import { IconButton, IconButtonProps } from '@chakra-ui/button'
 import { useColorModeValue } from '@chakra-ui/color-mode'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { SmallCloseIcon } from '@chakra-ui/icons'
-import { Circle, HStack, Heading, Text } from '@chakra-ui/layout'
+import { Circle, Heading, Text } from '@chakra-ui/layout'
 import { Spinner } from '@chakra-ui/spinner'
 import { Textarea } from '@chakra-ui/textarea'
 import { useToast } from '@chakra-ui/toast'
@@ -68,21 +68,21 @@ const OnlineUsersTooltip = (props: TooltipProps) => {
       label={
         <div className="flex flex-col justify-start">
           {onlineUsers.slice(0, MAX_LENGTH).map((user) => (
-            <HStack key={user.id}>
+            <div className="flex gap-2" key={user.id}>
               <Circle size={2} bg="green.400" />
               <Text maxW={275} noOfLines={3}>
                 {user.showName}
               </Text>
-            </HStack>
+            </div>
           ))}
           {onlineUsers.length > MAX_LENGTH && (
             <>
-              <HStack>
+              <div className="flex gap-2">
                 <Text>...</Text>
-              </HStack>
-              <HStack>
+              </div>
+              <div className="flex gap-2">
                 <Text>(ยังมีชีวิตอยู่ทั้งหมด {onlineUsers.length} คน)</Text>
-              </HStack>
+              </div>
             </>
           )}
         </div>
@@ -220,7 +220,7 @@ const ChatInput = (props: ChatInputProps) => {
     }
   }
   return (
-    <HStack p={2} spacing={1} flex={1}>
+    <div className="flex gap-1 flex-1">
       <Textarea
         rows={1}
         rounded={16}
@@ -241,6 +241,6 @@ const ChatInput = (props: ChatInputProps) => {
         variant="ghost"
         onClick={onSubmit}
       />
-    </HStack>
+    </div>
   )
 }

@@ -3,7 +3,6 @@ import Cropper from 'react-easy-crop'
 import { Area } from 'react-easy-crop/types'
 import { mutate } from 'swr'
 
-import { HStack } from '@chakra-ui/layout'
 import {
   Modal,
   ModalBody,
@@ -191,11 +190,11 @@ export const ImageCropModal = (props: ImageUploadModalProps) => {
         </ModalBody>
 
         <ModalFooter>
-          <HStack>
+          <div className="flex gap-2">
             <Button colorScheme="otog" onClick={uploadCroppedImage}>
               เสร็จสิ้น
             </Button>
-          </HStack>
+          </div>
         </ModalFooter>
       </ModalContent>
     </Modal>

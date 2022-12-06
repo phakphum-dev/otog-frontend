@@ -5,7 +5,6 @@ import { CodeModal, ErrorModal } from '../components/Code'
 import { SubmissionWithProblem } from './types'
 
 import {
-  HStack,
   Spinner,
   Table,
   Tbody,
@@ -41,9 +40,9 @@ export const SubmissionTable = () => {
   )
   return (
     <>
-      <HStack mb={4}>
+      <div className="flex gap-2 mb-4">
         <LatestSubmission onSuccess={mutate} />
-      </HStack>
+      </div>
       <InfiniteSubmissionTable {...infiniteSubmissionTableProps} />
     </>
   )
@@ -215,10 +214,10 @@ const SubmissionRow = (props: SubmissionRowProps) => {
             <ErrorModal {...errorDisclosure} submission={submission} />
           </>
         ) : isGrading(submission) ? (
-          <HStack>
+          <div className="flex gap-2">
             <Spinner size="xs" />
             <Text>{submission.result}</Text>
-          </HStack>
+          </div>
         ) : isGraded(submission) && !submission.errmsg ? (
           <code>{submission.result}</code>
         ) : (

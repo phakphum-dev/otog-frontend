@@ -14,14 +14,7 @@ import {
   CloseIcon,
   EditIcon,
 } from '@chakra-ui/icons'
-import {
-  Badge,
-  Divider,
-  HStack,
-  Heading,
-  Spacer,
-  Text,
-} from '@chakra-ui/layout'
+import { Badge, Divider, Heading, Spacer, Text } from '@chakra-ui/layout'
 import { Select } from '@chakra-ui/select'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
@@ -70,19 +63,19 @@ export const TaskCard = memo((props: TaskCardProps) => {
         onClick={onToggle}
         rightIcon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
       >
-        <HStack>
+        <div className="flex gap-2">
           <Heading as="h3" size="md">
             {problem.name}
           </Heading>
           {submission?.status === 'accept' && (
             <Badge colorScheme="green">Solved</Badge>
           )}
-        </HStack>
+        </div>
       </Button>
       <Collapse in={isOpen}>
         <Divider />
         <div className="flex flex-col gap-4 p-2 sm:p-6 sm:pt-4">
-          <HStack>
+          <div className="flex gap-2">
             <div className="flex-1">
               <Link isExternal href={`${API_HOST}problem/doc/${problem.id}`}>
                 [ดาวน์โหลด]
@@ -99,7 +92,7 @@ export const TaskCard = memo((props: TaskCardProps) => {
               variant="ghost"
               onClick={onEditorToggle}
             />
-          </HStack>
+          </div>
           <Collapse in={isEditorOpen}>
             <ContestEditorForm {...props} />
           </Collapse>
@@ -149,7 +142,7 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
           </option>
         </Select>
         <Spacer />
-        <HStack justify="flex-end" {...getRootProps()}>
+        <div className="flex gap-2 justify-end" {...getRootProps()}>
           <FileInput
             required
             name="sourceCode"
@@ -160,7 +153,7 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
           <Button colorScheme="otog" size="sm" type="submit">
             ส่ง
           </Button>
-        </HStack>
+        </div>
       </div>
     </form>
   )
@@ -283,10 +276,10 @@ export const TaskSubmissionTable = (props: TaskSubmissionTableProps) => {
                   <ErrorModal submission={submission} {...errorDisclosure} />
                 </>
               ) : isGrading(submission) ? (
-                <HStack>
+                <div className="flex gap-2">
                   <Spinner size="xs" />
                   <Text>{submission.result}</Text>
-                </HStack>
+                </div>
               ) : isGraded(submission) ? (
                 <code>{submission.result}</code>
               ) : (

@@ -27,7 +27,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/modal'
-import { HStack, Spacer, UseDisclosureReturn } from '@chakra-ui/react'
+import { Spacer, UseDisclosureReturn } from '@chakra-ui/react'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
@@ -60,7 +60,7 @@ export default function AdminProblemPage() {
       </Head>
       <TitleLayout>
         <Title icon={FaTools}>ระบบ GOTO</Title>
-        <HStack>
+        <div className="flex gap-2">
           <NextLink href="/admin/contest" passHref>
             <Button as="a">แข่งขัน</Button>
           </NextLink>
@@ -70,7 +70,7 @@ export default function AdminProblemPage() {
           <NextLink href="/admin/user" passHref>
             <Button as="a">ผู้ใช้งาน</Button>
           </NextLink>
-        </HStack>
+        </div>
       </TitleLayout>
 
       <div className="flex flex-col gap-4">

@@ -16,7 +16,6 @@ import {
   DrawerCloseButton,
   DrawerContent,
   DrawerOverlay,
-  HStack,
   Heading,
   IconButton,
   Menu,
@@ -76,7 +75,7 @@ export const NavBar = () => {
           <div className="flex">
             <NextLink href={isAdmin ? '/admin/contest' : '/'} passHref>
               <Link className="text-gray-800 dark:text-white">
-                <HStack cursor="pointer">
+                <div className="flex gap-2 cursor-pointer">
                   <Image src={Logo} width={32} height={32} />
                   <Heading size="md" py={2}>
                     <div className="hidden md:inline-block xl:hidden">OTOG</div>
@@ -84,7 +83,7 @@ export const NavBar = () => {
                       One Tambon One Grader
                     </div>
                   </Heading>
-                </HStack>
+                </div>
               </Link>
             </NextLink>
             <Spacer />
@@ -97,7 +96,7 @@ export const NavBar = () => {
               icon={<HamburgerIcon />}
               ref={btnRef}
             />
-            <HStack hidden={isMobile} spacing={4}>
+            <div className={clsx('flex gap-4', isMobile && 'hidden')}>
               {entries.map((item) => (
                 <NavItem key={item.href} {...item} />
               ))}
@@ -110,7 +109,7 @@ export const NavBar = () => {
                 variant="link"
                 display={{ base: 'none', md: 'inline-flex' }}
               />
-            </HStack>
+            </div>
           </div>
         </PageContainer>
       </div>
@@ -128,10 +127,10 @@ export const NavBar = () => {
                 {user && (
                   <NextLink href={`/profile/${user.id}`} passHref>
                     <DrawerButton as="a">
-                      <HStack py={2}>
+                      <div className="flex gap-2 py-2">
                         <Avatar size="xs" src={url} />
                         <Text noOfLines={1}> {user.showName}</Text>
-                      </HStack>
+                      </div>
                     </DrawerButton>
                   </NextLink>
                 )}

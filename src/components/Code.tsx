@@ -6,7 +6,6 @@ import { FaRegShareSquare } from 'react-icons/fa'
 
 import { CopyIcon } from '@chakra-ui/icons'
 import {
-  HStack,
   IconButton,
   Link,
   Modal,
@@ -155,7 +154,7 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
                 code={submission.sourceCode}
                 language={submission.language}
               />
-              <HStack position="absolute" top={2} right={2}>
+              <div className="flex gap-2 absolute top-2 right-2">
                 <IconButton
                   aria-label="share"
                   icon={<FaRegShareSquare />}
@@ -168,7 +167,7 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
                   size="sm"
                   onClick={onCopy}
                 />
-              </HStack>
+              </div>
             </>
           )}
         </Skeleton>

@@ -35,7 +35,7 @@ import {
 import { HEIGHT } from './constants'
 import { useAnnouncementContext } from './useAnnouncementContext'
 
-import { ButtonGroup, Code, HStack, IconButton, Text } from '@chakra-ui/react'
+import { ButtonGroup, Code, IconButton, Text } from '@chakra-ui/react'
 
 import { Link } from '@src/ui/Link'
 
@@ -257,8 +257,8 @@ export const AnnouncementEditor = () => {
         value={currentAnnouncement.value}
         onChange={onChange}
       >
-        <HStack justify="space-between">
-          <HStack>
+        <div className="flex gap-2 justify-between">
+          <div className="flex gap-2">
             <ButtonGroup isAttached>
               <MarkButton format="bold" icon={<FaBold />} />
               <MarkButton format="italic" icon={<FaItalic />} />
@@ -275,8 +275,8 @@ export const AnnouncementEditor = () => {
             <BlockButton format="numbered-list" icon={<FaListOl />} />
           <BlockButton format="bulleted-list" icon={<FaListUl />} /> */}
             </ButtonGroup>
-          </HStack>
-          <HStack>
+          </div>
+          <div className="flex gap-2">
             <IconButton
               size="sm"
               icon={currentAnnouncement.show ? <FaEye /> : <FaEyeSlash />}
@@ -307,8 +307,8 @@ export const AnnouncementEditor = () => {
               variant="outline"
               onClick={insertIndex}
             />
-          </HStack>
-        </HStack>
+          </div>
+        </div>
         <hr />
         <div
           className={`flex flex-col gap-2 justify-center w-full h-[${HEIGHT}px] overflow-hidden text-center`}

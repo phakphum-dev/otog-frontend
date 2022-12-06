@@ -28,7 +28,6 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/modal'
-import { HStack } from '@chakra-ui/react'
 import { Select } from '@chakra-ui/select'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
@@ -70,7 +69,7 @@ export default function AdminContestPage() {
       </Head>
       <TitleLayout>
         <Title icon={FaTools}>ระบบ GOTO</Title>
-        <HStack>
+        <div className="flex gap-2">
           <NextLink href="/admin/contest" passHref>
             <Button as="a">แข่งขัน</Button>
           </NextLink>
@@ -80,11 +79,11 @@ export default function AdminContestPage() {
           <NextLink href="/admin/user" passHref>
             <Button as="a">ผู้ใช้งาน</Button>
           </NextLink>
-        </HStack>
+        </div>
       </TitleLayout>
       <div className="flex flex-col gap-4">
         <div className="flex">
-          <HStack>
+          <div className="flex gap-2">
             <SelectContestModalButton setContestId={setContest}>
               {contest?.name ?? 'เลือกการแข่งขัน'}
             </SelectContestModalButton>
@@ -94,7 +93,7 @@ export default function AdminContestPage() {
                 setContestId={setContestId}
               />
             )}
-          </HStack>
+          </div>
           <Spacer />
           <CreateContestModalButton setContestId={setContest} />
         </div>

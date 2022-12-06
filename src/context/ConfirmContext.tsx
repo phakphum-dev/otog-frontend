@@ -7,7 +7,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
-  HStack,
   useDisclosure,
 } from '@chakra-ui/react'
 
@@ -67,14 +66,14 @@ export const ConfirmModalProvider = ({
             <AlertDialogBody>{subtitle}</AlertDialogBody>
 
             <AlertDialogFooter>
-              <HStack>
+              <div className="flex gap-2">
                 <Button ref={cancelRef} onClick={onClose}>
                   {cancleText}
                 </Button>
                 <Button colorScheme="red" onClick={onClick}>
                   {submitText}
                 </Button>
-              </HStack>
+              </div>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialogOverlay>

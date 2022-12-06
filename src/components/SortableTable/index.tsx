@@ -1,7 +1,8 @@
+import clsx from 'clsx'
 import { PropsWithChildren, useState } from 'react'
 import { FaArrowDown, FaArrowUp } from 'react-icons/fa'
 
-import { HStack, TableColumnHeaderProps, Text, Th } from '@chakra-ui/react'
+import { TableColumnHeaderProps, Text, Th } from '@chakra-ui/react'
 
 import { Link } from '@src/ui/Link'
 
@@ -53,11 +54,11 @@ export const SortTh = (props: TableHeadProps) => {
         variant="head"
         onClick={() => setSortFunction(sortBy, defaultOrder)}
       >
-        <HStack justify={centered ? 'center' : undefined}>
+        <div className={clsx('flex gap-2', centered && 'justify-center')}>
           <Text>{children}</Text>
           {sortFuncName === sortBy &&
             (sortOrder === 'desc' ? <FaArrowDown /> : <FaArrowUp />)}
-        </HStack>
+        </div>
       </Link>
     </Th>
   )

@@ -6,7 +6,6 @@ import {
   useEditableControls,
 } from '@chakra-ui/editable'
 import { EditIcon } from '@chakra-ui/icons'
-import { HStack } from '@chakra-ui/layout'
 
 import { useAuth } from '@src/context/AuthContext'
 import { http } from '@src/context/HttpClient'
@@ -55,11 +54,11 @@ export const EditableName = (props: EditableNameProps) => {
       isPreviewFocusable={false}
       onSubmit={onSubmit}
     >
-      <HStack>
+      <div className="flex gap-2">
         <EditablePreview />
         <EditableInput />
         <EditableControls />
-      </HStack>
+      </div>
     </Editable>
   ) : (
     <>{userData?.showName}</>

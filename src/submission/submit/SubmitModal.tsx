@@ -8,7 +8,6 @@ import { useDropFile } from './useDropFile'
 import {
   FormControl,
   FormLabel,
-  HStack,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -88,14 +87,14 @@ export const SubmitModal = (props: SubmitModalProps) => {
             </ModalBody>
 
             <ModalFooter>
-              <HStack>
+              <div className="flex gap-2">
                 <NextLink href={`/problem/${problem.id}`} passHref>
                   <Button as="a">{submitted ? 'แก้ไข' : 'ใหม่'}</Button>
                 </NextLink>
                 <Button colorScheme="otog" type="submit">
                   ส่ง
                 </Button>
-              </HStack>
+              </div>
             </ModalFooter>
           </ModalContent>
         </form>
