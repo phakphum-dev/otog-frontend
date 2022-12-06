@@ -3,7 +3,7 @@ import Cropper from 'react-easy-crop'
 import { Area } from 'react-easy-crop/types'
 import { mutate } from 'swr'
 
-import { HStack, Stack } from '@chakra-ui/layout'
+import { HStack } from '@chakra-ui/layout'
 import {
   Modal,
   ModalBody,
@@ -160,7 +160,7 @@ export const ImageCropModal = (props: ImageUploadModalProps) => {
         <ModalHeader>แก้ไข</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Stack>
+          <div className="flex flex-col gap-1">
             <div className="relative w-full h-[400px]">
               <Cropper
                 aspect={1}
@@ -187,7 +187,7 @@ export const ImageCropModal = (props: ImageUploadModalProps) => {
               </SliderTrack>
               <SliderThumb boxSize={6} />
             </Slider>
-          </Stack>
+          </div>
         </ModalBody>
 
         <ModalFooter>

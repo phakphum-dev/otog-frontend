@@ -35,14 +35,7 @@ import {
 import { HEIGHT } from './constants'
 import { useAnnouncementContext } from './useAnnouncementContext'
 
-import {
-  ButtonGroup,
-  Code,
-  HStack,
-  IconButton,
-  Stack,
-  Text,
-} from '@chakra-ui/react'
+import { ButtonGroup, Code, HStack, IconButton, Text } from '@chakra-ui/react'
 
 import { Link } from '@src/ui/Link'
 
@@ -258,7 +251,7 @@ export const AnnouncementEditor = () => {
     }
   }
   return (
-    <Stack py={4}>
+    <div className="flex flex-col gap-1 py-4">
       <Slate
         editor={editor}
         value={currentAnnouncement.value}
@@ -317,12 +310,8 @@ export const AnnouncementEditor = () => {
           </HStack>
         </HStack>
         <hr />
-        <Stack
-          justify="center"
-          height={HEIGHT}
-          width="100%"
-          overflow="hidden"
-          textAlign="center"
+        <div
+          className={`flex flex-col gap-1 justify-center w-full h-[${HEIGHT}px] overflow-hidden text-center`}
         >
           <Editable
             placeholder="Enter announcement…"
@@ -331,9 +320,9 @@ export const AnnouncementEditor = () => {
             onKeyDown={handleHotkey}
             autoFocus
           />
-        </Stack>
+        </div>
       </Slate>
-    </Stack>
+    </div>
   )
 }
 

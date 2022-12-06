@@ -16,7 +16,6 @@ import {
   ModalHeader,
   ModalOverlay,
   Spinner,
-  Stack,
   Table,
   Tbody,
   Td,
@@ -273,7 +272,7 @@ const PassedModal = (props: PassedModalProps) => {
         <ModalHeader>ผู้ที่ผ่านข้อที่ {modalPassed}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Stack>
+          <div className="flex flex-col gap-1">
             {users ? (
               users.map((user) => (
                 <NextLink href={`/profile/${user.id}`} key={user.id}>
@@ -287,7 +286,7 @@ const PassedModal = (props: PassedModalProps) => {
                 <Spinner />
               </div>
             )}
-          </Stack>
+          </div>
         </ModalBody>
         <ModalFooter />
       </ModalContent>

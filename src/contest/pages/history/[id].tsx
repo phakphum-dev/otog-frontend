@@ -8,7 +8,6 @@ import { FaMedal, FaTrophy } from 'react-icons/fa'
 
 import { ButtonGroup, IconButton } from '@chakra-ui/button'
 import { useDisclosure } from '@chakra-ui/hooks'
-import { Stack } from '@chakra-ui/layout'
 import { Text } from '@chakra-ui/react'
 import { HTMLChakraProps, useTheme } from '@chakra-ui/system'
 import {
@@ -236,7 +235,7 @@ export default function ContestHistory() {
                     )
                     return (
                       <Td key={problem.id}>
-                        <Stack>
+                        <div className="flex flex-col gap-1">
                           {submissions.length === 0 ? (
                             <Text>-</Text>
                           ) : (
@@ -254,7 +253,7 @@ export default function ContestHistory() {
                               </NextLink>
                             ))
                           )}
-                        </Stack>
+                        </div>
                       </Td>
                     )
                   })}

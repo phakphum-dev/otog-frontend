@@ -13,7 +13,6 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalOverlay,
-  Stack,
 } from '@chakra-ui/react'
 
 import { OFFLINE_MODE } from '@src/config'
@@ -71,7 +70,7 @@ export const LoginForm = (props: LoginFormProps) => {
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={4}>
+      <div className="flex flex-col gap-4">
         <div className="mx-auto w-[100px]">
           <Image src={Logo} />
         </div>
@@ -99,7 +98,7 @@ export const LoginForm = (props: LoginFormProps) => {
             </NextLink>
           </>
         )}
-      </Stack>
+      </div>
     </form>
   )
 }

@@ -18,7 +18,6 @@ import {
   ModalOverlay,
   ModalProps,
   Skeleton,
-  Stack,
   Text,
   useClipboard,
   useToast,
@@ -113,7 +112,7 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
   }, [toast, hasLinkCopied])
 
   return (
-    <Stack>
+    <div className="flex flex-col gap-1">
       <div>
         <TextSkeleton w={40}>
           {submission && (
@@ -174,7 +173,7 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
           )}
         </Skeleton>
       </div>
-    </Stack>
+    </div>
   )
 }
 

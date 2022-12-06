@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { FaTrophy } from 'react-icons/fa'
 import { mutate } from 'swr'
 
-import { Center, Heading, Stack, VStack } from '@chakra-ui/layout'
+import { Center, Heading, VStack } from '@chakra-ui/layout'
 
 import { AnnouncementCarousel } from '@src/announcement/components/AnnouncementCarousel'
 import { PageContainer } from '@src/components/layout/PageContainer'
@@ -120,11 +120,11 @@ export const MidContest = (props: ContestProps) => {
         </Heading>
       </TitleLayout>
 
-      <Stack spacing={6}>
+      <div className="flex flex-col gap-6">
         {contest.problems.map((prob) => (
           <TaskCard contestId={contest.id} key={prob.id} problem={prob} />
         ))}
-      </Stack>
+      </div>
     </PageContainer>
   )
 }

@@ -4,7 +4,7 @@ import NextLink from 'next/link'
 
 import ComputerImage from '../../public/computer.svg'
 
-import { Center, HStack, Heading, Stack, Text } from '@chakra-ui/react'
+import { Center, HStack, Heading, Text } from '@chakra-ui/react'
 
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { OFFLINE_MODE } from '@src/config'
@@ -14,12 +14,8 @@ import { Button } from '@src/ui/Button'
 export default function HomePage() {
   return (
     <PageContainer as={Center} maxSize="lg">
-      <Stack
-        direction={{ base: 'column', md: 'row' }}
-        spacing={16}
-        pb={{ base: 0, md: 16 }}
-      >
-        <Stack spacing={6} flex={1}>
+      <div className="flex flex-col md:flex-row gap-16 md:pb-16">
+        <div className="flex flex-col gap-6 flex-1">
           <Heading as="h1" size="2xl">
             Become a god of Competitive Programming
           </Heading>
@@ -38,11 +34,11 @@ export default function HomePage() {
               </Button>
             </NextLink>
           </HStack>
-        </Stack>
+        </div>
         <Center flex={1}>
           <Image src={ComputerImage} />
         </Center>
-      </Stack>
+      </div>
     </PageContainer>
   )
 }

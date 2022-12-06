@@ -3,8 +3,6 @@ import { useRouter } from 'next/router'
 import { FaTasks, FaUser } from 'react-icons/fa'
 import { unstable_serialize } from 'swr'
 
-import { Stack } from '@chakra-ui/layout'
-
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { useAuth } from '@src/context/AuthContext'
@@ -31,20 +29,20 @@ export default function ProfilePage() {
           <EditableName userData={userData!} />
         </Title>
       </TitleLayout>
-      <Stack>
-        <Stack direction={{ base: 'column', md: 'row' }} spacing={8}>
+      <div className="flex flex-col gap-1">
+        <div className="flex flex-col md:flex-row gap-8">
           {user?.id === id ? <ProfileUpload /> : <ProfilePicture userId={id} />}
           <Graph userContest={userData!.attendedContest} />
-        </Stack>
+        </div>
         {user?.role === 'admin' && (
-          <Stack>
+          <div className="flex flex-col gap-1">
             <TitleLayout>
               <Title icon={FaTasks}>ผลตรวจ</Title>
             </TitleLayout>
             <ProfileSubmissionTable userId={id} />
-          </Stack>
+          </div>
         )}
-      </Stack>
+      </div>
     </PageContainer>
   )
 }

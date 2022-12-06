@@ -20,7 +20,6 @@ import {
   HStack,
   Heading,
   Spacer,
-  Stack,
   Text,
 } from '@chakra-ui/layout'
 import { Select } from '@chakra-ui/select'
@@ -82,7 +81,7 @@ export const TaskCard = memo((props: TaskCardProps) => {
       </Button>
       <Collapse in={isOpen}>
         <Divider />
-        <Stack p={{ base: 2, sm: 6 }} pt={{ sm: 4 }} spacing={4}>
+        <div className="flex flex-col gap-4 p-2 sm:p-6 sm:pt-4">
           <HStack>
             <div className="flex-1">
               <Link isExternal href={`${API_HOST}problem/doc/${problem.id}`}>
@@ -110,7 +109,7 @@ export const TaskCard = memo((props: TaskCardProps) => {
           <Collapse in={!!submission}>
             {submission && <TaskSubmissionTable submission={submission} />}
           </Collapse>
-        </Stack>
+        </div>
       </Collapse>
     </div>
   )
@@ -141,7 +140,7 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
   }
   return (
     <form onSubmit={onFileSubmit}>
-      <Stack direction={{ base: 'column', sm: 'row' }} spacing={2}>
+      <div className="flex flex-col sm:flex-row gap-2">
         <Select name="language" size="sm" flex={1}>
           <option value="cpp">C++</option>
           <option value="c">C</option>
@@ -162,7 +161,7 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
             ส่ง
           </Button>
         </HStack>
-      </Stack>
+      </div>
     </form>
   )
 }
@@ -205,7 +204,7 @@ export const ContestEditorForm = (props: ContestEditorFormProps) => {
   }
 
   return (
-    <Stack>
+    <div className="flex flex-col gap-1">
       <Editor
         height="60vh"
         language={language}
@@ -213,7 +212,7 @@ export const ContestEditorForm = (props: ContestEditorFormProps) => {
         value={value}
         onChange={onEditorChange}
       />
-      <Stack direction="row" spacing={{ base: 2, sm: 8 }}>
+      <div className="flex gap-2 sm:gap-8">
         <Select name="language" size="sm" flex={1} onChange={onSelectChange}>
           <option value="cpp">C++</option>
           <option value="c">C</option>
@@ -230,8 +229,8 @@ export const ContestEditorForm = (props: ContestEditorFormProps) => {
         >
           ส่ง
         </Button>
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   )
 }
 

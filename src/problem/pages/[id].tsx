@@ -7,7 +7,7 @@ import { FaLightbulb } from 'react-icons/fa'
 
 import { getProblem, keyProblem, useProblem } from '../queries'
 
-import { SimpleGrid, Spacer, Stack, Text, VStack } from '@chakra-ui/layout'
+import { SimpleGrid, Spacer, Text, VStack } from '@chakra-ui/layout'
 import { Select } from '@chakra-ui/select'
 
 import { PageContainer } from '@src/components/layout/PageContainer'
@@ -54,7 +54,7 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
       <Head>
         <title>Problem {id} | OTOG</title>
       </Head>
-      <Stack>
+      <div className="flex flex-col gap-1">
         <TitleLayout>
           <Title icon={FaLightbulb}>{problem.name}</Title>
           <VStack align="flex-end" spacing={0}>
@@ -67,7 +67,7 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
           </VStack>
         </TitleLayout>
         <EditorForm problem={problem} submission={submission} />
-      </Stack>
+      </div>
     </PageContainer>
   )
 }

@@ -10,7 +10,6 @@ import { IconButton } from '@chakra-ui/button'
 import { FormControl, FormLabel } from '@chakra-ui/form-control'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Input } from '@chakra-ui/input'
-import { Stack } from '@chakra-ui/layout'
 import {
   Modal,
   ModalBody,
@@ -58,12 +57,12 @@ export default function AdminProblemPage() {
         </HStack>
       </TitleLayout>
 
-      <Stack spacing={4}>
+      <div className="flex flex-col gap-4">
         <div className="flex justfy-end">
           <CreateUserModalButton />
         </div>
         <UserAdminTable />
-      </Stack>
+      </div>
     </PageContainer>
   )
 }
@@ -99,7 +98,7 @@ const CreateUserModalButton = () => {
             <ModalHeader>เพิ่มผู้ใช้งาน</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Stack>
+              <div className="flex flex-col gap-1">
                 <FormControl>
                   <FormLabel>ชื่อผู้ใช้</FormLabel>
                   <Input
@@ -124,7 +123,7 @@ const CreateUserModalButton = () => {
                     placeholder="ชื่อที่ใช้แสดง"
                   />
                 </FormControl>
-              </Stack>
+              </div>
             </ModalBody>
             <ModalFooter>
               <Button colorScheme="green" type="submit">
@@ -165,7 +164,7 @@ const EditUserModalButton = (props: EditUserModalProps) => {
           <ModalHeader>แก้ไขผู้ใช้งาน</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Stack>
+            <div className="flex flex-col gap-1">
               <FormControl>
                 <FormLabel>ชื่อผู้ใช้</FormLabel>
                 <Input
@@ -193,7 +192,7 @@ const EditUserModalButton = (props: EditUserModalProps) => {
                   <option value="user">User</option>
                 </Select>
               </FormControl>
-            </Stack>
+            </div>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="green" type="submit">

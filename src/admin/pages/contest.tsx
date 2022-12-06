@@ -18,7 +18,7 @@ import { IconButton } from '@chakra-ui/button'
 import { FormControl, FormLabel } from '@chakra-ui/form-control'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Input } from '@chakra-ui/input'
-import { Spacer, Stack } from '@chakra-ui/layout'
+import { Spacer } from '@chakra-ui/layout'
 import {
   Modal,
   ModalBody,
@@ -82,7 +82,7 @@ export default function AdminContestPage() {
           </NextLink>
         </HStack>
       </TitleLayout>
-      <Stack spacing={4}>
+      <div className="flex flex-col gap-4">
         <div className="flex">
           <HStack>
             <SelectContestModalButton setContestId={setContest}>
@@ -99,7 +99,7 @@ export default function AdminContestPage() {
           <CreateContestModalButton setContestId={setContest} />
         </div>
         {contest && <ContestTable contest={contest} />}
-      </Stack>
+      </div>
     </PageContainer>
   )
 }
@@ -180,7 +180,7 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
             <ModalHeader>แก้ไขการแข่งขัน</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Stack>
+              <div className="flex flex-col gap-1">
                 <FormControl>
                   <FormLabel>ชื่อการแข่งขัน</FormLabel>
                   <Input
@@ -221,7 +221,7 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
                     }}
                   />
                 </FormControl>
-              </Stack>
+              </div>
             </ModalBody>
             <ModalFooter>
               <div className="flex w-full">
@@ -282,7 +282,7 @@ const CreateContestModalButton = (props: CreateContestModalButtonProps) => {
             <ModalHeader>สร้างการแข่งขัน</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Stack>
+              <div className="flex flex-col gap-1">
                 <FormControl>
                   <FormLabel>ชื่อการแข่งขัน</FormLabel>
                   <Input
@@ -323,7 +323,7 @@ const CreateContestModalButton = (props: CreateContestModalButtonProps) => {
                     }}
                   />
                 </FormControl>
-              </Stack>
+              </div>
             </ModalBody>
             <ModalFooter>
               <Button colorScheme="green" type="submit">
@@ -484,7 +484,7 @@ const SelectContestModalButton = (props: SelectContestModalButtonProps) => {
           <ModalHeader>เลือกการแข่งขัน</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Stack>
+            <div className="flex flex-col gap-1">
               {contests?.map((contest) => (
                 <Button
                   key={contest.id}
@@ -498,7 +498,7 @@ const SelectContestModalButton = (props: SelectContestModalButtonProps) => {
                   {contest.name}
                 </Button>
               ))}
-            </Stack>
+            </div>
           </ModalBody>
           <ModalFooter />
         </ModalContent>

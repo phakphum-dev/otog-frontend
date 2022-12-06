@@ -18,7 +18,6 @@ import { ButtonGroup, IconButton } from '@chakra-ui/button'
 import { FormControl, FormHelperText, FormLabel } from '@chakra-ui/form-control'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Input } from '@chakra-ui/input'
-import { Stack } from '@chakra-ui/layout'
 import {
   Modal,
   ModalBody,
@@ -74,12 +73,12 @@ export default function AdminProblemPage() {
         </HStack>
       </TitleLayout>
 
-      <Stack spacing={4}>
+      <div className="flex flex-col gap-4">
         <div className="flex justify-end">
           <CreateProblemModalButton />
         </div>
         <ProblemAdminTable />
-      </Stack>
+      </div>
     </PageContainer>
   )
 }
@@ -119,7 +118,7 @@ const CreateProblemModalButton = () => {
             <ModalHeader>เพิ่มโจทย์</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Stack>
+              <div className="flex flex-col gap-1">
                 <FormControl>
                   <FormLabel>ชื่อโจทย์</FormLabel>
                   <Input isRequired name="name" placeholder="ชื่อโจทย์" />
@@ -175,7 +174,7 @@ const CreateProblemModalButton = () => {
                     Testcase Files อยู่ในรูปแบบ 1.in, 1.sol, ...
                   </FormHelperText>
                 </FormControl>
-              </Stack>
+              </div>
             </ModalBody>
             <ModalFooter>
               <Button colorScheme="green" type="submit">
@@ -251,7 +250,7 @@ const EditProblemModal = (props: EditProblemModalProps) => {
           <ModalHeader>แก้ไข {problem.name}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Stack>
+            <div className="flex flex-col gap-1">
               <FormControl>
                 <FormLabel>ชื่อโจทย์</FormLabel>
                 <Input
@@ -311,7 +310,7 @@ const EditProblemModal = (props: EditProblemModalProps) => {
                   Testcase Files อยู่ในรูปแบบ 1.in, 1.sol, ...
                 </FormHelperText>
               </FormControl>
-            </Stack>
+            </div>
           </ModalBody>
           <ModalFooter>
             <div className="flex w-full">

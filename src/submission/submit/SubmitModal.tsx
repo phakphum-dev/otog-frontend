@@ -17,7 +17,6 @@ import {
   ModalHeader,
   ModalOverlay,
   Select,
-  Stack,
   UseDisclosureReturn,
 } from '@chakra-ui/react'
 
@@ -72,7 +71,7 @@ export const SubmitModal = (props: SubmitModalProps) => {
             <ModalHeader>{problem.name}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Stack>
+              <div className="flex flex-col gap-1">
                 <FormControl>
                   <FormLabel>อัปโหลด</FormLabel>
                   <FileInput name="sourceCode" {...fileInputProps} />
@@ -85,7 +84,7 @@ export const SubmitModal = (props: SubmitModalProps) => {
                     <option value="python">Python</option>
                   </Select>
                 </FormControl>
-              </Stack>
+              </div>
             </ModalBody>
 
             <ModalFooter>
