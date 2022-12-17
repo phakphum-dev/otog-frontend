@@ -94,13 +94,7 @@ const AnnouncementComponent = () => {
 
   const { colorMode } = useColorMode()
   return (
-    <Stack
-      spacing={0}
-      position="relative"
-      height={HEIGHT}
-      cursor="pointer"
-      pt={4}
-    >
+    <div className="relative pt-4 flex h-[150px] cursor-pointer">
       {filteredAnnouncements.map((announcement, index, all) => (
         <MotionStack
           key={announcement.id}
@@ -140,6 +134,6 @@ const AnnouncementComponent = () => {
           )}
         </>
       )}
-    </Stack>
+    </div>
   )
 }
