@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { FaTrophy } from 'react-icons/fa'
 import { mutate } from 'swr'
 
-import { Center, Heading, VStack } from '@chakra-ui/layout'
+import { Center, Heading } from '@chakra-ui/layout'
 
 import { AnnouncementCarousel } from '@src/announcement/components/AnnouncementCarousel'
 import { PageContainer } from '@src/components/layout/PageContainer'
@@ -37,12 +37,12 @@ export default function ContestPage() {
       ) : (
         <PageContainer display="flex">
           <Center flex={1}>
-            <VStack spacing={4}>
+            <div className="flex flex-col gap-4">
               <Heading>ยังไม่มีการแข่งขัน</Heading>
               <NextLink href="/contest/history" passHref>
                 <Button as="a">ประวัติการแข่งขัน</Button>
               </NextLink>
-            </VStack>
+            </div>
           </Center>
         </PageContainer>
       )}
@@ -81,14 +81,14 @@ export const PreContest = (props: ContestProps) => {
   return (
     <PageContainer display="flex">
       <Center flex={1}>
-        <VStack spacing={4}>
+        <div className="flex flex-col gap-4">
           <Heading textAlign="center">
             การแข่งขัน {contest.name} กำลังจะเริ่ม
           </Heading>
           <Heading as="h2" fontSize="2xl">
             ในอีก {toThTimeFormat(remaining)}...
           </Heading>
-        </VStack>
+        </div>
       </Center>
     </PageContainer>
   )
@@ -134,7 +134,7 @@ export const PostContest = (props: ContestProps) => {
   return (
     <PageContainer display="flex">
       <Center flex={1}>
-        <VStack spacing={4}>
+        <div className="flex flex-col gap-4">
           <Heading textAlign="center">
             การแข่งขัน {contest.name} จบลงแล้ว
           </Heading>
@@ -150,7 +150,7 @@ export const PostContest = (props: ContestProps) => {
               สรุปผลการแข่งขัน
             </Button>
           </NextLink>
-        </VStack>
+        </div>
       </Center>
     </PageContainer>
   )

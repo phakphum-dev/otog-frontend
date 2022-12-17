@@ -4,7 +4,7 @@ import { Children, ReactElement, cloneElement, memo } from 'react'
 
 import { Message } from '../types'
 
-import { Avatar, Code, Text, VStack, useColorModeValue } from '@chakra-ui/react'
+import { Avatar, Code, Text, useColorModeValue } from '@chakra-ui/react'
 
 import { useAuth } from '@src/context/AuthContext'
 import { useProfilePic } from '@src/profile/useProfilePic'
@@ -70,7 +70,7 @@ export const ChatMessage = memo(
           ) : (
             isOther && <div className="min-w-6 mr-1" />
           )}
-          <VStack align="flex-start" spacing={0}>
+          <div className="flex items-start">
             {displayName && (
               <Text
                 fontSize="xs"
@@ -117,7 +117,7 @@ export const ChatMessage = memo(
                 {formatParser(message)}
               </Text>
             )}
-          </VStack>
+          </div>
         </div>
       </div>
     )

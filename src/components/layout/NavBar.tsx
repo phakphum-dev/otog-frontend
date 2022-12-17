@@ -24,7 +24,6 @@ import {
   MenuList,
   Spacer,
   Text,
-  VStack,
   forwardRef,
   useBreakpointValue,
   useDisclosure,
@@ -123,7 +122,7 @@ export const NavBar = () => {
           <DrawerContent>
             <DrawerCloseButton />
             <DrawerBody>
-              <VStack mt={2} mr={6} spacing={3} align="flex-start">
+              <div className="flex flex-col mt-2 mr-6 gap-3 items-start">
                 {user && (
                   <NextLink href={`/profile/${user.id}`} passHref>
                     <DrawerButton as="a">
@@ -145,7 +144,7 @@ export const NavBar = () => {
                   <DrawerItem href="/login" title="เข้าสู่ระบบ" />
                 )}
                 <ToggleColorModeButton />
-              </VStack>
+              </div>
             </DrawerBody>
           </DrawerContent>
         </DrawerOverlay>

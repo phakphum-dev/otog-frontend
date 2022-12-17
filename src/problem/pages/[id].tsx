@@ -7,7 +7,7 @@ import { FaLightbulb } from 'react-icons/fa'
 
 import { getProblem, keyProblem, useProblem } from '../queries'
 
-import { SimpleGrid, Spacer, Text, VStack } from '@chakra-ui/layout'
+import { SimpleGrid, Spacer, Text } from '@chakra-ui/layout'
 import { Select } from '@chakra-ui/select'
 
 import { PageContainer } from '@src/components/layout/PageContainer'
@@ -57,14 +57,14 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
       <div className="flex flex-col gap-2">
         <TitleLayout>
           <Title icon={FaLightbulb}>{problem.name}</Title>
-          <VStack align="flex-end" spacing={0}>
+          <div className="flex flex-col items-end">
             <Link isExternal href={`${API_HOST}problem/doc/${problem.id}`}>
               [ดาวน์โหลด]
             </Link>
             <Text fontSize="sm" whiteSpace="nowrap">
               ({problem.timeLimit / ONE_SECOND} วินาที {problem.memoryLimit} MB)
             </Text>
-          </VStack>
+          </div>
         </TitleLayout>
         <EditorForm problem={problem} submission={submission} />
       </div>
