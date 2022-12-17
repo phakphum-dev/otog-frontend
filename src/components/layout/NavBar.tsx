@@ -127,7 +127,7 @@ export const NavBar = () => {
                 {user && (
                   <NextLink href={`/profile/${user.id}`} passHref>
                     <DrawerButton as="a">
-                      <div className="flex gap-2 py-2">
+                      <div className="flex items-center gap-2 py-2">
                         <Avatar size="xs" src={url} />
                         <Text noOfLines={1}> {user.showName}</Text>
                       </div>
