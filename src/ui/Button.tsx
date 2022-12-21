@@ -129,7 +129,7 @@ const buttonStyles = cva(
         variant: 'outline',
         colorScheme: 'gray',
         className:
-          'text-inherit border-gray-200 border-white/16 dark:text-white/92 hover:bg-gray-100 hover:dark:bg-white/8 active:bg-gray-200 active:dark:bg-white/16',
+          'text-inherit border-gray-200 dark:text-white/92 dark:border-white/16 hover:bg-gray-100 hover:dark:bg-white/8 active:bg-gray-200 active:dark:bg-white/16',
       },
       {
         variant: 'outline',
