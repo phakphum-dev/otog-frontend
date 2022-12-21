@@ -73,16 +73,14 @@ export const NavBar = () => {
         <PageContainer>
           <div className="flex">
             <NextLink href={isAdmin ? '/admin/contest' : '/'} passHref>
-              <Link className="text-gray-800 dark:text-white">
-                <div className="flex gap-2 cursor-pointer">
-                  <Image src={Logo} width={32} height={32} />
-                  <Heading size="md" py={2}>
-                    <div className="hidden md:inline-block xl:hidden">OTOG</div>
-                    <div className="hidden xl:inline-block">
-                      One Tambon One Grader
-                    </div>
-                  </Heading>
-                </div>
+              <Link className="text-gray-800 dark:text-white flex items-center gap-2">
+                <Image src={Logo} width={32} height={32} />
+                <Heading size="md" py={2}>
+                  <div className="hidden md:inline-block xl:hidden">OTOG</div>
+                  <div className="hidden xl:inline-block">
+                    One Tambon One Grader
+                  </div>
+                </Heading>
               </Link>
             </NextLink>
             <Spacer />
