@@ -43,7 +43,6 @@ const buttonStyles = cva(
         xs: 'h-6 min-w-6 text-xs px-2',
       },
       fullWidth: { true: 'w-full' },
-      px: { 1: '!px-1' },
     },
     defaultVariants: {
       variant: 'solid',

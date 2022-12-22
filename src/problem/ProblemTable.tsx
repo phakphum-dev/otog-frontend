@@ -216,7 +216,7 @@ const ProblemRow = (props: ProblemRowProps) => {
     <Tr bg={bg}>
       <Td textAlign="center" w={22}>
         {problem.submission ? (
-          <Button onClick={onCodeModalOpen} variant="ghost" px={1}>
+          <Button className="!px-1" onClick={onCodeModalOpen} variant="ghost">
             {problem.id}
           </Button>
         ) : (
@@ -244,7 +244,7 @@ const ProblemRow = (props: ProblemRowProps) => {
       <Td w={22} textAlign="center">
         {problem.passedCount &&
         (isAdmin || problem.submission?.status === 'accept') ? (
-          <Button variant="ghost" px={1} onClick={onPassedModalOpen}>
+          <Button className="!px-1" variant="ghost" onClick={onPassedModalOpen}>
             {problem.passedCount}
           </Button>
         ) : (

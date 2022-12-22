@@ -175,7 +175,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
     <Tr bg={bg}>
       <Td lineHeight="40px">
         {user?.id === submission?.user.id || isAdmin ? (
-          <Button variant="ghost" onClick={onCodeModalOpen} px={1}>
+          <Button className="!px-1" variant="ghost" onClick={onCodeModalOpen}>
             {submission?.id}
           </Button>
         ) : (
@@ -208,7 +208,11 @@ const SubmissionRow = (props: SubmissionRowProps) => {
       <Td maxW={345} wordBreak="break-all">
         {submission.errmsg && (isAdmin || user?.id === submission.user.id) ? (
           <>
-            <Button px={1} variant="ghost" onClick={errorDisclosure.onOpen}>
+            <Button
+              className="!px-1"
+              variant="ghost"
+              onClick={errorDisclosure.onOpen}
+            >
               {submission.result}
             </Button>
             <ErrorModal {...errorDisclosure} submission={submission} />

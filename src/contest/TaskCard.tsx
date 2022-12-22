@@ -253,8 +253,8 @@ export const TaskSubmissionTable = (props: TaskSubmissionTableProps) => {
           <Tr bg={bg}>
             <Td>
               <Button
+                className="!px-1"
                 variant="ghost"
-                px={1}
                 size="sm"
                 onClick={codeDisclosure.onOpen}
               >
@@ -266,7 +266,7 @@ export const TaskSubmissionTable = (props: TaskSubmissionTableProps) => {
               {submission.errmsg ? (
                 <>
                   <Button
-                    px={1}
+                    className="!px-1"
                     variant="ghost"
                     onClick={errorDisclosure.onOpen}
                     size="sm"
