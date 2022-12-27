@@ -58,7 +58,7 @@ export default function AdminProblemPage() {
       </TitleLayout>
 
       <div className="flex flex-col gap-4">
-        <div className="flex justfy-end">
+        <div className="flex justify-end">
           <CreateUserModalButton />
         </div>
         <UserAdminTable />

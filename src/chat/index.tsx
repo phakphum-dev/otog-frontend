@@ -68,7 +68,7 @@ const OnlineUsersTooltip = (props: TooltipProps) => {
       label={
         <div className="flex flex-col justify-start">
           {onlineUsers.slice(0, MAX_LENGTH).map((user) => (
-            <div className="flex gap-2" key={user.id}>
+            <div className="flex items-center gap-2" key={user.id}>
               <Circle size={2} bg="green.400" />
               <Text maxW={275} noOfLines={3}>
                 {user.showName}

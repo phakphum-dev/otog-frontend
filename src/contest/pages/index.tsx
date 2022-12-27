@@ -37,7 +37,7 @@ export default function ContestPage() {
       ) : (
         <PageContainer display="flex">
           <Center flex={1}>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col items-center gap-4">
               <Heading>ยังไม่มีการแข่งขัน</Heading>
               <NextLink href="/contest/history" passHref>
                 <Button as="a">ประวัติการแข่งขัน</Button>
@@ -81,7 +81,7 @@ export const PreContest = (props: ContestProps) => {
   return (
     <PageContainer display="flex">
       <Center flex={1}>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col items-center gap-4">
           <Heading textAlign="center">
             การแข่งขัน {contest.name} กำลังจะเริ่ม
           </Heading>
@@ -134,7 +134,7 @@ export const PostContest = (props: ContestProps) => {
   return (
     <PageContainer display="flex">
       <Center flex={1}>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col items-center gap-4">
           <Heading textAlign="center">
             การแข่งขัน {contest.name} จบลงแล้ว
           </Heading>
