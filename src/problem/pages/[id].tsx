@@ -7,7 +7,7 @@ import { FaLightbulb } from 'react-icons/fa'
 
 import { getProblem, keyProblem, useProblem } from '../queries'
 
-import { SimpleGrid, Text } from '@chakra-ui/layout'
+import { SimpleGrid } from '@chakra-ui/layout'
 import { Select } from '@chakra-ui/select'
 
 import { PageContainer } from '@src/components/layout/PageContainer'
@@ -61,9 +61,9 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
             <Link isExternal href={`${API_HOST}problem/doc/${problem.id}`}>
               [ดาวน์โหลด]
             </Link>
-            <Text fontSize="sm" whiteSpace="nowrap">
+            <div className="text-sm whitespace-nowrap">
               ({problem.timeLimit / ONE_SECOND} วินาที {problem.memoryLimit} MB)
-            </Text>
+            </div>
           </div>
         </TitleLayout>
         <EditorForm problem={problem} submission={submission} />

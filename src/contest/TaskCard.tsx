@@ -12,7 +12,7 @@ import {
   CloseIcon,
   EditIcon,
 } from '@chakra-ui/icons'
-import { Badge, Divider, Heading, Text } from '@chakra-ui/layout'
+import { Badge, Divider, Heading } from '@chakra-ui/layout'
 import { Select } from '@chakra-ui/select'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
@@ -79,10 +79,10 @@ export const TaskCard = memo((props: TaskCardProps) => {
               <Link isExternal href={`${API_HOST}problem/doc/${problem.id}`}>
                 [ดาวน์โหลด]
               </Link>
-              <Text fontSize="sm">
+              <div className="text-sm">
                 ({problem.timeLimit / ONE_SECOND} วินาที {problem.memoryLimit}{' '}
                 MB)
-              </Text>
+              </div>
             </div>
             <IconButton
               aria-label="toggle-code-editor"
@@ -285,7 +285,7 @@ export const TaskSubmissionTable = (props: TaskSubmissionTableProps) => {
               ) : isGrading(submission) ? (
                 <div className="flex gap-2">
                   <Spinner size="xs" />
-                  <Text>{submission.result}</Text>
+                  <div>{submission.result}</div>
                 </div>
               ) : isGraded(submission) ? (
                 <code>{submission.result}</code>

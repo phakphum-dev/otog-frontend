@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import { PropsWithChildren, useState } from 'react'
 import { FaArrowDown, FaArrowUp } from 'react-icons/fa'
 
-import { TableColumnHeaderProps, Text, Th } from '@chakra-ui/react'
+import { TableColumnHeaderProps, Th } from '@chakra-ui/react'
 
 import { Link } from '@src/ui/Link'
 
@@ -60,7 +60,7 @@ export const SortTh = (props: TableHeadProps) => {
             centered && 'justify-center'
           )}
         >
-          <Text>{children}</Text>
+          <div>{children}</div>
           {sortFuncName === sortBy &&
             (sortOrder === 'desc' ? <FaArrowDown /> : <FaArrowUp />)}
         </div>

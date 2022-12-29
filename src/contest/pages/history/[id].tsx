@@ -6,7 +6,6 @@ import React, { useMemo } from 'react'
 import { CgDetailsLess, CgDetailsMore } from 'react-icons/cg'
 import { FaMedal, FaTrophy } from 'react-icons/fa'
 
-import { Text } from '@chakra-ui/react'
 import { HTMLChakraProps, useTheme } from '@chakra-ui/system'
 import {
   Td as TData,
@@ -240,7 +239,7 @@ export default function ContestHistory() {
                       <Td key={problem.id}>
                         <div className="flex flex-col gap-2">
                           {submissions.length === 0 ? (
-                            <Text>-</Text>
+                            <div>-</div>
                           ) : (
                             submissions.map((submission) => (
                               <NextLink

@@ -143,5 +143,12 @@ module.exports = {
         },
       ])
     }),
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        '.word-break': {
+          'word-break': 'break-word',
+        },
+      })
+    }),
   ],
 }

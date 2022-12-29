@@ -2,7 +2,6 @@ import Head from 'next/head'
 import NextLink from 'next/link'
 import { FaTrophy } from 'react-icons/fa'
 
-import { Text } from '@chakra-ui/layout'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
@@ -45,7 +44,7 @@ export default function ContestHistoryPage() {
                     </NextLink>
                   </Td>
                   <Td>
-                    <Text casing="capitalize">{contest.mode}</Text>
+                    <div className="capitalize">{contest.mode}</div>
                   </Td>
                   <Td>
                     {toThTimeFormat(

@@ -1,8 +1,6 @@
 import { OrangeSubmitButton } from './SubmitButton'
 import { SubmitModal } from './SubmitModal'
 
-import { Text } from '@chakra-ui/layout'
-
 import { API_HOST } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
 import { useDisclosure } from '@src/hooks/useDisclosure'
@@ -20,7 +18,7 @@ export const LatestSubmission = ({ onSuccess }: LatestSubmissionProps) => {
 
   return isAuthenticated && submission ? (
     <div className="flex gap-4">
-      <Text fontWeight="bold">ส่งข้อล่าสุด</Text>
+      <div className="font-bold">ส่งข้อล่าสุด</div>
       <Link
         className="line-clamp-1"
         isExternal

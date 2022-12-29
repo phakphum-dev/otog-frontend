@@ -9,7 +9,6 @@ import {
   Table,
   Tbody,
   Td,
-  Text,
   Th,
   Thead,
   Tooltip,
@@ -220,7 +219,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
         ) : isGrading(submission) ? (
           <div className="flex gap-2">
             <Spinner size="xs" />
-            <Text>{submission.result}</Text>
+            <div>{submission.result}</div>
           </div>
         ) : isGraded(submission) && !submission.errmsg ? (
           <code>{submission.result}</code>

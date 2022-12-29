@@ -16,7 +16,6 @@ import {
   ModalOverlay,
   ModalProps,
   Skeleton,
-  Text,
   useClipboard,
   useToast,
 } from '@chakra-ui/react'
@@ -115,35 +114,37 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
       <div>
         <TextSkeleton w={40}>
           {submission && (
-            <Text>
+            <div>
               ผลตรวจ: <code>{submission.result}</code>
-            </Text>
+            </div>
           )}
         </TextSkeleton>
         <TextSkeleton w={18}>
-          {submission && <Text>คะแนน: {submission.score}</Text>}
+          {submission && <div>คะแนน: {submission.score}</div>}
         </TextSkeleton>
         <TextSkeleton w={20}>
-          {submission && <Text>ภาษา: {language[submission.language]}</Text>}
+          {submission && <div>ภาษา: {language[submission.language]}</div>}
         </TextSkeleton>
         <TextSkeleton w={36}>
           {submission && (
-            <Text>เวลารวม: {submission.timeUsed / ONE_SECOND} วินาที</Text>
+            <div>เวลารวม: {submission.timeUsed / ONE_SECOND} วินาที</div>
           )}
         </TextSkeleton>
 
         <TextSkeleton w={48}>
           {submission && (
-            <Text>เวลาที่ส่ง: {toThDate(submission.creationDate)}</Text>
+            <div>เวลาที่ส่ง: {toThDate(submission.creationDate)}</div>
           )}
         </TextSkeleton>
         <TextSkeleton w={24}>
           {submission && (
-            <Text noOfLines={3}>ผู้ส่ง: {submission.user.showName}</Text>
+            <div className="line-clamp-3">
+              ผู้ส่ง: {submission.user.showName}
+            </div>
           )}
         </TextSkeleton>
         <TextSkeleton w={36}>
-          {submission && <Text>ผลตรวจที่: {submission.id}</Text>}
+          {submission && <div>ผลตรวจที่: {submission.id}</div>}
         </TextSkeleton>
       </div>
       <div className="relative">

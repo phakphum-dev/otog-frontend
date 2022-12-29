@@ -4,7 +4,7 @@ import { Children, ReactElement, cloneElement, memo } from 'react'
 
 import { Message } from '../types'
 
-import { Avatar, Code, Text, useColorModeValue } from '@chakra-ui/react'
+import { Avatar, Code, useColorModeValue } from '@chakra-ui/react'
 
 import { useAuth } from '@src/context/AuthContext'
 import { useProfilePic } from '@src/profile/useProfilePic'
@@ -43,8 +43,6 @@ export const ChatMessage = memo(
     const displayName = isOther && !groupedWithTop
     const displayAvatar = isOther && !groupedWithBottom
     const isEmoji = emojiPattern.test(message) && message.length <= 12
-    const bg = useColorModeValue('gray.100', 'gray.800')
-    const borderColor = useColorModeValue('gray.100', 'whiteAlpha.300')
 
     return (
       <div>
@@ -60,7 +58,7 @@ export const ChatMessage = memo(
         )}
         <div
           className={clsx(
-            'flex align-end',
+            'flex items-end',
             isOther ? 'flex-row' : 'flex-row-reverse',
             groupedWithTop ? 'mt-0.5' : 'mt-2'
           )}
@@ -70,52 +68,38 @@ export const ChatMessage = memo(
           ) : (
             isOther && <div className="min-w-6 mr-1" />
           )}
-          <div className="flex items-start">
+          <div className="flex flex-col items-start">
             {displayName && (
-              <Text
-                fontSize="xs"
-                color="gray.500"
-                px={1}
-                maxW={270}
-                noOfLines={3}
-              >
+              <div className="text-xs text-gray-500 px-1 max-w-[270px] line-clamp-3">
                 {sender.showName}
-              </Text>
+              </div>
             )}
             {isEmoji ? (
-              <Text
+              <div
                 title={toThDate(creationDate)}
-                fontSize="4xl"
-                {...{ [isSelf ? 'ml' : 'mr']: 2 }}
-                whiteSpace="pre-wrap"
-                wordBreak="break-word"
+                className={clsx(
+                  'text-4xl whitespace-pre-wrap word-break',
+                  isSelf ? 'ml-7' : 'mr-7'
+                )}
               >
                 {message}
-              </Text>
+              </div>
             ) : (
-              <Text
+              <div
                 title={toThDate(creationDate)}
-                px={2}
-                py={1}
-                rounded={16}
-                {...{
-                  [isSelf ? 'ml' : 'mr']: 2,
-                  ...(groupedWithTop && {
-                    [isSelf ? 'roundedTopRight' : 'roundedTopLeft']: 6,
-                  }),
-                  ...(groupedWithBottom && {
-                    [isSelf ? 'roundedBottomRight' : 'roundedBottomLeft']: 6,
-                  }),
-                }}
-                borderWidth="1px"
-                bg={isSelf ? 'otog' : bg}
-                color={isSelf ? 'white' : undefined}
-                borderColor={isSelf ? 'otog' : borderColor}
-                whiteSpace="pre-wrap"
-                wordBreak="break-word"
+                className={clsx(
+                  'px-2 py-1 rounded-2xl border whitespace-pre-wrap word-break',
+                  isSelf
+                    ? 'ml-7 bg-otog text-white border-otog'
+                    : 'mr-7 bg-gray-100 dark:bg-gray-800 border-gray-100 dark:border-alpha-300',
+                  groupedWithTop &&
+                    (isSelf ? 'rounded-tr-md' : 'rounded-tl-md'),
+                  groupedWithBottom &&
+                    (isSelf ? 'rounded-br-md' : 'rounded-bl-md')
+                )}
               >
                 {formatParser(message)}
-              </Text>
+              </div>
             )}
           </div>
         </div>

@@ -35,7 +35,7 @@ import {
 import { HEIGHT } from './constants'
 import { useAnnouncementContext } from './useAnnouncementContext'
 
-import { Code, Text } from '@chakra-ui/react'
+import { Code } from '@chakra-ui/react'
 
 import { ButtonGroup } from '@src/ui/ButtonGroup'
 import { IconButton } from '@src/ui/IconButton'
@@ -97,35 +97,35 @@ const Element = ({ attributes, children, element }: RenderElementProps) => {
   switch (element.type) {
     case 'block-quote':
       return (
-        <Text {...attributes} paddingLeft="10px" borderLeft="2px solid #ddd">
+        <p className="pl-2.5 border-l-2 border-gray-300" {...attributes}>
           {children}
-        </Text>
+        </p>
       )
     case 'bulleted-list':
       return <ul {...attributes}>{children}</ul>
     case 'heading-one':
       return (
-        <Text fontSize="4xl" {...attributes}>
+        <p className="text-4xl" {...attributes}>
           {children}
-        </Text>
+        </p>
       )
     case 'heading-two':
       return (
-        <Text fontSize="3xl" {...attributes}>
+        <p className="text-3xl" {...attributes}>
           {children}
-        </Text>
+        </p>
       )
     case 'heading-three':
       return (
-        <Text fontSize="2xl" {...attributes}>
+        <p className="text-2xl" {...attributes}>
           {children}
-        </Text>
+        </p>
       )
     case 'heading-four':
       return (
-        <Text fontSize="xl" {...attributes}>
+        <p className="text-xl" {...attributes}>
           {children}
-        </Text>
+        </p>
       )
     case 'list-item':
       return <li {...attributes}>{children}</li>

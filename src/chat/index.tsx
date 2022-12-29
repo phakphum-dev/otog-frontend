@@ -4,7 +4,7 @@ import { IoChatbubbleEllipses, IoSend } from 'react-icons/io5'
 import { ChatMessage } from './components/ChatMessage'
 
 import { SmallCloseIcon } from '@chakra-ui/icons'
-import { Circle, Heading, Text } from '@chakra-ui/layout'
+import { Circle, Heading } from '@chakra-ui/layout'
 import { Spinner } from '@chakra-ui/spinner'
 import { Textarea } from '@chakra-ui/textarea'
 import { useToast } from '@chakra-ui/toast'
@@ -55,18 +55,16 @@ const OnlineUsersTooltip = (props: TooltipProps) => {
           {onlineUsers.slice(0, MAX_LENGTH).map((user) => (
             <div className="flex items-center gap-2" key={user.id}>
               <Circle size={2} bg="green.400" />
-              <Text maxW={275} noOfLines={3}>
-                {user.showName}
-              </Text>
+              <div className="max-w-[275px] line-clamp-3">{user.showName}</div>
             </div>
           ))}
           {onlineUsers.length > MAX_LENGTH && (
             <>
               <div className="flex gap-2">
-                <Text>...</Text>
+                <div>...</div>
               </div>
               <div className="flex gap-2">
-                <Text>(ยังมีชีวิตอยู่ทั้งหมด {onlineUsers.length} คน)</Text>
+                <div>(ยังมีชีวิตอยู่ทั้งหมด {onlineUsers.length} คน)</div>
               </div>
             </>
           )}

@@ -22,7 +22,6 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  Text,
   forwardRef,
   useBreakpointValue,
 } from '@chakra-ui/react'
@@ -125,7 +124,7 @@ export const NavBar = () => {
                     <DrawerButton as="a">
                       <div className="flex items-center gap-2 py-2">
                         <Avatar size="xs" src={url} />
-                        <Text noOfLines={1}> {user.showName}</Text>
+                        <div className="line-clamp-1"> {user.showName}</div>
                       </div>
                     </DrawerButton>
                   </NextLink>
@@ -218,7 +217,9 @@ const AvatarMenu = () => {
   const { url } = useUserProfilePic(true)
   return (
     <Menu isLazy>
-      {OFFLINE_MODE && !isAdmin && <Text p={2}>สวัสดี {user?.showName}</Text>}
+      {OFFLINE_MODE && !isAdmin && (
+        <div className="p-2">สวัสดี {user?.showName}</div>
+      )}
       <MenuButton
         as={Button}
         className="!px-2"
