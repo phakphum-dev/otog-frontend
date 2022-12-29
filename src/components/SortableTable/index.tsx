@@ -54,7 +54,12 @@ export const SortTh = (props: TableHeadProps) => {
         variant="head"
         onClick={() => setSortFunction(sortBy, defaultOrder)}
       >
-        <div className={clsx('flex gap-2', centered && 'justify-center')}>
+        <div
+          className={clsx(
+            'flex gap-2 items-center',
+            centered && 'justify-center'
+          )}
+        >
           <Text>{children}</Text>
           {sortFuncName === sortBy &&
             (sortOrder === 'desc' ? <FaArrowDown /> : <FaArrowUp />)}
