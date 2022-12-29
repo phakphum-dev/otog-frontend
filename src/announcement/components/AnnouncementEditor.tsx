@@ -32,6 +32,7 @@ import {
   withReact,
 } from 'slate-react'
 
+import { HEIGHT } from './constants'
 import { useAnnouncementContext } from './useAnnouncementContext'
 
 import { Code, Text } from '@chakra-ui/react'
@@ -315,7 +316,8 @@ export const AnnouncementEditor = () => {
         </div>
         <hr />
         <div
-          className={`flex flex-col gap-2 justify-center w-full h-[150px] overflow-hidden text-center`}
+          className="flex flex-col gap-2 justify-center w-full overflow-hidden text-center"
+          style={{ height: HEIGHT }}
         >
           <Editable
             placeholder="Enter announcement…"

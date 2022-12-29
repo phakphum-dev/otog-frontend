@@ -12,18 +12,12 @@ import {
   useAnnouncementContext,
 } from './useAnnouncementContext'
 
-import {
-  Collapse,
-  Stack,
-  StackProps,
-  useColorMode,
-  useDisclosure,
-} from '@chakra-ui/react'
+import { Collapse, useDisclosure } from '@chakra-ui/react'
 
 import { useAuth } from '@src/context/AuthContext'
 import { IconButton } from '@src/ui/IconButton'
 
-const MotionStack = motion<StackProps>(Stack)
+const MotionDiv = motion.div
 
 export interface AnnouncementCarouselProps {
   defaultShow?: boolean
@@ -92,30 +86,22 @@ const AnnouncementComponent = () => {
     onOpen()
   }
 
-  const { colorMode } = useColorMode()
   return (
     <div className="relative pt-4 flex h-[150px] cursor-pointer">
       {filteredAnnouncements.map((announcement, index, all) => (
-        <MotionStack
+        <MotionDiv
           key={announcement.id}
           variants={{
             show: { y: 0, transition: { duration: 0.5 } },
             hidden: { y: -HEIGHT * 1.2, transition: { duration: 0.5 } },
           }}
+          className="bg-white dark:bg-gray-800 absolute flex justify-center h-[150px] max-h-[150px] w-full overflow-hidden text-center"
+          style={{ zIndex: all.length - index }}
           animate={index >= showIndex ? 'show' : 'hidden'}
-          bg={colorMode === 'light' ? 'white' : 'gray.800'}
-          zIndex={all.length - index}
-          position="absolute"
-          justify="center"
-          height={HEIGHT}
-          maxHeight={HEIGHT}
-          width="100%"
-          overflow="hidden"
-          textAlign="center"
           onClick={nextShowIndex}
         >
           <ReadonlyEditor value={announcement.value} />
-        </MotionStack>
+        </MotionDiv>
       ))}
       {isAdmin && (
         <>
