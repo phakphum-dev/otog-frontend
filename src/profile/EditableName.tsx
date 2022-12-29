@@ -1,4 +1,3 @@
-import { IconButton } from '@chakra-ui/button'
 import {
   Editable,
   EditableInput,
@@ -11,6 +10,7 @@ import { useAuth } from '@src/context/AuthContext'
 import { http } from '@src/context/HttpClient'
 import { useErrorToast } from '@src/hooks/useErrorToast'
 import { useMutation } from '@src/hooks/useMutation'
+import { IconButton } from '@src/ui/IconButton'
 import { editShowname } from '@src/user/queries'
 import { UserProfile } from '@src/user/types'
 

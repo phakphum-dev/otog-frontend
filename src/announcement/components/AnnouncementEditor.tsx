@@ -32,11 +32,11 @@ import {
   withReact,
 } from 'slate-react'
 
-import { HEIGHT } from './constants'
 import { useAnnouncementContext } from './useAnnouncementContext'
 
-import { ButtonGroup, Code, IconButton, Text } from '@chakra-ui/react'
+import { ButtonGroup, Code, Text } from '@chakra-ui/react'
 
+import { IconButton } from '@src/ui/IconButton'
 import { Link } from '@src/ui/Link'
 
 type CustomText = {
@@ -190,7 +190,7 @@ const MarkButton = ({ format, icon }: MarkButtonProps) => {
   const editor = useSlate()
   return (
     <IconButton
-      minW="32px"
+      className="min-w-[32px]"
       size="sm"
       variant="outline"
       isActive={isMarkActive(editor, format)}
@@ -212,7 +212,7 @@ const BlockButton = ({ format, icon }: BlockButtonProps) => {
   const editor = useSlate()
   return (
     <IconButton
-      minW="32px"
+      className="min-w-[32px]"
       size="sm"
       variant="outline"
       isActive={isBlockActive(editor, format)}
@@ -311,7 +311,7 @@ export const AnnouncementEditor = () => {
         </div>
         <hr />
         <div
-          className={`flex flex-col gap-2 justify-center w-full h-[${HEIGHT}px] overflow-hidden text-center`}
+          className={`flex flex-col gap-2 justify-center w-full h-[150px] overflow-hidden text-center`}
         >
           <Editable
             placeholder="Enter announcement…"

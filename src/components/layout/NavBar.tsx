@@ -103,8 +103,8 @@ export const NavBar = () => {
                 <NavItem href="/login" title="เข้าสู่ระบบ" />
               )}
               <ToggleColorModeButton
-                variant="link"
-                display={{ base: 'none', md: 'inline-flex' }}
+                variant="ghost"
+                className="hidden md:inline-flex"
               />
             </div>
           </div>

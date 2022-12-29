@@ -10,7 +10,6 @@ import { DropzoneInputProps } from 'react-dropzone'
 import { FaUpload } from 'react-icons/fa'
 
 import {
-  IconButton,
   Input,
   InputGroup,
   InputProps,
@@ -19,6 +18,7 @@ import {
 
 import { FileInputRef } from '@src/hooks/useFileInput'
 import { Button } from '@src/ui/Button'
+import { IconButton } from '@src/ui/IconButton'
 
 export type UploadFileProps = DropzoneInputProps & {
   fileName?: string

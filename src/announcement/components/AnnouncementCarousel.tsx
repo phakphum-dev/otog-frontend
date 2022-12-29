@@ -14,7 +14,6 @@ import {
 
 import {
   Collapse,
-  IconButton,
   Stack,
   StackProps,
   useColorMode,
@@ -22,6 +21,7 @@ import {
 } from '@chakra-ui/react'
 
 import { useAuth } from '@src/context/AuthContext'
+import { IconButton } from '@src/ui/IconButton'
 
 const MotionStack = motion<StackProps>(Stack)
 
@@ -120,11 +120,8 @@ const AnnouncementComponent = () => {
       {isAdmin && (
         <>
           <IconButton
+            className="absolute right-0 top-4 z-40"
             aria-label="edit-announcements"
-            position="absolute"
-            right={0}
-            top={4}
-            zIndex={49}
             icon={hasAnnouncements ? <FaPencilAlt /> : <FaPlus />}
             onClick={hasAnnouncements ? onOpen : firstCreate}
             variant="ghost"

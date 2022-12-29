@@ -1,7 +1,8 @@
-import { IconButton, IconButtonProps } from '@chakra-ui/react'
 import { FaFileUpload } from 'react-icons/fa'
 
-export type SubmitButtonProps = Omit<IconButtonProps, 'aria-label'>
+import { IconButton, IconButtonProps } from '@src/ui/IconButton'
+
+export type SubmitButtonProps = Omit<IconButtonProps, 'icon'>
 
 export const SubmitButton = (props: SubmitButtonProps) => {
   return (
@@ -12,7 +13,7 @@ export const SubmitButton = (props: SubmitButtonProps) => {
 export const OrangeSubmitButton = (props: SubmitButtonProps) => {
   return (
     <IconButton
-      variant="otog"
+      colorScheme="otog"
       aria-label="Upload file"
       icon={<FaFileUpload />}
       {...props}

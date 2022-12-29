@@ -6,7 +6,6 @@ import { CodeModal, ErrorModal } from '../components/Code'
 import { FileInput } from '../components/FileInput'
 import { submitContestProblem } from './queries'
 
-import { IconButton } from '@chakra-ui/button'
 import { useDisclosure } from '@chakra-ui/hooks'
 import {
   ChevronDownIcon,
@@ -29,6 +28,7 @@ import { useDropFile } from '@src/submission/submit/useDropFile'
 import { SubmissionWithProblem } from '@src/submission/types'
 import { isGraded, isGrading, useStatusColor } from '@src/theme/useStatusColor'
 import { Button } from '@src/ui/Button'
+import { IconButton } from '@src/ui/IconButton'
 import { Link } from '@src/ui/Link'
 import { ONE_SECOND } from '@src/utils/time'
 

@@ -6,7 +6,6 @@ import { FaRegShareSquare } from 'react-icons/fa'
 
 import { CopyIcon } from '@chakra-ui/icons'
 import {
-  IconButton,
   Link,
   Modal,
   ModalBody,
@@ -28,6 +27,7 @@ import {
   SubmissionWithProblem,
   SubmissionWithSourceCode,
 } from '@src/submission/types'
+import { IconButton } from '@src/ui/IconButton'
 import { ONE_SECOND, toThDate } from '@src/utils/time'
 
 export interface CodeModalProps extends Omit<ModalProps, 'children'> {

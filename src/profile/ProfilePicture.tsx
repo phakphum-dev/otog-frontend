@@ -2,7 +2,6 @@ import { ChangeEvent } from 'react'
 import { FaCropAlt, FaUserCircle } from 'react-icons/fa'
 import { mutate } from 'swr'
 
-import { IconButton } from '@chakra-ui/button'
 import { useDisclosure } from '@chakra-ui/hooks'
 import Icon from '@chakra-ui/icon'
 import { Img } from '@chakra-ui/image'
@@ -17,6 +16,7 @@ import {
   getCroppedImage,
 } from '@src/profile/ImageCropModal'
 import { useProfilePic, useUserProfilePic } from '@src/profile/useProfilePic'
+import { IconButton } from '@src/ui/IconButton'
 
 export const ProfileUpload = () => {
   const cropModal = useDisclosure()

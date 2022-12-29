@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
+const plugin = require('tailwindcss/plugin')
+
 const colors = {
   otog: {
     DEFAULT: '#ff851b',
@@ -124,5 +126,22 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@tailwindcss/line-clamp')],
+  plugins: [
+    require('@tailwindcss/line-clamp'),
+    // custom plugin for 'active' class
+    plugin(function ({ addVariant, e }) {
+      addVariant('active', [
+        ({ modifySelectors, separator }) => {
+          modifySelectors(({ className }) => {
+            return `.${e(`active${separator}${className}`)}:active`
+          })
+        },
+        ({ modifySelectors, separator }) => {
+          modifySelectors(({ className }) => {
+            return `.${e(`active${separator}${className}`)}.active`
+          })
+        },
+      ])
+    }),
+  ],
 }

@@ -1,7 +1,6 @@
 import clsx from 'clsx'
 import { VariantProps, cva } from 'cva'
 import {
-  AnchorHTMLAttributes,
   ButtonHTMLAttributes,
   ForwardedRef,
   PropsWithChildren,
@@ -17,7 +16,7 @@ import {
  */
 
 const buttonStyles = cva(
-  'inline-flex justify-center items-center select-none rounded-md transition-colors font-semibold ',
+  'inline-flex justify-center items-center select-none transition-colors font-semibold ',
   {
     variants: {
       variant: {
@@ -31,6 +30,7 @@ const buttonStyles = cva(
         red: '',
         green: '',
         orange: '',
+        blue: '',
         'otog-blue': '',
         'otog-green': '',
         'otog-red': '',
@@ -43,11 +43,14 @@ const buttonStyles = cva(
         xs: 'h-6 min-w-6 text-xs px-2',
       },
       fullWidth: { true: 'w-full' },
+      rounded: { true: 'rounded-full', md: 'rounded-md' },
+      isActive: { true: 'active' },
     },
     defaultVariants: {
       variant: 'solid',
       colorScheme: 'gray',
       size: 'md',
+      rounded: 'md',
     },
     compoundVariants: [
       {
@@ -73,6 +76,12 @@ const buttonStyles = cva(
         colorScheme: 'green',
         className:
           'text-white dark:text-gray-800 bg-green-500 dark:bg-green-200 hover:bg-green-600 dark:hover:bg-green-300 disabled:hover:bg-green-500 disabled:hover:dark:bg-green-200 active:bg-green-700 active:dark:bg-green-400',
+      },
+      {
+        variant: 'solid',
+        colorScheme: 'blue',
+        className:
+          'text-white dark:text-gray-800 bg-blue-500 dark:bg-blue-200 hover:bg-blue-600 dark:hover:bg-blue-300 disabled:hover:bg-blue-500 disabled:hover:dark:bg-blue-200 active:bg-blue-700 active:dark:bg-blue-400',
       },
       {
         variant: 'solid',
@@ -148,14 +157,8 @@ const buttonStyles = cva(
 
 export type ButtonProps = PropsWithChildren<
   VariantProps<typeof buttonStyles> &
-    (
-      | (ButtonHTMLAttributes<HTMLButtonElement> & {
-          as?: 'button'
-        })
-      | (AnchorHTMLAttributes<HTMLButtonElement> & {
-          as: 'a'
-        })
-    ) & {
+    ButtonHTMLAttributes<HTMLButtonElement> & {
+      as?: 'a' | 'button'
       leftIcon?: ReactNode
       rightIcon?: ReactNode
       fullWidth?: boolean
@@ -173,6 +176,8 @@ export const Button = forwardRef(
       size,
       leftIcon,
       rightIcon,
+      rounded,
+      isActive,
       fullWidth = false,
       ...props
     }: ButtonProps,
@@ -186,6 +191,8 @@ export const Button = forwardRef(
           colorScheme,
           size,
           fullWidth,
+          isActive,
+          rounded,
           className,
         }),
         ref,

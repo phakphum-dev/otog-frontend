@@ -3,8 +3,6 @@ import { IoChatbubbleEllipses, IoSend } from 'react-icons/io5'
 
 import { ChatMessage } from './components/ChatMessage'
 
-import { IconButton, IconButtonProps } from '@chakra-ui/button'
-import { useColorModeValue } from '@chakra-ui/color-mode'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { SmallCloseIcon } from '@chakra-ui/icons'
 import { Circle, Heading, Text } from '@chakra-ui/layout'
@@ -18,9 +16,10 @@ import { useChat } from '@src/chat/useChat'
 import { useAuth } from '@src/context/AuthContext'
 import { useOnScreen } from '@src/hooks/useOnScreen'
 import { Button } from '@src/ui/Button'
+import { IconButton, IconButtonProps } from '@src/ui/IconButton'
 import { useOnlineUsers } from '@src/user/queries'
 
-interface ChatButtonProps extends IconButtonProps {
+type ChatButtonProps = Omit<IconButtonProps, 'as' | 'icon'> & {
   hasUnread: boolean
 }
 
@@ -35,25 +34,11 @@ const ChatButton = ({ hasUnread, ...props }: ChatButtonProps) => (
     </div>
     <OnlineUsersTooltip placement="top-end">
       <IconButton
-        isRound
-        boxSize="50"
+        rounded
+        className="text-2xl"
         variant="solid"
-        fontSize="x-large"
-        borderWidth="1px"
-        boxShadow="sm"
-        bg={useColorModeValue('white', 'gray.800')}
-        color={useColorModeValue('gray.400', 'gray.500')}
+        size="lg"
         icon={<IoChatbubbleEllipses />}
-        colorScheme="orange"
-        _hover={{
-          bg: 'orange.400',
-          color: 'white',
-          borderColor: 'orange.400',
-        }}
-        _active={{
-          bg: 'orange.700',
-          borderColor: 'orange.700',
-        }}
         {...props}
       />
     </OnlineUsersTooltip>
@@ -237,7 +222,7 @@ const ChatInput = (props: ChatInputProps) => {
       <IconButton
         aria-label="send message"
         icon={<IoSend />}
-        isRound
+        rounded
         variant="ghost"
         onClick={onSubmit}
       />
