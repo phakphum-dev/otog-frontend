@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { FaTrophy } from 'react-icons/fa'
 import { mutate } from 'swr'
 
-import { Center, Heading } from '@chakra-ui/layout'
+import { Center } from '@chakra-ui/layout'
 
 import { AnnouncementCarousel } from '@src/announcement/components/AnnouncementCarousel'
 import { PageContainer } from '@src/components/layout/PageContainer'
@@ -38,7 +38,7 @@ export default function ContestPage() {
         <PageContainer display="flex">
           <Center flex={1}>
             <div className="flex flex-col items-center gap-4">
-              <Heading>ยังไม่มีการแข่งขัน</Heading>
+              <h1 className="font-bold text-4xl">ยังไม่มีการแข่งขัน</h1>
               <NextLink href="/contest/history" passHref>
                 <Button as="a">ประวัติการแข่งขัน</Button>
               </NextLink>
@@ -82,12 +82,12 @@ export const PreContest = (props: ContestProps) => {
     <PageContainer display="flex">
       <Center flex={1}>
         <div className="flex flex-col items-center gap-4">
-          <Heading textAlign="center">
+          <h1 className="font-bold text-4xl text-center">
             การแข่งขัน {contest.name} กำลังจะเริ่ม
-          </Heading>
-          <Heading as="h2" fontSize="2xl">
+          </h1>
+          <h2 className="font-bold text-2xl text-center">
             ในอีก {toThTimeFormat(remaining)}...
-          </Heading>
+          </h2>
         </div>
       </Center>
     </PageContainer>
@@ -115,9 +115,9 @@ export const MidContest = (props: ContestProps) => {
         <Title icon={FaTrophy} lineClamp>
           {contest.name}
         </Title>
-        <Heading as="h2" whiteSpace="nowrap">
+        <h2 className="font-bold text-4xl whitespace-nowrap">
           {toTimerFormat(remaining)}
-        </Heading>
+        </h2>
       </TitleLayout>
 
       <div className="flex flex-col gap-6">
@@ -135,9 +135,9 @@ export const PostContest = (props: ContestProps) => {
     <PageContainer display="flex">
       <Center flex={1}>
         <div className="flex flex-col items-center gap-4">
-          <Heading textAlign="center">
+          <h1 className="font-bold text-4xl text-center">
             การแข่งขัน {contest.name} จบลงแล้ว
-          </Heading>
+          </h1>
           <NextLink
             href={
               OFFLINE_MODE

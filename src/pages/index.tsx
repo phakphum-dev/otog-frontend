@@ -4,7 +4,7 @@ import NextLink from 'next/link'
 
 import ComputerImage from '../../public/computer.svg'
 
-import { Center, Heading } from '@chakra-ui/react'
+import { Center } from '@chakra-ui/react'
 
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { OFFLINE_MODE } from '@src/config'
@@ -16,9 +16,9 @@ export default function HomePage() {
     <PageContainer as={Center} maxSize="lg">
       <div className="flex flex-col md:flex-row gap-16 md:pb-16">
         <div className="flex flex-col gap-6 flex-1">
-          <Heading as="h1" size="2xl">
+          <h1 className="font-bold text-5xl">
             Become a god of Competitive Programming
-          </Heading>
+          </h1>
           <div className="text-md text-gray-500">
             Code and Create algorithms efficiently.
           </div>

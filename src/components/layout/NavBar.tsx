@@ -16,7 +16,6 @@ import {
   DrawerCloseButton,
   DrawerContent,
   DrawerOverlay,
-  Heading,
   IconButton,
   Menu,
   MenuButton,
@@ -73,12 +72,12 @@ export const NavBar = () => {
             <NextLink href={isAdmin ? '/admin/contest' : '/'} passHref>
               <Link className="text-gray-800 dark:text-white flex items-center gap-2">
                 <Image src={Logo} width={32} height={32} />
-                <Heading size="md" py={2}>
+                <div className="py-2 font-bold text-xl">
                   <div className="hidden md:inline-block xl:hidden">OTOG</div>
                   <div className="hidden xl:inline-block">
                     One Tambon One Grader
                   </div>
-                </Heading>
+                </div>
               </Link>
             </NextLink>
             <div className="flex-1" />

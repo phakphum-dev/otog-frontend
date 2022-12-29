@@ -1,10 +1,10 @@
-import { Center, Divider, Heading } from '@chakra-ui/layout'
+import { Center, Divider } from '@chakra-ui/layout'
 
 export default function Error({ title = 'Page not found', statusCode = 404 }) {
   return (
     <Center flex={1}>
-      <div className="flex gap-4 h-[50px]">
-        <Heading size="lg">{statusCode}</Heading>
+      <div className="flex items-center gap-4 h-[50px]">
+        <div className="font-bold text-3xl">{statusCode}</div>
         <Divider orientation="vertical" />
         <div>{title}</div>
       </div>

@@ -4,7 +4,7 @@ import { IoChatbubbleEllipses, IoSend } from 'react-icons/io5'
 import { ChatMessage } from './components/ChatMessage'
 
 import { SmallCloseIcon } from '@chakra-ui/icons'
-import { Circle, Heading } from '@chakra-ui/layout'
+import { Circle } from '@chakra-ui/layout'
 import { Spinner } from '@chakra-ui/spinner'
 import { Textarea } from '@chakra-ui/textarea'
 import { useToast } from '@chakra-ui/toast'
@@ -116,9 +116,7 @@ export const Chat = () => {
                 rightIcon={<SmallCloseIcon />}
                 colorScheme="otog"
               >
-                <Heading as="h3" size="sm">
-                  OTOG Chat
-                </Heading>
+                <h3 className="font-bold text-md">OTOG Chat</h3>
               </Button>
             </OnlineUsersTooltip>
             <div className="flex flex-col-reverse px-2 flex-1 overflow-y-auto overflow-x-hidden border border-y-0">

@@ -12,7 +12,7 @@ import {
   CloseIcon,
   EditIcon,
 } from '@chakra-ui/icons'
-import { Badge, Divider, Heading } from '@chakra-ui/layout'
+import { Badge, Divider } from '@chakra-ui/layout'
 import { Select } from '@chakra-ui/select'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
@@ -63,9 +63,7 @@ export const TaskCard = memo((props: TaskCardProps) => {
         rightIcon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
       >
         <div className="flex gap-2">
-          <Heading as="h3" size="md">
-            {problem.name}
-          </Heading>
+          <h3 className="font-bold text-xl">{problem.name}</h3>
           {submission?.status === 'accept' && (
             <Badge colorScheme="green">Solved</Badge>
           )}
