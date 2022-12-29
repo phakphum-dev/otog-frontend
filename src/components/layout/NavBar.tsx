@@ -22,7 +22,6 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  Spacer,
   Text,
   forwardRef,
   useBreakpointValue,
@@ -83,7 +82,7 @@ export const NavBar = () => {
                 </Heading>
               </Link>
             </NextLink>
-            <Spacer />
+            <div className="flex-1" />
             <IconButton
               display={{ md: 'none' }}
               variant="ghost"

@@ -26,7 +26,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/modal'
-import { Spacer, UseDisclosureReturn } from '@chakra-ui/react'
+import { UseDisclosureReturn } from '@chakra-ui/react'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
@@ -318,7 +318,7 @@ const EditProblemModal = (props: EditProblemModalProps) => {
               <Button colorScheme="red" onClick={onDelete} variant="ghost">
                 ลบ
               </Button>
-              <Spacer />
+              <div className="flex-1" />
               <Button colorScheme="green" type="submit">
                 แก้ไข
               </Button>

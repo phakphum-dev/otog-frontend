@@ -13,7 +13,7 @@ import {
   CloseIcon,
   EditIcon,
 } from '@chakra-ui/icons'
-import { Badge, Divider, Heading, Spacer, Text } from '@chakra-ui/layout'
+import { Badge, Divider, Heading, Text } from '@chakra-ui/layout'
 import { Select } from '@chakra-ui/select'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
@@ -141,7 +141,7 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
             Python
           </option>
         </Select>
-        <Spacer />
+        <div className="flex-1" />
         <div className="flex gap-2 justify-end" {...getRootProps()}>
           <FileInput
             required
@@ -213,7 +213,7 @@ export const ContestEditorForm = (props: ContestEditorFormProps) => {
             Python
           </option>
         </Select>
-        <Spacer />
+        <div className="flex-1" />
         <Button
           className="flex-1"
           colorScheme="otog"

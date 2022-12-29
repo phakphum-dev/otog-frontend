@@ -17,7 +17,6 @@ import { mutate } from 'swr'
 import { FormControl, FormLabel } from '@chakra-ui/form-control'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Input } from '@chakra-ui/input'
-import { Spacer } from '@chakra-ui/layout'
 import {
   Modal,
   ModalBody,
@@ -94,7 +93,7 @@ export default function AdminContestPage() {
               />
             )}
           </div>
-          <Spacer />
+          <div className="flex-1" />
           <CreateContestModalButton setContestId={setContest} />
         </div>
         {contest && <ContestTable contest={contest} />}
@@ -227,7 +226,7 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
                 <Button colorScheme="red" variant="ghost" onClick={onDelete}>
                   ลบ
                 </Button>
-                <Spacer />
+                <div className="flex-1" />
                 <Button colorScheme="green" type="submit">
                   บันทึก
                 </Button>

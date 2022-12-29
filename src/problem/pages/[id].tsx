@@ -7,7 +7,7 @@ import { FaLightbulb } from 'react-icons/fa'
 
 import { getProblem, keyProblem, useProblem } from '../queries'
 
-import { SimpleGrid, Spacer, Text } from '@chakra-ui/layout'
+import { SimpleGrid, Text } from '@chakra-ui/layout'
 import { Select } from '@chakra-ui/select'
 
 import { PageContainer } from '@src/components/layout/PageContainer'
@@ -118,7 +118,7 @@ function EditorForm(props: {
           <option value="c">C</option>
           <option value="python">Python</option>
         </Select>
-        <Spacer />
+        <div className="flex-1" />
         <Button onClick={onSubmit}>ส่ง</Button>
       </SimpleGrid>
     </>
