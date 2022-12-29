@@ -160,12 +160,9 @@ const NavItem = (props: ItemProps & LinkProps) => {
   return (
     <NextLink href={href} passHref>
       <Link
-        className={clsx(
-          'p-2 font-normal hover:text-gray-800 hover:dark:text-white !no-underline',
-          isActive
-            ? 'text-gray-800 dark:text-white'
-            : 'text-gray-500 dark:text-gray-400'
-        )}
+        variant="nav"
+        className="p-2 font-normal !no-underline"
+        isActive={isActive}
         {...rest}
       >
         {title}
