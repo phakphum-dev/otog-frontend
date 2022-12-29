@@ -25,11 +25,11 @@ import {
   Text,
   forwardRef,
   useBreakpointValue,
-  useDisclosure,
 } from '@chakra-ui/react'
 
 import { OFFLINE_MODE } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
+import { useDisclosure } from '@src/hooks/useDisclosure'
 import { useUserProfilePic } from '@src/profile/useProfilePic'
 import { Button, ButtonProps } from '@src/ui/Button'
 import { Link, LinkProps } from '@src/ui/Link'

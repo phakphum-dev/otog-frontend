@@ -12,9 +12,10 @@ import {
   useAnnouncementContext,
 } from './useAnnouncementContext'
 
-import { Collapse, useDisclosure } from '@chakra-ui/react'
+import { Collapse } from '@chakra-ui/react'
 
 import { useAuth } from '@src/context/AuthContext'
+import { useDisclosure } from '@src/hooks/useDisclosure'
 import { IconButton } from '@src/ui/IconButton'
 
 const MotionDiv = motion.div

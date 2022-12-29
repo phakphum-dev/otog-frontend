@@ -14,11 +14,11 @@ import {
   Thead,
   Tooltip,
   Tr,
-  useDisclosure,
 } from '@chakra-ui/react'
 
 import { API_HOST } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
+import { useDisclosure } from '@src/hooks/useDisclosure'
 import { useOnScreen } from '@src/hooks/useOnScreen'
 import {
   useAllSubmissions,

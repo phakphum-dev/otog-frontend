@@ -16,10 +16,9 @@ import {
   ModalHeader,
   ModalOverlay,
   Select,
-  UseDisclosureReturn,
 } from '@chakra-ui/react'
 
-import { useLoading } from '@src/hooks/useLoading'
+import { UseDisclosureReturn, useDisclosure } from '@src/hooks/useDisclosure'
 import { useMutation } from '@src/hooks/useMutation'
 import { Problem } from '@src/problem/types'
 import { Button } from '@src/ui/Button'
@@ -45,7 +44,11 @@ export const SubmitModal = (props: SubmitModalProps) => {
   }, [resetFile, problem.id])
 
   const submitProblemMutation = useMutation(submitProblem)
-  const { isLoading, onLoad, onLoaded } = useLoading()
+  const {
+    isOpen: isLoading,
+    onOpen: onLoad,
+    onClose: onLoaded,
+  } = useDisclosure()
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (isLoading || !file) return

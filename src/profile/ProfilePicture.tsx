@@ -2,13 +2,13 @@ import { ChangeEvent } from 'react'
 import { FaCropAlt, FaUserCircle } from 'react-icons/fa'
 import { mutate } from 'swr'
 
-import { useDisclosure } from '@chakra-ui/hooks'
 import Icon from '@chakra-ui/icon'
 import { Img } from '@chakra-ui/image'
 
 import { UploadFileButton } from '@src/components/FileInput'
 import { useAuth } from '@src/context/AuthContext'
 import { storage } from '@src/firebase'
+import { useDisclosure } from '@src/hooks/useDisclosure'
 import { useErrorToast } from '@src/hooks/useErrorToast'
 import {
   ImageCropModal,

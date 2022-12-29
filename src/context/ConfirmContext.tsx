@@ -7,9 +7,9 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
-  useDisclosure,
 } from '@chakra-ui/react'
 
+import { useDisclosure } from '@src/hooks/useDisclosure'
 import { Button } from '@src/ui/Button'
 
 export interface ConfirmProviderProps {

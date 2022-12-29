@@ -22,8 +22,6 @@ import {
   Th,
   Thead,
   Tr,
-  UseDisclosureReturn,
-  useDisclosure,
 } from '@chakra-ui/react'
 
 import { toggleProblem } from '@src/admin/queries/problem'
@@ -31,6 +29,7 @@ import { SortTh, useSortedTable } from '@src/components/SortableTable'
 import { problemSortFuncs } from '@src/components/SortableTable/utils'
 import { API_HOST } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
+import { UseDisclosureReturn, useDisclosure } from '@src/hooks/useDisclosure'
 import { useMutation } from '@src/hooks/useMutation'
 import { ProblemWithSubmission } from '@src/problem/types'
 import { Submission } from '@src/submission/types'

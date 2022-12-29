@@ -6,7 +6,6 @@ import React, { useMemo } from 'react'
 import { CgDetailsLess, CgDetailsMore } from 'react-icons/cg'
 import { FaMedal, FaTrophy } from 'react-icons/fa'
 
-import { useDisclosure } from '@chakra-ui/hooks'
 import { Text } from '@chakra-ui/react'
 import { HTMLChakraProps, useTheme } from '@chakra-ui/system'
 import {
@@ -38,6 +37,7 @@ import {
   prizes,
 } from '@src/contest/types'
 import { withCookies } from '@src/context/HttpClient'
+import { useDisclosure } from '@src/hooks/useDisclosure'
 import { ButtonGroup } from '@src/ui/ButtonGroup'
 import { IconButton } from '@src/ui/IconButton'
 import { Link } from '@src/ui/Link'

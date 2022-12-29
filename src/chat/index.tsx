@@ -3,7 +3,6 @@ import { IoChatbubbleEllipses, IoSend } from 'react-icons/io5'
 
 import { ChatMessage } from './components/ChatMessage'
 
-import { useDisclosure } from '@chakra-ui/hooks'
 import { SmallCloseIcon } from '@chakra-ui/icons'
 import { Circle, Heading, Text } from '@chakra-ui/layout'
 import { Spinner } from '@chakra-ui/spinner'
@@ -14,6 +13,7 @@ import { SlideFade } from '@chakra-ui/transition'
 
 import { useChat } from '@src/chat/useChat'
 import { useAuth } from '@src/context/AuthContext'
+import { useDisclosure } from '@src/hooks/useDisclosure'
 import { useOnScreen } from '@src/hooks/useOnScreen'
 import { Button } from '@src/ui/Button'
 import { IconButton, IconButtonProps } from '@src/ui/IconButton'

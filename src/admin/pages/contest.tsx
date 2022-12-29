@@ -15,7 +15,6 @@ import {
 import { mutate } from 'swr'
 
 import { FormControl, FormLabel } from '@chakra-ui/form-control'
-import { useDisclosure } from '@chakra-ui/hooks'
 import { Input } from '@chakra-ui/input'
 import {
   Modal,
@@ -48,6 +47,7 @@ import { Contest, ContestMode, GradingMode } from '@src/contest/types'
 import { getUserData } from '@src/context/AuthContext'
 import { useConfirmModal } from '@src/context/ConfirmContext'
 import { getServerSideCookies } from '@src/context/HttpClient'
+import { useDisclosure } from '@src/hooks/useDisclosure'
 import { useMutation } from '@src/hooks/useMutation'
 import { useProblems } from '@src/problem/queries'
 import { ProblemWithSubmission } from '@src/problem/types'

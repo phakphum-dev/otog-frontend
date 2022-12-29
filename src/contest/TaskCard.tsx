@@ -6,7 +6,6 @@ import { CodeModal, ErrorModal } from '../components/Code'
 import { FileInput } from '../components/FileInput'
 import { submitContestProblem } from './queries'
 
-import { useDisclosure } from '@chakra-ui/hooks'
 import {
   ChevronDownIcon,
   ChevronUpIcon,
@@ -20,7 +19,7 @@ import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 import { Collapse } from '@chakra-ui/transition'
 
 import { API_HOST, OFFLINE_MODE } from '@src/config'
-import { useLoading } from '@src/hooks/useLoading'
+import { useDisclosure } from '@src/hooks/useDisclosure'
 import { useMutation } from '@src/hooks/useMutation'
 import { Problem } from '@src/problem/types'
 import { useLatestProblemSubmission } from '@src/submission/queries'
@@ -116,7 +115,11 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
   const { mutate } = useLatestProblemSubmission(problem.id)
 
   const { file, fileInputProps, resetFile, getRootProps } = useDropFile()
-  const { isLoading, onLoad, onLoaded } = useLoading()
+  const {
+    isOpen: isLoading,
+    onOpen: onLoad,
+    onClose: onLoaded,
+  } = useDisclosure()
   const submitContestProblemMutataion = useMutation(submitContestProblem)
   const onFileSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -182,7 +185,11 @@ export const ContestEditorForm = (props: ContestEditorFormProps) => {
   }
 
   const submitContestProblemMutataion = useMutation(submitContestProblem)
-  const { isLoading, onLoad, onLoaded } = useLoading()
+  const {
+    isOpen: isLoading,
+    onOpen: onLoad,
+    onClose: onLoaded,
+  } = useDisclosure()
   const onSubmit = async () => {
     if (isLoading || !value) return
     try {

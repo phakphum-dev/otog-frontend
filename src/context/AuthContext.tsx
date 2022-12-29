@@ -11,10 +11,9 @@ import { useSWRConfig } from 'swr'
 
 import { http } from './HttpClient'
 
-import { useDisclosure } from '@chakra-ui/hooks'
-
 import { LoginModal } from '@src/components/Login'
 import { isServer } from '@src/config'
+import { useDisclosure } from '@src/hooks/useDisclosure'
 import { useForceUpdate } from '@src/hooks/useForceUpdate'
 import { AuthRes, LoginReq, User } from '@src/user/types'
 

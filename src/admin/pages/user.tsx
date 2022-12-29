@@ -7,7 +7,6 @@ import { FaPencilAlt, FaPlusCircle, FaTools } from 'react-icons/fa'
 import { mutate } from 'swr'
 
 import { FormControl, FormLabel } from '@chakra-ui/form-control'
-import { useDisclosure } from '@chakra-ui/hooks'
 import { Input } from '@chakra-ui/input'
 import {
   Modal,
@@ -18,7 +17,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/modal'
-import { Select, UseDisclosureReturn } from '@chakra-ui/react'
+import { Select } from '@chakra-ui/react'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
@@ -28,6 +27,7 @@ import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { getUserData } from '@src/context/AuthContext'
 import { getServerSideCookies } from '@src/context/HttpClient'
+import { UseDisclosureReturn, useDisclosure } from '@src/hooks/useDisclosure'
 import { useMutation } from '@src/hooks/useMutation'
 import { Button } from '@src/ui/Button'
 import { IconButton } from '@src/ui/IconButton'

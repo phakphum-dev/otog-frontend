@@ -1,11 +1,11 @@
 import { OrangeSubmitButton } from './SubmitButton'
 import { SubmitModal } from './SubmitModal'
 
-import { useDisclosure } from '@chakra-ui/hooks'
 import { Text } from '@chakra-ui/layout'
 
 import { API_HOST } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
+import { useDisclosure } from '@src/hooks/useDisclosure'
 import { useLatestSubmission } from '@src/submission/queries'
 import { Link } from '@src/ui/Link'
 

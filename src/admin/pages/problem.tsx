@@ -15,7 +15,6 @@ import {
 import { mutate } from 'swr'
 
 import { FormControl, FormHelperText, FormLabel } from '@chakra-ui/form-control'
-import { useDisclosure } from '@chakra-ui/hooks'
 import { Input } from '@chakra-ui/input'
 import {
   Modal,
@@ -26,7 +25,6 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/modal'
-import { UseDisclosureReturn } from '@chakra-ui/react'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
@@ -44,6 +42,7 @@ import { API_HOST } from '@src/config'
 import { getUserData } from '@src/context/AuthContext'
 import { useConfirmModal } from '@src/context/ConfirmContext'
 import { getServerSideCookies } from '@src/context/HttpClient'
+import { UseDisclosureReturn, useDisclosure } from '@src/hooks/useDisclosure'
 import { useFileInput } from '@src/hooks/useFileInput'
 import { useMutation } from '@src/hooks/useMutation'
 import { useProblems } from '@src/problem/queries'
