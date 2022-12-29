@@ -13,7 +13,7 @@ export const IconButton = forwardRef(
     ref: ForwardedRef<HTMLButtonElement>
   ) => {
     return (
-      <Button className={clsx('!p-0', className)} {...rest} ref={ref}>
+      <Button className={clsx('!p-0', className)} ref={ref} {...rest}>
         {icon}
       </Button>
     )

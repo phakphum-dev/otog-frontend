@@ -34,8 +34,9 @@ import {
 
 import { useAnnouncementContext } from './useAnnouncementContext'
 
-import { ButtonGroup, Code, Text } from '@chakra-ui/react'
+import { Code, Text } from '@chakra-ui/react'
 
+import { ButtonGroup } from '@src/ui/ButtonGroup'
 import { IconButton } from '@src/ui/IconButton'
 import { Link } from '@src/ui/Link'
 
@@ -184,13 +185,14 @@ const isBlockActive = (editor: Editor, format: string) => {
 interface MarkButtonProps {
   format: string
   icon: ReactElement
+  className?: string
 }
 
-const MarkButton = ({ format, icon }: MarkButtonProps) => {
+const MarkButton = ({ format, icon, className }: MarkButtonProps) => {
   const editor = useSlate()
   return (
     <IconButton
-      className="min-w-[32px]"
+      className={className}
       size="sm"
       variant="outline"
       isActive={isMarkActive(editor, format)}
@@ -207,12 +209,14 @@ const MarkButton = ({ format, icon }: MarkButtonProps) => {
 interface BlockButtonProps {
   format: CustomElement['type']
   icon: ReactElement
+  className?: string
 }
-const BlockButton = ({ format, icon }: BlockButtonProps) => {
+
+const BlockButton = ({ format, icon, className }: BlockButtonProps) => {
   const editor = useSlate()
   return (
     <IconButton
-      className="min-w-[32px]"
+      className={className}
       size="sm"
       variant="outline"
       isActive={isBlockActive(editor, format)}

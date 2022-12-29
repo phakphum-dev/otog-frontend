@@ -14,7 +14,6 @@ import {
 } from 'react-icons/fa'
 import { mutate } from 'swr'
 
-import { ButtonGroup } from '@chakra-ui/button'
 import { FormControl, FormHelperText, FormLabel } from '@chakra-ui/form-control'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Input } from '@chakra-ui/input'
@@ -50,6 +49,7 @@ import { useMutation } from '@src/hooks/useMutation'
 import { useProblems } from '@src/problem/queries'
 import { ProblemWithSubmission } from '@src/problem/types'
 import { Button } from '@src/ui/Button'
+import { ButtonGroup } from '@src/ui/ButtonGroup'
 import { IconButton } from '@src/ui/IconButton'
 import { Link } from '@src/ui/Link'
 

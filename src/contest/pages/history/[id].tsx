@@ -6,7 +6,6 @@ import React, { useMemo } from 'react'
 import { CgDetailsLess, CgDetailsMore } from 'react-icons/cg'
 import { FaMedal, FaTrophy } from 'react-icons/fa'
 
-import { ButtonGroup } from '@chakra-ui/button'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Text } from '@chakra-ui/react'
 import { HTMLChakraProps, useTheme } from '@chakra-ui/system'
@@ -39,6 +38,7 @@ import {
   prizes,
 } from '@src/contest/types'
 import { withCookies } from '@src/context/HttpClient'
+import { ButtonGroup } from '@src/ui/ButtonGroup'
 import { IconButton } from '@src/ui/IconButton'
 import { Link } from '@src/ui/Link'
 import { sum } from '@src/utils/sum'
@@ -102,7 +102,7 @@ export default function ContestHistory() {
         <Title icon={FaTrophy} lineClamp>
           {scoreboard!.name}
         </Title>
-        <ButtonGroup isAttached variant="outline">
+        <ButtonGroup isAttached>
           <IconButton
             variant="outline"
             aria-label="less-detail"
