@@ -15,7 +15,6 @@ import {
 import { mutate } from 'swr'
 
 import { FormControl, FormHelperText, FormLabel } from '@chakra-ui/form-control'
-import { Input } from '@chakra-ui/input'
 import {
   Modal,
   ModalBody,
@@ -50,6 +49,7 @@ import { ProblemWithSubmission } from '@src/problem/types'
 import { Button } from '@src/ui/Button'
 import { ButtonGroup } from '@src/ui/ButtonGroup'
 import { IconButton } from '@src/ui/IconButton'
+import { Input } from '@src/ui/Input'
 import { Link } from '@src/ui/Link'
 
 export default function AdminProblemPage() {
@@ -121,12 +121,12 @@ const CreateProblemModalButton = () => {
               <div className="flex flex-col gap-2">
                 <FormControl>
                   <FormLabel>ชื่อโจทย์</FormLabel>
-                  <Input isRequired name="name" placeholder="ชื่อโจทย์" />
+                  <Input required name="name" placeholder="ชื่อโจทย์" />
                 </FormControl>
                 <FormControl>
                   <FormLabel>เวลา (ms)</FormLabel>
                   <Input
-                    isRequired
+                    required
                     name="timeLimit"
                     placeholder="เวลา"
                     type="number"
@@ -136,7 +136,7 @@ const CreateProblemModalButton = () => {
                 <FormControl>
                   <FormLabel>หน่วยความจำ (MB)</FormLabel>
                   <Input
-                    isRequired
+                    required
                     name="memoryLimit"
                     placeholder="หน่วยความจำ"
                     type="number"
@@ -146,7 +146,7 @@ const CreateProblemModalButton = () => {
                 <FormControl>
                   <FormLabel>คะแนน</FormLabel>
                   <Input
-                    isRequired
+                    required
                     name="score"
                     type="number"
                     defaultValue={100}
@@ -156,7 +156,7 @@ const CreateProblemModalButton = () => {
                 <FormControl>
                   <FormLabel>จำนวนเทสต์เคส</FormLabel>
                   <Input
-                    isRequired
+                    required
                     name="case"
                     type="number"
                     defaultValue={10}
@@ -253,16 +253,12 @@ const EditProblemModal = (props: EditProblemModalProps) => {
             <div className="flex flex-col gap-2">
               <FormControl>
                 <FormLabel>ชื่อโจทย์</FormLabel>
-                <Input
-                  isRequired
-                  {...register('name')}
-                  placeholder="ชื่อโจทย์"
-                />
+                <Input required {...register('name')} placeholder="ชื่อโจทย์" />
               </FormControl>
               <FormControl>
                 <FormLabel>เวลา (ms)</FormLabel>
                 <Input
-                  isRequired
+                  required
                   {...register('timeLimit')}
                   placeholder="เวลา"
                   type="number"
@@ -272,7 +268,7 @@ const EditProblemModal = (props: EditProblemModalProps) => {
               <FormControl>
                 <FormLabel>หน่วยความจำ (MB)</FormLabel>
                 <Input
-                  isRequired
+                  required
                   {...register('memoryLimit')}
                   placeholder="หน่วยความจำ"
                   type="number"
@@ -282,7 +278,7 @@ const EditProblemModal = (props: EditProblemModalProps) => {
               <FormControl>
                 <FormLabel>คะแนน</FormLabel>
                 <Input
-                  isRequired
+                  required
                   {...register('score')}
                   type="number"
                   defaultValue={100}
@@ -292,7 +288,7 @@ const EditProblemModal = (props: EditProblemModalProps) => {
               <FormControl>
                 <FormLabel>จำนวนเทสต์เคส</FormLabel>
                 <Input
-                  isRequired
+                  required
                   {...register('case')}
                   type="number"
                   defaultValue={10}

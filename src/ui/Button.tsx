@@ -43,7 +43,10 @@ const buttonStyles = cva(
         xs: 'h-6 min-w-6 text-xs px-2',
       },
       fullWidth: { true: 'w-full' },
-      rounded: { true: 'rounded-full', md: 'rounded-md' },
+      rounded: {
+        full: 'rounded-full',
+        md: 'rounded-md',
+      },
       isActive: { true: 'active' },
     },
     defaultVariants: {

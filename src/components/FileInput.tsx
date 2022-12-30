@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import {
   ForwardedRef,
   forwardRef,
@@ -9,16 +8,12 @@ import {
 import { DropzoneInputProps } from 'react-dropzone'
 import { FaUpload } from 'react-icons/fa'
 
-import {
-  Input,
-  InputGroup,
-  InputProps,
-  InputRightElement,
-} from '@chakra-ui/react'
+import { InputGroup, InputRightElement } from '@chakra-ui/react'
 
 import { FileInputRef } from '@src/hooks/useFileInput'
 import { Button } from '@src/ui/Button'
 import { IconButton } from '@src/ui/IconButton'
+import { Input, InputProps } from '@src/ui/Input'
 
 export type UploadFileProps = DropzoneInputProps & {
   fileName?: string
@@ -56,19 +51,16 @@ export const FileInput = forwardRef(
         <input type="file" hidden {...rest} ref={inputRef} />
         <Input
           ref={displayInputRef}
-          cursor="pointer"
+          className="cursor-pointer focus:z-10"
           value={isDragActive ? 'วางไฟล์ที่นี่' : fileName ?? ''}
           placeholder="ยังไม่ได้เลือกไฟล์"
-          isReadOnly
           onClick={onClick}
+          variant={variant}
+          readOnly
         />
         <InputRightElement w={100} zIndex={0} justifyContent="end">
           <Button
-            className={clsx(
-              '!rounded-l-none !font-normal text-gray-60 dark:text-white',
-              variant === 'md' && '!rounded-md',
-              variant === 'sm' && '!rounded-sm'
-            )}
+            className="rounded-l-none !font-normal text-gray-600 dark:text-white relative"
             onClick={onClick}
             size={variant}
           >
@@ -91,7 +83,7 @@ export const UploadFileButton = forwardRef(
           icon={<FaUpload />}
           onClick={onClick}
         />
-        <Input type="file" ref={inputRef} display="none" {...props} />
+        <Input type="file" ref={inputRef} className="hidden" {...props} />
       </>
     )
   }

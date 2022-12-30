@@ -7,7 +7,6 @@ import { FaPencilAlt, FaPlusCircle, FaTools } from 'react-icons/fa'
 import { mutate } from 'swr'
 
 import { FormControl, FormLabel } from '@chakra-ui/form-control'
-import { Input } from '@chakra-ui/input'
 import {
   Modal,
   ModalBody,
@@ -31,6 +30,7 @@ import { UseDisclosureReturn, useDisclosure } from '@src/hooks/useDisclosure'
 import { useMutation } from '@src/hooks/useMutation'
 import { Button } from '@src/ui/Button'
 import { IconButton } from '@src/ui/IconButton'
+import { Input } from '@src/ui/Input'
 import { Link } from '@src/ui/Link'
 import { registerUser } from '@src/user/queries'
 import { useUsers } from '@src/user/queries'
@@ -102,7 +102,7 @@ const CreateUserModalButton = () => {
                 <FormControl>
                   <FormLabel>ชื่อผู้ใช้</FormLabel>
                   <Input
-                    isRequired
+                    required
                     {...register('username')}
                     placeholder="ชื่อผู้ใช้"
                   />
@@ -110,7 +110,7 @@ const CreateUserModalButton = () => {
                 <FormControl>
                   <FormLabel>รหัสผ่าน</FormLabel>
                   <Input
-                    isRequired
+                    required
                     {...register('password')}
                     placeholder="รหัสผ่าน"
                   />
@@ -118,7 +118,7 @@ const CreateUserModalButton = () => {
                 <FormControl>
                   <FormLabel>ชื่อที่ใช้แสดง</FormLabel>
                   <Input
-                    isRequired
+                    required
                     {...register('showName')}
                     placeholder="ชื่อที่ใช้แสดง"
                   />
@@ -168,7 +168,7 @@ const EditUserModalButton = (props: EditUserModalProps) => {
               <FormControl>
                 <FormLabel>ชื่อผู้ใช้</FormLabel>
                 <Input
-                  isRequired
+                  required
                   {...register('username')}
                   placeholder="ชื่อผู้ใช้"
                 />
@@ -180,7 +180,7 @@ const EditUserModalButton = (props: EditUserModalProps) => {
               <FormControl>
                 <FormLabel>ชื่อที่ใช้แสดง</FormLabel>
                 <Input
-                  isRequired
+                  required
                   {...register('showName')}
                   placeholder="ชื่อที่ใช้แสดง"
                 />

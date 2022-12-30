@@ -15,7 +15,6 @@ import {
 import { mutate } from 'swr'
 
 import { FormControl, FormLabel } from '@chakra-ui/form-control'
-import { Input } from '@chakra-ui/input'
 import {
   Modal,
   ModalBody,
@@ -53,6 +52,7 @@ import { useProblems } from '@src/problem/queries'
 import { ProblemWithSubmission } from '@src/problem/types'
 import { Button } from '@src/ui/Button'
 import { IconButton } from '@src/ui/IconButton'
+import { Input } from '@src/ui/Input'
 import { Link } from '@src/ui/Link'
 
 export default function AdminContestPage() {
@@ -182,7 +182,7 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
                 <FormControl>
                   <FormLabel>ชื่อการแข่งขัน</FormLabel>
                   <Input
-                    isRequired
+                    required
                     {...register('name')}
                     placeholder="การแข่งขัน"
                   />
@@ -285,7 +285,7 @@ const CreateContestModalButton = (props: CreateContestModalButtonProps) => {
                   <FormLabel>ชื่อการแข่งขัน</FormLabel>
                   <Input
                     {...register('name')}
-                    isRequired
+                    required
                     placeholder="การแข่งขัน"
                   />
                 </FormControl>

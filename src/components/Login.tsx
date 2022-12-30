@@ -7,7 +7,6 @@ import Logo from '../../public/logo512.png'
 
 import {
   Divider,
-  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -19,6 +18,7 @@ import { OFFLINE_MODE } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
 import { useErrorToast } from '@src/hooks/useErrorToast'
 import { Button } from '@src/ui/Button'
+import { Input } from '@src/ui/Input'
 import { LoginReq } from '@src/user/types'
 
 export interface LoginModalProps {

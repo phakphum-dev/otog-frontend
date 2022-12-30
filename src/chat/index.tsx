@@ -34,7 +34,7 @@ const ChatButton = ({ hasUnread, ...props }: ChatButtonProps) => (
     </div>
     <OnlineUsersTooltip placement="top-end">
       <IconButton
-        rounded
+        rounded="full"
         className="text-2xl"
         variant="solid"
         size="lg"
@@ -218,7 +218,7 @@ const ChatInput = (props: ChatInputProps) => {
       <IconButton
         aria-label="send message"
         icon={<IoSend />}
-        rounded
+        rounded="full"
         variant="ghost"
         onClick={onSubmit}
       />

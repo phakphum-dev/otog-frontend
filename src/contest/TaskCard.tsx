@@ -143,7 +143,10 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
           </option>
         </Select>
         <div className="flex-1" />
-        <div className="flex gap-2 justify-end" {...getRootProps()}>
+        <div
+          className="flex gap-2 justify-end flex-1 sm:flex-initial sm:w-64"
+          {...getRootProps()}
+        >
           <FileInput
             required
             name="sourceCode"

@@ -4,12 +4,13 @@ import { useForm } from 'react-hook-form'
 
 import Logo from '../../public/logo512.png'
 
-import { Input, useToast } from '@chakra-ui/react'
+import { useToast } from '@chakra-ui/react'
 
 import { CenteredCard } from '@src/components/Login'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { useMutation } from '@src/hooks/useMutation'
 import { Button } from '@src/ui/Button'
+import { Input } from '@src/ui/Input'
 import { registerUser } from '@src/user/queries'
 import { CreateUser } from '@src/user/types'
 

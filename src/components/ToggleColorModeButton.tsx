@@ -7,7 +7,7 @@ export function ToggleColorModeButton(props: Omit<IconButtonProps, 'icon'>) {
   const { colorMode, toggleColorMode } = useColorMode()
   return (
     <IconButton
-      rounded
+      rounded="full"
       aria-label="Toggle color mode"
       onClick={toggleColorMode}
       icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
