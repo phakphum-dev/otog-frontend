@@ -6,7 +6,6 @@ import { ChatMessage } from './components/ChatMessage'
 import { SmallCloseIcon } from '@chakra-ui/icons'
 import { Circle } from '@chakra-ui/layout'
 import { Spinner } from '@chakra-ui/spinner'
-import { Textarea } from '@chakra-ui/textarea'
 import { useToast } from '@chakra-ui/toast'
 import { Tooltip, TooltipProps } from '@chakra-ui/tooltip'
 import { SlideFade } from '@chakra-ui/transition'
@@ -17,6 +16,7 @@ import { useDisclosure } from '@src/hooks/useDisclosure'
 import { useOnScreen } from '@src/hooks/useOnScreen'
 import { Button } from '@src/ui/Button'
 import { IconButton, IconButtonProps } from '@src/ui/IconButton'
+import { Textarea } from '@src/ui/Input'
 import { useOnlineUsers } from '@src/user/queries'
 
 type ChatButtonProps = Omit<IconButtonProps, 'as' | 'icon'> & {
@@ -189,13 +189,11 @@ const ChatInput = (props: ChatInputProps) => {
   const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value)
   }
-  const onKeyPress = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+  const onKeydown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
       onSubmit()
     }
-  }
-  const onKeydown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Escape') {
       onClose()
     }
@@ -203,16 +201,13 @@ const ChatInput = (props: ChatInputProps) => {
   return (
     <div className="flex gap-1 flex-1 p-2">
       <Textarea
-        rows={1}
-        rounded={16}
-        size="sm"
-        resize="none"
+        className="resize-none text-sm px-3 py-2"
+        rounded="2xl"
         autoFocus
         placeholder="Type your message..."
         name="message"
         value={message}
         onChange={onChange}
-        onKeyPress={onKeyPress}
         onKeyDown={onKeydown}
       />
       <IconButton
