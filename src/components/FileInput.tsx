@@ -8,8 +8,6 @@ import {
 import { DropzoneInputProps } from 'react-dropzone'
 import { FaUpload } from 'react-icons/fa'
 
-import { InputGroup, InputRightElement } from '@chakra-ui/react'
-
 import { FileInputRef } from '@src/hooks/useFileInput'
 import { Button } from '@src/ui/Button'
 import { IconButton } from '@src/ui/IconButton'
@@ -47,7 +45,7 @@ export const FileInput = forwardRef(
       }
     }, [isDragActive, onFocus])
     return (
-      <InputGroup size={variant}>
+      <div className="flex relative w-full">
         <input type="file" hidden {...rest} ref={inputRef} />
         <Input
           ref={displayInputRef}
@@ -58,7 +56,7 @@ export const FileInput = forwardRef(
           variant={variant}
           readOnly
         />
-        <InputRightElement w={100} zIndex={0} justifyContent="end">
+        <div className="w-[100px] z-0 flex items-center justify-end absolute top-0 right-0">
           <Button
             className="rounded-l-none !font-normal text-gray-600 dark:text-white relative"
             onClick={onClick}
@@ -66,8 +64,8 @@ export const FileInput = forwardRef(
           >
             ค้นหาไฟล์
           </Button>
-        </InputRightElement>
-      </InputGroup>
+        </div>
+      </div>
     )
   }
 )
