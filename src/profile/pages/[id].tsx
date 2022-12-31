@@ -7,7 +7,6 @@ import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { useAuth } from '@src/context/AuthContext'
 import { withCookies } from '@src/context/HttpClient'
-import { EditableName } from '@src/profile/EditableName'
 import { Graph } from '@src/profile/Graph'
 import { ProfilePicture, ProfileUpload } from '@src/profile/ProfilePicture'
 import { ProfileSubmissionTable } from '@src/submission/SubmissionTable'
@@ -25,13 +24,15 @@ export default function ProfilePage() {
         <title>Profile #{id} | OTOG</title>
       </Head>
       <TitleLayout>
-        <Title icon={FaUser}>
-          <EditableName userData={userData!} />
-        </Title>
+        <Title icon={FaUser}>{userData!.showName}</Title>
       </TitleLayout>
       <div className="flex flex-col gap-2">
         <div className="flex flex-col md:flex-row gap-8">
-          {user?.id === id ? <ProfileUpload /> : <ProfilePicture userId={id} />}
+          {user?.id === id ? (
+            <ProfileUpload />
+          ) : (
+            <ProfilePicture userId={id} name={userData!.showName} />
+          )}
           <Graph userContest={userData!.attendedContest} />
         </div>
         {user?.role === 'admin' && (
