@@ -78,7 +78,7 @@ const OtogButton = ({
   return (
     <Button
       className={clsx(
-        'flex-1 aspect-5/4 rounded-lg h-full flex-col',
+        'flex-1 aspect-5/4 rounded-lg !h-full flex-col',
         isLoading && 'animate-pulse'
       )}
       colorScheme={isLoading ? 'gray' : colorScheme}
