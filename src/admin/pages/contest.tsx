@@ -24,7 +24,6 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/modal'
-import { Select } from '@chakra-ui/select'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
@@ -52,7 +51,7 @@ import { useProblems } from '@src/problem/queries'
 import { ProblemWithSubmission } from '@src/problem/types'
 import { Button } from '@src/ui/Button'
 import { IconButton } from '@src/ui/IconButton'
-import { Input } from '@src/ui/Input'
+import { Input, Select } from '@src/ui/Input'
 import { Link } from '@src/ui/Link'
 
 export default function AdminContestPage() {

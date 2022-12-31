@@ -13,7 +13,6 @@ import {
   EditIcon,
 } from '@chakra-ui/icons'
 import { Badge, Divider } from '@chakra-ui/layout'
-import { Select } from '@chakra-ui/select'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 import { Collapse } from '@chakra-ui/transition'
@@ -28,6 +27,7 @@ import { SubmissionWithProblem } from '@src/submission/types'
 import { isGraded, isGrading, useStatusColor } from '@src/theme/useStatusColor'
 import { Button } from '@src/ui/Button'
 import { IconButton } from '@src/ui/IconButton'
+import { Select } from '@src/ui/Input'
 import { Link } from '@src/ui/Link'
 import { ONE_SECOND } from '@src/utils/time'
 
@@ -135,7 +135,7 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
   return (
     <form onSubmit={onFileSubmit}>
       <div className="flex flex-col sm:flex-row gap-2">
-        <Select name="language" size="sm" flex={1}>
+        <Select name="language" variant="sm" className="flex-1">
           <option value="cpp">C++</option>
           <option value="c">C</option>
           <option value="python" disabled={OFFLINE_MODE}>
@@ -214,7 +214,12 @@ export const ContestEditorForm = (props: ContestEditorFormProps) => {
         onChange={onEditorChange}
       />
       <div className="flex gap-2 sm:gap-8">
-        <Select name="language" size="sm" flex={1} onChange={onSelectChange}>
+        <Select
+          name="language"
+          variant="sm"
+          className="flex-1"
+          onChange={onSelectChange}
+        >
           <option value="cpp">C++</option>
           <option value="c">C</option>
           <option value="python" disabled={OFFLINE_MODE}>

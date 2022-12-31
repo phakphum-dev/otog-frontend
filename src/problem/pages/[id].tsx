@@ -7,7 +7,6 @@ import { FaLightbulb } from 'react-icons/fa'
 
 import { getProblem, keyProblem, useProblem } from '../queries'
 
-import { SimpleGrid } from '@chakra-ui/layout'
 import { Select } from '@chakra-ui/select'
 
 import { PageContainer } from '@src/components/layout/PageContainer'
@@ -112,7 +111,7 @@ function EditorForm(props: {
         onChange={onEditorChange}
       />
 
-      <SimpleGrid columns={3} alignItems="flex-end" mt={2}>
+      <div className="mt-2 grid grid-cols-3">
         <Select onChange={onChange} value={language}>
           <option value="cpp">C++</option>
           <option value="c">C</option>
@@ -120,7 +119,7 @@ function EditorForm(props: {
         </Select>
         <div className="flex-1" />
         <Button onClick={onSubmit}>ส่ง</Button>
-      </SimpleGrid>
+      </div>
     </>
   )
 }

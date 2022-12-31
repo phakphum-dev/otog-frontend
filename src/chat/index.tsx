@@ -201,7 +201,6 @@ const ChatInput = (props: ChatInputProps) => {
   return (
     <div className="flex gap-1 flex-1 p-2">
       <Textarea
-        className="resize-none text-sm px-3 py-2"
         rounded="2xl"
         autoFocus
         placeholder="Type your message..."

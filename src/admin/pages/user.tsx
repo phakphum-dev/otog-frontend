@@ -16,7 +16,6 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/modal'
-import { Select } from '@chakra-ui/react'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
@@ -30,7 +29,7 @@ import { UseDisclosureReturn, useDisclosure } from '@src/hooks/useDisclosure'
 import { useMutation } from '@src/hooks/useMutation'
 import { Button } from '@src/ui/Button'
 import { IconButton } from '@src/ui/IconButton'
-import { Input } from '@src/ui/Input'
+import { Input, Select } from '@src/ui/Input'
 import { Link } from '@src/ui/Link'
 import { registerUser } from '@src/user/queries'
 import { useUsers } from '@src/user/queries'

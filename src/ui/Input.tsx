@@ -1,7 +1,10 @@
+import clsx from 'clsx'
 import { VariantProps, cva } from 'cva'
 import {
   ForwardedRef,
   InputHTMLAttributes,
+  SVGAttributes,
+  SelectHTMLAttributes,
   TextareaHTMLAttributes,
   forwardRef,
 } from 'react'
@@ -52,10 +55,56 @@ export const Textarea = forwardRef(
     const { variant, rounded, className, ...rest } = props
     return (
       <textarea
-        className={inputStyles({ variant, rounded, className })}
+        className={inputStyles({
+          variant,
+          rounded,
+          className: clsx(className, 'resize-none text-sm px-3 py-2'),
+        })}
         ref={ref}
         {...rest}
       />
     )
   }
+)
+
+export type SelectProps = SelectHTMLAttributes<HTMLSelectElement> &
+  VariantProps<typeof inputStyles>
+
+export const Select = forwardRef(
+  (props: SelectProps, ref: ForwardedRef<HTMLSelectElement>) => {
+    const { variant, rounded, className, ...rest } = props
+    return (
+      <div className="relative">
+        <select
+          className={inputStyles({
+            variant,
+            rounded,
+            className: clsx(
+              className,
+              'appearance-none [&>option]:bg-white dark:[&>option]:bg-gray-700'
+            ),
+          })}
+          ref={ref}
+          {...rest}
+        />
+        <div className="absolute text-xl top-1/2 right-2 -translate-y-1/2 pointer-events-none">
+          <DefaultIcon />
+        </div>
+      </div>
+    )
+  }
+)
+
+export const DefaultIcon = (props: SVGAttributes<SVGElement>) => (
+  <svg
+    viewBox="0 0 24 24"
+    focusable={false}
+    className="w-[1em] h-[1em]"
+    {...props}
+  >
+    <path
+      fill="currentColor"
+      d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+    />
+  </svg>
 )

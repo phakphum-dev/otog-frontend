@@ -15,13 +15,13 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Select,
 } from '@chakra-ui/react'
 
 import { UseDisclosureReturn, useDisclosure } from '@src/hooks/useDisclosure'
 import { useMutation } from '@src/hooks/useMutation'
 import { Problem } from '@src/problem/types'
 import { Button } from '@src/ui/Button'
+import { Select } from '@src/ui/Input'
 
 export interface SubmitModalProps extends UseDisclosureReturn {
   problem: Problem
