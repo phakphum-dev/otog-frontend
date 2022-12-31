@@ -74,7 +74,7 @@ export const Select = forwardRef(
   (props: SelectProps, ref: ForwardedRef<HTMLSelectElement>) => {
     const { variant, rounded, className, ...rest } = props
     return (
-      <div className="relative">
+      <div className={clsx('relative', className)}>
         <select
           className={inputStyles({
             variant,
