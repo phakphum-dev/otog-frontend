@@ -12,7 +12,7 @@ import {
   CloseIcon,
   EditIcon,
 } from '@chakra-ui/icons'
-import { Badge, Divider } from '@chakra-ui/layout'
+import { Divider } from '@chakra-ui/layout'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 import { Collapse } from '@chakra-ui/transition'
@@ -62,10 +62,12 @@ export const TaskCard = memo((props: TaskCardProps) => {
         onClick={onToggle}
         rightIcon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
       >
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
           <h3 className="font-bold text-xl">{problem.name}</h3>
           {submission?.status === 'accept' && (
-            <Badge colorScheme="green">Solved</Badge>
+            <div className="inline-flex px-1 uppercase text-xs rounded-sm font-bold text-green-800 dark:text-green-200 bg-green-100 dark:bg-green-500/16">
+              Solved
+            </div>
           )}
         </div>
       </Button>
