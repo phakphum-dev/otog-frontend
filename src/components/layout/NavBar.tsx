@@ -5,12 +5,12 @@ import { useRouter } from 'next/router'
 import { ForwardedRef, useEffect, useRef } from 'react'
 
 import Logo from '../../../public/logo512.png'
+import { Avatar } from '../Avatar'
 import { ToggleColorModeButton } from '../ToggleColorModeButton'
 import { PageContainer } from './PageContainer'
 
 import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
 import {
-  Avatar,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -121,7 +121,7 @@ export const NavBar = () => {
                   <NextLink href={`/profile/${user.id}`} passHref>
                     <DrawerButton as="a">
                       <div className="flex items-center gap-2 py-2">
-                        <Avatar size="xs" src={url} />
+                        <Avatar src={url} name={user.showName} />
                         <div className="line-clamp-1"> {user.showName}</div>
                       </div>
                     </DrawerButton>
@@ -221,7 +221,7 @@ const AvatarMenu = () => {
         variant="ghost"
         rightIcon={<ChevronDownIcon />}
       >
-        <Avatar size="xs" src={url} />
+        <Avatar src={url} name={user!.showName} />
       </MenuButton>
       {/* fix render menulist on ssr */}
       <MenuList>

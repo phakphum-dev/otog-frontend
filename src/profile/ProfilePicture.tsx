@@ -1,8 +1,8 @@
+import Avatar from 'boring-avatars'
 import { ChangeEvent } from 'react'
-import { FaCropAlt, FaUserCircle } from 'react-icons/fa'
+import { FaCropAlt } from 'react-icons/fa'
 import { mutate } from 'swr'
 
-import Icon from '@chakra-ui/icon'
 import { Img } from '@chakra-ui/image'
 
 import { UploadFileButton } from '@src/components/FileInput'
@@ -67,7 +67,7 @@ export const ProfileUpload = () => {
   return (
     <div>
       <div className="relative flex-1 w-80">
-        <Picture url={url} />
+        <Picture url={url} name={user!.showName} />
         <div className="flex gap-2 absolute top-2 right-2">
           <UploadFileButton accept=".png,.jpg,.jpeg" onChange={onFileSelect} />
           {url && (
@@ -89,20 +89,20 @@ export const ProfileUpload = () => {
 
 export interface ProfilePictureProps {
   userId: number
+  name: string
 }
 
-export const ProfilePicture = (props: ProfilePictureProps) => {
-  const { userId } = props
+export const ProfilePicture = ({ userId, name }: ProfilePictureProps) => {
   const { url } = useProfilePic(userId)
-  return <Picture url={url} />
+  return <Picture url={url} name={name} />
 }
 
 export interface PictureProps {
   url: string | undefined
+  name: string
 }
 
-export const Picture = (props: PictureProps) => {
-  const { url } = props
+export const Picture = ({ url, name }: PictureProps) => {
   return url ? (
     <Img
       width="100%"
@@ -113,6 +113,11 @@ export const Picture = (props: PictureProps) => {
       boxSize="xs"
     />
   ) : (
-    <Icon as={FaUserCircle} boxSize="xs" color="gray.300" />
+    <Avatar
+      size={320}
+      name={name}
+      variant="beam"
+      colors={['#ff851b', '#17b4e9', '#41e241', '#ff4d4d']}
+    />
   )
 }
