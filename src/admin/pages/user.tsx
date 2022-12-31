@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form'
 import { FaPencilAlt, FaPlusCircle, FaTools } from 'react-icons/fa'
 import { mutate } from 'swr'
 
-import { FormControl, FormLabel } from '@chakra-ui/form-control'
 import {
   Modal,
   ModalBody,
@@ -29,7 +28,7 @@ import { UseDisclosureReturn, useDisclosure } from '@src/hooks/useDisclosure'
 import { useMutation } from '@src/hooks/useMutation'
 import { Button } from '@src/ui/Button'
 import { IconButton } from '@src/ui/IconButton'
-import { Input, Select } from '@src/ui/Input'
+import { FormLabel, Input, Select } from '@src/ui/Input'
 import { Link } from '@src/ui/Link'
 import { registerUser } from '@src/user/queries'
 import { useUsers } from '@src/user/queries'
@@ -97,31 +96,31 @@ const CreateUserModalButton = () => {
             <ModalHeader>เพิ่มผู้ใช้งาน</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <div className="flex flex-col gap-2">
-                <FormControl>
+              <div className="flex flex-col gap-4">
+                <div>
                   <FormLabel>ชื่อผู้ใช้</FormLabel>
                   <Input
                     required
                     {...register('username')}
                     placeholder="ชื่อผู้ใช้"
                   />
-                </FormControl>
-                <FormControl>
+                </div>
+                <div>
                   <FormLabel>รหัสผ่าน</FormLabel>
                   <Input
                     required
                     {...register('password')}
                     placeholder="รหัสผ่าน"
                   />
-                </FormControl>
-                <FormControl>
+                </div>
+                <div>
                   <FormLabel>ชื่อที่ใช้แสดง</FormLabel>
                   <Input
                     required
                     {...register('showName')}
                     placeholder="ชื่อที่ใช้แสดง"
                   />
-                </FormControl>
+                </div>
               </div>
             </ModalBody>
             <ModalFooter>
@@ -163,34 +162,34 @@ const EditUserModalButton = (props: EditUserModalProps) => {
           <ModalHeader>แก้ไขผู้ใช้งาน</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <div className="flex flex-col gap-2">
-              <FormControl>
+            <div className="flex flex-col gap-4">
+              <div>
                 <FormLabel>ชื่อผู้ใช้</FormLabel>
                 <Input
                   required
                   {...register('username')}
                   placeholder="ชื่อผู้ใช้"
                 />
-              </FormControl>
-              <FormControl>
+              </div>
+              <div>
                 <FormLabel>รหัสผ่าน</FormLabel>
                 <Input {...register('password')} placeholder="รหัสผ่าน" />
-              </FormControl>
-              <FormControl>
+              </div>
+              <div>
                 <FormLabel>ชื่อที่ใช้แสดง</FormLabel>
                 <Input
                   required
                   {...register('showName')}
                   placeholder="ชื่อที่ใช้แสดง"
                 />
-              </FormControl>
-              <FormControl>
+              </div>
+              <div>
                 <FormLabel>สถานะ</FormLabel>
                 <Select {...register('role')}>
                   <option value="admin">Admin</option>
                   <option value="user">User</option>
                 </Select>
-              </FormControl>
+              </div>
             </div>
           </ModalBody>
           <ModalFooter>

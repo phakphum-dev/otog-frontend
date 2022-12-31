@@ -2,7 +2,9 @@ import clsx from 'clsx'
 import { VariantProps, cva } from 'cva'
 import {
   ForwardedRef,
+  HTMLAttributes,
   InputHTMLAttributes,
+  LabelHTMLAttributes,
   SVGAttributes,
   SelectHTMLAttributes,
   TextareaHTMLAttributes,
@@ -107,4 +109,27 @@ export const DefaultIcon = (props: SVGAttributes<SVGElement>) => (
       d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
     />
   </svg>
+)
+
+export const FormLabel = ({
+  className,
+  ...props
+}: LabelHTMLAttributes<HTMLLabelElement>) => (
+  <label
+    className={clsx('block text-md font-medium mb-2 mr-3', className)}
+    {...props}
+  />
+)
+
+export const FormHelperText = ({
+  className,
+  ...props
+}: HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={clsx(
+      'block text-sm mt-2 text-gray-600 dark:text-alpha-white-600',
+      className
+    )}
+    {...props}
+  />
 )

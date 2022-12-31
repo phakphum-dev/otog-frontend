@@ -14,7 +14,6 @@ import {
 } from 'react-icons/fa'
 import { mutate } from 'swr'
 
-import { FormControl, FormLabel } from '@chakra-ui/form-control'
 import {
   Modal,
   ModalBody,
@@ -51,7 +50,7 @@ import { useProblems } from '@src/problem/queries'
 import { ProblemWithSubmission } from '@src/problem/types'
 import { Button } from '@src/ui/Button'
 import { IconButton } from '@src/ui/IconButton'
-import { Input, Select } from '@src/ui/Input'
+import { FormLabel, Input, Select } from '@src/ui/Input'
 import { Link } from '@src/ui/Link'
 
 export default function AdminContestPage() {
@@ -177,30 +176,30 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
             <ModalHeader>แก้ไขการแข่งขัน</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <div className="flex flex-col gap-2">
-                <FormControl>
+              <div className="flex flex-col gap-4">
+                <div>
                   <FormLabel>ชื่อการแข่งขัน</FormLabel>
                   <Input
                     required
                     {...register('name')}
                     placeholder="การแข่งขัน"
                   />
-                </FormControl>
-                <FormControl>
+                </div>
+                <div>
                   <FormLabel>การเรท</FormLabel>
                   <Select {...register('mode')}>
                     <option value="unrated">Unrated</option>
                     <option value="rated">Rated</option>
                   </Select>
-                </FormControl>
-                <FormControl>
+                </div>
+                <div>
                   <FormLabel>โหมด</FormLabel>
                   <Select {...register('gradingMode')}>
                     <option value="classic">Classic</option>
                     <option value="acm">ACM</option>
                   </Select>
-                </FormControl>
-                <FormControl>
+                </div>
+                <div>
                   <FormLabel>เวลาเริ่ม</FormLabel>
                   <DatePicker
                     selectedDate={startDate}
@@ -208,8 +207,8 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
                       setStartDate(date)
                     }}
                   />
-                </FormControl>
-                <FormControl>
+                </div>
+                <div>
                   <FormLabel>เวลาจบ</FormLabel>
                   <DatePicker
                     selectedDate={endDate}
@@ -217,7 +216,7 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
                       setEndDate(date)
                     }}
                   />
-                </FormControl>
+                </div>
               </div>
             </ModalBody>
             <ModalFooter>
@@ -279,30 +278,30 @@ const CreateContestModalButton = (props: CreateContestModalButtonProps) => {
             <ModalHeader>สร้างการแข่งขัน</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <div className="flex flex-col gap-2">
-                <FormControl>
+              <div className="flex flex-col gap-4">
+                <div>
                   <FormLabel>ชื่อการแข่งขัน</FormLabel>
                   <Input
                     {...register('name')}
                     required
                     placeholder="การแข่งขัน"
                   />
-                </FormControl>
-                <FormControl>
+                </div>
+                <div>
                   <FormLabel>การเรท</FormLabel>
                   <Select {...register('mode')}>
                     <option value="unrated">Unrated</option>
                     <option value="rated">Rated</option>
                   </Select>
-                </FormControl>
-                <FormControl>
+                </div>
+                <div>
                   <FormLabel>โหมด</FormLabel>
                   <Select {...register('gradingMode')}>
                     <option value="classic">Classic</option>
                     <option value="acm">ACM</option>
                   </Select>
-                </FormControl>
-                <FormControl>
+                </div>
+                <div>
                   <FormLabel>เวลาเริ่ม</FormLabel>
                   <DatePicker
                     selectedDate={startDate}
@@ -310,8 +309,8 @@ const CreateContestModalButton = (props: CreateContestModalButtonProps) => {
                       setStartDate(date)
                     }}
                   />
-                </FormControl>
-                <FormControl>
+                </div>
+                <div>
                   <FormLabel>เวลาจบ</FormLabel>
                   <DatePicker
                     selectedDate={endDate}
@@ -319,7 +318,7 @@ const CreateContestModalButton = (props: CreateContestModalButtonProps) => {
                       setEndDate(date)
                     }}
                   />
-                </FormControl>
+                </div>
               </div>
             </ModalBody>
             <ModalFooter>

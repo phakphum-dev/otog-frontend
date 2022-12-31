@@ -6,8 +6,6 @@ import { submitProblem } from './queries'
 import { useDropFile } from './useDropFile'
 
 import {
-  FormControl,
-  FormLabel,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -21,7 +19,7 @@ import { UseDisclosureReturn, useDisclosure } from '@src/hooks/useDisclosure'
 import { useMutation } from '@src/hooks/useMutation'
 import { Problem } from '@src/problem/types'
 import { Button } from '@src/ui/Button'
-import { Select } from '@src/ui/Input'
+import { FormLabel, Select } from '@src/ui/Input'
 
 export interface SubmitModalProps extends UseDisclosureReturn {
   problem: Problem
@@ -73,19 +71,19 @@ export const SubmitModal = (props: SubmitModalProps) => {
             <ModalHeader>{problem.name}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <div className="flex flex-col gap-2">
-                <FormControl>
+              <div className="flex flex-col gap-4">
+                <div>
                   <FormLabel>อัปโหลด</FormLabel>
                   <FileInput name="sourceCode" {...fileInputProps} />
-                </FormControl>
-                <FormControl>
+                </div>
+                <div>
                   <FormLabel>ภาษา</FormLabel>
                   <Select name="language">
                     <option value="cpp">C++</option>
                     <option value="c">C</option>
                     <option value="python">Python</option>
                   </Select>
-                </FormControl>
+                </div>
               </div>
             </ModalBody>
 

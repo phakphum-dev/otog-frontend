@@ -14,7 +14,6 @@ import {
 } from 'react-icons/fa'
 import { mutate } from 'swr'
 
-import { FormControl, FormHelperText, FormLabel } from '@chakra-ui/form-control'
 import {
   Modal,
   ModalBody,
@@ -49,7 +48,7 @@ import { ProblemWithSubmission } from '@src/problem/types'
 import { Button } from '@src/ui/Button'
 import { ButtonGroup } from '@src/ui/ButtonGroup'
 import { IconButton } from '@src/ui/IconButton'
-import { Input } from '@src/ui/Input'
+import { FormHelperText, FormLabel, Input } from '@src/ui/Input'
 import { Link } from '@src/ui/Link'
 
 export default function AdminProblemPage() {
@@ -118,12 +117,12 @@ const CreateProblemModalButton = () => {
             <ModalHeader>เพิ่มโจทย์</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <div className="flex flex-col gap-2">
-                <FormControl>
+              <div className="flex flex-col gap-4">
+                <div>
                   <FormLabel>ชื่อโจทย์</FormLabel>
                   <Input required name="name" placeholder="ชื่อโจทย์" />
-                </FormControl>
-                <FormControl>
+                </div>
+                <div>
                   <FormLabel>เวลา (ms)</FormLabel>
                   <Input
                     required
@@ -132,8 +131,8 @@ const CreateProblemModalButton = () => {
                     type="number"
                     defaultValue={1000}
                   />
-                </FormControl>
-                <FormControl>
+                </div>
+                <div>
                   <FormLabel>หน่วยความจำ (MB)</FormLabel>
                   <Input
                     required
@@ -142,8 +141,8 @@ const CreateProblemModalButton = () => {
                     type="number"
                     defaultValue={32}
                   />
-                </FormControl>
-                <FormControl>
+                </div>
+                <div>
                   <FormLabel>คะแนน</FormLabel>
                   <Input
                     required
@@ -152,8 +151,8 @@ const CreateProblemModalButton = () => {
                     defaultValue={100}
                     placeholder="คะแนน"
                   />
-                </FormControl>
-                <FormControl>
+                </div>
+                <div>
                   <FormLabel>จำนวนเทสต์เคส</FormLabel>
                   <Input
                     required
@@ -162,18 +161,18 @@ const CreateProblemModalButton = () => {
                     defaultValue={10}
                     placeholder="เทสต์เคส"
                   />
-                </FormControl>
-                <FormControl>
+                </div>
+                <div>
                   <FormLabel>โจทย์ (PDF)</FormLabel>
                   <FileInput name="pdf" accept=".pdf" {...pdfProps} />
-                </FormControl>
-                <FormControl>
+                </div>
+                <div>
                   <FormLabel>เทสต์เคส (ZIP)</FormLabel>
                   <FileInput name="zip" accept=".zip,.zpi" {...zipProps} />
                   <FormHelperText>
                     Testcase Files อยู่ในรูปแบบ 1.in, 1.sol, ...
                   </FormHelperText>
-                </FormControl>
+                </div>
               </div>
             </ModalBody>
             <ModalFooter>
@@ -250,12 +249,12 @@ const EditProblemModal = (props: EditProblemModalProps) => {
           <ModalHeader>แก้ไข {problem.name}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <div className="flex flex-col gap-2">
-              <FormControl>
+            <div className="flex flex-col gap-4">
+              <div>
                 <FormLabel>ชื่อโจทย์</FormLabel>
                 <Input required {...register('name')} placeholder="ชื่อโจทย์" />
-              </FormControl>
-              <FormControl>
+              </div>
+              <div>
                 <FormLabel>เวลา (ms)</FormLabel>
                 <Input
                   required
@@ -264,8 +263,8 @@ const EditProblemModal = (props: EditProblemModalProps) => {
                   type="number"
                   defaultValue={1000}
                 />
-              </FormControl>
-              <FormControl>
+              </div>
+              <div>
                 <FormLabel>หน่วยความจำ (MB)</FormLabel>
                 <Input
                   required
@@ -274,8 +273,8 @@ const EditProblemModal = (props: EditProblemModalProps) => {
                   type="number"
                   defaultValue={32}
                 />
-              </FormControl>
-              <FormControl>
+              </div>
+              <div>
                 <FormLabel>คะแนน</FormLabel>
                 <Input
                   required
@@ -284,8 +283,8 @@ const EditProblemModal = (props: EditProblemModalProps) => {
                   defaultValue={100}
                   placeholder="คะแนน"
                 />
-              </FormControl>
-              <FormControl>
+              </div>
+              <div>
                 <FormLabel>จำนวนเทสต์เคส</FormLabel>
                 <Input
                   required
@@ -294,18 +293,18 @@ const EditProblemModal = (props: EditProblemModalProps) => {
                   defaultValue={10}
                   placeholder="เทสต์เคส"
                 />
-              </FormControl>
-              <FormControl>
+              </div>
+              <div>
                 <FormLabel>โจทย์ (PDF)</FormLabel>
                 <FileInput name="pdf" accept=".pdf" {...pdfProps} />
-              </FormControl>
-              <FormControl>
+              </div>
+              <div>
                 <FormLabel>เทสต์เคส (ZIP)</FormLabel>
                 <FileInput name="zip" accept=".zip,.zpi" {...zipProps} />
                 <FormHelperText>
                   Testcase Files อยู่ในรูปแบบ 1.in, 1.sol, ...
                 </FormHelperText>
-              </FormControl>
+              </div>
             </div>
           </ModalBody>
           <ModalFooter>
