@@ -4,7 +4,6 @@ import { IoChatbubbleEllipses, IoSend } from 'react-icons/io5'
 import { ChatMessage } from './components/ChatMessage'
 
 import { SmallCloseIcon } from '@chakra-ui/icons'
-import { Circle } from '@chakra-ui/layout'
 import { Spinner } from '@chakra-ui/spinner'
 import { useToast } from '@chakra-ui/toast'
 import { Tooltip, TooltipProps } from '@chakra-ui/tooltip'
@@ -29,7 +28,7 @@ const ChatButton = ({ hasUnread, ...props }: ChatButtonProps) => (
   <div className="fixed bottom-5 right-5 z-100">
     <div className="relative z-101">
       {hasUnread && (
-        <Circle position="absolute" top={1} right={1} size={2} bg="orange" />
+        <div className="absolute top-1 right-1 w-2 h-2 rounded-full bg-otog" />
       )}
     </div>
     <OnlineUsersTooltip placement="top-end">
@@ -54,7 +53,7 @@ const OnlineUsersTooltip = (props: TooltipProps) => {
         <div className="flex flex-col justify-start">
           {onlineUsers.slice(0, MAX_LENGTH).map((user) => (
             <div className="flex items-center gap-2" key={user.id}>
-              <Circle size={2} bg="green.400" />
+              <div className="w-2 h-2 rounded-full bg-green-400" />
               <div className="max-w-[275px] line-clamp-3">{user.showName}</div>
             </div>
           ))}
