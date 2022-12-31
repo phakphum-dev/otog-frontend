@@ -16,7 +16,7 @@ import {
  */
 
 const buttonStyles = cva(
-  'inline-flex justify-center items-center select-none transition-colors font-semibold',
+  'inline-flex justify-center items-center select-none transition-colors font-semibold disabled:opacity-40 disabled:cursor-not-allowed',
   {
     variants: {
       variant: {
