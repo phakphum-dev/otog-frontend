@@ -35,8 +35,6 @@ import {
 import { HEIGHT } from './constants'
 import { useAnnouncementContext } from './useAnnouncementContext'
 
-import { Code } from '@chakra-ui/react'
-
 import { ButtonGroup } from '@src/ui/ButtonGroup'
 import { IconButton } from '@src/ui/IconButton'
 import { Link } from '@src/ui/Link'
@@ -82,7 +80,11 @@ const Leaf = ({ attributes, children, leaf }: RenderLeafProps) => {
     children = <strong>{children}</strong>
   }
   if (leaf.code) {
-    children = <Code>{children}</Code>
+    children = (
+      <code className="text-inherit bg-transparent dark:bg-alpha-black-300">
+        {children}
+      </code>
+    )
   }
   if (leaf.italic) {
     children = <em>{children}</em>
