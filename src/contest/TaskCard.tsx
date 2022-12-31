@@ -12,7 +12,6 @@ import {
   CloseIcon,
   EditIcon,
 } from '@chakra-ui/icons'
-import { Divider } from '@chakra-ui/layout'
 import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 import { Collapse } from '@chakra-ui/transition'
@@ -72,7 +71,7 @@ export const TaskCard = memo((props: TaskCardProps) => {
         </div>
       </Button>
       <Collapse in={isOpen}>
-        <Divider />
+        <hr />
         <div className="flex flex-col gap-4 p-2 sm:p-6 sm:pt-4">
           <div className="flex gap-2">
             <div className="flex-1">

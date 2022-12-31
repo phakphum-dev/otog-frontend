@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form'
 import Logo from '../../public/logo512.png'
 
 import {
-  Divider,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -92,7 +91,7 @@ export const LoginForm = (props: LoginFormProps) => {
         </Button>
         {!OFFLINE_MODE && (
           <>
-            <Divider />
+            <hr />
             <NextLink href="/register" passHref>
               <Button as="a">ลงทะเบียน</Button>
             </NextLink>
