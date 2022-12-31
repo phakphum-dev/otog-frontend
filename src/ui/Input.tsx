@@ -10,7 +10,7 @@ import {
 } from 'react'
 
 const inputStyles = cva(
-  'block w-full bg-inherit border text-md border-slate-300 dark:border-alpha-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:dark:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-colors disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none',
+  'block w-full bg-inherit border text-md border-slate-300 dark:border-alpha-white-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:dark:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-colors disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none',
   {
     variants: {
       variant: {

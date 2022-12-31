@@ -4,7 +4,7 @@ import { Children, ReactElement, cloneElement, memo } from 'react'
 
 import { Message } from '../types'
 
-import { Avatar, Code, useColorModeValue } from '@chakra-ui/react'
+import { Avatar } from '@chakra-ui/react'
 
 import { useAuth } from '@src/context/AuthContext'
 import { useProfilePic } from '@src/profile/useProfilePic'
@@ -91,7 +91,7 @@ export const ChatMessage = memo(
                   'px-2 py-1 rounded-2xl border whitespace-pre-wrap word-break',
                   isSelf
                     ? 'ml-7 bg-otog text-white border-otog'
-                    : 'mr-7 bg-gray-100 dark:bg-gray-800 border-gray-100 dark:border-alpha-300',
+                    : 'mr-7 bg-gray-100 dark:bg-gray-800 border-gray-100 dark:border-alpha-white-300',
                   groupedWithTop &&
                     (isSelf ? 'rounded-tr-md' : 'rounded-tl-md'),
                   groupedWithBottom &&
@@ -124,9 +124,9 @@ const SmallAvatar = ({ userId }: { userId: number }) => {
 }
 
 const MessageCode = (token: string) => (
-  <Code color="inherit" bg={useColorModeValue('transparent', 'blackAlpha.300')}>
+  <code className="text-inherit bg-transparent dark:bg-alpha-black-300">
     {token}
-  </Code>
+  </code>
 )
 
 const matcher: Record<
