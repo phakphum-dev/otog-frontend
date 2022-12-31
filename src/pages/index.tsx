@@ -4,8 +4,6 @@ import NextLink from 'next/link'
 
 import ComputerImage from '../../public/computer.svg'
 
-import { Center } from '@chakra-ui/react'
-
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { OFFLINE_MODE } from '@src/config'
 import { getServerSideCookies } from '@src/context/HttpClient'
@@ -13,7 +11,7 @@ import { Button } from '@src/ui/Button'
 
 export default function HomePage() {
   return (
-    <PageContainer as={Center} maxSize="lg">
+    <PageContainer className="flex justify-center items-center">
       <div className="flex flex-col md:flex-row gap-16 md:pb-16">
         <div className="flex flex-col gap-6 flex-1">
           <h1 className="font-bold text-5xl">
@@ -35,9 +33,9 @@ export default function HomePage() {
             </NextLink>
           </div>
         </div>
-        <Center flex={1}>
+        <div className="flex-1 flex justify-center items-center">
           <Image src={ComputerImage} />
-        </Center>
+        </div>
       </div>
     </PageContainer>
   )

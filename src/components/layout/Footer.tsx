@@ -4,7 +4,7 @@ import { CONTACT_LINK, GITHUB_LINK, OFFLINE_MODE } from '@src/config'
 import { Link } from '@src/ui/Link'
 
 export const Footer = () => (
-  <PageContainer mt={8} pb={4} flex={undefined}>
+  <PageContainer className="mt-8 pb-4 flex-none">
     <hr className="mb-2" />
     <div className="flex flex-col sm:flex-row justify-between">
       {OFFLINE_MODE ? (

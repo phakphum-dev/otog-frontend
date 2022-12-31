@@ -5,8 +5,6 @@ import { useEffect } from 'react'
 import { FaTrophy } from 'react-icons/fa'
 import { mutate } from 'swr'
 
-import { Center } from '@chakra-ui/layout'
-
 import { AnnouncementCarousel } from '@src/announcement/components/AnnouncementCarousel'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
@@ -35,15 +33,15 @@ export default function ContestPage() {
       {currentContest ? (
         <ContestRouter contest={currentContest} time={serverTime!} />
       ) : (
-        <PageContainer display="flex">
-          <Center flex={1}>
+        <PageContainer className="flex">
+          <div className="flex-1 flex justify-center items-center">
             <div className="flex flex-col items-center gap-4">
               <h1 className="font-bold text-4xl">ยังไม่มีการแข่งขัน</h1>
               <NextLink href="/contest/history" passHref>
                 <Button as="a">ประวัติการแข่งขัน</Button>
               </NextLink>
             </div>
-          </Center>
+          </div>
         </PageContainer>
       )}
     </>
@@ -79,8 +77,8 @@ export const PreContest = (props: ContestProps) => {
     }
   }, [remaining])
   return (
-    <PageContainer display="flex">
-      <Center flex={1}>
+    <PageContainer className="flex">
+      <div className="flex-1 flex justify-center items-center">
         <div className="flex flex-col items-center gap-4">
           <h1 className="font-bold text-4xl text-center">
             การแข่งขัน {contest.name} กำลังจะเริ่ม
@@ -89,7 +87,7 @@ export const PreContest = (props: ContestProps) => {
             ในอีก {toThTimeFormat(remaining)}...
           </h2>
         </div>
-      </Center>
+      </div>
     </PageContainer>
   )
 }
@@ -132,8 +130,8 @@ export const MidContest = (props: ContestProps) => {
 export const PostContest = (props: ContestProps) => {
   const { contest } = props
   return (
-    <PageContainer display="flex">
-      <Center flex={1}>
+    <PageContainer className="flex">
+      <div className="flex-1 flex justify-center items-center">
         <div className="flex flex-col items-center gap-4">
           <h1 className="font-bold text-4xl text-center">
             การแข่งขัน {contest.name} จบลงแล้ว
@@ -151,7 +149,7 @@ export const PostContest = (props: ContestProps) => {
             </Button>
           </NextLink>
         </div>
-      </Center>
+      </div>
     </PageContainer>
   )
 }

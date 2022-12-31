@@ -1,29 +1,28 @@
-import { useMemo } from 'react'
+import clsx from 'clsx'
+import { ReactNode } from 'react'
 
-import { Container, ContainerProps } from '@chakra-ui/react'
-import { useTheme } from '@chakra-ui/system'
-
-import { Breakpoints, breakpoints } from '@src/theme'
-
-type PageContainerProps = ContainerProps & {
-  maxSize?: Breakpoints
+export type PageContainerProps = {
+  className?: string
+  children: ReactNode
+  maxSize?: 'lg' | 'md'
 }
 
 export const PageContainer = ({
+  className,
   maxSize = 'lg',
-  ...props
+  children,
 }: PageContainerProps) => {
-  const theme = useTheme()
-
-  const maxW = useMemo(() => {
-    const index = breakpoints.findIndex((breakpoint) => breakpoint === maxSize)
-    const length = index === -1 ? breakpoints.length : index + 1
-    const restBreakpoints = breakpoints.slice(0, length)
-    return restBreakpoints.reduce(
-      (result, key) => ({ ...result, [key]: theme.sizes.container[key] }),
-      {}
-    )
-  }, [maxSize, theme.sizes.container])
-
-  return <Container flex={1} maxW={maxW} {...props} />
+  return (
+    <div
+      className={clsx(
+        'w-full mx-auto px-4 flex-1',
+        maxSize === 'md' && 'sm:max-w-screen-sm md:max-w-screen-md',
+        maxSize === 'lg' &&
+          'sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg',
+        className
+      )}
+    >
+      {children}
+    </div>
+  )
 }
