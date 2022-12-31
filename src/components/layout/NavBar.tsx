@@ -16,7 +16,6 @@ import {
   DrawerCloseButton,
   DrawerContent,
   DrawerOverlay,
-  IconButton,
   Menu,
   MenuButton,
   MenuItem,
@@ -30,6 +29,7 @@ import { useAuth } from '@src/context/AuthContext'
 import { useDisclosure } from '@src/hooks/useDisclosure'
 import { useUserProfilePic } from '@src/profile/useProfilePic'
 import { Button, ButtonProps } from '@src/ui/Button'
+import { IconButton } from '@src/ui/IconButton'
 import { Link, LinkProps } from '@src/ui/Link'
 
 function usePathActive(href: string) {
@@ -82,10 +82,9 @@ export const NavBar = () => {
             </NextLink>
             <div className="flex-1" />
             <IconButton
-              display={{ md: 'none' }}
+              className="md:hidden p-2"
               variant="ghost"
               aria-label="Open menu"
-              p={2}
               onClick={onOpen}
               icon={<HamburgerIcon />}
               ref={btnRef}

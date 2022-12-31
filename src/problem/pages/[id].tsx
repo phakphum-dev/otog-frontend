@@ -7,8 +7,6 @@ import { FaLightbulb } from 'react-icons/fa'
 
 import { getProblem, keyProblem, useProblem } from '../queries'
 
-import { Select } from '@chakra-ui/select'
-
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { API_HOST } from '@src/config'
@@ -19,6 +17,7 @@ import { getLatestProblemSubmission } from '@src/submission/queries'
 import { submitProblem } from '@src/submission/submit/queries'
 import { SubmissionWithSourceCode } from '@src/submission/types'
 import { Button } from '@src/ui/Button'
+import { Select } from '@src/ui/Input'
 import { Link } from '@src/ui/Link'
 import { ONE_SECOND } from '@src/utils/time'
 
