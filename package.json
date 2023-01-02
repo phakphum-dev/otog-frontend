@@ -23,6 +23,7 @@
     "chartjs-plugin-annotation": "^2.1.0",
     "clsx": "^1.2.1",
     "cookie": "^0.5.0",
+    "copy-to-clipboard": "^3.3.3",
     "cva": "npm:class-variance-authority",
     "eslint-config-prettier": "^7.2.0",
     "firebase": "^8.3.1",

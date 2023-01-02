@@ -16,11 +16,11 @@ import {
   ModalOverlay,
   ModalProps,
   Skeleton,
-  useClipboard,
   useToast,
 } from '@chakra-ui/react'
 
 import { API_HOST, APP_HOST } from '@src/config'
+import { useClipboard } from '@src/hooks/useClipboard'
 import { useSubmission } from '@src/submission/queries'
 import {
   SubmissionWithProblem,
@@ -76,7 +76,7 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
   const { submission } = props
   const isLoaded = !!submission
 
-  const { onCopy, hasCopied, setValue } = useClipboard('')
+  const { onCopy, hasCopied } = useClipboard(submission?.sourceCode ?? '')
   const toast = useToast()
   useEffect(() => {
     if (hasCopied) {
@@ -88,17 +88,9 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
     }
   }, [toast, hasCopied])
 
-  const {
-    onCopy: onLinkCopy,
-    hasCopied: hasLinkCopied,
-    setValue: setLinkValue,
-  } = useClipboard('')
-  useEffect(() => {
-    if (submission) {
-      setValue(submission.sourceCode)
-      setLinkValue(`${APP_HOST}submission/${submission.id}`)
-    }
-  }, [submission, setValue, setLinkValue])
+  const { onCopy: onLinkCopy, hasCopied: hasLinkCopied } = useClipboard(
+    submission ? `${APP_HOST}submission/${submission.id}` : ''
+  )
   useEffect(() => {
     if (hasLinkCopied) {
       toast({
