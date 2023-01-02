@@ -171,7 +171,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
     return null
   }
   return (
-    <Tr bg={bg}>
+    <Tr className={bg}>
       <Td lineHeight="40px">
         {user?.id === submission?.user.id || isAdmin ? (
           <Button className="!px-1" variant="ghost" onClick={onCodeModalOpen}>

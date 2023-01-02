@@ -1,22 +1,17 @@
-import { useColorModeValue } from '@chakra-ui/color-mode'
-
 import { Submission } from '@src/submission/types'
 
 export function useStatusColor(
   submission: Submission | undefined | null,
   exceptReject = false
 ) {
-  const acceptColor = useColorModeValue('accept.50', 'accept.900')
-  const rejectColor = useColorModeValue('reject.50', 'reject.900')
-  if (!submission) {
-    return undefined
+  if (submission) {
+    if (submission.status === 'accept') {
+      return 'bg-accept-50 dark:bg-accept-900'
+    } else if (!exceptReject && submission.status === 'reject') {
+      return 'bg-reject-50 dark:bg-reject-900'
+    }
   }
-  if (submission.status === 'accept') {
-    return acceptColor
-  } else if (!exceptReject && submission.status === 'reject') {
-    return rejectColor
-  }
-  return undefined
+  return ''
 }
 
 export function isGraded(submission: Submission | undefined) {

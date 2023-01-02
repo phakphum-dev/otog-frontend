@@ -264,7 +264,7 @@ export const TaskSubmissionTable = (props: TaskSubmissionTableProps) => {
           </Tr>
         </Thead>
         <Tbody>
-          <Tr bg={bg}>
+          <Tr className={bg}>
             <Td>
               <Button
                 className="!px-1"

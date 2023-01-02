@@ -1,8 +1,6 @@
 import ReactDatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
-import { useColorMode } from '@chakra-ui/react'
-
 interface Props {
   isClearable?: boolean
   onChange: (date: Date) => any
@@ -17,20 +15,17 @@ export const DatePicker = ({
   showPopperArrow = false,
   ...props
 }: Props) => {
-  const isLight = useColorMode().colorMode === 'light'
   return (
-    <div className={isLight ? 'light-theme' : 'dark-theme'}>
-      <ReactDatePicker
-        selected={selectedDate}
-        onChange={onChange}
-        isClearable={isClearable}
-        showPopperArrow={showPopperArrow}
-        className="react-datapicker__input-text"
-        showTimeSelect
-        dateFormat="dd/MM/yyyy HH:mm"
-        timeFormat="HH:mm"
-        {...props}
-      />
-    </div>
+    <ReactDatePicker
+      selected={selectedDate}
+      onChange={onChange}
+      isClearable={isClearable}
+      showPopperArrow={showPopperArrow}
+      className="react-datapicker__input-text"
+      showTimeSelect
+      dateFormat="dd/MM/yyyy HH:mm"
+      timeFormat="HH:mm"
+      {...props}
+    />
   )
 }

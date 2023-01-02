@@ -212,7 +212,7 @@ const ProblemRow = (props: ProblemRowProps) => {
   }
 
   return (
-    <Tr bg={bg}>
+    <Tr className={bg}>
       <Td textAlign="center" w={22}>
         {problem.submission ? (
           <Button className="!px-1" onClick={onCodeModalOpen} variant="ghost">
