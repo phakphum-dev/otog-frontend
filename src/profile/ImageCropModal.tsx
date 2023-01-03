@@ -12,12 +12,6 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/modal'
-import {
-  Slider,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderTrack,
-} from '@chakra-ui/slider'
 
 import { useAuth } from '@src/context/AuthContext'
 import { storage } from '@src/firebase'
@@ -172,20 +166,15 @@ export const ImageCropModal = (props: ImageUploadModalProps) => {
                 cropShape="round"
               />
             </div>
-            <Slider
+            <input
+              className="mt-2 w-full h-1 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer"
+              type="range"
               min={1}
               max={3}
-              onChange={setZoom}
+              onChange={(e) => setZoom(Number(e.target.value))}
               value={zoom}
               step={0.01}
-              colorScheme="orange"
-              focusThumbOnChange={false}
-            >
-              <SliderTrack>
-                <SliderFilledTrack />
-              </SliderTrack>
-              <SliderThumb boxSize={6} />
-            </Slider>
+            />
           </div>
         </ModalBody>
 
