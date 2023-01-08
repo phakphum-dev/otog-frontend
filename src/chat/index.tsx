@@ -4,7 +4,6 @@ import { IoChatbubbleEllipses, IoSend } from 'react-icons/io5'
 import { ChatMessage } from './components/ChatMessage'
 
 import { SmallCloseIcon } from '@chakra-ui/icons'
-import { Spinner } from '@chakra-ui/spinner'
 import { useToast } from '@chakra-ui/toast'
 import { Tooltip, TooltipProps } from '@chakra-ui/tooltip'
 import { SlideFade } from '@chakra-ui/transition'
@@ -16,6 +15,7 @@ import { useOnScreen } from '@src/hooks/useOnScreen'
 import { Button } from '@src/ui/Button'
 import { IconButton, IconButtonProps } from '@src/ui/IconButton'
 import { Textarea } from '@src/ui/Input'
+import { Spinner } from '@src/ui/Spinner'
 import { useOnlineUsers } from '@src/user/queries'
 
 type ChatButtonProps = Omit<IconButtonProps, 'as' | 'icon'> & {

@@ -23,7 +23,6 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/modal'
-import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
 import {
@@ -52,6 +51,7 @@ import { Button } from '@src/ui/Button'
 import { IconButton } from '@src/ui/IconButton'
 import { FormLabel, Input, Select } from '@src/ui/Input'
 import { Link } from '@src/ui/Link'
+import { Spinner } from '@src/ui/Spinner'
 
 export default function AdminContestPage() {
   const [contestId, setContestId] = useState<number>()

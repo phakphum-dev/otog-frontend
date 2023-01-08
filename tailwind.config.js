@@ -159,6 +159,9 @@ module.exports = {
   darkMode: ['class', '[data-theme="dark"]'],
   theme: {
     extend: {
+      animation: {
+        spin: 'spin 0.45s linear infinite',
+      },
       colors,
       minWidth: {
         6: '1.5rem',

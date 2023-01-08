@@ -12,7 +12,6 @@ import {
   CloseIcon,
   EditIcon,
 } from '@chakra-ui/icons'
-import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 import { Collapse } from '@chakra-ui/transition'
 
@@ -28,6 +27,7 @@ import { Button } from '@src/ui/Button'
 import { IconButton } from '@src/ui/IconButton'
 import { Select } from '@src/ui/Input'
 import { Link } from '@src/ui/Link'
+import { Spinner } from '@src/ui/Spinner'
 import { ONE_SECOND } from '@src/utils/time'
 
 const defaultValue = `#include <iostream>

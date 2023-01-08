@@ -4,16 +4,7 @@ import { Dispatch, SetStateAction, memo, useEffect, useState } from 'react'
 import { CodeModal, ErrorModal } from '../components/Code'
 import { SubmissionWithProblem } from './types'
 
-import {
-  Spinner,
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tooltip,
-  Tr,
-} from '@chakra-ui/react'
+import { Table, Tbody, Td, Th, Thead, Tooltip, Tr } from '@chakra-ui/react'
 
 import { API_HOST } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
@@ -29,6 +20,7 @@ import { LatestSubmission } from '@src/submission/submit/LatestSubmission'
 import { isGraded, isGrading, useStatusColor } from '@src/theme/useStatusColor'
 import { Button } from '@src/ui/Button'
 import { Link } from '@src/ui/Link'
+import { Spinner } from '@src/ui/Spinner'
 import { ONE_SECOND, toThDate } from '@src/utils/time'
 
 export const SubmissionTable = () => {
@@ -217,7 +209,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
             <ErrorModal {...errorDisclosure} submission={submission} />
           </>
         ) : isGrading(submission) ? (
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
             <Spinner size="xs" />
             <div>{submission.result}</div>
           </div>

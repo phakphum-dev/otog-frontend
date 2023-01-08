@@ -15,7 +15,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Spinner,
   Table,
   Tbody,
   Td,
@@ -36,6 +35,7 @@ import { Submission } from '@src/submission/types'
 import { useStatusColor } from '@src/theme/useStatusColor'
 import { Button } from '@src/ui/Button'
 import { Link } from '@src/ui/Link'
+import { Spinner } from '@src/ui/Spinner'
 import { ONE_SECOND } from '@src/utils/time'
 
 export type FilterFunction = (problem: ProblemWithSubmission) => boolean
@@ -130,7 +130,7 @@ export const ProblemTable = (props: ProblemTableProps) => {
     </div>
   ) : (
     <div className="flex justify-center py-16">
-      <Spinner size="xl" color="gray.300" />
+      <Spinner size="xl" />
     </div>
   )
 }

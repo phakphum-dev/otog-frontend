@@ -23,7 +23,6 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/modal'
-import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
 import {
@@ -50,6 +49,7 @@ import { ButtonGroup } from '@src/ui/ButtonGroup'
 import { IconButton } from '@src/ui/IconButton'
 import { FormHelperText, FormLabel, Input } from '@src/ui/Input'
 import { Link } from '@src/ui/Link'
+import { Spinner } from '@src/ui/Spinner'
 
 export default function AdminProblemPage() {
   return (

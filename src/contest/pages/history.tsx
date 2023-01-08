@@ -2,13 +2,13 @@ import Head from 'next/head'
 import NextLink from 'next/link'
 import { FaTrophy } from 'react-icons/fa'
 
-import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { useContests } from '@src/contest/queries'
 import { Link } from '@src/ui/Link'
+import { Spinner } from '@src/ui/Spinner'
 import { toThDate, toThTimeFormat } from '@src/utils/time'
 
 export default function ContestHistoryPage() {

@@ -15,7 +15,6 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/modal'
-import { Spinner } from '@chakra-ui/spinner'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
 import { editUser } from '@src/admin/queries/user'
@@ -30,6 +29,7 @@ import { Button } from '@src/ui/Button'
 import { IconButton } from '@src/ui/IconButton'
 import { FormLabel, Input, Select } from '@src/ui/Input'
 import { Link } from '@src/ui/Link'
+import { Spinner } from '@src/ui/Spinner'
 import { registerUser } from '@src/user/queries'
 import { useUsers } from '@src/user/queries'
 import { CreateUser, EditUser, User } from '@src/user/types'
