@@ -108,7 +108,7 @@ export const ImageCropModal = (props: ImageUploadModalProps) => {
     setCroppedAreaPixels(croppedAreaPixels)
   }
 
-  const { onError } = useErrorToast()
+  const onError = useErrorToast()
   const uploadCroppedImage = async () => {
     if (user && url && croppedAreaPixels) {
       try {

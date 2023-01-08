@@ -15,7 +15,7 @@ import {
   isProduction,
   isServer,
 } from '@src/config'
-import { getErrorToast } from '@src/hooks/useErrorToast'
+import { getErrorData } from '@src/hooks/useErrorToast'
 import { getColorMode } from '@src/theme/ColorMode'
 import { ColorModeProps } from '@src/theme/ColorMode'
 import { AuthRes } from '@src/user/types'
@@ -265,10 +265,10 @@ export function withCookies<
       }
       return result
     } catch (error: any) {
-      const errorToast = getErrorToast(error)
+      const errorData = getErrorData(error)
       console.error(error?.toJSON?.() ?? error)
       return {
-        props: { ...cookies.props, errorToast },
+        props: { ...cookies.props, errorData },
       }
     }
   }

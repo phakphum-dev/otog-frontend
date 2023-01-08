@@ -8,6 +8,7 @@ import {
   useContext,
   useState,
 } from 'react'
+import { toast } from 'react-hot-toast'
 import { Descendant } from 'slate'
 
 import {
@@ -18,8 +19,6 @@ import {
 } from '../queries'
 import { Announcement } from '../types'
 import { createEmptyAnnouncement } from './utils'
-
-import { useToast } from '@chakra-ui/react'
 
 import { useConfirmModal } from '@src/context/ConfirmContext'
 import { useMutation } from '@src/hooks/useMutation'
@@ -64,8 +63,6 @@ export const AnnouncementProvider = (
   const [index, setIndex] = useState(0)
   const [showIndex, setShowIndex] = useState(0)
   const currentAnnouncement = announcements[index]
-
-  const toast = useToast()
 
   const nextShowIndex = useCallback(() => {
     const newIndex = (showIndex + 1) % filteredAnnouncements.length
@@ -117,13 +114,9 @@ export const AnnouncementProvider = (
           announcements[index] = announcementData
         })
       )
-      toast({
-        title: `บันทึกประกาศ #${announcements[index].id} สำเร็จ`,
-        status: 'success',
-        duration: 2000,
-      })
+      toast.success(`บันทึกประกาศ #${announcements[index].id} สำเร็จ`)
     } catch {}
-  }, [announcements, index, updateAnnouncementMutaion, mutate, toast])
+  }, [announcements, index, updateAnnouncementMutaion, mutate])
 
   const createAnnouncementMutation = useMutation(createAnnouncement)
   const insertIndex = useCallback(async () => {

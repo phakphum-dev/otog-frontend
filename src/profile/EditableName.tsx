@@ -22,7 +22,7 @@ interface EditableNameProps {
 //   const { user } = useAuth()
 
 //   // TODO: refractor refreshToken
-//   const { onError } = useErrorToast()
+//   const onError = useErrorToast()
 //   const editShownameMutation = useMutation(editShowname)
 //   const onSubmit = async (showName: string) => {
 //     if (!user) return

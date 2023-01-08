@@ -2,6 +2,7 @@ import Image from 'next/image'
 import NextLink from 'next/link'
 import { ReactNode } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-hot-toast'
 
 import Logo from '../../public/logo512.png'
 
@@ -52,17 +53,13 @@ export interface LoginFormProps {
 export const LoginForm = (props: LoginFormProps) => {
   const { onSuccess } = props
   const { register, handleSubmit } = useForm<LoginReq>()
-  const { onError, toast } = useErrorToast()
+  const onError = useErrorToast()
   const { login } = useAuth()
   const onSubmit = async (credentials: LoginReq) => {
     try {
       await login(credentials)
       onSuccess?.()
-      toast({
-        title: 'ลงชื่อเข้าใช้สำเร็จ !',
-        status: 'success',
-        duration: 2000,
-      })
+      toast.success('ลงชื่อเข้าใช้สำเร็จ !')
     } catch (e: any) {
       onError(e)
     }

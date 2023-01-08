@@ -23,7 +23,7 @@ export const ProfileUpload = () => {
   const { user } = useAuth()
   const { url, fetchUrl } = useUserProfilePic()
 
-  const { onError } = useErrorToast()
+  const onError = useErrorToast()
   const onFileSelect = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length === 0) return
     const file = e.target.files?.[0]

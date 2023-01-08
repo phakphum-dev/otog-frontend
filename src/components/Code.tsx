@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import Highlight, { Language, defaultProps } from 'prism-react-renderer'
 import theme from 'prism-react-renderer/themes/vsDark'
 import { PropsWithChildren, useEffect } from 'react'
+import { toast } from 'react-hot-toast'
 import { FaRegShareSquare } from 'react-icons/fa'
 
 import { CopyIcon } from '@chakra-ui/icons'
@@ -16,7 +17,6 @@ import {
   ModalOverlay,
   ModalProps,
   Skeleton,
-  useToast,
 } from '@chakra-ui/react'
 
 import { API_HOST, APP_HOST } from '@src/config'
@@ -77,29 +77,25 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
   const isLoaded = !!submission
 
   const { onCopy, hasCopied } = useClipboard(submission?.sourceCode ?? '')
-  const toast = useToast()
   useEffect(() => {
     if (hasCopied) {
-      toast({
-        title: 'คัดลอกไปยังคลิปบอร์ดแล้ว',
-        status: 'success',
-        duration: 2000,
-      })
+      toast.success('คัดลอกไปยังคลิปบอร์ดแล้ว')
     }
-  }, [toast, hasCopied])
+  }, [hasCopied])
 
   const { onCopy: onLinkCopy, hasCopied: hasLinkCopied } = useClipboard(
     submission ? `${APP_HOST}submission/${submission.id}` : ''
   )
   useEffect(() => {
     if (hasLinkCopied) {
-      toast({
-        title: 'เปิดการแชร์ (เฉพาะแอดมิน)',
-        description: 'คัดลอกลิงก์ไปยังคลิปบอร์ดแล้ว',
-        status: 'info',
-      })
+      toast.success(
+        <div>
+          <b>เปิดการแชร์ (เฉพาะแอดมิน)</b>
+          <p>คัดลอกลิงก์ไปยังคลิปบอร์ดแล้ว</p>
+        </div>
+      )
     }
-  }, [toast, hasLinkCopied])
+  }, [hasLinkCopied])
 
   return (
     <div className="flex flex-col gap-2">

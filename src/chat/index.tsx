@@ -1,10 +1,10 @@
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import { IoChatbubbleEllipses, IoSend } from 'react-icons/io5'
 
 import { ChatMessage } from './components/ChatMessage'
 
 import { SmallCloseIcon } from '@chakra-ui/icons'
-import { useToast } from '@chakra-ui/toast'
 import { Tooltip, TooltipProps } from '@chakra-ui/tooltip'
 import { SlideFade } from '@chakra-ui/transition'
 
@@ -167,18 +167,16 @@ interface ChatInputProps {
 const ChatInput = (props: ChatInputProps) => {
   const { emitMessage, onClose } = props
   const [message, setMessage] = useState('')
-  const toast = useToast()
   const onSubmit = () => {
     const msg = message.trim()
     if (msg) {
       if (msg.length > 150) {
-        toast({
-          title: 'ข้อความมีความยาวเกินที่กำหนดไว้ (150 ตัวอักษร)',
-          position: 'top-right',
-          isClosable: true,
-          status: 'warning',
-          duration: 3000,
-        })
+        toast.error(
+          <div>
+            <b>ข้อความมีความยาวเกินที่กำหนดไว้</b>
+            <p>(150 ตัวอักษร)</p>
+          </div>
+        )
         return
       }
       emitMessage?.(msg)

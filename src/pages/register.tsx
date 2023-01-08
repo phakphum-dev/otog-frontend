@@ -1,10 +1,9 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-hot-toast'
 
 import Logo from '../../public/logo512.png'
-
-import { useToast } from '@chakra-ui/react'
 
 import { CenteredCard } from '@src/components/Login'
 import { PageContainer } from '@src/components/layout/PageContainer'
@@ -17,19 +16,18 @@ import { CreateUser } from '@src/user/types'
 export default function RegisterPage() {
   const { register, handleSubmit } = useForm<CreateUser>()
   const router = useRouter()
-  const toast = useToast()
 
   const registerUserMutation = useMutation(registerUser)
   const onSubmit = async (createUser: CreateUser) => {
     try {
       await registerUserMutation(createUser)
       router.push('/login')
-      toast({
-        title: 'ลงทะเบียนสำเร็จ',
-        description: 'กรุณาลงชื่อเข้าใช้',
-        status: 'success',
-        isClosable: true,
-      })
+      toast.success(
+        <div>
+          <b>ลงทะเบียนสำเร็จ</b>
+          <p>กรุณาลงชื่อเข้าใช้</p>
+        </div>
+      )
     } catch {}
   }
   return (

@@ -1,27 +1,54 @@
 import axios from 'axios'
 import { useCallback } from 'react'
+import { useEffect } from 'react'
+import { toast } from 'react-hot-toast'
 
-import { UseToastOptions, useToast } from '@chakra-ui/toast'
-
-export type ErrorToastOptions = UseToastOptions & {
-  code: number | null
+export type ErrorToastOptions = {
+  title: string
+  description?: string
+  status?: 'success' | 'error'
+  code?: number
 }
 
 export function useErrorToast() {
-  const toast = useToast()
-  const onError = useCallback(
-    (error: unknown) => {
-      const toastData = getErrorToast(error)
-      if (!toastData.id || !toast.isActive(toastData.id)) {
-        toast(toastData)
-      }
-    },
-    [toast]
-  )
-  return { onError, toast }
+  return useCallback((error: unknown) => {
+    const toastData = getErrorData(error)
+    if (toastData.status) {
+      toast[toastData.status](
+        toastData.description ? (
+          <div>
+            <b>{toastData.title}</b>
+            <p>{toastData.description}</p>
+          </div>
+        ) : (
+          toastData.title
+        )
+      )
+    } else {
+      toast(
+        toastData.description ? (
+          <div>
+            <b>{toastData.title}</b>
+            <p>{toastData.description}</p>
+          </div>
+        ) : (
+          toastData.title
+        )
+      )
+    }
+  }, [])
 }
 
-export function getErrorToast(error: any): ErrorToastOptions {
+export function useErrorToaster(errorData: ErrorToastOptions | undefined) {
+  const errorToast = useErrorToast()
+  useEffect(() => {
+    if (errorData) {
+      errorToast(errorData)
+    }
+  }, [errorData, errorToast])
+}
+
+export function getErrorData(error: unknown): ErrorToastOptions {
   if (axios.isAxiosError(error)) {
     const url = error.config.url
     switch (error.response?.status) {
@@ -31,35 +58,27 @@ export function getErrorToast(error: any): ErrorToastOptions {
             title: 'ลงชื่อเข้าใช้งานไม่สำเร็จ !',
             description: 'ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง',
             status: 'error',
-            isClosable: true,
             code: 401,
-            id: 4010,
           }
         }
         return {
           title: 'กรุณาเข้าสู่ระบบก่อนใช้งาน',
-          status: 'warning',
-          duration: 2000,
+          status: 'error',
           code: 401,
-          id: 4011,
         }
       case 403:
         if (url === 'auth/refresh/token') {
           return {
             title: 'เซสชันหมดอายุ',
             description: 'กรุณาลงชื่อเข้าใช้อีกครั้ง',
-            status: 'info',
-            isClosable: true,
+            status: 'error',
             code: 403,
-            id: 4030,
           }
         }
         return {
           title: 'คุณไม่มีสิทธิ์ในการใช้งานส่วนนี้',
           status: 'error',
-          duration: 2000,
           code: 403,
-          id: 4031,
         }
       case 409:
         /*eslint-disable no-case-declarations*/
@@ -70,9 +89,7 @@ export function getErrorToast(error: any): ErrorToastOptions {
               title: 'ลงทะเบียนไม่สำเร็จ !',
               description: 'ชื่อผู้ใช้นี้ ได้ถูกใช้ไปแล้ว',
               status: 'error',
-              isClosable: true,
               code: 409,
-              id: 4090,
             }
           }
           if (message === 'showName was taken.') {
@@ -80,9 +97,7 @@ export function getErrorToast(error: any): ErrorToastOptions {
               title: 'ลงทะเบียนไม่สำเร็จ !',
               description: 'ชื่อที่ใช้แสดงนี้ ได้ถูกใช้ไปแล้ว',
               status: 'error',
-              isClosable: true,
               code: 409,
-              id: 4091,
             }
           }
         }
@@ -90,25 +105,19 @@ export function getErrorToast(error: any): ErrorToastOptions {
           return {
             title: 'ชื่อผู้ใช้นี้ ได้ถูกใช้ไปแล้ว!',
             status: 'error',
-            isClosable: true,
             code: 409,
-            id: 4092,
           }
         }
         return {
           title: 'เกิดข้อมูลซ้ำซ้อน',
           status: 'error',
-          isClosable: true,
           code: 409,
-          id: 4093,
         }
       case undefined: {
         return {
           title: 'ไม่สามารถติดต่อกับเซิฟเวอร์ได้',
           status: 'error',
-          isClosable: true,
           code: 503,
-          id: 5030,
         }
       }
     }
@@ -116,16 +125,13 @@ export function getErrorToast(error: any): ErrorToastOptions {
       title: error.name,
       description: error.response?.data?.message ?? error.message,
       status: 'error',
-      isClosable: true,
-      code: error.response?.status ?? null,
+      code: error.response?.status,
     }
   }
-  error = new Error(error)
+  const err = new Error(error as any)
   return {
-    title: error.name,
-    description: error.message,
+    title: err.name,
+    description: err.message,
     status: 'error',
-    isClosable: true,
-    code: null,
   }
 }

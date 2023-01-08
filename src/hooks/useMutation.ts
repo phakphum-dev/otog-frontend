@@ -6,7 +6,7 @@ export function useMutation<T = any, D extends any[] = any[]>(
   onTry: (...args: D) => Promise<T>,
   onCatch?: (e: any) => void
 ) {
-  const { onError } = useErrorToast()
+  const onError = useErrorToast()
   return useCallback(
     (...args: D) => {
       try {
