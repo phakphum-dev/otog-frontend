@@ -203,7 +203,7 @@ module.exports = {
         },
         ({ modifySelectors, separator }) => {
           modifySelectors(({ className }) => {
-            return `.${e(`active${separator}${className}`)}.active`
+            return `.${e(`active${separator}${className}`)}[data-active="true"]`
           })
         },
       ])

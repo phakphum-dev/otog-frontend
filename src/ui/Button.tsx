@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { VariantProps, cva } from 'cva'
 import {
-  ButtonHTMLAttributes,
+  ComponentProps,
   ForwardedRef,
   PropsWithChildren,
   ReactNode,
@@ -47,7 +47,6 @@ const buttonStyles = cva(
         full: 'rounded-full',
         md: 'rounded-md',
       },
-      isActive: { true: 'active' },
     },
     defaultVariants: {
       variant: 'solid',
@@ -160,11 +159,12 @@ const buttonStyles = cva(
 
 export type ButtonProps = PropsWithChildren<
   VariantProps<typeof buttonStyles> &
-    ButtonHTMLAttributes<HTMLButtonElement> & {
+    ComponentProps<'button'> & {
       as?: 'a' | 'button'
       leftIcon?: ReactNode
       rightIcon?: ReactNode
       fullWidth?: boolean
+      isActive?: boolean
     }
 >
 
@@ -180,7 +180,7 @@ export const Button = forwardRef(
       leftIcon,
       rightIcon,
       rounded,
-      isActive,
+      isActive = false,
       fullWidth = false,
       ...props
     }: ButtonProps,
@@ -194,10 +194,10 @@ export const Button = forwardRef(
           colorScheme,
           size,
           fullWidth,
-          isActive,
           rounded,
           className,
         }),
+        'data-active': isActive,
         ref,
         ...props,
       },

@@ -1,5 +1,5 @@
 import { VariantProps, cva } from 'cva'
-import { AnchorHTMLAttributes, PropsWithChildren } from 'react'
+import { ComponentProps, PropsWithChildren } from 'react'
 
 const linkStyles = cva(
   'cursor-pointer hover:underline focus-visible:underline',
@@ -15,7 +15,6 @@ const linkStyles = cva(
         head:
           'hover:text-gray-900 hover:dark:text-gray-100 hover:no-underline transition-colors',
       },
-      isActive: { true: 'active' },
     },
     defaultVariants: {
       variant: 'default',
@@ -25,8 +24,9 @@ const linkStyles = cva(
 
 export type LinkProps = PropsWithChildren<
   VariantProps<typeof linkStyles> &
-    AnchorHTMLAttributes<HTMLAnchorElement> & {
+    ComponentProps<'a'> & {
       isExternal?: boolean
+      isActive?: boolean
     }
 >
 export const Link = ({
@@ -34,17 +34,18 @@ export const Link = ({
   children,
   href,
   variant,
-  isActive,
+  isActive = false,
   isExternal = false,
   ...props
 }: LinkProps) => {
   return (
     // eslint-disable-next-line react/jsx-no-target-blank
     <a
-      className={linkStyles({ variant, className, isActive })}
+      className={linkStyles({ variant, className })}
       href={href}
       target={isExternal ? '_blank' : undefined}
       rel={isExternal ? 'noopener' : undefined}
+      data-active={isActive}
       {...props}
     >
       {children}
