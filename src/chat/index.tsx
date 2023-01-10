@@ -1,4 +1,10 @@
-import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
+import {
+  ChangeEvent,
+  KeyboardEvent,
+  forwardRef,
+  useEffect,
+  useState,
+} from 'react'
 import { toast } from 'react-hot-toast'
 import { IoChatbubbleEllipses, IoSend } from 'react-icons/io5'
 
@@ -24,24 +30,27 @@ type ChatButtonProps = Omit<IconButtonProps, 'as' | 'icon'> & {
 
 const MAX_LENGTH = 15
 
-const ChatButton = ({ hasUnread, ...props }: ChatButtonProps) => (
-  <div className="fixed bottom-5 right-5 z-100">
-    <div className="relative z-101">
-      {hasUnread && (
-        <div className="absolute top-1 right-1 w-2 h-2 rounded-full bg-otog" />
-      )}
+const ChatButton = forwardRef<HTMLButtonElement, ChatButtonProps>(
+  ({ hasUnread, ...props }, ref) => (
+    <div className="fixed bottom-5 right-5 z-100">
+      <div className="relative z-101">
+        {hasUnread && (
+          <div className="absolute top-1 right-1 w-2 h-2 rounded-full bg-otog" />
+        )}
+      </div>
+      <OnlineUsersTooltip placement="top-end">
+        <IconButton
+          rounded="full"
+          className="text-2xl"
+          variant="solid"
+          size="lg"
+          icon={<IoChatbubbleEllipses />}
+          {...props}
+          ref={ref}
+        />
+      </OnlineUsersTooltip>
     </div>
-    <OnlineUsersTooltip placement="top-end">
-      <IconButton
-        rounded="full"
-        className="text-2xl"
-        variant="solid"
-        size="lg"
-        icon={<IoChatbubbleEllipses />}
-        {...props}
-      />
-    </OnlineUsersTooltip>
-  </div>
+  )
 )
 
 const OnlineUsersTooltip = (props: TooltipProps) => {

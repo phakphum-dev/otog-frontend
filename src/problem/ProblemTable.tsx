@@ -15,12 +15,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
 } from '@chakra-ui/react'
 
 import { toggleProblem } from '@src/admin/queries/problem'
@@ -36,6 +30,7 @@ import { useStatusColor } from '@src/theme/useStatusColor'
 import { Button } from '@src/ui/Button'
 import { Link } from '@src/ui/Link'
 import { Spinner } from '@src/ui/Spinner'
+import { Table, Td, Th } from '@src/ui/Table'
 import { ONE_SECOND } from '@src/utils/time'
 
 export type FilterFunction = (problem: ProblemWithSubmission) => boolean
@@ -81,27 +76,27 @@ export const ProblemTable = (props: ProblemTableProps) => {
 
   return sortedProblems ? (
     <div className="overflow-x-auto">
-      <Table variant="simple">
-        <Thead>
-          <Tr>
-            <SortTh px={7} w={22} sortBy="id" {...sortingProps}>
+      <Table>
+        <thead>
+          <tr>
+            <SortTh centered sortBy="id" {...sortingProps}>
               #
             </SortTh>
             <Th>ชื่อ</Th>
             {isAdmin && (
-              <SortTh w={22} centered sortBy="status" {...sortingProps}>
+              <SortTh centered sortBy="status" {...sortingProps}>
                 สถานะ
               </SortTh>
             )}
-            <SortTh px={7} w={22} centered sortBy="passed" {...sortingProps}>
+            <SortTh centered sortBy="passed" {...sortingProps}>
               ผ่าน
             </SortTh>
-            <SortTh w={22} centered sortBy="sent" {...sortingProps}>
+            <SortTh centered sortBy="sent" {...sortingProps}>
               ส่ง
             </SortTh>
-          </Tr>
-        </Thead>
-        <Tbody>
+          </tr>
+        </thead>
+        <tbody>
           <ProblemsRows
             problems={sortedProblems}
             onSubmitOpen={submitModal.onOpen}
@@ -111,7 +106,7 @@ export const ProblemTable = (props: ProblemTableProps) => {
             onPassedOpen={passedModal.onOpen}
             setModalPassed={setModalPassed}
           />
-        </Tbody>
+        </tbody>
       </Table>
       {modalProblem && (
         <SubmitModal
@@ -212,10 +207,10 @@ const ProblemRow = (props: ProblemRowProps) => {
   }
 
   return (
-    <Tr className={bg}>
-      <Td textAlign="center" w={22}>
+    <tr className={bg}>
+      <Td className="text-center">
         {problem.submission ? (
-          <Button className="!px-1" onClick={onCodeModalOpen} variant="ghost">
+          <Button onClick={onCodeModalOpen} variant="link">
             {problem.id}
           </Button>
         ) : (
@@ -228,32 +223,33 @@ const ProblemRow = (props: ProblemRowProps) => {
           href={`${API_HOST}problem/doc/${problem.id}`}
           variant={show ? 'default' : 'close'}
         >
-          {problem.name}
-          <br />({problem.timeLimit / ONE_SECOND} วินาที {problem.memoryLimit}{' '}
-          MB)
+          <p>{problem.name}</p>
+          <p>
+            ({problem.timeLimit / ONE_SECOND} วินาที {problem.memoryLimit} MB)
+          </p>
         </Link>
       </Td>
       {isAdmin && (
-        <Td w={22} textAlign="center">
+        <Td className="text-center">
           <Link variant={show ? 'hidden' : 'close'} onClick={onToggle}>
             {show ? 'เปิด' : 'ซ่อน'}
           </Link>
         </Td>
       )}
-      <Td w={22} textAlign="center">
+      <Td className="text-center">
         {problem.passedCount &&
         (isAdmin || problem.submission?.status === 'accept') ? (
-          <Button className="!px-1" variant="ghost" onClick={onPassedModalOpen}>
+          <Button variant="link" onClick={onPassedModalOpen}>
             {problem.passedCount}
           </Button>
         ) : (
           problem.passedCount
         )}
       </Td>
-      <Td w={22}>
+      <Td className="text-center">
         <SubmitButton onClick={onSubmitModalOpen} />
       </Td>
-    </Tr>
+    </tr>
   )
 }
 

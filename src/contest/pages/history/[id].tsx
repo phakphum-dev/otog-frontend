@@ -1,22 +1,13 @@
-import { HTMLMotionProps, motion } from 'framer-motion'
+import clsx from 'clsx'
+import { motion } from 'framer-motion'
 import Head from 'next/head'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useMemo } from 'react'
+import React, { ComponentProps, useMemo } from 'react'
 import { CgDetailsLess, CgDetailsMore } from 'react-icons/cg'
 import { FaMedal, FaTrophy } from 'react-icons/fa'
 
-import { HTMLChakraProps, useTheme } from '@chakra-ui/system'
-import {
-  Td as TData,
-  Th as THead,
-  Table,
-  TableCellProps,
-  TableColumnHeaderProps,
-  Tbody,
-  Thead,
-  Tr,
-} from '@chakra-ui/table'
+import { useTheme } from '@chakra-ui/system'
 import { Tooltip } from '@chakra-ui/tooltip'
 
 import { PageContainer } from '@src/components/layout/PageContainer'
@@ -40,26 +31,24 @@ import { useDisclosure } from '@src/hooks/useDisclosure'
 import { ButtonGroup } from '@src/ui/ButtonGroup'
 import { IconButton } from '@src/ui/IconButton'
 import { Link } from '@src/ui/Link'
+import { Td as TD, Th as TH, Table } from '@src/ui/Table'
 import { sum } from '@src/utils/sum'
 import { ONE_SECOND } from '@src/utils/time'
 
-const Th = (props: TableColumnHeaderProps) => (
-  <THead textAlign="center" {...props} />
+const Th = (props: ComponentProps<'th'>) => <TH textAlign="center" {...props} />
+const Td = ({ className, ...props }: ComponentProps<'td'>) => (
+  <TD
+    className={clsx('text-center !py-2 leading-normal', className)}
+    {...props}
+  />
 )
-const Td = (props: TableCellProps) => (
-  <TData textAlign="center" lineHeight={undefined} py={2} {...props} />
-)
-
-type Merge<P, T> = Omit<P, keyof T> & T
-type MotionTrProps = Merge<HTMLChakraProps<'tr'>, HTMLMotionProps<'tr'>>
-export const MotionTr: React.FC<MotionTrProps> = motion(Tr)
 
 const fontSize: Record<number, string> = {
-  1: '5xl',
-  2: '4xl',
-  3: '3xl',
-  4: '2xl',
-  5: 'xl',
+  1: '4xl',
+  2: '3xl',
+  3: '2xl',
+  4: 'xl',
+  5: 'lg',
 }
 
 const getTotalScore = (user: UserWithSubmission) =>
@@ -120,8 +109,8 @@ export default function ContestHistory() {
       </TitleLayout>
       <div className="overflow-x-auto">
         <Table variant={isOpen ? 'simple' : 'unstyled'}>
-          <Thead>
-            <Tr whiteSpace="nowrap">
+          <thead>
+            <tr className="whitespace-nowrap">
               <Th>#</Th>
               <Th>ชื่อ</Th>
               <Th>คะแนนรวม</Th>
@@ -146,11 +135,11 @@ export default function ContestHistory() {
                   </Th>
                 ))}
               <Th>เวลาที่ใช้</Th>
-            </Tr>
-          </Thead>
-          <Tbody sx={{ td: { lineHeight: 'normal' } }}>
+            </tr>
+          </thead>
+          <tbody>
             {users.map((user) => (
-              <MotionTr
+              <motion.tr
                 key={user.id}
                 animate={isOpen ? 'small' : 'large'}
                 initial="large"
@@ -164,7 +153,7 @@ export default function ContestHistory() {
                 }}
               >
                 <Td>{user.rank}</Td>
-                <Td maxW={300} noOfLines={!isOpen ? 1 : undefined}>
+                <Td className={clsx(!isOpen && 'line-clamp-1')}>
                   <NextLink href={`/profile/${user.id}`}>
                     <Link className="line-clamp-3" variant="hidden">
                       {user.showName}
@@ -188,9 +177,9 @@ export default function ContestHistory() {
                     user.submissions.map((submission) => submission.timeUsed)
                   ) / ONE_SECOND}
                 </Td>
-              </MotionTr>
+              </motion.tr>
             ))}
-          </Tbody>
+          </tbody>
         </Table>
       </div>
 
@@ -198,9 +187,9 @@ export default function ContestHistory() {
         <Title icon={FaMedal}>รางวัล</Title>
       </TitleLayout>
       <div className="overflow-auto">
-        <Table variant="simple">
-          <Thead>
-            <Tr whiteSpace="nowrap">
+        <Table>
+          <thead>
+            <tr className="whitespace-nowrap">
               <Th />
               {scoreboard!.problems.map((problem) => (
                 <Th key={problem.id}>
@@ -213,13 +202,13 @@ export default function ContestHistory() {
                   </Link>
                 </Th>
               ))}
-            </Tr>
-          </Thead>
-          <Tbody sx={{ td: { lineHeight: 'normal' } }}>
+            </tr>
+          </thead>
+          <tbody>
             {prizes.map((prize) => {
               return (
-                <Tr key={prize}>
-                  <Td textAlign="left" whiteSpace="nowrap">
+                <tr key={prize}>
+                  <Td className="text-left whitespace-nowrap">
                     <Tooltip
                       hasArrow
                       label={prizeDescription[prize].description}
@@ -259,10 +248,10 @@ export default function ContestHistory() {
                       </Td>
                     )
                   })}
-                </Tr>
+                </tr>
               )
             })}
-          </Tbody>
+          </tbody>
         </Table>
       </div>
     </PageContainer>

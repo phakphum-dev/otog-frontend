@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import Image from 'next/image'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import { ForwardedRef, useEffect, useRef } from 'react'
+import { forwardRef, useEffect, useRef } from 'react'
 
 import Logo from '../../../public/logo512.png'
 import { Avatar } from '../Avatar'
@@ -20,7 +20,6 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  forwardRef,
   useBreakpointValue,
 } from '@chakra-ui/react'
 
@@ -170,38 +169,38 @@ const NavItem = (props: ItemProps & LinkProps) => {
   )
 }
 
-const DrawerItem = (props: ItemProps & ButtonProps) => {
-  const { href, title, active, ...rest } = props
-  const isActive = usePathActive(href) || active
-  return (
-    <NextLink href={href} passHref>
-      <DrawerButton
-        as="a"
-        className={
-          isActive
-            ? 'text-gray-800 dark:text-white'
-            : 'text-gray-500 dark:text-gray-400'
-        }
-        {...rest}
-      >
-        {title}
-      </DrawerButton>
-    </NextLink>
-  )
-}
+const DrawerItem = forwardRef<HTMLButtonElement, ItemProps & ButtonProps>(
+  (props, ref) => {
+    const { href, title, active, ...rest } = props
+    const isActive = usePathActive(href) || active
+    return (
+      <NextLink href={href} passHref>
+        <DrawerButton
+          as="a"
+          className={
+            isActive
+              ? 'text-gray-800 dark:text-white'
+              : 'text-gray-500 dark:text-gray-400'
+          }
+          {...rest}
+          ref={ref}
+        >
+          {title}
+        </DrawerButton>
+      </NextLink>
+    )
+  }
+)
 
-const DrawerButton = forwardRef(
-  (
-    { className, ...props }: ButtonProps,
-    ref: ForwardedRef<HTMLButtonElement>
-  ) => {
+const DrawerButton = forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, ...props }, ref) => {
     return (
       <Button
-        ref={ref}
         variant="ghost"
         fullWidth
         className={clsx('!px-2 !justify-start font-normal', className)}
         {...props}
+        ref={ref}
       />
     )
   }

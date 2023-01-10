@@ -1,15 +1,6 @@
 import clsx from 'clsx'
 import { VariantProps, cva } from 'cva'
-import {
-  ForwardedRef,
-  HTMLAttributes,
-  InputHTMLAttributes,
-  LabelHTMLAttributes,
-  SVGAttributes,
-  SelectHTMLAttributes,
-  TextareaHTMLAttributes,
-  forwardRef,
-} from 'react'
+import { ComponentProps, forwardRef } from 'react'
 
 const inputStyles = cva(
   'block w-full bg-inherit border text-md border-slate-300 dark:border-alpha-white-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:dark:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-colors disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none',
@@ -33,27 +24,25 @@ const inputStyles = cva(
   }
 )
 
-export type InputProps = InputHTMLAttributes<HTMLInputElement> &
+export type InputProps = ComponentProps<'input'> &
   VariantProps<typeof inputStyles>
 
-export const Input = forwardRef(
-  (props: InputProps, ref: ForwardedRef<HTMLInputElement>) => {
-    const { variant, rounded, className, ...rest } = props
-    return (
-      <input
-        className={inputStyles({ variant, rounded, className })}
-        ref={ref}
-        {...rest}
-      />
-    )
-  }
-)
+export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+  const { variant, rounded, className, ...rest } = props
+  return (
+    <input
+      className={inputStyles({ variant, rounded, className })}
+      ref={ref}
+      {...rest}
+    />
+  )
+})
 
-export type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> &
+export type TextareaProps = ComponentProps<'textarea'> &
   VariantProps<typeof inputStyles>
 
-export const Textarea = forwardRef(
-  (props: TextareaProps, ref: ForwardedRef<HTMLTextAreaElement>) => {
+export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
+  (props, ref) => {
     const { variant, rounded, className, ...rest } = props
     return (
       <textarea
@@ -69,11 +58,11 @@ export const Textarea = forwardRef(
   }
 )
 
-export type SelectProps = SelectHTMLAttributes<HTMLSelectElement> &
+export type SelectProps = ComponentProps<'select'> &
   VariantProps<typeof inputStyles>
 
-export const Select = forwardRef(
-  (props: SelectProps, ref: ForwardedRef<HTMLSelectElement>) => {
+export const Select = forwardRef<HTMLSelectElement, SelectProps>(
+  (props, ref) => {
     const { variant, rounded, className, ...rest } = props
     return (
       <div className={clsx('relative', className)}>
@@ -97,7 +86,7 @@ export const Select = forwardRef(
   }
 )
 
-export const DefaultIcon = (props: SVGAttributes<SVGElement>) => (
+export const DefaultIcon = (props: ComponentProps<'svg'>) => (
   <svg
     viewBox="0 0 24 24"
     focusable={false}
@@ -111,10 +100,7 @@ export const DefaultIcon = (props: SVGAttributes<SVGElement>) => (
   </svg>
 )
 
-export const FormLabel = ({
-  className,
-  ...props
-}: LabelHTMLAttributes<HTMLLabelElement>) => (
+export const FormLabel = ({ className, ...props }: ComponentProps<'label'>) => (
   <label
     className={clsx('block text-md font-medium mb-2 mr-3', className)}
     {...props}
@@ -124,7 +110,7 @@ export const FormLabel = ({
 export const FormHelperText = ({
   className,
   ...props
-}: HTMLAttributes<HTMLDivElement>) => (
+}: ComponentProps<'div'>) => (
   <div
     className={clsx(
       'block text-sm mt-2 text-gray-600 dark:text-alpha-white-600',

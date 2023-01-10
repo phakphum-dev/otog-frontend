@@ -23,7 +23,6 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/modal'
-import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
 import {
   createProblem,
@@ -50,6 +49,7 @@ import { IconButton } from '@src/ui/IconButton'
 import { FormHelperText, FormLabel, Input } from '@src/ui/Input'
 import { Link } from '@src/ui/Link'
 import { Spinner } from '@src/ui/Spinner'
+import { Table, Td, Th } from '@src/ui/Table'
 
 export default function AdminProblemPage() {
   return (
@@ -329,14 +329,14 @@ const ProblemAdminTable = () => {
   return problems ? (
     <div className="overflow-x-auto">
       <Table>
-        <Thead>
-          <Tr>
+        <thead>
+          <tr>
             <Th>#</Th>
             <Th>ชื่อ</Th>
             <Th>แก้ไข</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
+          </tr>
+        </thead>
+        <tbody>
           {problems.slice(0, 100).map((problem) => (
             <ProblemAdminRow key={problem.id} problem={problem} />
           ))}
@@ -345,7 +345,7 @@ const ProblemAdminTable = () => {
               <ProblemAdminRow problem={problem} />
             </RenderLater>
           ))}
-        </Tbody>
+        </tbody>
       </Table>
     </div>
   ) : (
@@ -376,7 +376,7 @@ const ProblemAdminRow = (props: ProblemAdminProps) => {
   const editModal = useDisclosure()
 
   return (
-    <Tr>
+    <tr>
       <Td>{problem.id}</Td>
       <Td>
         <Link
@@ -405,7 +405,7 @@ const ProblemAdminRow = (props: ProblemAdminProps) => {
           <IconButton icon={<FaSync />} aria-label="config" disabled />
         </ButtonGroup>
       </Td>
-    </Tr>
+    </tr>
   )
 }
 

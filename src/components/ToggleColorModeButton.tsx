@@ -1,9 +1,14 @@
+import { forwardRef } from 'react'
+
 import { MoonIcon, SunIcon } from '@chakra-ui/icons'
 import { useColorMode } from '@chakra-ui/react'
 
 import { IconButton, IconButtonProps } from '@src/ui/IconButton'
 
-export function ToggleColorModeButton(props: Omit<IconButtonProps, 'icon'>) {
+export const ToggleColorModeButton = forwardRef<
+  HTMLButtonElement,
+  Omit<IconButtonProps, 'icon'>
+>((props, ref) => {
   const { colorMode, toggleColorMode } = useColorMode()
   return (
     <IconButton
@@ -12,6 +17,7 @@ export function ToggleColorModeButton(props: Omit<IconButtonProps, 'icon'>) {
       onClick={toggleColorMode}
       icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
       {...props}
+      ref={ref}
     />
   )
-}
+})

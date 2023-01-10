@@ -1,5 +1,5 @@
 import { VariantProps, cva } from 'cva'
-import { ForwardedRef, HTMLAttributes, forwardRef } from 'react'
+import { ComponentProps, forwardRef } from 'react'
 
 const spinnerStyle = cva(
   'animate-spin inline-block rounded-full border-2 border-b-transparent border-l-transparent border-solid',
@@ -20,13 +20,10 @@ const spinnerStyle = cva(
 )
 
 export type SpinnerProps = VariantProps<typeof spinnerStyle> &
-  HTMLAttributes<HTMLDivElement>
+  ComponentProps<'div'>
 
-export const Spinner = forwardRef(
-  (
-    { className, size, ...props }: SpinnerProps,
-    ref: ForwardedRef<HTMLDivElement>
-  ) => {
+export const Spinner = forwardRef<HTMLDivElement, SpinnerProps>(
+  ({ className, size, ...props }, ref) => {
     return (
       <div className={spinnerStyle({ size, className })} {...props} ref={ref} />
     )

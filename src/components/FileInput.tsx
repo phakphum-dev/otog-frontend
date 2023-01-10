@@ -70,8 +70,8 @@ export const FileInput = forwardRef(
   }
 )
 
-export const UploadFileButton = forwardRef(
-  (props: InputProps, ref: ForwardedRef<FileInputRef>) => {
+export const UploadFileButton = forwardRef<FileInputRef, InputProps>(
+  (props, ref) => {
     const { inputRef, onClick } = useInputRef(ref)
     return (
       <>
@@ -81,7 +81,7 @@ export const UploadFileButton = forwardRef(
           icon={<FaUpload />}
           onClick={onClick}
         />
-        <Input type="file" ref={inputRef} className="hidden" {...props} />
+        <Input type="file" className="hidden" {...props} ref={inputRef} />
       </>
     )
   }

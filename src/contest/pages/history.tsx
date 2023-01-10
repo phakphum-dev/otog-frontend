@@ -2,13 +2,12 @@ import Head from 'next/head'
 import NextLink from 'next/link'
 import { FaTrophy } from 'react-icons/fa'
 
-import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
-
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { useContests } from '@src/contest/queries'
 import { Link } from '@src/ui/Link'
 import { Spinner } from '@src/ui/Spinner'
+import { Table, Td, Th } from '@src/ui/Table'
 import { toThDate, toThTimeFormat } from '@src/utils/time'
 
 export default function ContestHistoryPage() {
@@ -25,18 +24,18 @@ export default function ContestHistoryPage() {
       {contests ? (
         <div className="overflow-x-auto">
           <Table>
-            <Thead>
-              <Tr>
+            <thead>
+              <tr>
                 <Th>#</Th>
                 <Th>การแข่งขัน</Th>
                 <Th>โหมด</Th>
                 <Th>ระยะเวลา</Th>
                 <Th>จัดเมื่อ</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
+              </tr>
+            </thead>
+            <tbody>
               {contests.map((contest) => (
-                <Tr key={contest.id} height={16}>
+                <tr key={contest.id} className="h-16">
                   <Td>{contest.id}</Td>
                   <Td>
                     <NextLink href={`/contest/history/${contest.id}`} passHref>
@@ -53,9 +52,9 @@ export default function ContestHistoryPage() {
                     )}
                   </Td>
                   <Td>{toThDate(contest.timeStart)}</Td>
-                </Tr>
+                </tr>
               ))}
-            </Tbody>
+            </tbody>
           </Table>
         </div>
       ) : (

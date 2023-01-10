@@ -12,7 +12,6 @@ import {
   CloseIcon,
   EditIcon,
 } from '@chakra-ui/icons'
-import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 import { Collapse } from '@chakra-ui/transition'
 
 import { API_HOST, OFFLINE_MODE } from '@src/config'
@@ -28,6 +27,7 @@ import { IconButton } from '@src/ui/IconButton'
 import { Select } from '@src/ui/Input'
 import { Link } from '@src/ui/Link'
 import { Spinner } from '@src/ui/Spinner'
+import { Table, Td, Th } from '@src/ui/Table'
 import { ONE_SECOND } from '@src/utils/time'
 
 const defaultValue = `#include <iostream>
@@ -255,23 +255,18 @@ export const TaskSubmissionTable = (props: TaskSubmissionTableProps) => {
   return (
     <div className="overflow-x-auto">
       <Table size="sm">
-        <Thead>
-          <Tr>
-            <Th px={5}>#</Th>
+        <thead>
+          <tr>
+            <Th>#</Th>
             <Th>ผลตรวจ</Th>
             <Th>เวลารวม</Th>
             <Th>คะแนน</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          <Tr className={bg}>
+          </tr>
+        </thead>
+        <tbody>
+          <tr className={bg}>
             <Td>
-              <Button
-                className="!px-1"
-                variant="ghost"
-                size="sm"
-                onClick={codeDisclosure.onOpen}
-              >
+              <Button variant="link" size="sm" onClick={codeDisclosure.onOpen}>
                 ล่าสุด
               </Button>
               <CodeModal submissionId={submission.id} {...codeDisclosure} />
@@ -280,10 +275,9 @@ export const TaskSubmissionTable = (props: TaskSubmissionTableProps) => {
               {submission.errmsg ? (
                 <>
                   <Button
-                    className="!px-1"
-                    variant="ghost"
-                    onClick={errorDisclosure.onOpen}
+                    variant="link"
                     size="sm"
+                    onClick={errorDisclosure.onOpen}
                   >
                     {submission.result}
                   </Button>
@@ -302,8 +296,8 @@ export const TaskSubmissionTable = (props: TaskSubmissionTableProps) => {
             </Td>
             <Td>{submission.timeUsed / 1000} s</Td>
             <Td>{submission.score}</Td>
-          </Tr>
-        </Tbody>
+          </tr>
+        </tbody>
       </Table>
     </div>
   )

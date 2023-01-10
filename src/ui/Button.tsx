@@ -2,7 +2,6 @@ import clsx from 'clsx'
 import { VariantProps, cva } from 'cva'
 import {
   ComponentProps,
-  ForwardedRef,
   PropsWithChildren,
   ReactNode,
   createElement,
@@ -23,6 +22,7 @@ const buttonStyles = cva(
         solid: '',
         outline: 'border border-current',
         ghost: 'bg-transparent',
+        link: 'hover:underline',
       },
       colorScheme: {
         gray: '',
@@ -37,10 +37,18 @@ const buttonStyles = cva(
         'otog-orange': '',
       },
       size: {
-        lg: 'h-12 min-w-12 text-lg px-6',
-        md: 'h-10 min-w-10 text-md px-4',
-        sm: 'h-8 min-w-8 text-sm px-3',
-        xs: 'h-6 min-w-6 text-xs px-2',
+        lg: 'h-12 min-w-12 text-lg',
+        md: 'h-10 min-w-10 text-md',
+        sm: 'h-8 min-w-8 text-sm',
+        xs: 'h-6 min-w-6 text-xs',
+        none: '',
+      },
+      p: {
+        lg: 'px-6',
+        md: 'px-4',
+        sm: 'px-3',
+        xs: 'px-2',
+        none: '',
       },
       fullWidth: { true: 'w-full' },
       rounded: {
@@ -53,6 +61,7 @@ const buttonStyles = cva(
       colorScheme: 'gray',
       size: 'md',
       rounded: 'md',
+      p: 'md',
     },
     compoundVariants: [
       {
@@ -168,7 +177,7 @@ export type ButtonProps = PropsWithChildren<
     }
 >
 
-export const Button = forwardRef(
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       as = 'button',
@@ -180,11 +189,12 @@ export const Button = forwardRef(
       leftIcon,
       rightIcon,
       rounded,
+      p,
       isActive = false,
       fullWidth = false,
       ...props
-    }: ButtonProps,
-    ref: ForwardedRef<HTMLButtonElement>
+    },
+    ref
   ) => {
     return createElement(
       as,
@@ -192,7 +202,8 @@ export const Button = forwardRef(
         className: buttonStyles({
           variant,
           colorScheme,
-          size,
+          size: variant === 'link' ? 'none' : size,
+          p: p ?? variant === 'link' ? 'none' : size,
           fullWidth,
           rounded,
           className,

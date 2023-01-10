@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction, memo, useEffect, useState } from 'react'
 import { CodeModal, ErrorModal } from '../components/Code'
 import { SubmissionWithProblem } from './types'
 
-import { Table, Tbody, Td, Th, Thead, Tooltip, Tr } from '@chakra-ui/react'
+import { Tooltip } from '@chakra-ui/react'
 
 import { API_HOST } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
@@ -21,6 +21,7 @@ import { isGraded, isGrading, useStatusColor } from '@src/theme/useStatusColor'
 import { Button } from '@src/ui/Button'
 import { Link } from '@src/ui/Link'
 import { Spinner } from '@src/ui/Spinner'
+import { Table, Td, Th } from '@src/ui/Table'
 import { ONE_SECOND, toThDate } from '@src/utils/time'
 
 export const SubmissionTable = () => {
@@ -86,18 +87,18 @@ export const InfiniteSubmissionTable = (props: SubmissionTableBaseProps) => {
 
   return (
     <div className="overflow-x-auto">
-      <Table variant="simple">
-        <Thead>
-          <Tr>
-            <Th px={7}>#</Th>
+      <Table>
+        <thead>
+          <tr>
+            <Th>#</Th>
             <Th>ชื่อ</Th>
             <Th>ข้อ</Th>
             <Th>ผลตรวจ</Th>
             <Th>เวลารวม</Th>
             {/* <Th>คะแนน</Th> */}
-          </Tr>
-        </Thead>
-        <Tbody>
+          </tr>
+        </thead>
+        <tbody>
           {submissionsList.map(
             (submissions) =>
               submissions.length > 0 && (
@@ -109,7 +110,7 @@ export const InfiniteSubmissionTable = (props: SubmissionTableBaseProps) => {
                 />
               )
           )}
-        </Tbody>
+        </tbody>
       </Table>
       {hasMore && (
         <div className="flex justify-center py-6">
@@ -163,10 +164,10 @@ const SubmissionRow = (props: SubmissionRowProps) => {
     return null
   }
   return (
-    <Tr className={bg}>
-      <Td lineHeight="40px">
+    <tr className={bg}>
+      <Td className="h-16">
         {user?.id === submission?.user.id || isAdmin ? (
-          <Button className="!px-1" variant="ghost" onClick={onCodeModalOpen}>
+          <Button variant="link" onClick={onCodeModalOpen}>
             {submission?.id}
           </Button>
         ) : (
@@ -179,7 +180,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
           </Tooltip>
         )}
       </Td>
-      <Td maxW={300}>
+      <Td className="max-w-[300px]">
         <NextLink href={`/profile/${submission.user.id}`}>
           <Link className="line-clamp-3" variant="hidden">
             {submission.user.showName}
@@ -196,14 +197,10 @@ const SubmissionRow = (props: SubmissionRowProps) => {
           {submission.problem.name}
         </Link>
       </Td>
-      <Td maxW={345} wordBreak="break-all">
+      <Td className="w-72 word-break">
         {submission.errmsg && (isAdmin || user?.id === submission.user.id) ? (
           <>
-            <Button
-              className="!px-1"
-              variant="ghost"
-              onClick={errorDisclosure.onOpen}
-            >
+            <Button variant="link" onClick={errorDisclosure.onOpen}>
               {submission.result}
             </Button>
             <ErrorModal {...errorDisclosure} submission={submission} />
@@ -219,8 +216,10 @@ const SubmissionRow = (props: SubmissionRowProps) => {
           submission.result
         )}
       </Td>
-      <Td whiteSpace="nowrap">{submission.timeUsed / ONE_SECOND} s</Td>
+      <Td className="whitespace-nowrap">
+        {submission.timeUsed / ONE_SECOND} s
+      </Td>
       {/* <Td>{submission.score}</Td> */}
-    </Tr>
+    </tr>
   )
 }

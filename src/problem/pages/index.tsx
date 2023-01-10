@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import Head from 'next/head'
-import { Dispatch, SetStateAction, memo, useState } from 'react'
+import { Dispatch, SetStateAction, forwardRef, memo, useState } from 'react'
 import { FaPuzzlePiece } from 'react-icons/fa'
 
 import { ProblemWithSubmission } from '../types'
@@ -68,29 +68,26 @@ type OtogButton = ButtonProps & {
   number?: number
 }
 
-const OtogButton = ({
-  label,
-  number,
-  colorScheme,
-  isLoading,
-  ...props
-}: OtogButton) => {
-  return (
-    <Button
-      className={clsx(
-        'flex-1 aspect-5/4 rounded-lg !h-full flex-col',
-        isLoading && 'animate-pulse'
-      )}
-      colorScheme={isLoading ? 'gray' : colorScheme}
-      {...props}
-    >
-      <h6 className="sm:mb-2 text-base md:text-lg hidden sm:block">
-        {!isLoading && label}
-      </h6>
-      <h3 className="text-3xl md:text-4xl font-bold">{number}</h3>
-    </Button>
-  )
-}
+const OtogButton = forwardRef<HTMLButtonElement, OtogButton>(
+  ({ label, number, colorScheme, isLoading, ...props }, ref) => {
+    return (
+      <Button
+        className={clsx(
+          'flex-1 aspect-5/4 rounded-lg !h-full flex-col',
+          isLoading && 'animate-pulse'
+        )}
+        colorScheme={isLoading ? 'gray' : colorScheme}
+        {...props}
+        ref={ref}
+      >
+        <h6 className="sm:mb-2 text-base md:text-lg hidden sm:block">
+          {!isLoading && label}
+        </h6>
+        <h3 className="text-3xl md:text-4xl font-bold">{number}</h3>
+      </Button>
+    )
+  }
+)
 
 const filterButton = [
   {

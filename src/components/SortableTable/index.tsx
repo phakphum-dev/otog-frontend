@@ -1,10 +1,9 @@
 import clsx from 'clsx'
-import { PropsWithChildren, useState } from 'react'
+import { ComponentProps, PropsWithChildren, useState } from 'react'
 import { FaArrowDown, FaArrowUp } from 'react-icons/fa'
 
-import { TableColumnHeaderProps, Th } from '@chakra-ui/react'
-
 import { Link } from '@src/ui/Link'
+import { Th } from '@src/ui/Table'
 
 export type SortingOrder = 'desc' | 'asc'
 
@@ -30,7 +29,7 @@ export const useSortedTable = (
 }
 
 type TableHeadProps = PropsWithChildren<
-  TableColumnHeaderProps &
+  ComponentProps<'th'> &
     ReturnType<typeof useSortedTable> & {
       sortBy: string
       defaultOrder?: SortingOrder

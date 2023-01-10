@@ -23,7 +23,6 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/modal'
-import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
 import {
   createContest,
@@ -52,6 +51,7 @@ import { IconButton } from '@src/ui/IconButton'
 import { FormLabel, Input, Select } from '@src/ui/Input'
 import { Link } from '@src/ui/Link'
 import { Spinner } from '@src/ui/Spinner'
+import { Table, Td, Th } from '@src/ui/Table'
 
 export default function AdminContestPage() {
   const [contestId, setContestId] = useState<number>()
@@ -365,8 +365,8 @@ const ContestTable = function ContestTable(props: ContestTableProps) {
   return sortedProblems ? (
     <div className="overflow-x-auto">
       <Table>
-        <Thead>
-          <Tr>
+        <thead>
+          <tr>
             <SortTh sortBy="id" {...sortingProps}>
               #
             </SortTh>
@@ -374,9 +374,9 @@ const ContestTable = function ContestTable(props: ContestTableProps) {
             <SortTh sortBy="show" {...sortingProps}>
               แก้ไข
             </SortTh>
-          </Tr>
-        </Thead>
-        <Tbody>
+          </tr>
+        </thead>
+        <tbody>
           {sortedProblems.slice(0, 100).map((problem) => (
             <ContestProblemRow
               isOpen={openProblemIds.includes(problem.id)}
@@ -394,7 +394,7 @@ const ContestTable = function ContestTable(props: ContestTableProps) {
               />
             </RenderLater>
           ))}
-        </Tbody>
+        </tbody>
       </Table>
     </div>
   ) : (
@@ -434,7 +434,7 @@ const ContestProblemRow = (props: ContestProblemRowProps) => {
   }
 
   return (
-    <Tr>
+    <tr>
       <Td>{problem.id}</Td>
       <Td>
         <Link
@@ -453,7 +453,7 @@ const ContestProblemRow = (props: ContestProblemRowProps) => {
           onClick={onClick}
         />
       </Td>
-    </Tr>
+    </tr>
   )
 }
 

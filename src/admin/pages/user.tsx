@@ -15,7 +15,6 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/modal'
-import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 
 import { editUser } from '@src/admin/queries/user'
 import { RenderLater } from '@src/components/RenderLater'
@@ -30,6 +29,7 @@ import { IconButton } from '@src/ui/IconButton'
 import { FormLabel, Input, Select } from '@src/ui/Input'
 import { Link } from '@src/ui/Link'
 import { Spinner } from '@src/ui/Spinner'
+import { Table, Td, Th } from '@src/ui/Table'
 import { registerUser } from '@src/user/queries'
 import { useUsers } from '@src/user/queries'
 import { CreateUser, EditUser, User } from '@src/user/types'
@@ -207,16 +207,16 @@ const UserAdminTable = () => {
   return users ? (
     <div className="overflow-x-auto">
       <Table>
-        <Thead>
-          <Tr>
+        <thead>
+          <tr>
             <Th>#</Th>
             <Th>ชื่อผู้ใช้</Th>
             <Th>ชื่อที่ใช้แสดง</Th>
             <Th>สถานะ</Th>
             <Th>แก้ไข</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
+          </tr>
+        </thead>
+        <tbody>
           {users.slice(0, 100).map((user) => (
             <UserAdminRow key={user.id} user={user} />
           ))}
@@ -225,7 +225,7 @@ const UserAdminTable = () => {
               <UserAdminRow user={user} />
             </RenderLater>
           ))}
-        </Tbody>
+        </tbody>
       </Table>
     </div>
   ) : (
@@ -245,19 +245,19 @@ const UserAdminRow = (props: ProblemAdminProps) => {
   const editModal = useDisclosure()
 
   return (
-    <Tr>
+    <tr>
       <Td>{user.id}</Td>
-      <Td maxW={200}>
+      <Td className="max-w-[200px]">
         <NextLink href={`/profile/${user.id}`}>
           <Link variant="hidden">{user.username}</Link>
         </NextLink>
       </Td>
-      <Td maxW={200}>
+      <Td className="max-w-[200px]">
         <NextLink href={`/profile/${user.id}`}>
           <Link variant="hidden">{user.showName}</Link>
         </NextLink>
       </Td>
-      <Td textTransform="capitalize">{user.role}</Td>
+      <Td className="capitalize">{user.role}</Td>
       <Td>
         <IconButton
           icon={<FaPencilAlt />}
@@ -267,7 +267,7 @@ const UserAdminRow = (props: ProblemAdminProps) => {
         />
         <EditUserModalButton editModal={editModal} user={user} />
       </Td>
-    </Tr>
+    </tr>
   )
 }
 
