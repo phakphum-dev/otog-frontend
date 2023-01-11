@@ -32,8 +32,8 @@ const MAX_LENGTH = 15
 
 const ChatButton = forwardRef<HTMLButtonElement, ChatButtonProps>(
   ({ hasUnread, ...props }, ref) => (
-    <div className="fixed bottom-5 right-5 z-100">
-      <div className="relative z-101">
+    <div className="fixed bottom-5 right-5 z-30">
+      <div className="relative z-40">
         {hasUnread && (
           <div className="absolute top-1 right-1 w-2 h-2 rounded-full bg-otog" />
         )}
@@ -114,7 +114,7 @@ export const Chat = () => {
         onClick={onToggle}
         hasUnread={hasUnread}
       />
-      <div className="fixed bottom-0 right-0 md:right-4 z-100">
+      <div className="fixed bottom-0 right-0 md:right-4 z-40">
         <SlideFade in={isOpen} style={{ zIndex: 100 }} unmountOnExit={true}>
           <div className="flex flex-col w-[320px] h-[420px] rounded-lg rounded-b-none shadow-md bg-white dark:bg-gray-800">
             <OnlineUsersTooltip placement="top-start">

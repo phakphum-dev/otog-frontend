@@ -107,7 +107,7 @@ const AnnouncementComponent = () => {
       {isAdmin && (
         <>
           <IconButton
-            className="absolute right-0 top-4 z-40"
+            className="absolute right-0 top-4 z-10"
             aria-label="edit-announcements"
             icon={hasAnnouncements ? <FaPencilAlt /> : <FaPlus />}
             onClick={hasAnnouncements ? onOpen : firstCreate}

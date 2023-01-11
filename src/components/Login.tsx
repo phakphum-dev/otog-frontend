@@ -6,18 +6,18 @@ import { toast } from 'react-hot-toast'
 
 import Logo from '../../public/logo512.png'
 
+import { OFFLINE_MODE } from '@src/config'
+import { useAuth } from '@src/context/AuthContext'
+import { useErrorToast } from '@src/hooks/useErrorToast'
+import { Button } from '@src/ui/Button'
+import { Input } from '@src/ui/Input'
 import {
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalOverlay,
-} from '@src/components/Modal'
-import { OFFLINE_MODE } from '@src/config'
-import { useAuth } from '@src/context/AuthContext'
-import { useErrorToast } from '@src/hooks/useErrorToast'
-import { Button } from '@src/ui/Button'
-import { Input } from '@src/ui/Input'
+} from '@src/ui/Modal'
 import { LoginReq } from '@src/user/types'
 
 export interface LoginModalProps {

@@ -1,5 +1,7 @@
 import { ReactNode, createContext, useContext, useRef, useState } from 'react'
 
+import { useDisclosure } from '@src/hooks/useDisclosure'
+import { Button } from '@src/ui/Button'
 import {
   Modal,
   ModalBody,
@@ -7,9 +9,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-} from '@src/components/Modal'
-import { useDisclosure } from '@src/hooks/useDisclosure'
-import { Button } from '@src/ui/Button'
+} from '@src/ui/Modal'
 
 export interface ConfirmProviderProps {
   onConfirm: (props: ConfirmModalProps) => void

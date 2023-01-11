@@ -5,6 +5,11 @@ import { FileInput } from '../../components/FileInput'
 import { submitProblem } from './queries'
 import { useDropFile } from './useDropFile'
 
+import { UseDisclosureReturn, useDisclosure } from '@src/hooks/useDisclosure'
+import { useMutation } from '@src/hooks/useMutation'
+import { Problem } from '@src/problem/types'
+import { Button } from '@src/ui/Button'
+import { FormLabel, Select } from '@src/ui/Input'
 import {
   Modal,
   ModalBody,
@@ -13,12 +18,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-} from '@src/components/Modal'
-import { UseDisclosureReturn, useDisclosure } from '@src/hooks/useDisclosure'
-import { useMutation } from '@src/hooks/useMutation'
-import { Problem } from '@src/problem/types'
-import { Button } from '@src/ui/Button'
-import { FormLabel, Select } from '@src/ui/Input'
+} from '@src/ui/Modal'
 
 export interface SubmitModalProps extends UseDisclosureReturn {
   problem: Problem

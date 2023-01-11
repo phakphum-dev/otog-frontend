@@ -8,16 +8,6 @@ import { FaRegShareSquare } from 'react-icons/fa'
 import { CopyIcon } from '@chakra-ui/icons'
 import { Skeleton } from '@chakra-ui/react'
 
-import {
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  ModalProps,
-} from '@src/components/Modal'
 import { API_HOST, APP_HOST } from '@src/config'
 import { useClipboard } from '@src/hooks/useClipboard'
 import { useSubmission } from '@src/submission/queries'
@@ -27,6 +17,16 @@ import {
 } from '@src/submission/types'
 import { IconButton } from '@src/ui/IconButton'
 import { Link } from '@src/ui/Link'
+import {
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  ModalProps,
+} from '@src/ui/Modal'
 import { ONE_SECOND, toThDate } from '@src/utils/time'
 
 export interface CodeModalProps extends Omit<ModalProps, 'children'> {

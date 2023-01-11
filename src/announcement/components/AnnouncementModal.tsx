@@ -1,6 +1,7 @@
 import { AnnouncementEditor } from './AnnouncementEditor'
 import { useAnnouncementContext } from './useAnnouncementContext'
 
+import { Button } from '@src/ui/Button'
 import {
   Modal,
   ModalBody,
@@ -9,8 +10,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-} from '@src/components/Modal'
-import { Button } from '@src/ui/Button'
+} from '@src/ui/Modal'
 
 interface AnnouncementModalProps {
   isOpen: boolean

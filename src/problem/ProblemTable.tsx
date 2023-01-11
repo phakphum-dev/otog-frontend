@@ -8,15 +8,6 @@ import { SubmitModal } from '../submission/submit/SubmitModal'
 import { usePassedUsers, useProblems } from './queries'
 
 import { toggleProblem } from '@src/admin/queries/problem'
-import {
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-} from '@src/components/Modal'
 import { SortTh, useSortedTable } from '@src/components/SortableTable'
 import { problemSortFuncs } from '@src/components/SortableTable/utils'
 import { API_HOST } from '@src/config'
@@ -28,6 +19,15 @@ import { Submission } from '@src/submission/types'
 import { useStatusColor } from '@src/theme/useStatusColor'
 import { Button } from '@src/ui/Button'
 import { Link } from '@src/ui/Link'
+import {
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+} from '@src/ui/Modal'
 import { Spinner } from '@src/ui/Spinner'
 import { Table, Td, Th } from '@src/ui/Table'
 import { ONE_SECOND } from '@src/utils/time'

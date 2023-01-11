@@ -3,6 +3,11 @@ import Cropper from 'react-easy-crop'
 import { Area } from 'react-easy-crop/types'
 import { mutate } from 'swr'
 
+import { useAuth } from '@src/context/AuthContext'
+import { storage } from '@src/firebase'
+import { useErrorToast } from '@src/hooks/useErrorToast'
+import { useUserProfilePic } from '@src/profile/useProfilePic'
+import { Button } from '@src/ui/Button'
 import {
   Modal,
   ModalBody,
@@ -11,12 +16,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-} from '@src/components/Modal'
-import { useAuth } from '@src/context/AuthContext'
-import { storage } from '@src/firebase'
-import { useErrorToast } from '@src/hooks/useErrorToast'
-import { useUserProfilePic } from '@src/profile/useProfilePic'
-import { Button } from '@src/ui/Button'
+} from '@src/ui/Modal'
 
 interface ImageUploadModalProps {
   isOpen: boolean

@@ -22,15 +22,6 @@ import {
   updateContest,
 } from '@src/admin/queries/contest'
 import { DatePicker } from '@src/components/DatePick'
-import {
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-} from '@src/components/Modal'
 import { RenderLater } from '@src/components/RenderLater'
 import { SortTh, useSortedTable } from '@src/components/SortableTable'
 import { problemSortFuncs } from '@src/components/SortableTable/utils'
@@ -50,6 +41,15 @@ import { Button } from '@src/ui/Button'
 import { IconButton } from '@src/ui/IconButton'
 import { FormLabel, Input, Select } from '@src/ui/Input'
 import { Link } from '@src/ui/Link'
+import {
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+} from '@src/ui/Modal'
 import { Spinner } from '@src/ui/Spinner'
 import { Table, Td, Th } from '@src/ui/Table'
 
@@ -59,7 +59,6 @@ export default function AdminContestPage() {
   const setContest = (id: number) => {
     setContestId(id)
   }
-  const [show, setShow] = useState(false)
   return (
     <PageContainer maxSize="md">
       <Head>
@@ -96,14 +95,6 @@ export default function AdminContestPage() {
           <CreateContestModalButton setContestId={setContest} />
         </div>
         {contest && <ContestTable contest={contest} />}
-
-        <Button onClick={() => setShow((show) => !show)}>Show</Button>
-        <div
-          className={clsx(
-            'fixed z-100 h-screen p-4 overflow-y-auto bg-white w-80 dark:bg-gray-800 transition-transform left-0 top-0 shadow-lg',
-            show ? '' : '-translate-x-full'
-          )}
-        />
       </div>
     </PageContainer>
   )
