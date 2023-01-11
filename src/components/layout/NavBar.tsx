@@ -11,11 +11,6 @@ import { PageContainer } from './PageContainer'
 
 import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
 import {
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerOverlay,
   Menu,
   MenuButton,
   MenuItem,
@@ -28,6 +23,13 @@ import { useAuth } from '@src/context/AuthContext'
 import { useDisclosure } from '@src/hooks/useDisclosure'
 import { useUserProfilePic } from '@src/profile/useProfilePic'
 import { Button, ButtonProps } from '@src/ui/Button'
+import {
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerOverlay,
+} from '@src/ui/Drawer'
 import { IconButton } from '@src/ui/IconButton'
 import { Link, LinkProps } from '@src/ui/Link'
 
@@ -65,7 +67,7 @@ export const NavBar = () => {
 
   return (
     <>
-      <div className="z-50 fixed py-2 h-14 top-0 left-0 w-full bg-white dark:bg-gray-800 shadow-md">
+      <div className="z-20 fixed py-2 h-14 top-0 left-0 w-full bg-white dark:bg-gray-800 shadow-md">
         <PageContainer>
           <div className="flex">
             <NextLink href={isAdmin ? '/admin/contest' : '/'} passHref>
@@ -105,42 +107,36 @@ export const NavBar = () => {
           </div>
         </PageContainer>
       </div>
-      <Drawer
-        isOpen={isMobile && isOpen}
-        placement="right"
-        onClose={onClose}
-        finalFocusRef={btnRef}
-      >
-        <DrawerOverlay>
-          <DrawerContent>
-            <DrawerCloseButton />
-            <DrawerBody>
-              <div className="flex flex-col mt-2 mr-6 gap-3 items-start">
-                {user && (
-                  <NextLink href={`/profile/${user.id}`} passHref>
-                    <DrawerButton as="a">
-                      <div className="flex items-center gap-2 py-2">
-                        <Avatar src={url} name={user.showName} />
-                        <div className="line-clamp-1"> {user.showName}</div>
-                      </div>
-                    </DrawerButton>
-                  </NextLink>
-                )}
-                {entries.map((item) => (
-                  <DrawerItem key={item.href} {...item} />
-                ))}
-                {isAuthenticated ? (
-                  <DrawerButton className="!text-red-500" onClick={logout}>
-                    ออกจากระบบ
+      <Drawer isOpen={isMobile && isOpen} onClose={onClose}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerBody>
+            <div className="flex flex-col mt-2 mr-6 gap-3 items-start">
+              {user && (
+                <NextLink href={`/profile/${user.id}`} passHref>
+                  <DrawerButton as="a">
+                    <div className="flex items-center gap-2 py-2">
+                      <Avatar src={url} name={user.showName} />
+                      <div className="line-clamp-1"> {user.showName}</div>
+                    </div>
                   </DrawerButton>
-                ) : (
-                  <DrawerItem href="/login" title="เข้าสู่ระบบ" />
-                )}
-                <ToggleColorModeButton />
-              </div>
-            </DrawerBody>
-          </DrawerContent>
-        </DrawerOverlay>
+                </NextLink>
+              )}
+              {entries.map((item) => (
+                <DrawerItem key={item.href} {...item} />
+              ))}
+              {isAuthenticated ? (
+                <DrawerButton className="!text-red-500" onClick={logout}>
+                  ออกจากระบบ
+                </DrawerButton>
+              ) : (
+                <DrawerItem href="/login" title="เข้าสู่ระบบ" />
+              )}
+              <ToggleColorModeButton />
+            </div>
+          </DrawerBody>
+        </DrawerContent>
       </Drawer>
       <div className="h-14 w-full bg-transparent" />
     </>
