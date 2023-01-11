@@ -10,7 +10,6 @@ import { ToggleColorModeButton } from '../ToggleColorModeButton'
 import { PageContainer } from './PageContainer'
 
 import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
-import { useBreakpointValue } from '@chakra-ui/react'
 
 import { OFFLINE_MODE } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
@@ -37,12 +36,10 @@ export const NavBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef(null)
 
-  const isMobile = useBreakpointValue({ base: true, md: false }) as boolean
-
   const { pathname } = useRouter()
   useEffect(() => {
     onClose()
-  }, [isMobile, pathname, onClose])
+  }, [pathname, onClose])
 
   const { isAuthenticated, user, logout, isAdmin } = useAuth()
   const { url } = useUserProfilePic(true)
@@ -85,7 +82,7 @@ export const NavBar = () => {
               icon={<HamburgerIcon />}
               ref={btnRef}
             />
-            <div className={clsx('flex gap-4', isMobile && 'hidden')}>
+            <div className={clsx('hidden sm:flex gap-4 ')}>
               {entries.map((item) => (
                 <NavItem key={item.href} {...item} />
               ))}
@@ -102,7 +99,7 @@ export const NavBar = () => {
           </div>
         </PageContainer>
       </div>
-      <Drawer isOpen={isMobile && isOpen} onClose={onClose}>
+      <Drawer isOpen={isOpen} onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
