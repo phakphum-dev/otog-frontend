@@ -78,19 +78,24 @@ export const ProblemTable = (props: ProblemTableProps) => {
       <Table>
         <thead>
           <tr>
-            <SortTh centered sortBy="id" {...sortingProps}>
+            <SortTh className="w-20" centered sortBy="id" {...sortingProps}>
               #
             </SortTh>
             <Th>ชื่อ</Th>
             {isAdmin && (
-              <SortTh centered sortBy="status" {...sortingProps}>
+              <SortTh
+                className="w-20"
+                centered
+                sortBy="status"
+                {...sortingProps}
+              >
                 สถานะ
               </SortTh>
             )}
-            <SortTh centered sortBy="passed" {...sortingProps}>
+            <SortTh className="w-20" centered sortBy="passed" {...sortingProps}>
               ผ่าน
             </SortTh>
-            <SortTh centered sortBy="sent" {...sortingProps}>
+            <SortTh className="w-24" centered sortBy="sent" {...sortingProps}>
               ส่ง
             </SortTh>
           </tr>

@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import NextLink from 'next/link'
@@ -58,6 +59,7 @@ export default function AdminContestPage() {
   const setContest = (id: number) => {
     setContestId(id)
   }
+  const [show, setShow] = useState(false)
   return (
     <PageContainer maxSize="md">
       <Head>
@@ -94,6 +96,14 @@ export default function AdminContestPage() {
           <CreateContestModalButton setContestId={setContest} />
         </div>
         {contest && <ContestTable contest={contest} />}
+
+        <Button onClick={() => setShow((show) => !show)}>Show</Button>
+        <div
+          className={clsx(
+            'fixed z-100 h-screen p-4 overflow-y-auto bg-white w-80 dark:bg-gray-800 transition-transform left-0 top-0 shadow-lg',
+            show ? '' : '-translate-x-full'
+          )}
+        />
       </div>
     </PageContainer>
   )
