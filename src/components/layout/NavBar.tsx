@@ -10,13 +10,7 @@ import { ToggleColorModeButton } from '../ToggleColorModeButton'
 import { PageContainer } from './PageContainer'
 
 import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
-import {
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  useBreakpointValue,
-} from '@chakra-ui/react'
+import { useBreakpointValue } from '@chakra-ui/react'
 
 import { OFFLINE_MODE } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
@@ -32,6 +26,7 @@ import {
 } from '@src/ui/Drawer'
 import { IconButton } from '@src/ui/IconButton'
 import { Link, LinkProps } from '@src/ui/Link'
+import { Menu, MenuButton, MenuItem, MenuList } from '@src/ui/Menu'
 
 function usePathActive(href: string) {
   const { pathname } = useRouter()
@@ -206,13 +201,13 @@ const AvatarMenu = () => {
   const { user, isAdmin, logout } = useAuth()
   const { url } = useUserProfilePic(true)
   return (
-    <Menu isLazy>
+    <Menu>
       {OFFLINE_MODE && !isAdmin && (
         <div className="p-2">สวัสดี {user?.showName}</div>
       )}
       <MenuButton
         as={Button}
-        className="!px-2"
+        p="xs"
         variant="ghost"
         rightIcon={<ChevronDownIcon />}
       >
@@ -225,7 +220,7 @@ const AvatarMenu = () => {
             <MenuItem as="a">โปรไฟล์</MenuItem>
           </NextLink>
         )}
-        <MenuItem color="red.500" onClick={logout}>
+        <MenuItem className="text-red-500" onClick={logout}>
           ออกจากระบบ
         </MenuItem>
       </MenuList>

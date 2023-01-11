@@ -203,7 +203,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           variant,
           colorScheme,
           size: variant === 'link' ? 'none' : size,
-          p: p ?? variant === 'link' ? 'none' : size,
+          p: p ?? (variant === 'link' ? 'none' : size),
           fullWidth,
           rounded,
           className,
