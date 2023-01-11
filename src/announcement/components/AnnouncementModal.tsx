@@ -9,8 +9,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-} from '@chakra-ui/react'
-
+} from '@src/components/Modal'
 import { Button } from '@src/ui/Button'
 
 interface AnnouncementModalProps {

@@ -11,8 +11,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-} from '@chakra-ui/modal'
-
+} from '@src/components/Modal'
 import { useAuth } from '@src/context/AuthContext'
 import { storage } from '@src/firebase'
 import { useErrorToast } from '@src/hooks/useErrorToast'

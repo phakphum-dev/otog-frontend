@@ -13,8 +13,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-} from '@chakra-ui/react'
-
+} from '@src/components/Modal'
 import { UseDisclosureReturn, useDisclosure } from '@src/hooks/useDisclosure'
 import { useMutation } from '@src/hooks/useMutation'
 import { Problem } from '@src/problem/types'
@@ -65,12 +64,12 @@ export const SubmitModal = (props: SubmitModalProps) => {
   return (
     <Modal onClose={onClose} isOpen={isOpen}>
       <ModalOverlay />
-      <div {...getRootProps()}>
-        <form onSubmit={onSubmit}>
-          <ModalContent>
+      <ModalContent>
+        <div {...getRootProps()}>
+          <form onSubmit={onSubmit}>
             <ModalHeader>{problem.name}</ModalHeader>
-            <ModalCloseButton />
             <ModalBody>
+              <ModalCloseButton />
               <div className="flex flex-col gap-4">
                 <div>
                   <FormLabel>อัปโหลด</FormLabel>
@@ -86,20 +85,19 @@ export const SubmitModal = (props: SubmitModalProps) => {
                 </div>
               </div>
             </ModalBody>
-
-            <ModalFooter>
-              <div className="flex gap-2">
-                <NextLink href={`/problem/${problem.id}`} passHref>
-                  <Button as="a">{submitted ? 'แก้ไข' : 'ใหม่'}</Button>
-                </NextLink>
-                <Button colorScheme="otog" type="submit">
-                  ส่ง
-                </Button>
-              </div>
-            </ModalFooter>
-          </ModalContent>
-        </form>
-      </div>
+          </form>
+          <ModalFooter>
+            <div className="flex gap-2">
+              <NextLink href={`/problem/${problem.id}`} passHref>
+                <Button as="a">{submitted ? 'แก้ไข' : 'ใหม่'}</Button>
+              </NextLink>
+              <Button colorScheme="otog" type="submit">
+                ส่ง
+              </Button>
+            </div>
+          </ModalFooter>
+        </div>
+      </ModalContent>
     </Modal>
   )
 }

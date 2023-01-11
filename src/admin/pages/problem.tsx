@@ -15,6 +15,13 @@ import {
 import { mutate } from 'swr'
 
 import {
+  createProblem,
+  deleteProblem,
+  toggleProblem,
+  updateProblem,
+} from '@src/admin/queries/problem'
+import { FileInput } from '@src/components/FileInput'
+import {
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -22,15 +29,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-} from '@chakra-ui/modal'
-
-import {
-  createProblem,
-  deleteProblem,
-  toggleProblem,
-  updateProblem,
-} from '@src/admin/queries/problem'
-import { FileInput } from '@src/components/FileInput'
+} from '@src/components/Modal'
 import { RenderLater } from '@src/components/RenderLater'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'

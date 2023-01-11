@@ -15,6 +15,13 @@ import {
 import { mutate } from 'swr'
 
 import {
+  createContest,
+  deleteContest,
+  toggleContestProblem,
+  updateContest,
+} from '@src/admin/queries/contest'
+import { DatePicker } from '@src/components/DatePick'
+import {
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -22,15 +29,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-} from '@chakra-ui/modal'
-
-import {
-  createContest,
-  deleteContest,
-  toggleContestProblem,
-  updateContest,
-} from '@src/admin/queries/contest'
-import { DatePicker } from '@src/components/DatePick'
+} from '@src/components/Modal'
 import { RenderLater } from '@src/components/RenderLater'
 import { SortTh, useSortedTable } from '@src/components/SortableTable'
 import { problemSortFuncs } from '@src/components/SortableTable/utils'

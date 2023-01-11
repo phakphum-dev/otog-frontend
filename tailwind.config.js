@@ -163,6 +163,15 @@ module.exports = {
         spin: 'spin 0.45s linear infinite',
       },
       colors,
+      width: {
+        'modal-xs': '20rem',
+        'modal-sm': '24rem',
+        'modal-md': '28rem',
+        'modal-lg': '32rem',
+        'modal-xl': '36rem',
+        'modal-2xl': '42rem',
+        'modal-3xl': '48rem',
+      },
       minWidth: {
         6: '1.5rem',
         8: '2rem',

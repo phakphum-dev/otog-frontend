@@ -1,14 +1,13 @@
 import { ReactNode, createContext, useContext, useRef, useState } from 'react'
 
 import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
-} from '@chakra-ui/react'
-
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+} from '@src/components/Modal'
 import { useDisclosure } from '@src/hooks/useDisclosure'
 import { Button } from '@src/ui/Button'
 
@@ -53,31 +52,25 @@ export const ConfirmModalProvider = ({
   return (
     <ConfirmContext.Provider value={value}>
       {children}
-      <AlertDialog
-        isOpen={isOpen}
-        leastDestructiveRef={cancelRef}
-        onClose={onClose}
-        isCentered
-      >
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader>{title}</AlertDialogHeader>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>{title}</ModalHeader>
 
-            <AlertDialogBody>{subtitle}</AlertDialogBody>
+          <ModalBody>{subtitle}</ModalBody>
 
-            <AlertDialogFooter>
-              <div className="flex gap-2">
-                <Button ref={cancelRef} onClick={onClose}>
-                  {cancleText}
-                </Button>
-                <Button colorScheme="red" onClick={onClick}>
-                  {submitText}
-                </Button>
-              </div>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
+          <ModalFooter>
+            <div className="flex gap-2">
+              <Button ref={cancelRef} onClick={onClose}>
+                {cancleText}
+              </Button>
+              <Button colorScheme="red" onClick={onClick} autoFocus>
+                {submitText}
+              </Button>
+            </div>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </ConfirmContext.Provider>
   )
 }

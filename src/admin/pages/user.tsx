@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import { FaPencilAlt, FaPlusCircle, FaTools } from 'react-icons/fa'
 import { mutate } from 'swr'
 
+import { editUser } from '@src/admin/queries/user'
 import {
   Modal,
   ModalBody,
@@ -14,9 +15,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-} from '@chakra-ui/modal'
-
-import { editUser } from '@src/admin/queries/user'
+} from '@src/components/Modal'
 import { RenderLater } from '@src/components/RenderLater'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'

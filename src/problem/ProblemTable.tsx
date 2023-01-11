@@ -7,6 +7,7 @@ import { SubmitButton } from '../submission/submit/SubmitButton'
 import { SubmitModal } from '../submission/submit/SubmitModal'
 import { usePassedUsers, useProblems } from './queries'
 
+import { toggleProblem } from '@src/admin/queries/problem'
 import {
   Modal,
   ModalBody,
@@ -15,9 +16,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-} from '@chakra-ui/react'
-
-import { toggleProblem } from '@src/admin/queries/problem'
+} from '@src/components/Modal'
 import { SortTh, useSortedTable } from '@src/components/SortableTable'
 import { problemSortFuncs } from '@src/components/SortableTable/utils'
 import { API_HOST } from '@src/config'

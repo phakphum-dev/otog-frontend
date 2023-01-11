@@ -12,8 +12,7 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalOverlay,
-} from '@chakra-ui/react'
-
+} from '@src/components/Modal'
 import { OFFLINE_MODE } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
 import { useErrorToast } from '@src/hooks/useErrorToast'
@@ -38,7 +37,7 @@ export const LoginModal = (props: LoginModalProps) => {
       <ModalOverlay />
       <ModalContent>
         <ModalCloseButton />
-        <ModalBody py={8}>
+        <ModalBody>
           <LoginForm onSuccess={onSuccess} />
         </ModalBody>
       </ModalContent>
