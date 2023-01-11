@@ -12,7 +12,7 @@ import {
   useAnnouncementContext,
 } from './useAnnouncementContext'
 
-import { Collapse } from '@chakra-ui/react'
+import { Collapse } from '@chakra-ui/transition'
 
 import { useAuth } from '@src/context/AuthContext'
 import { useDisclosure } from '@src/hooks/useDisclosure'
