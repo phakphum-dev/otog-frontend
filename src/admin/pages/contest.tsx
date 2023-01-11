@@ -83,7 +83,7 @@ export default function AdminContestPage() {
             <SelectContestModalButton setContestId={setContest}>
               {contest?.name ?? 'เลือกการแข่งขัน'}
             </SelectContestModalButton>
-            {contestId && contest && (
+            {!!contestId && contest && (
               <EditContestModalButton
                 contest={contest}
                 setContestId={setContestId}
