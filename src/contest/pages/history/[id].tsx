@@ -3,12 +3,11 @@ import { motion } from 'framer-motion'
 import Head from 'next/head'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import React, { ComponentProps, useMemo } from 'react'
+import { ComponentProps, useMemo } from 'react'
 import { CgDetailsLess, CgDetailsMore } from 'react-icons/cg'
 import { FaMedal, FaTrophy } from 'react-icons/fa'
 
 import { useTheme } from '@chakra-ui/system'
-import { Tooltip } from '@chakra-ui/tooltip'
 
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
@@ -32,6 +31,7 @@ import { ButtonGroup } from '@src/ui/ButtonGroup'
 import { IconButton } from '@src/ui/IconButton'
 import { Link } from '@src/ui/Link'
 import { Td as TD, Th as TH, Table } from '@src/ui/Table'
+import { Tooltip } from '@src/ui/Tooltip'
 import { sum } from '@src/utils/sum'
 import { ONE_SECOND } from '@src/utils/time'
 
@@ -117,13 +117,7 @@ export default function ContestHistory() {
               {isOpen &&
                 scoreboard!.problems.map((problem, index) => (
                   <Th key={problem.id}>
-                    <Tooltip
-                      hasArrow
-                      label={problem.name}
-                      placement="top"
-                      closeOnClick={false}
-                      shouldWrapChildren
-                    >
+                    <Tooltip label={problem.name} shouldWrapChildren>
                       <Link
                         isExternal
                         href={`${API_HOST}problem/doc/${problem.id}`}
@@ -210,11 +204,8 @@ export default function ContestHistory() {
                 <tr key={prize}>
                   <Td className="text-left whitespace-nowrap">
                     <Tooltip
-                      hasArrow
-                      label={prizeDescription[prize].description}
-                      placement="top"
-                      closeOnClick={false}
                       shouldWrapChildren
+                      label={prizeDescription[prize].description}
                     >
                       {prizeDescription[prize].emoji}{' '}
                       {prizeDescription[prize].name}

@@ -11,7 +11,6 @@ import { IoChatbubbleEllipses, IoSend } from 'react-icons/io5'
 import { ChatMessage } from './components/ChatMessage'
 
 import { SmallCloseIcon } from '@chakra-ui/icons'
-import { Tooltip, TooltipProps } from '@chakra-ui/tooltip'
 import { SlideFade } from '@chakra-ui/transition'
 
 import { useChat } from '@src/chat/useChat'
@@ -22,6 +21,7 @@ import { Button } from '@src/ui/Button'
 import { IconButton, IconButtonProps } from '@src/ui/IconButton'
 import { Textarea } from '@src/ui/Input'
 import { Spinner } from '@src/ui/Spinner'
+import { Tooltip, TooltipProps } from '@src/ui/Tooltip'
 import { useOnlineUsers } from '@src/user/queries'
 
 type ChatButtonProps = Omit<IconButtonProps, 'as' | 'icon'> & {
@@ -57,7 +57,6 @@ const OnlineUsersTooltip = (props: TooltipProps) => {
   const { data: onlineUsers } = useOnlineUsers()
   return onlineUsers ? (
     <Tooltip
-      hasArrow
       label={
         <div className="flex flex-col justify-start">
           {onlineUsers.slice(0, MAX_LENGTH).map((user) => (

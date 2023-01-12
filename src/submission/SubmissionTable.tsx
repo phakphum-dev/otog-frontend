@@ -4,8 +4,6 @@ import { Dispatch, SetStateAction, memo, useEffect, useState } from 'react'
 import { CodeModal, ErrorModal } from '../components/Code'
 import { SubmissionWithProblem } from './types'
 
-import { Tooltip } from '@chakra-ui/react'
-
 import { API_HOST } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
 import { useDisclosure } from '@src/hooks/useDisclosure'
@@ -22,6 +20,7 @@ import { Button } from '@src/ui/Button'
 import { Link } from '@src/ui/Link'
 import { Spinner } from '@src/ui/Spinner'
 import { Table, Td, Th } from '@src/ui/Table'
+import { Tooltip } from '@src/ui/Tooltip'
 import { ONE_SECOND, toThDate } from '@src/utils/time'
 
 export const SubmissionTable = () => {
@@ -171,11 +170,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
             {submission?.id}
           </Button>
         ) : (
-          <Tooltip
-            hasArrow
-            placement="top"
-            label={toThDate(submission.creationDate)}
-          >
+          <Tooltip placement="top" label={toThDate(submission.creationDate)}>
             <div className="px-1">{submission.id}</div>
           </Tooltip>
         )}
