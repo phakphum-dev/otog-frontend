@@ -1,13 +1,10 @@
 import clsx from 'clsx'
-import { motion } from 'framer-motion'
 import Head from 'next/head'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { ComponentProps, useMemo } from 'react'
 import { CgDetailsLess, CgDetailsMore } from 'react-icons/cg'
 import { FaMedal, FaTrophy } from 'react-icons/fa'
-
-import { useTheme } from '@chakra-ui/system'
 
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
@@ -44,11 +41,11 @@ const Td = ({ className, ...props }: ComponentProps<'td'>) => (
 )
 
 const fontSize: Record<number, string> = {
-  1: '4xl',
-  2: '3xl',
-  3: '2xl',
-  4: 'xl',
-  5: 'lg',
+  1: 'text-4xl',
+  2: 'text-3xl',
+  3: 'text-2xl',
+  4: 'text-xl',
+  5: 'text-lg',
 }
 
 const getTotalScore = (user: UserWithSubmission) =>
@@ -79,7 +76,6 @@ export default function ContestHistory() {
   }, [scoreboard])
 
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const theme = useTheme()
 
   return (
     <PageContainer>
@@ -133,18 +129,12 @@ export default function ContestHistory() {
           </thead>
           <tbody>
             {users.map((user) => (
-              <motion.tr
+              <tr
                 key={user.id}
-                animate={isOpen ? 'small' : 'large'}
-                initial="large"
-                variants={{
-                  small: {
-                    fontSize: theme.fontSizes['md'],
-                  },
-                  large: {
-                    fontSize: theme.fontSizes[fontSize[user.rank] ?? 'md'],
-                  },
-                }}
+                className={clsx(
+                  'transition-all ',
+                  isOpen ? 'text-md' : fontSize[user.rank]
+                )}
               >
                 <Td>{user.rank}</Td>
                 <Td className={clsx(!isOpen && 'line-clamp-1')}>
@@ -171,7 +161,7 @@ export default function ContestHistory() {
                     user.submissions.map((submission) => submission.timeUsed)
                   ) / ONE_SECOND}
                 </Td>
-              </motion.tr>
+              </tr>
             ))}
           </tbody>
         </Table>
