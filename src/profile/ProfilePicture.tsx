@@ -3,8 +3,6 @@ import { ChangeEvent } from 'react'
 import { FaCropAlt } from 'react-icons/fa'
 import { mutate } from 'swr'
 
-import { Img } from '@chakra-ui/image'
-
 import { UploadFileButton } from '@src/components/FileInput'
 import { useAuth } from '@src/context/AuthContext'
 import { storage } from '@src/firebase'
@@ -104,14 +102,7 @@ export interface PictureProps {
 
 export const Picture = ({ url, name }: PictureProps) => {
   return url ? (
-    <Img
-      width="100%"
-      src={url}
-      objectFit="cover"
-      borderRadius="md"
-      bg="gray.300"
-      boxSize="xs"
-    />
+    <img className="object-cover rounded-md bg-gray-300 w-80 h-80" src={url} />
   ) : (
     <Avatar
       size={320}
