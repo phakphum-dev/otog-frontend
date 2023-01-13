@@ -142,7 +142,6 @@ export class HttpClient {
             // if token doesn't exists and not logging in then open up login modal
             else if (error.config.url !== 'auth/login') {
               this.removeToken(context)
-              this.openLoginModal()
               return Promise.reject(error)
             }
           }
@@ -243,7 +242,6 @@ export class HttpClient {
 
   // this will be set only on client
   /* eslint-disable @typescript-eslint/no-empty-function */
-  openLoginModal() {}
   updateOnLogout() {}
 }
 

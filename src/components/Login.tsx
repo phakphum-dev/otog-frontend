@@ -11,39 +11,7 @@ import { useAuth } from '@src/context/AuthContext'
 import { useErrorToast } from '@src/hooks/useErrorToast'
 import { Button } from '@src/ui/Button'
 import { Input } from '@src/ui/Input'
-import {
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalOverlay,
-} from '@src/ui/Modal'
 import { LoginReq } from '@src/user/types'
-
-export interface LoginModalProps {
-  isOpen: boolean
-  onClose: () => void
-}
-
-export const LoginModal = (props: LoginModalProps) => {
-  const { isOpen, onClose } = props
-  const { refresh } = useAuth()
-  const onSuccess = () => {
-    onClose()
-    refresh()
-  }
-  return (
-    <Modal isOpen={isOpen} onClose={onClose} size="xs">
-      <ModalOverlay />
-      <ModalContent>
-        <ModalCloseButton />
-        <ModalBody>
-          <LoginForm onSuccess={onSuccess} />
-        </ModalBody>
-      </ModalContent>
-    </Modal>
-  )
-}
 
 export interface LoginFormProps {
   onSuccess?: () => void

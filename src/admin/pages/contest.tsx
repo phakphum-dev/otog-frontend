@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import NextLink from 'next/link'

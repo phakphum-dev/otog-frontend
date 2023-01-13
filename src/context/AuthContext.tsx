@@ -11,9 +11,7 @@ import { useSWRConfig } from 'swr'
 
 import { http } from './HttpClient'
 
-import { LoginModal } from '@src/components/Login'
 import { isServer } from '@src/config'
-import { useDisclosure } from '@src/hooks/useDisclosure'
 import { useForceUpdate } from '@src/hooks/useForceUpdate'
 import { AuthRes, LoginReq, User } from '@src/user/types'
 
@@ -74,12 +72,9 @@ export const AuthProvider = (props: AuthValueProps) => {
     forceUpdate()
   }, [forceUpdate, cache])
 
-  const loginModal = useDisclosure()
-
   useEffect(() => {
-    http.openLoginModal = loginModal.onOpen
     http.updateOnLogout = updateOnLogout
-  }, [loginModal.onOpen, updateOnLogout])
+  }, [updateOnLogout])
 
   const value = {
     login,
@@ -90,10 +85,5 @@ export const AuthProvider = (props: AuthValueProps) => {
     refresh: forceUpdate,
   }
 
-  return (
-    <AuthContext.Provider value={value}>
-      <LoginModal {...loginModal} />
-      {children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
