@@ -1,13 +1,12 @@
 import { loader } from '@monaco-editor/react'
 import 'focus-visible/dist/focus-visible'
+import { ThemeProvider } from 'next-themes'
 import { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { Toaster } from 'react-hot-toast'
 
 import '../styles/globals.css'
-
-import { ChakraProvider, cookieStorageManagerSSR } from '@chakra-ui/react'
 
 import { Chat } from '@src/chat'
 import { Footer } from '@src/components/layout/Footer'
@@ -20,7 +19,6 @@ import { SocketProvider } from '@src/context/SocketContext'
 import { useAnalytics } from '@src/hooks/useAnalytics'
 import { ErrorToastOptions, useErrorToaster } from '@src/hooks/useErrorToast'
 import '@src/styles/nprogress.css'
-import { theme } from '@src/theme'
 
 const TopProgressBar = dynamic(
   () => import('@src/components/layout/ProgressBar'),
@@ -45,13 +43,7 @@ type MyAppProps = AppProps<{
 }>
 
 export default function MyApp({ Component, pageProps }: MyAppProps) {
-  const {
-    colorModeCookie,
-    accessToken,
-    errorData,
-    fallback,
-    ...props
-  } = pageProps
+  const { accessToken, errorData, fallback, ...props } = pageProps
   useErrorToaster(errorData)
   useAnalytics()
   return (
@@ -72,16 +64,13 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
         />
       </Head>
       <Toaster position="bottom-center" />
-      <ChakraProvider
-        theme={theme}
-        colorModeManager={cookieStorageManagerSSR(colorModeCookie)}
-      >
+      <ThemeProvider>
         <ConfirmModalProvider>
           <SWRProvider fallback={fallback}>
             <AuthProvider value={accessToken}>
               <SocketProvider>
                 <TopProgressBar />
-                <div className="flex flex-col min-h-screen">
+                <div className="flex flex-col min-h-screen dark:bg-gray-800 dark:border-alpha-white-300">
                   <NavBar />
                   <Component {...props} />
                   {!OFFLINE_MODE && <Chat />}
@@ -91,7 +80,7 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
             </AuthProvider>
           </SWRProvider>
         </ConfirmModalProvider>
-      </ChakraProvider>
+      </ThemeProvider>
     </>
   )
 }

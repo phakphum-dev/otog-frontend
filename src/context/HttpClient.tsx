@@ -16,8 +16,6 @@ import {
   isServer,
 } from '@src/config'
 import { getErrorData } from '@src/hooks/useErrorToast'
-import { getColorMode } from '@src/theme/ColorMode'
-import { ColorModeProps } from '@src/theme/ColorMode'
 import { AuthRes } from '@src/user/types'
 import { omit } from '@src/utils/omit'
 import { serializeCookies } from '@src/utils/serializeCookie'
@@ -274,14 +272,9 @@ export function withCookies<
   }
 }
 
-export interface CookiesProps extends ColorModeProps {
-  accessToken: string | null
-}
-
 export const getServerSideCookies = (context: Context) => {
-  const colorModeCookie = getColorMode(context)
   const { accessToken = null } = nookies.get(context)
-  return { props: { accessToken, colorModeCookie } }
+  return { props: { accessToken } }
 }
 
 export const http = new HttpClient()
