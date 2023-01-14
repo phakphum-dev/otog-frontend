@@ -17,7 +17,7 @@ export const LatestSubmission = ({ onSuccess }: LatestSubmissionProps) => {
   const { data: submission } = useLatestSubmission()
 
   return isAuthenticated && submission ? (
-    <div className="flex gap-4">
+    <div className="flex items-center gap-4">
       <div className="font-bold">ส่งข้อล่าสุด</div>
       <Link
         className="line-clamp-1"
