@@ -95,7 +95,7 @@ const AnnouncementComponent = () => {
             show: { y: 0, transition: { duration: 0.5 } },
             hidden: { y: -HEIGHT * 1.2, transition: { duration: 0.5 } },
           }}
-          className="absolute flex h-[150px] max-h-[150px] w-full justify-center overflow-hidden bg-white text-center dark:bg-gray-800"
+          className="absolute flex h-[150px] max-h-[150px] w-full items-center justify-center overflow-hidden bg-white text-center dark:bg-gray-800"
           style={{ zIndex: all.length - index }}
           animate={index >= showIndex ? 'show' : 'hidden'}
           onClick={nextShowIndex}
