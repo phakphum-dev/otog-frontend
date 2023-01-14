@@ -9,7 +9,7 @@ type TitleProps = {
 
 export const Title = ({ icon, lineClamp = false, children }: TitleProps) => {
   return (
-    <h2 className="flex items-center font-bold text-3xl md:text-4xl">
+    <h2 className="flex items-center text-3xl font-bold md:text-4xl">
       {icon}
       <div className={clsx('ml-2', lineClamp && 'line-clamp-1')}>
         {children}
@@ -20,6 +20,6 @@ export const Title = ({ icon, lineClamp = false, children }: TitleProps) => {
 
 export function TitleLayout({ children }: { children?: ReactNode }) {
   return (
-    <div className="mt-8 mb-4 flex justify-between items-end">{children}</div>
+    <div className="mt-8 mb-4 flex items-end justify-between">{children}</div>
   )
 }

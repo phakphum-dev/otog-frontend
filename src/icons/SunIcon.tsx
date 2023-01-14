@@ -1,5 +1,5 @@
 export const SunIcon = () => (
-  <svg viewBox="0 0 24 24" focusable="false" className="w-[1em] h-[1em]">
+  <svg viewBox="0 0 24 24" focusable="false" className="h-[1em] w-[1em]">
     <g
       strokeLinejoin="round"
       strokeLinecap="round"

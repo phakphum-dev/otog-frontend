@@ -59,13 +59,13 @@ export const NavBar = () => {
 
   return (
     <>
-      <div className="z-20 fixed py-2 h-14 top-0 left-0 w-full bg-white dark:bg-gray-800 shadow-md">
+      <div className="fixed top-0 left-0 z-20 h-14 w-full bg-white py-2 shadow-md dark:bg-gray-800">
         <PageContainer>
           <div className="flex">
             <NextLink href={isAdmin ? '/admin/contest' : '/'} passHref>
-              <Link className="text-gray-800 dark:text-white flex items-center gap-2">
+              <Link className="flex items-center gap-2 text-gray-800 dark:text-white">
                 <Image src={Logo} width={32} height={32} />
-                <div className="font-bold text-xl">
+                <div className="text-xl font-bold">
                   <div className="hidden md:inline-block xl:hidden">OTOG</div>
                   <div className="hidden xl:inline-block">
                     One Tambon One Grader
@@ -75,14 +75,14 @@ export const NavBar = () => {
             </NextLink>
             <div className="flex-1" />
             <IconButton
-              className="md:hidden p-2"
+              className="p-2 md:hidden"
               variant="ghost"
               aria-label="Open menu"
               onClick={onOpen}
               icon={<HamburgerIcon />}
               ref={btnRef}
             />
-            <div className={clsx('hidden sm:flex gap-4 ')}>
+            <div className={clsx('hidden gap-4 sm:flex ')}>
               {entries.map((item) => (
                 <NavItem key={item.href} {...item} />
               ))}
@@ -104,7 +104,7 @@ export const NavBar = () => {
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerBody>
-            <div className="flex flex-col mt-2 mr-6 gap-3 items-start">
+            <div className="mt-2 mr-6 flex flex-col items-start gap-3">
               {user && (
                 <NextLink href={`/profile/${user.id}`} passHref>
                   <DrawerButton as="a">
@@ -186,7 +186,7 @@ const DrawerButton = forwardRef<HTMLButtonElement, ButtonProps>(
       <Button
         variant="ghost"
         fullWidth
-        className={clsx('!px-2 !justify-start font-normal', className)}
+        className={clsx('!justify-start !px-2 font-normal', className)}
         {...props}
         ref={ref}
       />

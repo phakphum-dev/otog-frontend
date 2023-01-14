@@ -81,7 +81,7 @@ const Leaf = ({ attributes, children, leaf }: RenderLeafProps) => {
   }
   if (leaf.code) {
     children = (
-      <code className="text-inherit bg-transparent dark:bg-alpha-black-300">
+      <code className="bg-transparent text-inherit dark:bg-alpha-black-300">
         {children}
       </code>
     )
@@ -99,7 +99,7 @@ const Element = ({ attributes, children, element }: RenderElementProps) => {
   switch (element.type) {
     case 'block-quote':
       return (
-        <p className="pl-2.5 border-l-2 border-gray-300" {...attributes}>
+        <p className="border-l-2 border-gray-300 pl-2.5" {...attributes}>
           {children}
         </p>
       )
@@ -264,7 +264,7 @@ export const AnnouncementEditor = () => {
         value={currentAnnouncement.value}
         onChange={onChange}
       >
-        <div className="flex gap-2 justify-between">
+        <div className="flex justify-between gap-2">
           <div className="flex gap-2">
             <ButtonGroup isAttached>
               <MarkButton format="bold" icon={<FaBold />} />
@@ -318,7 +318,7 @@ export const AnnouncementEditor = () => {
         </div>
         <hr />
         <div
-          className="flex flex-col gap-2 justify-center w-full overflow-hidden text-center"
+          className="flex w-full flex-col justify-center gap-2 overflow-hidden text-center"
           style={{ height: HEIGHT }}
         >
           <Editable

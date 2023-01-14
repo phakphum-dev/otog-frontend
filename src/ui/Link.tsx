@@ -8,12 +8,10 @@ const linkStyles = cva(
       variant: {
         default: 'text-otog',
         hidden: 'hover:text-otog',
-        nav:
-          'text-gray-500 dark:text-gray-400 hover:text-gray-800 hover:dark:text-white active:text-gray-800 dark:active:text-white transition-colors',
+        nav: 'text-gray-500 dark:text-gray-400 hover:text-gray-800 hover:dark:text-white active:text-gray-800 dark:active:text-white transition-colors',
         close:
           'text-gray-300 dark:text-alpha-white-400 hover:text-otog hover:dark:text-otog',
-        head:
-          'hover:text-gray-900 hover:dark:text-gray-100 hover:no-underline transition-colors',
+        head: 'hover:text-gray-900 hover:dark:text-gray-100 hover:no-underline transition-colors',
       },
     },
     defaultVariants: {

@@ -63,7 +63,7 @@ export const Tooltip = (props: TooltipProps) => {
               top: y ?? 0,
               left: x ?? 0,
             }}
-            className="origin-bottom font-medium px-2 py-0.5 rounded-sm text-sm max-w-xs shadow-md text-alpha-white-900 dark:text-gray-900 bg-gray-700 dark:bg-gray-300"
+            className="max-w-xs origin-bottom rounded-sm bg-gray-700 px-2 py-0.5 text-sm font-medium text-alpha-white-900 shadow-md dark:bg-gray-300 dark:text-gray-900"
           >
             {label}
           </div>

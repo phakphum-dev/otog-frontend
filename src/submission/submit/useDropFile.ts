@@ -10,15 +10,11 @@ interface UseDropFileOptions {
 export function useDropFile({
   accept = '.c,.cpp,.py',
 }: UseDropFileOptions = {}) {
-  const {
-    acceptedFiles,
-    getRootProps,
-    getInputProps,
-    isDragActive,
-  } = useDropzone({
-    accept,
-    multiple: false,
-  })
+  const { acceptedFiles, getRootProps, getInputProps, isDragActive } =
+    useDropzone({
+      accept,
+      multiple: false,
+    })
 
   const draggedFile = acceptedFiles[0]
   const inputProps = getInputProps({})

@@ -59,7 +59,7 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
             <Link isExternal href={`${API_HOST}problem/doc/${problem.id}`}>
               [ดาวน์โหลด]
             </Link>
-            <div className="text-sm whitespace-nowrap">
+            <div className="whitespace-nowrap text-sm">
               ({problem.timeLimit / ONE_SECOND} วินาที {problem.memoryLimit} MB)
             </div>
           </div>

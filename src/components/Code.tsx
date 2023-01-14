@@ -55,7 +55,7 @@ export const CodeModal = (props: CodeModalProps) => {
               ข้อ {submission?.problem.name}
             </Link>
           ) : (
-            <div className="animate-pulse bg-slate-200 dark:bg-slate-700 my-2 h-5 w-40 rounded-sm" />
+            <div className="my-2 h-5 w-40 animate-pulse rounded-sm bg-slate-200 dark:bg-slate-700" />
           )}
         </ModalHeader>
         <ModalCloseButton />
@@ -116,12 +116,12 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
           </>
         ) : (
           <>
-            <div className="animate-pulse bg-slate-200 dark:bg-slate-700 my-2 h-4 w-40 rounded-sm" />
-            <div className="animate-pulse bg-slate-200 dark:bg-slate-700 my-2 h-4 w-80 rounded-sm" />
-            <div className="animate-pulse bg-slate-200 dark:bg-slate-700 my-2 h-4 w-20 rounded-sm" />
-            <div className="animate-pulse bg-slate-200 dark:bg-slate-700 my-2 h-4 w-36 rounded-sm" />
-            <div className="animate-pulse bg-slate-200 dark:bg-slate-700 my-2 h-4 w-48 rounded-sm" />
-            <div className="animate-pulse bg-slate-200 dark:bg-slate-700 my-2 h-4 w-24 rounded-sm" />
+            <div className="my-2 h-4 w-40 animate-pulse rounded-sm bg-slate-200 dark:bg-slate-700" />
+            <div className="my-2 h-4 w-80 animate-pulse rounded-sm bg-slate-200 dark:bg-slate-700" />
+            <div className="my-2 h-4 w-20 animate-pulse rounded-sm bg-slate-200 dark:bg-slate-700" />
+            <div className="my-2 h-4 w-36 animate-pulse rounded-sm bg-slate-200 dark:bg-slate-700" />
+            <div className="my-2 h-4 w-48 animate-pulse rounded-sm bg-slate-200 dark:bg-slate-700" />
+            <div className="my-2 h-4 w-24 animate-pulse rounded-sm bg-slate-200 dark:bg-slate-700" />
           </>
         )}
       </div>
@@ -132,7 +132,7 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
               code={submission.sourceCode}
               language={submission.language}
             />
-            <div className="flex gap-2 absolute top-2 right-2">
+            <div className="absolute top-2 right-2 flex gap-2">
               <IconButton
                 aria-label="share"
                 icon={<FaRegShareSquare />}
@@ -148,7 +148,7 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
             </div>
           </>
         ) : (
-          <div className="animate-pulse bg-slate-200 dark:bg-slate-700 my-2 w-full h-80 rounded-md" />
+          <div className="my-2 h-80 w-full animate-pulse rounded-md bg-slate-200 dark:bg-slate-700" />
         )}
       </div>
     </div>
@@ -194,7 +194,7 @@ export const CodeHighlight = (props: CodeHighlightProps) => {
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
         <pre
           style={{ ...style, tabSize: 4 }}
-          className={clsx(className, 'p-4 rounded-md overflow-x-auto text-xs')}
+          className={clsx(className, 'overflow-x-auto rounded-md p-4 text-xs')}
         >
           {tokens.map((line, i) => (
             <div {...getLineProps({ line, key: i })} key={i}>

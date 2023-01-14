@@ -54,7 +54,7 @@ export const ModalContent = ({ children }: PropsChildren) => {
         >
           <Dialog.Panel
             className={clsx(
-              'relative my-16 flex flex-col transform overflow-hidden rounded-md bg-white dark:bg-gray-700 text-left align-middle shadow-xl transition-all',
+              'relative my-16 flex transform flex-col overflow-hidden rounded-md bg-white text-left align-middle shadow-xl transition-all dark:bg-gray-700',
               size === 'xs' && 'w-modal-xs',
               size === 'sm' && 'w-modal-sm',
               size === 'md' && 'w-modal-md',
@@ -91,13 +91,13 @@ export const ModalBody = ({ children }: PropsChildren) => {
 }
 export const ModalHeader = ({ children }: PropsChildren) => {
   return (
-    <Dialog.Title as="h3" className="text-xl font-medium leading-6 px-6 py-4">
+    <Dialog.Title as="h3" className="px-6 py-4 text-xl font-medium leading-6">
       {children}
     </Dialog.Title>
   )
 }
 export const ModalFooter = ({ children }: PropsChildren) => {
-  return <div className="px-6 py-4 flex justify-end">{children}</div>
+  return <div className="flex justify-end px-6 py-4">{children}</div>
 }
 export const ModalCloseButton = () => {
   const { onClose } = useModalContext()

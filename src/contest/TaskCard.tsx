@@ -1,3 +1,4 @@
+import { Collapse } from '@chakra-ui/transition'
 import Editor from '@monaco-editor/react'
 import clsx from 'clsx'
 import { ChangeEvent, FormEvent, memo, useState } from 'react'
@@ -5,8 +6,6 @@ import { ChangeEvent, FormEvent, memo, useState } from 'react'
 import { CodeModal, ErrorModal } from '../components/Code'
 import { FileInput } from '../components/FileInput'
 import { submitContestProblem } from './queries'
-
-import { Collapse } from '@chakra-ui/transition'
 
 import { API_HOST, OFFLINE_MODE } from '@src/config'
 import { useDisclosure } from '@src/hooks/useDisclosure'
@@ -48,10 +47,10 @@ export const TaskCard = memo((props: TaskCardProps) => {
   const { data: submission } = useLatestProblemSubmission(problem.id)
 
   return (
-    <div className="rounded-lg shadow-sm border">
+    <div className="rounded-lg border shadow-sm">
       <Button
         className={clsx(
-          '!p-2 sm:!p-6 justify-between',
+          'justify-between !p-2 sm:!p-6',
           isOpen && 'rounded-b-none'
         )}
         fullWidth
@@ -60,9 +59,9 @@ export const TaskCard = memo((props: TaskCardProps) => {
         rightIcon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
       >
         <div className="flex items-center gap-2">
-          <h3 className="font-bold text-xl">{problem.name}</h3>
+          <h3 className="text-xl font-bold">{problem.name}</h3>
           {submission?.status === 'accept' && (
-            <div className="inline-flex px-1 uppercase text-xs rounded-sm font-bold text-green-800 dark:text-green-200 bg-green-100 dark:bg-green-500/16">
+            <div className="inline-flex rounded-sm bg-green-100 px-1 text-xs font-bold uppercase text-green-800 dark:bg-green-500/16 dark:text-green-200">
               Solved
             </div>
           )}
@@ -133,7 +132,7 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
   }
   return (
     <form onSubmit={onFileSubmit}>
-      <div className="flex flex-col sm:flex-row gap-2">
+      <div className="flex flex-col gap-2 sm:flex-row">
         <Select name="language" variant="sm" className="flex-1">
           <option value="cpp">C++</option>
           <option value="c">C</option>
@@ -143,7 +142,7 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
         </Select>
         <div className="flex-1" />
         <div
-          className="flex gap-2 justify-end flex-1 sm:flex-initial sm:w-64"
+          className="flex flex-1 justify-end gap-2 sm:w-64 sm:flex-initial"
           {...getRootProps()}
         >
           <FileInput

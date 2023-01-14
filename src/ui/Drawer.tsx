@@ -43,7 +43,7 @@ export const DrawerContent = ({ children }: PropsChildren) => {
       leaveFrom="translate-x-0"
       leaveTo="translate-x-full"
     >
-      <Dialog.Panel className="fixed flex z-50 h-screen overflow-y-auto right-0 top-0 shadow-lg">
+      <Dialog.Panel className="fixed right-0 top-0 z-50 flex h-screen overflow-y-auto shadow-lg">
         {children}
       </Dialog.Panel>
     </Transition.Child>
@@ -60,13 +60,13 @@ export const DrawerOverlay = () => {
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
     >
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-40" />
+      <div className="fixed inset-0 z-40 bg-black bg-opacity-50" />
     </Transition.Child>
   )
 }
 export const DrawerBody = ({ children }: PropsChildren) => {
   return (
-    <div className="w-80 bg-white dark:bg-gray-700 px-6 py-2">{children}</div>
+    <div className="w-80 bg-white px-6 py-2 dark:bg-gray-700">{children}</div>
   )
 }
 export const DrawerCloseButton = () => {

@@ -1,9 +1,0 @@
-{
-  "trailingComma": "es5",
-  "tabWidth": 2,
-  "semi": false,
-  "singleQuote": true,
-  "importOrder": ["^[./]", "^@/(.*)$", "^@chakra-ui/(.*)$", "^@src/(.*)$"],
-  "importOrderSeparation": true,
-  "importOrderSortSpecifiers": true
-}

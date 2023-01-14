@@ -49,7 +49,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         className={inputStyles({
           variant,
           rounded,
-          className: clsx(className, 'resize-none text-sm px-3 py-2'),
+          className: clsx(className, 'resize-none px-3 py-2 text-sm'),
         })}
         ref={ref}
         {...rest}
@@ -78,7 +78,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           ref={ref}
           {...rest}
         />
-        <div className="absolute text-xl top-1/2 right-2 -translate-y-1/2 pointer-events-none">
+        <div className="pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 text-xl">
           <DefaultIcon />
         </div>
       </div>
@@ -90,7 +90,7 @@ export const DefaultIcon = (props: ComponentProps<'svg'>) => (
   <svg
     viewBox="0 0 24 24"
     focusable={false}
-    className="w-[1em] h-[1em]"
+    className="h-[1em] w-[1em]"
     {...props}
   >
     <path
@@ -102,7 +102,7 @@ export const DefaultIcon = (props: ComponentProps<'svg'>) => (
 
 export const FormLabel = ({ className, ...props }: ComponentProps<'label'>) => (
   <label
-    className={clsx('block text-md font-medium mb-2 mr-3', className)}
+    className={clsx('text-md mb-2 mr-3 block font-medium', className)}
     {...props}
   />
 )
@@ -113,7 +113,7 @@ export const FormHelperText = ({
 }: ComponentProps<'div'>) => (
   <div
     className={clsx(
-      'block text-sm mt-2 text-gray-600 dark:text-alpha-white-600',
+      'mt-2 block text-sm text-gray-600 dark:text-alpha-white-600',
       className
     )}
     {...props}

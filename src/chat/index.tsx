@@ -1,3 +1,4 @@
+import { SlideFade } from '@chakra-ui/transition'
 import {
   ChangeEvent,
   KeyboardEvent,
@@ -9,8 +10,6 @@ import { toast } from 'react-hot-toast'
 import { IoChatbubbleEllipses, IoClose, IoSend } from 'react-icons/io5'
 
 import { ChatMessage } from './components/ChatMessage'
-
-import { SlideFade } from '@chakra-ui/transition'
 
 import { useChat } from '@src/chat/useChat'
 import { useAuth } from '@src/context/AuthContext'
@@ -34,7 +33,7 @@ const ChatButton = forwardRef<HTMLButtonElement, ChatButtonProps>(
     <div className="fixed bottom-5 right-5 z-30">
       <div className="relative z-40">
         {hasUnread && (
-          <div className="absolute top-1 right-1 w-2 h-2 rounded-full bg-otog" />
+          <div className="absolute top-1 right-1 h-2 w-2 rounded-full bg-otog" />
         )}
       </div>
       <OnlineUsersTooltip placement="top-end">
@@ -60,7 +59,7 @@ const OnlineUsersTooltip = (props: TooltipProps) => {
         <div className="flex flex-col justify-start">
           {onlineUsers.slice(0, MAX_LENGTH).map((user) => (
             <div className="flex items-center gap-2" key={user.id}>
-              <div className="w-2 h-2 rounded-full bg-green-400" />
+              <div className="h-2 w-2 rounded-full bg-green-400" />
               <div className="max-w-[275px] line-clamp-3">{user.showName}</div>
             </div>
           ))}
@@ -85,14 +84,8 @@ const OnlineUsersTooltip = (props: TooltipProps) => {
 
 export const Chat = () => {
   const { isOpen, onClose, onToggle } = useDisclosure()
-  const {
-    emitChat,
-    messages,
-    hasMore,
-    loadMore,
-    newMessages,
-    hasUnread,
-  } = useChat(isOpen)
+  const { emitChat, messages, hasMore, loadMore, newMessages, hasUnread } =
+    useChat(isOpen)
   const { ref, isIntersecting } = useOnScreen()
   useEffect(() => {
     if (isIntersecting && hasMore) {
@@ -112,20 +105,20 @@ export const Chat = () => {
         onClick={onToggle}
         hasUnread={hasUnread}
       />
-      <div className="fixed bottom-0 right-0 md:right-4 z-40">
+      <div className="fixed bottom-0 right-0 z-40 md:right-4">
         <SlideFade in={isOpen} style={{ zIndex: 100 }} unmountOnExit={true}>
-          <div className="flex flex-col w-[320px] h-[420px] rounded-lg rounded-b-none shadow-md bg-white dark:bg-gray-800">
+          <div className="flex h-[420px] w-[320px] flex-col rounded-lg rounded-b-none bg-white shadow-md dark:bg-gray-800">
             <OnlineUsersTooltip placement="top-start">
               <Button
-                className="!p-6 rounded-b-none justify-between"
+                className="justify-between rounded-b-none !p-6"
                 onClick={onClose}
                 rightIcon={<IoClose />}
                 colorScheme="otog"
               >
-                <h3 className="font-bold text-md">OTOG Chat</h3>
+                <h3 className="text-md font-bold">OTOG Chat</h3>
               </Button>
             </OnlineUsersTooltip>
-            <div className="flex flex-col-reverse px-2 flex-1 overflow-y-auto overflow-x-hidden border border-y-0">
+            <div className="flex flex-1 flex-col-reverse overflow-y-auto overflow-x-hidden border border-y-0 px-2">
               <div className="flex flex-col">
                 {newMessages.map((message, index) => (
                   <ChatMessage
@@ -203,7 +196,7 @@ const ChatInput = (props: ChatInputProps) => {
     }
   }
   return (
-    <div className="flex gap-1 flex-1 p-2">
+    <div className="flex flex-1 gap-1 p-2">
       <Textarea
         rounded="2xl"
         autoFocus

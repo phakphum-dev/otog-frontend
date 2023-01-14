@@ -153,7 +153,7 @@ export const ImageCropModal = (props: ImageUploadModalProps) => {
         <ModalCloseButton />
         <ModalBody>
           <div className="flex flex-col gap-2">
-            <div className="relative w-full h-[400px]">
+            <div className="relative h-[400px] w-full">
               <Cropper
                 aspect={1}
                 image={url}
@@ -166,7 +166,7 @@ export const ImageCropModal = (props: ImageUploadModalProps) => {
               />
             </div>
             <input
-              className="mt-2 w-full h-1 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer"
+              className="mt-2 h-1 w-full cursor-pointer appearance-none rounded-lg bg-gray-200 dark:bg-gray-600"
               type="range"
               min={1}
               max={3}

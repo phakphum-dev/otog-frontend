@@ -1,3 +1,4 @@
+import { Collapse } from '@chakra-ui/transition'
 import { motion } from 'framer-motion'
 import { useEffect, useMemo, useState } from 'react'
 import { FaPencilAlt, FaPlus } from 'react-icons/fa'
@@ -11,8 +12,6 @@ import {
   AnnouncementProvider,
   useAnnouncementContext,
 } from './useAnnouncementContext'
-
-import { Collapse } from '@chakra-ui/transition'
 
 import { useAuth } from '@src/context/AuthContext'
 import { useDisclosure } from '@src/hooks/useDisclosure'
@@ -88,7 +87,7 @@ const AnnouncementComponent = () => {
   }
 
   return (
-    <div className="relative pt-4 flex h-[150px] cursor-pointer">
+    <div className="relative flex h-[150px] cursor-pointer pt-4">
       {filteredAnnouncements.map((announcement, index, all) => (
         <MotionDiv
           key={announcement.id}
@@ -96,7 +95,7 @@ const AnnouncementComponent = () => {
             show: { y: 0, transition: { duration: 0.5 } },
             hidden: { y: -HEIGHT * 1.2, transition: { duration: 0.5 } },
           }}
-          className="bg-white dark:bg-gray-800 absolute flex justify-center h-[150px] max-h-[150px] w-full overflow-hidden text-center"
+          className="absolute flex h-[150px] max-h-[150px] w-full justify-center overflow-hidden bg-white text-center dark:bg-gray-800"
           style={{ zIndex: all.length - index }}
           animate={index >= showIndex ? 'show' : 'hidden'}
           onClick={nextShowIndex}

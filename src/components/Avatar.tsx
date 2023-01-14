@@ -9,7 +9,7 @@ export type AvatarProps = {
 export const Avatar = (props: AvatarProps) => {
   const { name, src, className } = props
   return src ? (
-    <img className={clsx('w-6 h-6 rounded-full', className)} src={src} />
+    <img className={clsx('h-6 w-6 rounded-full', className)} src={src} />
   ) : (
     <div className={className}>
       <BoringAvatar

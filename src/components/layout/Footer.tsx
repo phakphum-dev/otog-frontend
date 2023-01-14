@@ -4,9 +4,9 @@ import { CONTACT_LINK, GITHUB_LINK, OFFLINE_MODE } from '@src/config'
 import { Link } from '@src/ui/Link'
 
 export const Footer = () => (
-  <PageContainer className="mt-8 pb-4 flex-none">
+  <PageContainer className="mt-8 flex-none pb-4">
     <hr className="mb-2" />
-    <div className="flex flex-col sm:flex-row justify-between">
+    <div className="flex flex-col justify-between sm:flex-row">
       {OFFLINE_MODE ? (
         <span>หากมีข้อสงสัย กรุณายกมือถาม</span>
       ) : (

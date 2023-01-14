@@ -27,7 +27,7 @@ export default function ProfilePage() {
         <Title icon={<FaUser />}>{userData!.showName}</Title>
       </TitleLayout>
       <div className="flex flex-col gap-2">
-        <div className="flex flex-col md:flex-row gap-8">
+        <div className="flex flex-col gap-8 md:flex-row">
           {user?.id === id ? (
             <ProfileUpload />
           ) : (

@@ -26,7 +26,7 @@ export const MenuList = ({ children }: PropsChildren) => {
       leaveFrom="transform opacity-100 scale-100"
       leaveTo="transform opacity-0 scale-95"
     >
-      <MenuHeadless.Items className="absolute right-0 w-56 py-2 origin-top-right rounded-md border bg-white dark:bg-gray-700 shadow-sm focus:outline-none">
+      <MenuHeadless.Items className="absolute right-0 w-56 origin-top-right rounded-md border bg-white py-2 shadow-sm focus:outline-none dark:bg-gray-700">
         {children}
       </MenuHeadless.Items>
     </Transition>

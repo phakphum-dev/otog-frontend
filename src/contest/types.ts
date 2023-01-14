@@ -35,7 +35,7 @@ export type ContestScoreboard = Contest & {
 }
 
 export type ContestPrize = Record<Prize, MiniSubmission[]>
-export type Prize = typeof prizes[number]
+export type Prize = (typeof prizes)[number]
 export const prizes = [
   'firstBlood',
   'fasterThanLight',

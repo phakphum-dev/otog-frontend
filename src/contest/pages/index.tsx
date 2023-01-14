@@ -34,9 +34,9 @@ export default function ContestPage() {
         <ContestRouter contest={currentContest} time={serverTime!} />
       ) : (
         <PageContainer className="flex">
-          <div className="flex-1 flex justify-center items-center">
+          <div className="flex flex-1 items-center justify-center">
             <div className="flex flex-col items-center gap-4">
-              <h1 className="font-bold text-4xl">ยังไม่มีการแข่งขัน</h1>
+              <h1 className="text-4xl font-bold">ยังไม่มีการแข่งขัน</h1>
               <NextLink href="/contest/history" passHref>
                 <Button as="a">ประวัติการแข่งขัน</Button>
               </NextLink>
@@ -78,12 +78,12 @@ export const PreContest = (props: ContestProps) => {
   }, [remaining])
   return (
     <PageContainer className="flex">
-      <div className="flex-1 flex justify-center items-center">
+      <div className="flex flex-1 items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <h1 className="font-bold text-4xl text-center">
+          <h1 className="text-center text-4xl font-bold">
             การแข่งขัน {contest.name} กำลังจะเริ่ม
           </h1>
-          <h2 className="font-bold text-2xl text-center">
+          <h2 className="text-center text-2xl font-bold">
             ในอีก {toThTimeFormat(remaining)}...
           </h2>
         </div>
@@ -113,7 +113,7 @@ export const MidContest = (props: ContestProps) => {
         <Title icon={<FaTrophy />} lineClamp>
           {contest.name}
         </Title>
-        <h2 className="font-bold text-4xl whitespace-nowrap">
+        <h2 className="whitespace-nowrap text-4xl font-bold">
           {toTimerFormat(remaining)}
         </h2>
       </TitleLayout>
@@ -131,9 +131,9 @@ export const PostContest = (props: ContestProps) => {
   const { contest } = props
   return (
     <PageContainer className="flex">
-      <div className="flex-1 flex justify-center items-center">
+      <div className="flex flex-1 items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <h1 className="font-bold text-4xl text-center">
+          <h1 className="text-center text-4xl font-bold">
             การแข่งขัน {contest.name} จบลงแล้ว
           </h1>
           <NextLink

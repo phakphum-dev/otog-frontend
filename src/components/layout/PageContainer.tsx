@@ -15,7 +15,7 @@ export const PageContainer = ({
   return (
     <div
       className={clsx(
-        'w-full mx-auto px-4 flex-1',
+        'mx-auto w-full flex-1 px-4',
         maxSize === 'md' && 'sm:max-w-screen-sm md:max-w-screen-md',
         maxSize === 'lg' &&
           'sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg',

@@ -1,5 +1,5 @@
-import NProgress from 'nprogress'
 import { useRouter } from 'next/router'
+import NProgress from 'nprogress'
 import { useEffect, useState } from 'react'
 
 const TIMEOUT_DELAY = 100

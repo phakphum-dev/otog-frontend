@@ -64,9 +64,9 @@ export const ProfileUpload = () => {
 
   return (
     <div>
-      <div className="relative flex-1 w-80">
+      <div className="relative w-80 flex-1">
         <Picture url={url} name={user!.showName} />
-        <div className="flex gap-2 absolute top-2 right-2">
+        <div className="absolute top-2 right-2 flex gap-2">
           <UploadFileButton accept=".png,.jpg,.jpeg" onChange={onFileSelect} />
           {url && (
             <>
@@ -102,7 +102,7 @@ export interface PictureProps {
 
 export const Picture = ({ url, name }: PictureProps) => {
   return url ? (
-    <img className="object-cover rounded-md bg-gray-300 w-80 h-80" src={url} />
+    <img className="h-80 w-80 rounded-md bg-gray-300 object-cover" src={url} />
   ) : (
     <Avatar
       size={320}

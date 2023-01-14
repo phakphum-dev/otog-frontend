@@ -35,7 +35,7 @@ import { ONE_SECOND } from '@src/utils/time'
 const Th = (props: ComponentProps<'th'>) => <TH textAlign="center" {...props} />
 const Td = ({ className, ...props }: ComponentProps<'td'>) => (
   <TD
-    className={clsx('text-center !py-2 leading-normal', className)}
+    className={clsx('!py-2 text-center leading-normal', className)}
     {...props}
   />
 )
@@ -192,7 +192,7 @@ export default function ContestHistory() {
             {prizes.map((prize) => {
               return (
                 <tr key={prize}>
-                  <Td className="text-left whitespace-nowrap">
+                  <Td className="whitespace-nowrap text-left">
                     <Tooltip
                       shouldWrapChildren
                       label={prizeDescription[prize].description}

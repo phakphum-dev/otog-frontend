@@ -46,7 +46,7 @@ export const ChatMessage = memo(
     return (
       <div>
         {shouldDisplayDate && (
-          <div className="flex justify-center text-xs text-gray-500 mt-2">
+          <div className="mt-2 flex justify-center text-xs text-gray-500">
             {new Date(creationDate).toLocaleDateString('th-TH', {
               minute: '2-digit',
               hour: '2-digit',
@@ -65,11 +65,11 @@ export const ChatMessage = memo(
           {displayAvatar ? (
             <SmallAvatar userId={sender.id} name={sender.showName} />
           ) : (
-            isOther && <div className="min-w-6 mr-1" />
+            isOther && <div className="mr-1 min-w-6" />
           )}
           <div className="flex flex-col items-start">
             {displayName && (
-              <div className="text-xs text-gray-500 px-1 max-w-[270px] line-clamp-3">
+              <div className="max-w-[270px] px-1 text-xs text-gray-500 line-clamp-3">
                 {sender.showName}
               </div>
             )}
@@ -77,7 +77,7 @@ export const ChatMessage = memo(
               <div
                 title={toThDate(creationDate)}
                 className={clsx(
-                  'text-4xl whitespace-pre-wrap word-break',
+                  'whitespace-pre-wrap text-4xl word-break',
                   isSelf ? 'ml-7' : 'mr-7'
                 )}
               >
@@ -87,10 +87,10 @@ export const ChatMessage = memo(
               <div
                 title={toThDate(creationDate)}
                 className={clsx(
-                  'px-2 py-1 rounded-2xl border whitespace-pre-wrap word-break',
+                  'whitespace-pre-wrap rounded-2xl border px-2 py-1 word-break',
                   isSelf
-                    ? 'ml-7 bg-otog text-white border-otog'
-                    : 'mr-7 bg-gray-100 dark:bg-gray-800 border-gray-100 dark:border-alpha-white-300',
+                    ? 'ml-7 border-otog bg-otog text-white'
+                    : 'mr-7 border-gray-100 bg-gray-100 dark:border-alpha-white-300 dark:bg-gray-800',
                   groupedWithTop &&
                     (isSelf ? 'rounded-tr-md' : 'rounded-tl-md'),
                   groupedWithBottom &&
@@ -111,7 +111,8 @@ export const ChatMessage = memo(
     prevProps.messageBelow?.id === nextProps.messageBelow?.id
 )
 
-export const emojiPattern = /^(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])+$/
+export const emojiPattern =
+  /^(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])+$/
 
 const SmallAvatar = ({ userId, name }: { userId: number; name: string }) => {
   const { url } = useProfilePic(userId, true)
@@ -123,7 +124,7 @@ const SmallAvatar = ({ userId, name }: { userId: number; name: string }) => {
 }
 
 const MessageCode = (token: string) => (
-  <code className="text-inherit bg-transparent dark:bg-alpha-black-300">
+  <code className="bg-transparent text-inherit dark:bg-alpha-black-300">
     {token}
   </code>
 )
@@ -142,7 +143,7 @@ const matcher: Record<
   '[': {
     match: ']',
     formatter: (token) => (
-      <Link href={token} isExternal className="underline !text-inherit">
+      <Link href={token} isExternal className="!text-inherit underline">
         {token}
       </Link>
     ),

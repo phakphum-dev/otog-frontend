@@ -68,7 +68,7 @@ export const LoginForm = (props: LoginFormProps) => {
 
 export const CenteredCard = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="p-4 my-16 mx-auto w-max shadow-md border rounded-md">
+    <div className="my-16 mx-auto w-max rounded-md border p-4 shadow-md">
       {children}
     </div>
   )

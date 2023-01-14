@@ -229,7 +229,7 @@ const ButtonIcon = ({
   className?: string
 }) => {
   return (
-    <span className={clsx('inline-flex self-center shrink-0', className)}>
+    <span className={clsx('inline-flex shrink-0 self-center', className)}>
       {children}
     </span>
   )

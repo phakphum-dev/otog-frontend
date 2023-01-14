@@ -10,9 +10,11 @@ import { useSocket } from '@src/context/SocketContext'
 const useLoadChat = () => {
   const { isAuthenticated } = useAuth()
 
-  const { data: oldMessages, setSize, isValidating } = useSWRInfinite<
-    Message[]
-  >(
+  const {
+    data: oldMessages,
+    setSize,
+    isValidating,
+  } = useSWRInfinite<Message[]>(
     (pageIndex: number, previousPageData) => {
       if (!isAuthenticated) return null
       // reached the end
@@ -25,9 +27,10 @@ const useLoadChat = () => {
     { revalidateOnFocus: false, revalidateOnReconnect: false }
   )
 
-  const messages = useMemo(() => oldMessages?.flatMap((messages) => messages), [
-    oldMessages,
-  ])
+  const messages = useMemo(
+    () => oldMessages?.flatMap((messages) => messages),
+    [oldMessages]
+  )
   const loadMore = useCallback(() => {
     setSize((size) => size + 1)
   }, [setSize])
@@ -78,12 +81,8 @@ export const useChatSocket = () => {
           return { ...state, emitMessage }
         }
         case 'new-message': {
-          const [
-            id,
-            message,
-            creationDate,
-            [userId, showName, rating],
-          ] = action.payload.message
+          const [id, message, creationDate, [userId, showName, rating]] =
+            action.payload.message
           state.newMessages.push({
             id,
             message,
@@ -109,10 +108,8 @@ export const useChatSocket = () => {
 }
 
 export const useChat = (isOpen: boolean) => {
-  const [
-    { emitMessage: emitChat, newMessages, hasUnread },
-    dispatch,
-  ] = useChatSocket()
+  const [{ emitMessage: emitChat, newMessages, hasUnread }, dispatch] =
+    useChatSocket()
   const { socket } = useSocket()
   const { isAuthenticated } = useAuth()
   useEffect(() => {

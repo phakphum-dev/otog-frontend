@@ -11,10 +11,10 @@ import { Button } from '@src/ui/Button'
 
 export default function HomePage() {
   return (
-    <PageContainer className="flex justify-center items-center">
-      <div className="flex flex-col md:flex-row gap-16 md:pb-16">
-        <div className="flex flex-col gap-6 flex-1">
-          <h1 className="font-bold text-5xl">
+    <PageContainer className="flex items-center justify-center">
+      <div className="flex flex-col gap-16 md:flex-row md:pb-16">
+        <div className="flex flex-1 flex-col gap-6">
+          <h1 className="text-5xl font-bold">
             Become a god of Competitive Programming
           </h1>
           <div className="text-md text-gray-500">
@@ -33,7 +33,7 @@ export default function HomePage() {
             </NextLink>
           </div>
         </div>
-        <div className="flex-1 flex justify-center items-center">
+        <div className="flex flex-1 items-center justify-center">
           <Image src={ComputerImage} />
         </div>
       </div>

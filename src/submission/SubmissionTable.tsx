@@ -26,12 +26,11 @@ import { ONE_SECOND, toThDate } from '@src/utils/time'
 export const SubmissionTable = () => {
   const submissionsResponse = useSubmissions()
   const { mutate } = submissionsResponse
-  const infiniteSubmissionTableProps = useInfiniteSubmissionTable(
-    submissionsResponse
-  )
+  const infiniteSubmissionTableProps =
+    useInfiniteSubmissionTable(submissionsResponse)
   return (
     <>
-      <div className="flex gap-2 mb-4">
+      <div className="mb-4 flex gap-2">
         <LatestSubmission onSuccess={mutate} />
       </div>
       <InfiniteSubmissionTable {...infiniteSubmissionTableProps} />
@@ -45,17 +44,15 @@ export interface SubmissionTableProps {
 
 export const ProfileSubmissionTable = ({ userId }: SubmissionTableProps) => {
   const submissionsResponse = useSubmissions(userId)
-  const infiniteSubmissionTableProps = useInfiniteSubmissionTable(
-    submissionsResponse
-  )
+  const infiniteSubmissionTableProps =
+    useInfiniteSubmissionTable(submissionsResponse)
   return <InfiniteSubmissionTable {...infiniteSubmissionTableProps} />
 }
 
 export const AllSubmissionTable = () => {
   const submissionsResponse = useAllSubmissions()
-  const infiniteSubmissionTableProps = useInfiniteSubmissionTable(
-    submissionsResponse
-  )
+  const infiniteSubmissionTableProps =
+    useInfiniteSubmissionTable(submissionsResponse)
   return <InfiniteSubmissionTable {...infiniteSubmissionTableProps} />
 }
 

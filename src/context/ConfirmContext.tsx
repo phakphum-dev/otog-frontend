@@ -30,10 +30,8 @@ export const ConfirmModalProvider = ({
 }: {
   children?: ReactNode
 }) => {
-  const [
-    { cancleText, submitText, title, subtitle = '', onSubmit },
-    setProps,
-  ] = useState<ConfirmModalProps>({} as ConfirmModalProps)
+  const [{ cancleText, submitText, title, subtitle = '', onSubmit }, setProps] =
+    useState<ConfirmModalProps>({} as ConfirmModalProps)
   const { isOpen, onClose, onOpen } = useDisclosure()
   const cancelRef = useRef(null)
 

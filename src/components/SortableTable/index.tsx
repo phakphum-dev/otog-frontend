@@ -55,7 +55,7 @@ export const SortTh = (props: TableHeadProps) => {
       >
         <div
           className={clsx(
-            'flex gap-2 items-center',
+            'flex items-center gap-2',
             centered && 'justify-center'
           )}
         >

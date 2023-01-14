@@ -45,7 +45,7 @@ export const FileInput = forwardRef(
       }
     }, [isDragActive, onFocus])
     return (
-      <div className="flex relative w-full">
+      <div className="relative flex w-full">
         <input type="file" hidden {...rest} ref={inputRef} />
         <Input
           ref={displayInputRef}
@@ -56,9 +56,9 @@ export const FileInput = forwardRef(
           variant={variant}
           readOnly
         />
-        <div className="w-[100px] z-0 flex items-center justify-end absolute top-0 right-0">
+        <div className="absolute top-0 right-0 z-0 flex w-[100px] items-center justify-end">
           <Button
-            className="rounded-l-none !font-normal text-gray-600 dark:text-white relative"
+            className="relative rounded-l-none !font-normal text-gray-600 dark:text-white"
             onClick={onClick}
             size={variant}
           >
