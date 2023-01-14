@@ -64,7 +64,7 @@ export default function AdminContestPage() {
         <title>Admin Contest | OTOG</title>
       </Head>
       <TitleLayout>
-        <Title icon={FaTools}>ระบบ GOTO</Title>
+        <Title icon={<FaTools />}>ระบบ GOTO</Title>
         <div className="flex gap-2">
           <NextLink href="/admin/contest" passHref>
             <Button as="a">แข่งขัน</Button>

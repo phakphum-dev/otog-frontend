@@ -9,11 +9,11 @@ import { Avatar } from '../Avatar'
 import { ToggleColorModeButton } from '../ToggleColorModeButton'
 import { PageContainer } from './PageContainer'
 
-import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
-
 import { OFFLINE_MODE } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
 import { useDisclosure } from '@src/hooks/useDisclosure'
+import { ChevronDownIcon } from '@src/icons/ChevronDownIcon'
+import { HamburgerIcon } from '@src/icons/HamburgerIcon'
 import { useUserProfilePic } from '@src/profile/useProfilePic'
 import { Button, ButtonProps } from '@src/ui/Button'
 import {

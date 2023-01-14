@@ -70,7 +70,7 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
             <AuthProvider value={accessToken}>
               <SocketProvider>
                 <TopProgressBar />
-                <div className="flex flex-col min-h-screen dark:bg-gray-800 dark:border-alpha-white-300">
+                <div className="flex flex-col min-h-screen">
                   <NavBar />
                   <Component {...props} />
                   {!OFFLINE_MODE && <Chat />}

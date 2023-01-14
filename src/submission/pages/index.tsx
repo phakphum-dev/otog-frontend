@@ -18,7 +18,7 @@ export default function SubmissionPage() {
         <title>Submission | OTOG</title>
       </Head>
       <TitleLayout>
-        <Title icon={FaTasks}>ผลตรวจ</Title>
+        <Title icon={<FaTasks />}>ผลตรวจ</Title>
         <NextLink href="/submission/all" passHref>
           <Button as="a" variant="outline">
             ผลตรวจรวม

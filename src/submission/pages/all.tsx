@@ -16,7 +16,7 @@ export default function SubmissionPage() {
         <title>Submission | OTOG</title>
       </Head>
       <TitleLayout>
-        <Title icon={FaTasks}>ผลตรวจรวม</Title>
+        <Title icon={<FaTasks />}>ผลตรวจรวม</Title>
         {isAuthenticated && (
           <NextLink href="/submission" passHref>
             <Button as="a">ผลตรวจของคุณ</Button>

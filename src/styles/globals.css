@@ -6,6 +6,9 @@
   * {
     @apply dark:border-alpha-white-300;
   }
+  body {
+    @apply dark:bg-gray-800 dark:text-alpha-white-900;
+  }
 }
 
 body {

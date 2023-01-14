@@ -54,7 +54,7 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
       </Head>
       <div className="flex flex-col gap-2">
         <TitleLayout>
-          <Title icon={FaLightbulb}>{problem.name}</Title>
+          <Title icon={<FaLightbulb />}>{problem.name}</Title>
           <div className="flex flex-col items-end">
             <Link isExternal href={`${API_HOST}problem/doc/${problem.id}`}>
               [ดาวน์โหลด]

@@ -5,10 +5,9 @@ import { useEffect } from 'react'
 import { toast } from 'react-hot-toast'
 import { FaRegShareSquare } from 'react-icons/fa'
 
-import { CopyIcon } from '@chakra-ui/icons'
-
 import { API_HOST, APP_HOST } from '@src/config'
 import { useClipboard } from '@src/hooks/useClipboard'
+import { CopyIcon } from '@src/icons/CopyIcon'
 import { useSubmission } from '@src/submission/queries'
 import {
   SubmissionWithProblem,

@@ -30,7 +30,7 @@ export default function ProblemPage() {
       </Head>
       <AnnouncementCarousel />
       <TitleLayout>
-        <Title icon={FaPuzzlePiece}>โจทย์</Title>
+        <Title icon={<FaPuzzlePiece />}>โจทย์</Title>
       </TitleLayout>
       {isAuthenticated && <Buttons setFilter={setFilter} />}
       <ClientOnly>

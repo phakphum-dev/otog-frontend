@@ -7,8 +7,7 @@ import {
   useContext,
 } from 'react'
 
-import { CloseIcon } from '@chakra-ui/icons'
-
+import { CloseIcon } from '@src/icons/CloseIcon'
 import { IconButton } from '@src/ui/IconButton'
 
 export type DrawerContextValue = {

@@ -6,17 +6,15 @@ import { CodeModal, ErrorModal } from '../components/Code'
 import { FileInput } from '../components/FileInput'
 import { submitContestProblem } from './queries'
 
-import {
-  ChevronDownIcon,
-  ChevronUpIcon,
-  CloseIcon,
-  EditIcon,
-} from '@chakra-ui/icons'
 import { Collapse } from '@chakra-ui/transition'
 
 import { API_HOST, OFFLINE_MODE } from '@src/config'
 import { useDisclosure } from '@src/hooks/useDisclosure'
 import { useMutation } from '@src/hooks/useMutation'
+import { ChevronDownIcon } from '@src/icons/ChevronDownIcon'
+import { ChevronUpIcon } from '@src/icons/ChevronUpIcon'
+import { CloseIcon } from '@src/icons/CloseIcon'
+import { EditIcon } from '@src/icons/EditIcon'
 import { Problem } from '@src/problem/types'
 import { useLatestProblemSubmission } from '@src/submission/queries'
 import { useDropFile } from '@src/submission/submit/useDropFile'

@@ -19,7 +19,7 @@ export default function ContestHistoryPage() {
         <title>Contest History | OTOG</title>
       </Head>
       <TitleLayout>
-        <Title icon={FaTrophy}>ประวัติการแข่งขัน</Title>
+        <Title icon={<FaTrophy />}>ประวัติการแข่งขัน</Title>
       </TitleLayout>
       {contests ? (
         <div className="overflow-x-auto">

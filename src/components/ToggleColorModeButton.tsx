@@ -1,8 +1,8 @@
 import { useTheme } from 'next-themes'
 import { forwardRef } from 'react'
 
-import { MoonIcon, SunIcon } from '@chakra-ui/icons'
-
+import { MoonIcon } from '@src/icons/MoonIcon'
+import { SunIcon } from '@src/icons/SunIcon'
 import { IconButton, IconButtonProps } from '@src/ui/IconButton'
 
 export const ToggleColorModeButton = forwardRef<

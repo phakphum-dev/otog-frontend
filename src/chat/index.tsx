@@ -6,11 +6,10 @@ import {
   useState,
 } from 'react'
 import { toast } from 'react-hot-toast'
-import { IoChatbubbleEllipses, IoSend } from 'react-icons/io5'
+import { IoChatbubbleEllipses, IoClose, IoSend } from 'react-icons/io5'
 
 import { ChatMessage } from './components/ChatMessage'
 
-import { SmallCloseIcon } from '@chakra-ui/icons'
 import { SlideFade } from '@chakra-ui/transition'
 
 import { useChat } from '@src/chat/useChat'
@@ -120,7 +119,7 @@ export const Chat = () => {
               <Button
                 className="!p-6 rounded-b-none justify-between"
                 onClick={onClose}
-                rightIcon={<SmallCloseIcon />}
+                rightIcon={<IoClose />}
                 colorScheme="otog"
               >
                 <h3 className="font-bold text-md">OTOG Chat</h3>

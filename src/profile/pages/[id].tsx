@@ -24,7 +24,7 @@ export default function ProfilePage() {
         <title>Profile #{id} | OTOG</title>
       </Head>
       <TitleLayout>
-        <Title icon={FaUser}>{userData!.showName}</Title>
+        <Title icon={<FaUser />}>{userData!.showName}</Title>
       </TitleLayout>
       <div className="flex flex-col gap-2">
         <div className="flex flex-col md:flex-row gap-8">
@@ -38,7 +38,7 @@ export default function ProfilePage() {
         {user?.role === 'admin' && (
           <div className="flex flex-col gap-2">
             <TitleLayout>
-              <Title icon={FaTasks}>ผลตรวจ</Title>
+              <Title icon={<FaTasks />}>ผลตรวจ</Title>
             </TitleLayout>
             <ProfileSubmissionTable userId={id} />
           </div>

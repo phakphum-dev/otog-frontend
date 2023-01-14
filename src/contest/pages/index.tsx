@@ -110,7 +110,7 @@ export const MidContest = (props: ContestProps) => {
     <PageContainer maxSize="md">
       <AnnouncementCarousel defaultShow={true} />
       <TitleLayout>
-        <Title icon={FaTrophy} lineClamp>
+        <Title icon={<FaTrophy />} lineClamp>
           {contest.name}
         </Title>
         <h2 className="font-bold text-4xl whitespace-nowrap">
