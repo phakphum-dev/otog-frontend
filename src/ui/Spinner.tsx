@@ -1,4 +1,4 @@
-import { VariantProps, cva } from 'cva'
+import { VariantProps, cva } from 'class-variance-authority'
 import { ComponentProps, forwardRef } from 'react'
 
 const spinnerStyle = cva(

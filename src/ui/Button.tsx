@@ -1,5 +1,5 @@
+import { VariantProps, cva } from 'class-variance-authority'
 import clsx from 'clsx'
-import { VariantProps, cva } from 'cva'
 import {
   ComponentProps,
   PropsWithChildren,
