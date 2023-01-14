@@ -64,7 +64,7 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
         />
       </Head>
       <Toaster position="bottom-center" />
-      <ThemeProvider>
+      <ThemeProvider attribute="class">
         <ConfirmModalProvider>
           <SWRProvider fallback={fallback}>
             <AuthProvider value={accessToken}>

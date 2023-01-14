@@ -1,5 +1,8 @@
 import { useTheme } from 'next-themes'
 import { forwardRef } from 'react'
+import { FaCircle } from 'react-icons/fa'
+
+import { ClientOnly } from './ClientOnly'
 
 import { MoonIcon } from '@src/icons/MoonIcon'
 import { SunIcon } from '@src/icons/SunIcon'
@@ -14,13 +17,24 @@ export const ToggleColorModeButton = forwardRef<
     setTheme(theme === 'light' ? 'dark' : 'light')
   }
   return (
-    <IconButton
-      rounded="full"
-      aria-label="Toggle color mode"
-      onClick={toggleColorMode}
-      icon={theme === 'light' ? <MoonIcon /> : <SunIcon />}
-      {...props}
-      ref={ref}
-    />
+    <ClientOnly
+      fallback={
+        <IconButton
+          rounded="full"
+          aria-label="Toggle color mode"
+          onClick={toggleColorMode}
+          icon={<FaCircle />}
+        />
+      }
+    >
+      <IconButton
+        rounded="full"
+        aria-label="Toggle color mode"
+        onClick={toggleColorMode}
+        icon={theme === 'light' ? <MoonIcon /> : <SunIcon />}
+        {...props}
+        ref={ref}
+      />
+    </ClientOnly>
   )
 })

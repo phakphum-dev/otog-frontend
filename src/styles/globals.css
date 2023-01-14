@@ -7,7 +7,7 @@
     @apply dark:border-alpha-white-300;
   }
   body {
-    @apply dark:bg-gray-800 dark:text-alpha-white-900;
+    @apply bg-white dark:bg-gray-800 text-gray-900 dark:text-alpha-white-900;
   }
 }
 
