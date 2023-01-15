@@ -1,8 +1,14 @@
-# One Tambon One Grader - OTOG
+<p align="center">
+  <a href="https://otog.cf">
+    <img src="https://github.com/phakphum-dev/otog-frontend/raw/main/public/logo512.png" width="80" />
+  </a>
+</p>
+
+<h1 align="center">One Tambon One Grader</h1>
 
 ### Become a god of competitive programming, code and create algorithms efficiently.
 
-### [http://otog.cf/](http://otog.cf/)
+### http://otog.cf/
 
 An online grader which was originally provided for POSN KKU center students but currently open for everybody.
 
@@ -16,7 +22,7 @@ This project is an upgrade version of
 
 ## Repositories
 
-There are 3 main modules for otog which are
+There are 3 main modules for otog
 
 1. [otog-frontend](https://github.com/phakphum-dev/otog-frontend)
 2. [otog-backend](https://github.com/phakphum-dev/otog-backend)
@@ -30,15 +36,13 @@ First, run yarn to install dependencies
 yarn
 ```
 
-(Note that you can also use `yarn --frozen-lockfile` instead if installed dependencies is too new)
-
 After that, run yarn dev
 
 ```bash
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 with your browser to see the result.
 
 You can use `.env.local.template` to set your local environment, just copy and rename it to `.env.local`.
 
@@ -46,15 +50,18 @@ You may need to run backend and grader as well
 
 ## Todo
 
-- make it work with docker
-- bring back old features of otog such as
-  - contest scoreboard prizes (First Blood, Faster Than Light, Passed In One, One Man Solve)
-  - otog announcement with WYSIWYG
+- fix auth flow
+- otog redesign
+- next.js 13 server component migration
+- automatic rating system
+- code rejudge
 - code sharing
-- image caching
-- improve admin monitor
-- improve overall UX
+- improve admin monitoring
 - improve SEO
+
+## Bug Report
+
+If you have any issue, feel free to open a new one in the issue tab
 
 ## Contributing
 
