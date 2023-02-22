@@ -51,7 +51,9 @@ You may need to run backend and grader as well
 ## Todo
 
 - fix auth flow
+- migrate to next auth, google auth
 - otog redesign
+- cookie consent
 - next.js 13 server component migration
 - automatic rating system
 - code rejudge

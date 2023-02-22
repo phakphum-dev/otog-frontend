@@ -209,6 +209,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           className,
         }),
         'data-active': isActive,
+        type: 'button',
         ref,
         ...props,
       },

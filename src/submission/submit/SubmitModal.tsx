@@ -52,6 +52,8 @@ export const SubmitModal = (props: SubmitModalProps) => {
     try {
       onLoad()
       const language = new FormData(e.currentTarget).get('language') as string
+      console.log(language)
+
       await submitProblemMutation(problem.id, file, language)
       resetFile()
       onSuccess?.()
@@ -85,17 +87,17 @@ export const SubmitModal = (props: SubmitModalProps) => {
                 </div>
               </div>
             </ModalBody>
+            <ModalFooter>
+              <div className="flex gap-2">
+                <NextLink href={`/problem/${problem.id}`} passHref>
+                  <Button as="a">{submitted ? 'แก้ไข' : 'ใหม่'}</Button>
+                </NextLink>
+                <Button colorScheme="otog" type="submit">
+                  ส่ง
+                </Button>
+              </div>
+            </ModalFooter>
           </form>
-          <ModalFooter>
-            <div className="flex gap-2">
-              <NextLink href={`/problem/${problem.id}`} passHref>
-                <Button as="a">{submitted ? 'แก้ไข' : 'ใหม่'}</Button>
-              </NextLink>
-              <Button colorScheme="otog" type="submit">
-                ส่ง
-              </Button>
-            </div>
-          </ModalFooter>
         </div>
       </ModalContent>
     </Modal>
