@@ -52,8 +52,6 @@ export const SubmitModal = (props: SubmitModalProps) => {
     try {
       onLoad()
       const language = new FormData(e.currentTarget).get('language') as string
-      console.log(language)
-
       await submitProblemMutation(problem.id, file, language)
       resetFile()
       onSuccess?.()
