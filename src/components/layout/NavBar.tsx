@@ -140,22 +140,25 @@ interface ItemProps {
   title: string
 }
 
-const NavItem = (props: ItemProps & LinkProps) => {
-  const { href, title, ...rest } = props
-  const isActive = usePathActive(href)
-  return (
-    <NextLink href={href} passHref>
-      <Link
-        variant="nav"
-        className="p-2 font-normal !no-underline"
-        isActive={isActive}
-        {...rest}
-      >
-        {title}
-      </Link>
-    </NextLink>
-  )
-}
+const NavItem = forwardRef<HTMLAnchorElement, ItemProps & LinkProps>(
+  (props, ref) => {
+    const { href, title, ...rest } = props
+    const isActive = usePathActive(href)
+    return (
+      <NextLink href={href} passHref>
+        <Link
+          variant="nav"
+          className="p-2 font-normal !no-underline"
+          isActive={isActive}
+          {...rest}
+          ref={ref}
+        >
+          {title}
+        </Link>
+      </NextLink>
+    )
+  }
+)
 
 const DrawerItem = forwardRef<HTMLButtonElement, ItemProps & ButtonProps>(
   (props, ref) => {
