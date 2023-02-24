@@ -39,7 +39,6 @@ const annotations: AnnotationOptions[] = [
     drawTime: 'beforeDatasetsDraw',
     type: 'box',
     xScaleID: 'x-axis-0',
-    yScaleID: 'y-axis-0',
     yMin: 2500,
     backgroundColor: 'rgba(255, 133, 27, 0.5)',
     borderWidth: 0,
