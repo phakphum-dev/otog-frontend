@@ -117,7 +117,7 @@ export const emojiPattern =
 const SmallAvatar = ({ userId, name }: { userId: number; name: string }) => {
   const { url } = useProfilePic(userId, true)
   return (
-    <NextLink href={`/profile/${userId}`}>
+    <NextLink href={`/profile/${userId}`} passHref>
       <Avatar className="mr-1 cursor-pointer" src={url} name={name} />
     </NextLink>
   )
