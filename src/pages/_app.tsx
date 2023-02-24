@@ -49,7 +49,6 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
   return (
     <>
       <Head>
-        <title>One Tambon One Grader | OTOG</title>
         <meta
           name="description"
           content="Become a god of competitive programming. Code and create algorithms efficiently."

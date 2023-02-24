@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
@@ -32,6 +33,9 @@ export default function RegisterPage() {
   }
   return (
     <PageContainer>
+      <Head>
+        <title>Register | OTOG</title>
+      </Head>
       <CenteredCard>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-4">

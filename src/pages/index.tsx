@@ -1,4 +1,5 @@
 import { GetServerSideProps } from 'next'
+import Head from 'next/head'
 import Image from 'next/image'
 import NextLink from 'next/link'
 
@@ -12,6 +13,9 @@ import { Button } from '@src/ui/Button'
 export default function HomePage() {
   return (
     <PageContainer className="flex items-center justify-center">
+      <Head>
+        <title>Login | OTOG</title>
+      </Head>
       <div className="flex flex-col gap-16 md:flex-row md:pb-16">
         <div className="flex flex-1 flex-col gap-6">
           <h1 className="text-5xl font-bold">

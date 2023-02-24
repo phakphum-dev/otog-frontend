@@ -1,4 +1,5 @@
 import { GetServerSideProps } from 'next'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import { CenteredCard, LoginForm } from '@src/components/Login'
@@ -10,6 +11,9 @@ export default function LoginPage() {
   const router = useRouter()
   return (
     <PageContainer>
+      <Head>
+        <title>Login | OTOG</title>
+      </Head>
       <CenteredCard>
         <LoginForm
           onSuccess={() =>
