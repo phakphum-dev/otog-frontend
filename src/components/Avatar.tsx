@@ -22,7 +22,14 @@ export const Avatar = forwardRef<HTMLAnchorElement, AvatarProps>(
           size={24}
           name={name}
           variant="beam"
-          colors={['#ff851b', '#17b4e9', '#41e241', '#ff4d4d']}
+          colors={[
+            '#ffd5ae',
+            '#b1e9fc',
+            '#b9f6ba',
+            '#ffb1b2',
+            '#ffe0ae',
+            '#CBD5E0',
+          ]}
         />
       </a>
     )

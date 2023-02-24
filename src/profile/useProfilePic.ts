@@ -5,7 +5,10 @@ import { storage } from '@src/firebase'
 
 export type ProfileKey = { userId: number; small: boolean }
 
-async function getProfileUrl({ userId, small }: ProfileKey): Promise<string> {
+export async function getProfileUrl({
+  userId,
+  small,
+}: ProfileKey): Promise<string> {
   const url = await storage
     .ref('images')
     .child(`${userId}${small ? '_32' : ''}.jpeg`)

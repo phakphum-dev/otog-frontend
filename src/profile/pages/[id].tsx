@@ -3,6 +3,8 @@ import { useRouter } from 'next/router'
 import { FaTasks, FaUser } from 'react-icons/fa'
 import { unstable_serialize } from 'swr'
 
+import { getProfileUrl } from '../useProfilePic'
+
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { useAuth } from '@src/context/AuthContext'
@@ -54,11 +56,23 @@ export const getServerSideProps = withCookies(async (context) => {
     return { notFound: true }
   }
   const user = getUser(id)
-  return {
-    props: {
-      fallback: {
-        [unstable_serialize(keyUser(id))]: await user,
+  try {
+    const profileUrl = getProfileUrl({ userId: id, small: false })
+    return {
+      props: {
+        fallback: {
+          [unstable_serialize(keyUser(id))]: await user,
+          [unstable_serialize({ userId: id, small: false })]: await profileUrl,
+        },
       },
-    },
+    }
+  } catch {
+    return {
+      props: {
+        fallback: {
+          [unstable_serialize(keyUser(id))]: await user,
+        },
+      },
+    }
   }
 })
