@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { useTheme } from 'next-themes'
 import { useCallback } from 'react'
 import { useEffect } from 'react'
 import { toast } from 'react-hot-toast'
@@ -12,48 +11,32 @@ export type ErrorToastOptions = {
 }
 
 export function useErrorToast() {
-  const { resolvedTheme } = useTheme()
-  return useCallback(
-    (error: unknown) => {
-      const toastData = getErrorData(error)
-      if (toastData.status) {
-        toast[toastData.status](
-          toastData.description ? (
-            <div>
-              <b>{toastData.title}</b>
-              <p>{toastData.description}</p>
-            </div>
-          ) : (
-            toastData.title
-          ),
-          {
-            style: {
-              background: resolvedTheme === 'dark' ? '#1A202C' : '#fff',
-              color: resolvedTheme === 'dark' ? 'white' : '#1A202C',
-            },
-          }
+  return useCallback((error: unknown) => {
+    const toastData = getErrorData(error)
+    if (toastData.status) {
+      toast[toastData.status](
+        toastData.description ? (
+          <div>
+            <b>{toastData.title}</b>
+            <p>{toastData.description}</p>
+          </div>
+        ) : (
+          toastData.title
         )
-      } else {
-        toast(
-          toastData.description ? (
-            <div>
-              <b>{toastData.title}</b>
-              <p>{toastData.description}</p>
-            </div>
-          ) : (
-            toastData.title
-          ),
-          {
-            style: {
-              background: resolvedTheme === 'dark' ? '#1A202C' : '#fff',
-              color: resolvedTheme === 'dark' ? 'white' : '#1A202C',
-            },
-          }
+      )
+    } else {
+      toast(
+        toastData.description ? (
+          <div>
+            <b>{toastData.title}</b>
+            <p>{toastData.description}</p>
+          </div>
+        ) : (
+          toastData.title
         )
-      }
-    },
-    [resolvedTheme]
-  )
+      )
+    }
+  }, [])
 }
 
 export function useErrorToaster(errorData: ErrorToastOptions | undefined) {

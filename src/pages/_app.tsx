@@ -45,7 +45,7 @@ type MyAppProps = AppProps<{
 export default function MyApp({ Component, pageProps }: MyAppProps) {
   const { accessToken, errorData, fallback, ...props } = pageProps
   useErrorToaster(errorData)
-  useAnalytics()
+  // useAnalytics()
   return (
     <>
       <Head>
@@ -62,7 +62,12 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      <Toaster position="bottom-center" />
+      <Toaster
+        position="bottom-center"
+        toastOptions={{
+          className: 'dark:bg-gray-800 dark:text-alpha-white-900',
+        }}
+      />
       <ThemeProvider attribute="class">
         <ConfirmModalProvider>
           <SWRProvider fallback={fallback}>
