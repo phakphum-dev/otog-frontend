@@ -4613,6 +4613,11 @@ table@^6.0.4:
     slice-ansi "^4.0.0"
     string-width "^4.2.0"
 
+tailwind-merge@^1.10.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/tailwind-merge/-/tailwind-merge-1.10.0.tgz#535541c7373d8a31afa81a4267e2ab9b4afa9429"
+  integrity sha512-WFnDXSS4kFTZwjKg5/oZSGzBRU/l+qcbv5NVTzLUQvJ9yovDAP05h0F2+ZFW0Lw9EcgRoc2AfURUdZvnEFrXKg==
+
 tailwindcss@^3.2.4:
   version "3.2.4"
   resolved "https://registry.npmjs.org/tailwindcss/-/tailwindcss-3.2.4.tgz"

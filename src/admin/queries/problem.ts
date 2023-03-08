@@ -1,5 +1,5 @@
 import { http } from '@src/context/HttpClient'
-import { Problem } from '@src/problem/types'
+import { Problem, Testcase } from '@src/problem/types'
 
 export type CreateProblem = Pick<
   Problem,
@@ -21,4 +21,11 @@ export async function toggleProblem(problemId: number, show: boolean) {
 
 export async function deleteProblem(problemId: number) {
   return http.del<Problem>(`problem/${problemId}`)
+}
+
+export async function updateProblemExamples(
+  problemId: number,
+  examples: Testcase[]
+) {
+  return http.put<Problem>(`problem/${problemId}/examples`, examples)
 }

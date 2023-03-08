@@ -1,24 +1,41 @@
 import Editor from '@monaco-editor/react'
+import clsx from 'clsx'
+import produce from 'immer'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { parseCookies } from 'nookies'
-import { ChangeEvent, useState } from 'react'
-import { FaLightbulb } from 'react-icons/fa'
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react'
+import { toast } from 'react-hot-toast'
+import { FaLightbulb, FaPencilAlt, FaPlus, FaTrash } from 'react-icons/fa'
 
 import { getProblem, keyProblem, useProblem } from '../queries'
 
+import { updateProblemExamples } from '@src/admin/queries/problem'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { API_HOST } from '@src/config'
+import { useAuth } from '@src/context/AuthContext'
 import { withCookies } from '@src/context/HttpClient'
+import { useClipboard } from '@src/hooks/useClipboard'
+import { useDisclosure } from '@src/hooks/useDisclosure'
+import { useErrorToast } from '@src/hooks/useErrorToast'
 import { useMutation } from '@src/hooks/useMutation'
-import { Problem } from '@src/problem/types'
+import { CopyIcon } from '@src/icons/CopyIcon'
+import { Problem, Testcase } from '@src/problem/types'
 import { getLatestProblemSubmission } from '@src/submission/queries'
 import { submitProblem } from '@src/submission/submit/queries'
 import { SubmissionWithSourceCode } from '@src/submission/types'
 import { Button } from '@src/ui/Button'
+import { IconButton } from '@src/ui/IconButton'
 import { Select } from '@src/ui/Input'
 import { Link } from '@src/ui/Link'
+import { Table, Td, Th } from '@src/ui/Table'
 import { ONE_SECOND } from '@src/utils/time'
 
 const defaultValue = `#include <iostream>
@@ -54,21 +71,45 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
       </Head>
       <div className="flex flex-col gap-2">
         <TitleLayout>
-          <Title icon={<FaLightbulb />}>{problem.name}</Title>
+          <Title icon={<FaLightbulb />} id="problem-name">
+            {problem.id} {problem.name}
+          </Title>
           <div className="flex flex-col items-end">
             <Link isExternal href={`${API_HOST}problem/doc/${problem.id}`}>
               [ดาวน์โหลด]
             </Link>
             <div className="whitespace-nowrap text-sm">
-              ({problem.timeLimit / ONE_SECOND} วินาที {problem.memoryLimit} MB)
+              (<span id="time-limit">{problem.timeLimit / ONE_SECOND}</span>{' '}
+              วินาที <span id="memory-limit">{problem.memoryLimit}</span> MB)
             </div>
           </div>
         </TitleLayout>
         <EditorForm problem={problem} submission={submission} />
+        <ExampleTable problemId={id} examples={problem.examples ?? []} />
       </div>
     </PageContainer>
   )
 }
+
+export const getServerSideProps = withCookies<WriteSolutionPageProps>(
+  async (context) => {
+    const id = Number(context.query.id)
+    if (Number.isNaN(id)) {
+      return { notFound: true }
+    }
+    const { accessToken = null } = parseCookies(context)
+    const problem = getProblem(id)
+    const submission = accessToken ? getLatestProblemSubmission(id) : null
+    return {
+      props: {
+        submission: await submission,
+        fallback: {
+          [keyProblem(id)]: await problem,
+        },
+      },
+    }
+  }
+)
 
 function EditorForm(props: {
   problem: Problem
@@ -123,22 +164,216 @@ function EditorForm(props: {
   )
 }
 
-export const getServerSideProps = withCookies<WriteSolutionPageProps>(
-  async (context) => {
-    const id = Number(context.query.id)
-    if (Number.isNaN(id)) {
-      return { notFound: true }
-    }
-    const { accessToken = null } = parseCookies(context)
-    const problem = getProblem(id)
-    const submission = accessToken ? getLatestProblemSubmission(id) : null
-    return {
-      props: {
-        submission: await submission,
-        fallback: {
-          [keyProblem(id)]: await problem,
-        },
-      },
+type ExampleTableProps = {
+  examples: Testcase[]
+  problemId: number
+}
+const ExampleTable = ({ examples, problemId }: ExampleTableProps) => {
+  const { isAdmin } = useAuth()
+  const { isOpen: isEditing, onOpen, onClose } = useDisclosure()
+  const [testcases, setTestcases] = useState(examples)
+
+  const { data: problem, mutate } = useProblem(problemId)
+  const updateProblemExamplesMutation = useMutation(updateProblemExamples)
+
+  const onError = useErrorToast()
+  const onSave = async () => {
+    onClose()
+    try {
+      mutate({ ...problem!, examples: testcases }, false)
+      const updatedProblem = await updateProblemExamplesMutation(
+        problemId,
+        testcases
+      )
+      if (updatedProblem) {
+        setTestcases(updatedProblem.examples)
+      }
+    } catch (e: unknown) {
+      onError(e)
+      setTestcases(examples)
     }
   }
-)
+  if (!isAdmin && examples.length === 0) {
+    return null
+  }
+  return (
+    <div className="mt-6 flex flex-col gap-2">
+      <h3 className="text-xl font-bold">ตัวอย่าง</h3>
+      <div className="group/table relative">
+        <Table className="table-fixed" id="example-table">
+          <thead>
+            <tr className="bg-gray-50 dark:bg-gray-900">
+              <Th className="border">Input</Th>
+              <Th className="border">Output</Th>
+            </tr>
+          </thead>
+          <tbody>
+            {isEditing
+              ? testcases.map((test, index) => (
+                  <EditTestcase
+                    {...test}
+                    row={index}
+                    key={index}
+                    setTestcases={setTestcases}
+                  />
+                ))
+              : examples.map((test, index) => (
+                  <ExampleRow {...test} row={index} key={index} />
+                ))}
+          </tbody>
+        </Table>
+        {isAdmin && !isEditing && (
+          <IconButton
+            className="invisible absolute right-0 top-0 translate-x-1/2 -translate-y-1/2 group-hover/table:visible"
+            size="sm"
+            rounded="full"
+            icon={<FaPencilAlt />}
+            onClick={onOpen}
+          />
+        )}
+        {isEditing && (
+          <IconButton
+            className="invisible absolute right-0 bottom-0 translate-x-1/2 translate-y-1/2 group-hover/table:visible"
+            size="xs"
+            rounded="full"
+            icon={<FaPlus />}
+            onClick={() =>
+              setTestcases(
+                produce((tests) => {
+                  tests.push({ input: '', output: '' })
+                })
+              )
+            }
+          />
+        )}
+      </div>
+      {isEditing && (
+        <div className="mt-2 flex w-full justify-end">
+          <Button onClick={onSave}>บันทึก</Button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+type ExampleRowType = {
+  input: string
+  output: string
+  row?: number
+}
+
+const ExampleRow = ({ input, output, row = 0 }: ExampleRowType) => {
+  const isOdd = row & 1
+  const { onCopy: onInputCopy, hasCopied: inputCopied } = useClipboard(input)
+  const { onCopy: onOutputCopy, hasCopied: outputCopied } = useClipboard(output)
+
+  useEffect(() => {
+    if (inputCopied) {
+      toast.success('คัดลอกลิงก์ไปยังคลิปบอร์ดแล้ว')
+    }
+  }, [inputCopied])
+  useEffect(() => {
+    if (outputCopied) {
+      toast.success('คัดลอกลิงก์ไปยังคลิปบอร์ดแล้ว')
+    }
+  }, [outputCopied])
+  return (
+    <tr className={clsx(isOdd && 'bg-gray-50 dark:bg-gray-900')}>
+      <Td className="group/input relative border-x p-0 align-top">
+        <IconButton
+          onClick={onInputCopy}
+          icon={<CopyIcon />}
+          size="sm"
+          variant="ghost"
+          className="invisible absolute top-2 right-2 group-hover/input:visible"
+        />
+        <div className="overflow-x-auto px-6 py-4">
+          <code className="whitespace-pre" id="input">
+            {input}
+          </code>
+        </div>
+      </Td>
+      <Td className="group/output relative border-x p-0 align-top">
+        <IconButton
+          onClick={onOutputCopy}
+          icon={<CopyIcon />}
+          size="sm"
+          variant="ghost"
+          className="invisible absolute top-2 right-2 group-hover/output:visible"
+        />
+        <div className="overflow-x-auto px-6 py-4">
+          <code className="whitespace-pre" id="output">
+            {output}
+          </code>
+        </div>
+      </Td>
+    </tr>
+  )
+}
+
+type EditExampleRowType = {
+  input: string
+  output: string
+  row: number
+  setTestcases: Dispatch<SetStateAction<Testcase[]>>
+}
+
+const EditTestcase = ({
+  input,
+  output,
+  row,
+  setTestcases,
+}: EditExampleRowType) => {
+  const onInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setTestcases(
+      produce((tests) => {
+        tests[row].input = e.target.value
+      })
+    )
+  }
+  const onOutputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setTestcases(
+      produce((tests) => {
+        tests[row].output = e.target.value
+      })
+    )
+  }
+  const onRemove = () => {
+    setTestcases(
+      produce((tests) => {
+        tests.splice(row, 1)
+      })
+    )
+  }
+  return (
+    <tr className="group/testcase relative">
+      <Td className="relative border-x p-0 align-top">
+        <code>
+          <textarea
+            className="w-full whitespace-pre bg-inherit px-6 py-4"
+            id="input"
+            value={input}
+            onChange={onInputChange}
+          />
+        </code>
+      </Td>
+      <Td className="relative border-x p-0 align-top">
+        <code>
+          <textarea
+            className="w-full whitespace-pre bg-inherit px-6 py-4"
+            id="output"
+            value={output}
+            onChange={onOutputChange}
+          />
+        </code>
+        <IconButton
+          icon={<FaTrash />}
+          size="xs"
+          rounded="full"
+          className="invisible absolute top-1/2 right-0 float-right translate-x-1/2 -translate-y-1/2 group-hover/testcase:visible"
+          onClick={onRemove}
+        />
+      </Td>
+    </tr>
+  )
+}

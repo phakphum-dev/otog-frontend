@@ -45,7 +45,7 @@ type MyAppProps = AppProps<{
 export default function MyApp({ Component, pageProps }: MyAppProps) {
   const { accessToken, errorData, fallback, ...props } = pageProps
   useErrorToaster(errorData)
-  // useAnalytics()
+  useAnalytics()
   return (
     <>
       <Head>

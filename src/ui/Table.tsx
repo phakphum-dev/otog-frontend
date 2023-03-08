@@ -1,6 +1,7 @@
 import { VariantProps, cva } from 'class-variance-authority'
 import clsx from 'clsx'
 import { ComponentProps, createContext, useContext } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 export type TableStyleValue = {
   variant: 'simple' | 'unstyled'
@@ -53,7 +54,7 @@ export const Th = ({ className, textAlign, children, ...props }: ThProps) => {
     </th>
   )
 }
-const tdStyles = cva('px-6 py-4', {
+const tdStyles = cva('', {
   variants: {
     variant: {
       simple: 'border-b border-gray-100 dark:border-gray-700 ',
@@ -70,7 +71,7 @@ export type TdProps = ComponentProps<'td'> & VariantProps<typeof tdStyles>
 export const Td = ({ className, children, ...props }: TdProps) => {
   const styles = useTableContext()
   return (
-    <td className={tdStyles({ ...styles, className })} {...props}>
+    <td className={twMerge(tdStyles({ ...styles }), className)} {...props}>
       {children}
     </td>
   )

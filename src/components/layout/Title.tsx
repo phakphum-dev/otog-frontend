@@ -1,17 +1,22 @@
 import clsx from 'clsx'
-import { ReactNode } from 'react'
+import { ComponentProps, ReactNode } from 'react'
 
 type TitleProps = {
-  icon: ReactNode
+  icon?: ReactNode
   lineClamp?: boolean
   children: ReactNode | string
-}
+} & ComponentProps<'div'>
 
-export const Title = ({ icon, lineClamp = false, children }: TitleProps) => {
+export const Title = ({
+  icon,
+  lineClamp = false,
+  children,
+  ...rest
+}: TitleProps) => {
   return (
-    <h2 className="flex items-center text-3xl font-bold md:text-4xl">
+    <h2 className="flex items-center text-2xl font-bold md:text-3xl">
       {icon}
-      <div className={clsx('ml-2', lineClamp && 'line-clamp-1')}>
+      <div className={clsx('ml-2', lineClamp && 'line-clamp-1')} {...rest}>
         {children}
       </div>
     </h2>

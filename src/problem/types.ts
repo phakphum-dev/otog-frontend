@@ -11,9 +11,15 @@ export interface Problem {
   recentShowTime: string
   case: string
   rating: number | null
+  examples: Testcase[]
 }
 
 export type ProblemWithSubmission = Problem & {
   submission: Submission | null
   passedCount: number
+}
+
+export type Testcase = {
+  input: string
+  output: string
 }
