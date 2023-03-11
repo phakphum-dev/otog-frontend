@@ -109,8 +109,8 @@ export const InfiniteSubmissionTable = (props: SubmissionTableBaseProps) => {
         </tbody>
       </Table>
       {hasMore && (
-        <div className="flex justify-center py-6">
-          <Spinner size="lg" ref={ref} />
+        <div className="flex justify-center py-6" ref={ref}>
+          <Spinner size="lg" />
         </div>
       )}
       <CodeModal submissionId={submissionId} {...codeDisclosure} />
