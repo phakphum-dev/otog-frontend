@@ -189,7 +189,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
           {submission.problem.name}
         </Link>
       </Td>
-      <Td className="min-w-[320px] max-w-[320px] break-all">
+      <Td className="min-w-[245px] max-w-[290px] break-all">
         {submission.errmsg && (isAdmin || user?.id === submission.user.id) ? (
           <>
             <Button variant="link" onClick={errorDisclosure.onOpen}>
