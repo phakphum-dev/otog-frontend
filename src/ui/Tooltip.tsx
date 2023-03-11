@@ -1,6 +1,7 @@
 import {
   FloatingPortal,
   Placement,
+  autoUpdate,
   offset,
   useFloating,
   useHover,
@@ -35,6 +36,7 @@ export const Tooltip = (props: TooltipProps) => {
     onOpenChange: setOpen,
     placement,
     middleware: [offset(4)],
+    whileElementsMounted: autoUpdate,
   })
   useHover(context, { move: false })
 
@@ -63,7 +65,7 @@ export const Tooltip = (props: TooltipProps) => {
               top: y ?? 0,
               left: x ?? 0,
             }}
-            className="max-w-xs origin-bottom rounded-sm bg-gray-700 px-2 py-0.5 text-sm font-medium text-alpha-white-900 shadow-md dark:bg-gray-300 dark:text-gray-900"
+            className="z-20 max-w-xs origin-bottom rounded-sm bg-gray-700 px-2 py-0.5 text-sm font-medium text-alpha-white-900 shadow-md dark:bg-gray-300 dark:text-gray-900"
           >
             {label}
           </div>
