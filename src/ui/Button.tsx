@@ -7,6 +7,7 @@ import {
   createElement,
   forwardRef,
 } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 /*
  Chakra Styles
@@ -199,15 +200,17 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return createElement(
       as,
       {
-        className: buttonStyles({
-          variant,
-          colorScheme,
-          size: variant === 'link' ? 'none' : size,
-          p: p ?? (variant === 'link' ? 'none' : size),
-          fullWidth,
-          rounded,
-          className,
-        }),
+        className: twMerge(
+          buttonStyles({
+            variant,
+            colorScheme,
+            size: variant === 'link' ? 'none' : size,
+            p: p ?? (variant === 'link' ? 'none' : size),
+            fullWidth,
+            rounded,
+          }),
+          className
+        ),
         'data-active': isActive,
         type: 'button',
         ref,

@@ -1,7 +1,9 @@
 import { SlideFade } from '@chakra-ui/transition'
+import NextLink from 'next/link'
 import {
   ChangeEvent,
   KeyboardEvent,
+  MouseEvent,
   forwardRef,
   useEffect,
   useState,
@@ -18,6 +20,16 @@ import { useOnScreen } from '@src/hooks/useOnScreen'
 import { Button } from '@src/ui/Button'
 import { IconButton, IconButtonProps } from '@src/ui/IconButton'
 import { Textarea } from '@src/ui/Input'
+import { Link } from '@src/ui/Link'
+import {
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+} from '@src/ui/Modal'
 import { Spinner } from '@src/ui/Spinner'
 import { Tooltip, TooltipProps } from '@src/ui/Tooltip'
 import { useOnlineUsers } from '@src/user/queries'
@@ -66,10 +78,7 @@ const OnlineUsersTooltip = (props: TooltipProps) => {
           {onlineUsers.length > MAX_LENGTH && (
             <>
               <div className="flex gap-2">
-                <div>...</div>
-              </div>
-              <div className="flex gap-2">
-                <div>(ยังมีชีวิตอยู่ทั้งหมด {onlineUsers.length} คน)</div>
+                <div>...ทั้งหมด {onlineUsers.length} คน</div>
               </div>
             </>
           )}
@@ -93,6 +102,16 @@ export const Chat = () => {
     }
   }, [isIntersecting, loadMore, hasMore])
 
+  const onUserModalOpen = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+    onModalOpen()
+  }
+  const {
+    isOpen: isModalOpen,
+    onOpen: onModalOpen,
+    onClose: onModalClose,
+  } = useDisclosure()
+
   const { isAuthenticated } = useAuth()
   if (!isAuthenticated) {
     return null
@@ -115,9 +134,16 @@ export const Chat = () => {
                 rightIcon={<IoClose />}
                 colorScheme="otog"
               >
-                <h3 className="text-md font-bold">OTOG Chat</h3>
+                <Button
+                  className="text-md font-bold"
+                  variant="link"
+                  onClick={onUserModalOpen}
+                >
+                  OTOG Chat
+                </Button>
               </Button>
             </OnlineUsersTooltip>
+            <OnlineUserModal isOpen={isModalOpen} onClose={onModalClose} />
             <div className="flex flex-1 flex-col-reverse overflow-y-auto overflow-x-hidden border border-y-0 px-2">
               <div className="flex flex-col">
                 {newMessages.map((message, index) => (
@@ -214,5 +240,46 @@ const ChatInput = (props: ChatInputProps) => {
         onClick={onSubmit}
       />
     </div>
+  )
+}
+
+type OnlineUserModalProps = {
+  isOpen: boolean
+  onClose: () => void
+}
+
+const OnlineUserModal = (props: OnlineUserModalProps) => {
+  const { isOpen, onClose } = props
+  const { data: onlineUsers } = useOnlineUsers()
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} size="xs">
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>ยังมีชีวิตอยู่</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <div className="flex flex-col gap-2">
+            {onlineUsers ? (
+              onlineUsers.map((user) => (
+                <NextLink href={`/profile/${user.id}`} key={user.id} passHref>
+                  <Link
+                    className="max-w-[300px]"
+                    variant="hidden"
+                    onClick={onClose}
+                  >
+                    {user.showName}
+                  </Link>
+                </NextLink>
+              ))
+            ) : (
+              <div className="flex justify-center">
+                <Spinner />
+              </div>
+            )}
+          </div>
+        </ModalBody>
+        <ModalFooter />
+      </ModalContent>
+    </Modal>
   )
 }
