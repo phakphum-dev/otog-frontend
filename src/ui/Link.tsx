@@ -1,5 +1,6 @@
 import { VariantProps, cva } from 'class-variance-authority'
 import { ComponentProps, PropsWithChildren, forwardRef } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 const linkStyles = cva(
   'cursor-pointer hover:underline focus-visible:underline',
@@ -44,7 +45,7 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
     return (
       // eslint-disable-next-line react/jsx-no-target-blank
       <a
-        className={linkStyles({ variant, className })}
+        className={twMerge(linkStyles({ variant }), className)}
         href={href}
         target={isExternal ? '_blank' : undefined}
         rel={isExternal ? 'noopener' : undefined}

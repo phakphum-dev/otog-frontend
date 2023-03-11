@@ -76,7 +76,7 @@ export const DrawerCloseButton = () => {
       size="sm"
       variant="ghost"
       icon={<CloseIcon />}
-      className="absolute right-3 top-2 !text-xs"
+      className="absolute right-3 top-2 text-xs"
       onClick={onClose}
     />
   )

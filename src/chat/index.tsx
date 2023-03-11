@@ -129,7 +129,7 @@ export const Chat = () => {
           <div className="flex h-[420px] w-[320px] flex-col rounded-lg rounded-b-none bg-white shadow-md dark:bg-gray-800">
             <OnlineUsersTooltip placement="top-start">
               <Button
-                className="justify-between rounded-b-none !p-6"
+                className="justify-between rounded-b-none p-6"
                 onClick={onClose}
                 rightIcon={<IoClose />}
                 colorScheme="otog"

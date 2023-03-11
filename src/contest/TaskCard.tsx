@@ -50,7 +50,7 @@ export const TaskCard = memo((props: TaskCardProps) => {
     <div className="rounded-lg border shadow-sm">
       <Button
         className={clsx(
-          'justify-between !p-2 sm:!p-6',
+          'justify-between p-2 sm:p-6',
           isOpen && 'rounded-b-none'
         )}
         fullWidth

@@ -35,7 +35,7 @@ import { ONE_SECOND } from '@src/utils/time'
 const Th = (props: ComponentProps<'th'>) => <TH textAlign="center" {...props} />
 const Td = ({ className, ...props }: ComponentProps<'td'>) => (
   <TD
-    className={clsx('!py-2 text-center leading-normal', className)}
+    className={clsx('py-2 text-center leading-normal', className)}
     {...props}
   />
 )

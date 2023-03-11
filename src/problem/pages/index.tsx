@@ -73,7 +73,7 @@ const OtogButton = forwardRef<HTMLButtonElement, OtogButton>(
     return (
       <Button
         className={clsx(
-          'aspect-5/4 !h-full flex-1 flex-col rounded-lg',
+          'aspect-5/4 h-full flex-1 flex-col rounded-lg',
           isLoading && 'animate-pulse'
         )}
         colorScheme={isLoading ? 'gray' : colorScheme}
