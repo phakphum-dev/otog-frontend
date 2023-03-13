@@ -176,6 +176,17 @@ const ExampleTable = ({ examples, problemId }: ExampleTableProps) => {
   const { data: problem, mutate } = useProblem(problemId)
   const updateProblemExamplesMutation = useMutation(updateProblemExamples)
 
+  const onEditOpen = () => {
+    onOpen()
+    if (testcases.length === 0) {
+      setTestcases(
+        produce((tests) => {
+          tests.push({ input: '', output: '' })
+        })
+      )
+    }
+  }
+
   const onError = useErrorToast()
   const onSave = async () => {
     onClose()
@@ -228,7 +239,7 @@ const ExampleTable = ({ examples, problemId }: ExampleTableProps) => {
             size="sm"
             rounded="full"
             icon={<FaPencilAlt />}
-            onClick={onOpen}
+            onClick={onEditOpen}
           />
         )}
         {isEditing && (
