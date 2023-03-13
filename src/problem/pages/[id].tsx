@@ -176,14 +176,18 @@ const ExampleTable = ({ examples, problemId }: ExampleTableProps) => {
   const { data: problem, mutate } = useProblem(problemId)
   const updateProblemExamplesMutation = useMutation(updateProblemExamples)
 
+  const onAddEmptyExample = () => {
+    setTestcases(
+      produce((tests) => {
+        tests.push({ input: '', output: '' })
+      })
+    )
+  }
+
   const onEditOpen = () => {
     onOpen()
     if (testcases.length === 0) {
-      setTestcases(
-        produce((tests) => {
-          tests.push({ input: '', output: '' })
-        })
-      )
+      onAddEmptyExample()
     }
   }
 
@@ -207,6 +211,11 @@ const ExampleTable = ({ examples, problemId }: ExampleTableProps) => {
   if (!isAdmin && examples.length === 0) {
     return null
   }
+  const onCancel = () => {
+    onClose()
+    setTestcases(examples)
+  }
+
   return (
     <div className="mt-6 flex flex-col gap-2">
       <h3 className="text-xl font-bold">ตัวอย่าง</h3>
@@ -248,19 +257,18 @@ const ExampleTable = ({ examples, problemId }: ExampleTableProps) => {
             size="xs"
             rounded="full"
             icon={<FaPlus />}
-            onClick={() =>
-              setTestcases(
-                produce((tests) => {
-                  tests.push({ input: '', output: '' })
-                })
-              )
-            }
+            onClick={onAddEmptyExample}
           />
         )}
       </div>
       {isEditing && (
-        <div className="mt-2 flex w-full justify-end">
-          <Button onClick={onSave}>บันทึก</Button>
+        <div className="mt-2 flex w-full flex-row-reverse gap-2">
+          <Button colorScheme="green" onClick={onSave}>
+            บันทึก
+          </Button>
+          <Button variant="ghost" onClick={onCancel}>
+            ยกเลิก
+          </Button>
         </div>
       )}
     </div>
