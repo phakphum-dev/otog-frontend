@@ -3,7 +3,6 @@ import Image from 'next/image'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { forwardRef, useEffect, useRef } from 'react'
-import { twMerge } from 'tailwind-merge'
 
 import Logo from '../../../public/logo512.png'
 import { Avatar } from '../Avatar'
@@ -149,7 +148,7 @@ const NavItem = forwardRef<HTMLAnchorElement, ItemProps & LinkProps>(
       <NextLink href={href} passHref>
         <Link
           variant="nav"
-          className="p-2 font-normal no-underline"
+          className="p-2 font-normal hover:no-underline"
           isActive={isActive}
           {...rest}
           ref={ref}
@@ -190,7 +189,7 @@ const DrawerButton = forwardRef<HTMLButtonElement, ButtonProps>(
       <Button
         variant="ghost"
         fullWidth
-        className={twMerge('justify-start px-2 font-normal', className)}
+        className={clsx('justify-start px-2 font-normal', className)}
         {...props}
         ref={ref}
       />
