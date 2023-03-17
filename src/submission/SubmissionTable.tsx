@@ -172,9 +172,9 @@ const SubmissionRow = (props: SubmissionRowProps) => {
           </Tooltip>
         )}
       </Td>
-      <Td className="max-w-[300px]">
+      <Td>
         <NextLink href={`/profile/${submission.user.id}`}>
-          <Link className="line-clamp-3" variant="hidden">
+          <Link className="max-w-[300px] line-clamp-3" variant="hidden">
             {submission.user.showName}
             {isAdmin && ` (${submission.user.username})`}
           </Link>
@@ -189,7 +189,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
           {submission.problem.name}
         </Link>
       </Td>
-      <Td className="min-w-[245px] max-w-[290px] break-all">
+      <Td>
         {submission.errmsg && (isAdmin || user?.id === submission.user.id) ? (
           <>
             <Button variant="link" onClick={errorDisclosure.onOpen}>
@@ -203,7 +203,11 @@ const SubmissionRow = (props: SubmissionRowProps) => {
             <div>{submission.result}</div>
           </div>
         ) : isGraded(submission) && !submission.errmsg ? (
-          <code>{submission.result}</code>
+          <div className="flex flex-wrap">
+            {splitCases(submission.result).map((token, index) => (
+              <code key={index}>{token}</code>
+            ))}
+          </div>
         ) : (
           submission.result
         )}
@@ -214,4 +218,16 @@ const SubmissionRow = (props: SubmissionRowProps) => {
       {/* <Td>{submission.score}</Td> */}
     </tr>
   )
+}
+
+function splitCases(result: string) {
+  const tokens: string[] = []
+  if (result.includes('[') || result.includes('(')) {
+    const bracketExp = /[[(].*?[\])]/g
+    return [...result.matchAll(bracketExp)]
+  }
+  for (let i = 0; i < result.length; i += 10) {
+    tokens.push(result.slice(i, i + 10))
+  }
+  return tokens
 }
