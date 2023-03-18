@@ -144,8 +144,9 @@ const NavItem = forwardRef<HTMLAnchorElement, ItemProps & LinkProps>(
   (props, ref) => {
     const { href, title, ...rest } = props
     const isActive = usePathActive(href)
+    const { pathname } = useRouter()
     return (
-      <NextLink href={href} passHref>
+      <NextLink href={href} passHref scroll={pathname === href}>
         <Link
           variant="nav"
           className="p-2 font-normal hover:no-underline"
@@ -164,8 +165,9 @@ const DrawerItem = forwardRef<HTMLButtonElement, ItemProps & ButtonProps>(
   (props, ref) => {
     const { href, title, active, ...rest } = props
     const isActive = usePathActive(href) || active
+    const { pathname } = useRouter()
     return (
-      <NextLink href={href} passHref>
+      <NextLink href={href} passHref scroll={pathname === href}>
         <DrawerButton
           as="a"
           className={
