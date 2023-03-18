@@ -7,7 +7,7 @@ import { useAnnouncements } from '../queries'
 import { Announcement } from '../types'
 import { ReadonlyEditor } from './AnnouncementEditor'
 import { AnnouncementModal } from './AnnouncementModal'
-import { HEIGHT, INTERVAL, SHOWUP_DELAY } from './constants'
+import { HEIGHT, INTERVAL } from './constants'
 import {
   AnnouncementProvider,
   useAnnouncementContext,
@@ -25,7 +25,7 @@ export interface AnnouncementCarouselProps {
 
 export const AnnouncementCarousel = (props: AnnouncementCarouselProps) => {
   const { defaultShow = false } = props
-  const [show, setShow] = useState(false)
+  const [show, setShow] = useState(defaultShow)
   const { isAuthenticated, isAdmin } = useAuth()
 
   const { data } = useAnnouncements()
@@ -41,23 +41,17 @@ export const AnnouncementCarousel = (props: AnnouncementCarouselProps) => {
 
   useEffect(() => {
     if (isAuthenticated && (filteredAnnouncements.length > 0 || isAdmin)) {
-      const timeout = setTimeout(
-        () => setShow(true),
-        defaultShow ? 0 : SHOWUP_DELAY
-      )
-      return () => clearTimeout(timeout)
+      setShow(true)
     }
   }, [isAdmin, isAuthenticated, filteredAnnouncements, defaultShow])
 
   return (
     <Collapse in={show}>
-      {show && (
-        <AnnouncementProvider
-          value={{ announcements, setAnnouncements, filteredAnnouncements }}
-        >
-          <AnnouncementComponent />
-        </AnnouncementProvider>
-      )}
+      <AnnouncementProvider
+        value={{ announcements, setAnnouncements, filteredAnnouncements }}
+      >
+        <AnnouncementComponent />
+      </AnnouncementProvider>
     </Collapse>
   )
 }

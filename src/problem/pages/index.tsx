@@ -7,7 +7,6 @@ import { ProblemWithSubmission } from '../types'
 
 import { AnnouncementCarousel } from '@src/announcement/components/AnnouncementCarousel'
 import { getAnnouncements } from '@src/announcement/queries'
-import { ClientOnly } from '@src/components/ClientOnly'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { useAuth } from '@src/context/AuthContext'
@@ -28,14 +27,12 @@ export default function ProblemPage() {
       <Head>
         <title>Problem | OTOG</title>
       </Head>
-      <AnnouncementCarousel />
+      <AnnouncementCarousel defaultShow={true} />
       <TitleLayout>
         <Title icon={<FaPuzzlePiece />}>โจทย์</Title>
       </TitleLayout>
       {isAuthenticated && <Buttons setFilter={setFilter} />}
-      <ClientOnly>
-        <ProblemTable filter={filter} />
-      </ClientOnly>
+      <ProblemTable filter={filter} />
     </PageContainer>
   )
 }
