@@ -4,7 +4,7 @@ import { forwardRef } from 'react'
 
 export type AvatarProps = {
   name: string
-  src?: string
+  src?: string | null
   className?: string
 }
 export const Avatar = forwardRef<HTMLAnchorElement, AvatarProps>(
@@ -12,7 +12,7 @@ export const Avatar = forwardRef<HTMLAnchorElement, AvatarProps>(
     const { name, src, className, ...rest } = props
     return src ? (
       <img
-        className={clsx('h-6 w-6 rounded-full', className)}
+        className={clsx('h-6 w-6 rounded-full object-cover', className)}
         src={src}
         {...rest}
       />

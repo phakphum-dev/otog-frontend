@@ -6,7 +6,7 @@ import { mutate } from 'swr'
 import { useAuth } from '@src/context/AuthContext'
 import { storage } from '@src/firebase'
 import { useErrorToast } from '@src/hooks/useErrorToast'
-import { useUserProfilePic } from '@src/profile/useProfilePic'
+import { useUserBigAvatar } from '@src/profile/useAvartar'
 import { Button } from '@src/ui/Button'
 import {
   Modal,
@@ -99,7 +99,7 @@ export const ImageCropModal = (props: ImageUploadModalProps) => {
   const { isOpen, onClose } = props
 
   const { user } = useAuth()
-  const { url, fetchUrl } = useUserProfilePic()
+  const { url, fetchUrl } = useUserBigAvatar()
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area>()
@@ -156,7 +156,7 @@ export const ImageCropModal = (props: ImageUploadModalProps) => {
             <div className="relative h-[400px] w-full">
               <Cropper
                 aspect={1}
-                image={url}
+                image={url ?? undefined}
                 crop={crop}
                 onCropChange={setCrop}
                 zoom={zoom}

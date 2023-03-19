@@ -16,7 +16,7 @@ import { twMerge } from 'tailwind-merge'
  */
 
 const buttonStyles = cva(
-  'inline-flex justify-center items-center select-none transition-colors font-semibold disabled:opacity-40 disabled:cursor-not-allowed',
+  'inline-flex justify-center items-center select-none transition-colors font-semibold disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap',
   {
     variants: {
       variant: {

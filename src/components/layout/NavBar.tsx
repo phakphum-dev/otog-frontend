@@ -14,7 +14,7 @@ import { useAuth } from '@src/context/AuthContext'
 import { useDisclosure } from '@src/hooks/useDisclosure'
 import { ChevronDownIcon } from '@src/icons/ChevronDownIcon'
 import { HamburgerIcon } from '@src/icons/HamburgerIcon'
-import { useUserProfilePic } from '@src/profile/useProfilePic'
+import { useUserSmallAvatar } from '@src/profile/useAvartar'
 import { Button, ButtonProps } from '@src/ui/Button'
 import {
   Drawer,
@@ -42,7 +42,7 @@ export const NavBar = () => {
   }, [pathname, onClose])
 
   const { isAuthenticated, user, logout, isAdmin } = useAuth()
-  const { url } = useUserProfilePic(true)
+  const { url } = useUserSmallAvatar()
 
   const entries =
     !OFFLINE_MODE || isAdmin
@@ -201,7 +201,7 @@ const DrawerButton = forwardRef<HTMLButtonElement, ButtonProps>(
 
 const AvatarMenu = () => {
   const { user, isAdmin, logout } = useAuth()
-  const { url } = useUserProfilePic(true)
+  const { url } = useUserSmallAvatar()
   return (
     <Menu>
       {OFFLINE_MODE && !isAdmin && (

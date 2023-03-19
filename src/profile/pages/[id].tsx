@@ -3,14 +3,14 @@ import { useRouter } from 'next/router'
 import { FaTasks, FaUser } from 'react-icons/fa'
 import { unstable_serialize } from 'swr'
 
-import { getProfileUrl } from '../useProfilePic'
+import { getAvatarUrl } from '../useAvartar'
 
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { useAuth } from '@src/context/AuthContext'
 import { withCookies } from '@src/context/HttpClient'
+import { AvatarUpload, FullAvatar } from '@src/profile/FullAvatar'
 import { Graph } from '@src/profile/Graph'
-import { ProfilePicture, ProfileUpload } from '@src/profile/ProfilePicture'
 import { ProfileSubmissionTable } from '@src/submission/SubmissionTable'
 import { getUser, keyUser, useUser } from '@src/user/queries'
 
@@ -31,9 +31,9 @@ export default function ProfilePage() {
       <div className="flex flex-col gap-2">
         <div className="flex flex-col gap-8 md:flex-row">
           {user?.id === id ? (
-            <ProfileUpload />
+            <AvatarUpload />
           ) : (
-            <ProfilePicture userId={id} name={userData!.showName} />
+            <FullAvatar userId={id} name={userData!.showName} />
           )}
           <Graph userContest={userData!.attendedContest} />
         </div>
@@ -57,7 +57,7 @@ export const getServerSideProps = withCookies(async (context) => {
   }
   const user = getUser(id)
   try {
-    const profileUrl = getProfileUrl({ userId: id, small: false })
+    const profileUrl = getAvatarUrl({ userId: id, small: false })
     return {
       props: {
         fallback: {

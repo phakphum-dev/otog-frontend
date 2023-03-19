@@ -10,7 +10,6 @@ import { FaUpload } from 'react-icons/fa'
 
 import { FileInputRef } from '@src/hooks/useFileInput'
 import { Button } from '@src/ui/Button'
-import { IconButton } from '@src/ui/IconButton'
 import { Input, InputProps } from '@src/ui/Input'
 
 export type UploadFileProps = DropzoneInputProps & {
@@ -75,12 +74,14 @@ export const UploadFileButton = forwardRef<FileInputRef, InputProps>(
     const { inputRef, onClick } = useInputRef(ref)
     return (
       <>
-        <IconButton
-          size="xs"
+        <Button
           aria-label="edit-profile-image"
-          icon={<FaUpload />}
+          leftIcon={<FaUpload />}
+          size="sm"
           onClick={onClick}
-        />
+        >
+          อัปโหลด
+        </Button>
         <Input type="file" className="hidden" {...props} ref={inputRef} />
       </>
     )
