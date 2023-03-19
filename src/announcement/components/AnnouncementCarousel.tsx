@@ -81,7 +81,7 @@ const AnnouncementComponent = () => {
   }
 
   return (
-    <div className="relative flex h-[150px] cursor-pointer pt-4">
+    <div className="group relative flex h-[150px] cursor-pointer pt-4">
       {filteredAnnouncements.map((announcement, index, all) => (
         <MotionDiv
           key={announcement.id}
@@ -100,7 +100,7 @@ const AnnouncementComponent = () => {
       {isAdmin && (
         <>
           <IconButton
-            className="absolute right-0 top-4 z-10"
+            className="invisible absolute right-0 top-4 z-10 group-hover:visible"
             aria-label="edit-announcements"
             icon={hasAnnouncements ? <FaPencilAlt /> : <FaPlus />}
             onClick={hasAnnouncements ? onOpen : firstCreate}
