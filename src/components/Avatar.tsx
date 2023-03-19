@@ -18,7 +18,7 @@ export const Avatar = forwardRef<HTMLAnchorElement, AvatarProps>(
       />
     ) : (
       <a
-        className={clsx('overflow-hidden rounded-full', className)}
+        className={clsx('min-w-fit overflow-hidden rounded-full', className)}
         ref={ref}
         {...rest}
       >

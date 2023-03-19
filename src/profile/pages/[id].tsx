@@ -9,7 +9,7 @@ import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { useAuth } from '@src/context/AuthContext'
 import { withCookies } from '@src/context/HttpClient'
-import { AvatarUpload, FullAvatar } from '@src/profile/FullAvatar'
+import { FullAvatar, FullAvatarUpload } from '@src/profile/FullAvatar'
 import { Graph } from '@src/profile/Graph'
 import { ProfileSubmissionTable } from '@src/submission/SubmissionTable'
 import { getUser, keyUser, useUser } from '@src/user/queries'
@@ -31,7 +31,7 @@ export default function ProfilePage() {
       <div className="flex flex-col gap-2">
         <div className="flex flex-col gap-8 md:flex-row">
           {user?.id === id ? (
-            <AvatarUpload />
+            <FullAvatarUpload />
           ) : (
             <FullAvatar userId={id} name={userData!.showName} />
           )}

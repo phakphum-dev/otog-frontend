@@ -24,7 +24,7 @@ import {
 import { Button } from '@src/ui/Button'
 import { IconButton } from '@src/ui/IconButton'
 
-export const AvatarUpload = () => {
+export const FullAvatarUpload = () => {
   const cropModal = useDisclosure()
   const { user } = useAuth()
   const { url, fetchUrl: reloadBigAvatar } = useUserBigAvatar()
@@ -107,7 +107,7 @@ export const AvatarUpload = () => {
         <AvatarImage
           url={url}
           name={user!.showName}
-          className="h-80 w-80 rounded-md group-hover:brightness-50"
+          className="group-hover:brightness-50"
         />
         {url && (
           <div className="invisible absolute top-1 right-1 flex gap-2 group-hover:visible">
@@ -158,9 +158,15 @@ export interface AvatarImageProps {
 
 export const AvatarImage = ({ url, name, className }: AvatarImageProps) => {
   return url ? (
-    <img className={clsx('bg-gray-300 object-cover', className)} src={url} />
+    <img
+      className={clsx(
+        'h-80 w-80 rounded-md bg-gray-300 object-cover',
+        className
+      )}
+      src={url}
+    />
   ) : (
-    <div className={clsx('overflow-hidden', className)}>
+    <div className={clsx('h-80 w-80 overflow-hidden  rounded-md', className)}>
       <Avatar
         square
         size={320}
