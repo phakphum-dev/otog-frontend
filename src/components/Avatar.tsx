@@ -17,8 +17,13 @@ export const Avatar = forwardRef<HTMLAnchorElement, AvatarProps>(
         {...rest}
       />
     ) : (
-      <a className={className} ref={ref} {...rest}>
+      <a
+        className={clsx('overflow-hidden rounded-full', className)}
+        ref={ref}
+        {...rest}
+      >
         <BoringAvatar
+          square
           size={24}
           name={name}
           variant="beam"

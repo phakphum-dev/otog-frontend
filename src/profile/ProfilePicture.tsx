@@ -104,18 +104,21 @@ export const Picture = ({ url, name }: PictureProps) => {
   return url ? (
     <img className="h-80 w-80 rounded-md bg-gray-300 object-cover" src={url} />
   ) : (
-    <Avatar
-      size={320}
-      name={name}
-      variant="beam"
-      colors={[
-        '#ffd5ae',
-        '#b1e9fc',
-        '#b9f6ba',
-        '#ffb1b2',
-        '#ffe0ae',
-        '#CBD5E0',
-      ]}
-    />
+    <div className="overflow-hidden rounded-md">
+      <Avatar
+        square
+        size={320}
+        name={name}
+        variant="beam"
+        colors={[
+          '#ffd5ae',
+          '#b1e9fc',
+          '#b9f6ba',
+          '#ffb1b2',
+          '#ffe0ae',
+          '#CBD5E0',
+        ]}
+      />
+    </div>
   )
 }
