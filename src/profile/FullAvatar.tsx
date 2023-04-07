@@ -9,7 +9,7 @@ import { useAuth } from '@src/context/AuthContext'
 import { useConfirmModal } from '@src/context/ConfirmContext'
 import { storage } from '@src/firebase'
 import { useDisclosure } from '@src/hooks/useDisclosure'
-import { useErrorToast } from '@src/hooks/useErrorToast'
+import { onErrorToast } from '@src/hooks/useErrorToast'
 import { CloseIcon } from '@src/icons/CloseIcon'
 import {
   ImageCropModal,
@@ -30,7 +30,6 @@ export const FullAvatarUpload = () => {
   const { url, fetchUrl: reloadBigAvatar } = useUserBigAvatar()
   const { fetchUrl: reloadSmallAvatar } = useUserSmallAvatar()
 
-  const onError = useErrorToast()
   const onFileSelect = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length === 0) return
     const file = e.target.files?.[0]
@@ -42,7 +41,7 @@ export const FullAvatarUpload = () => {
           onUpload(croppedImage)
         }
       } catch (e: any) {
-        onError(e)
+        onErrorToast(e)
       }
     }
   }
@@ -60,7 +59,7 @@ export const FullAvatarUpload = () => {
           // )
           // setProgress(progress)
         },
-        (error) => onError(error),
+        (error) => onErrorToast(error),
         () => {
           reloadBigAvatar()
           toast.success(

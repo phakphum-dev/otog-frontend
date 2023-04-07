@@ -1,12 +1,11 @@
 import { useCallback } from 'react'
 
-import { useErrorToast } from '@src/hooks/useErrorToast'
+import { onErrorToast } from '@src/hooks/useErrorToast'
 
 export function useMutation<T = any, D extends any[] = any[]>(
   onTry: (...args: D) => Promise<T>,
   onCatch?: (e: any) => void
 ) {
-  const onError = useErrorToast()
   return useCallback(
     (...args: D) => {
       try {
@@ -15,11 +14,11 @@ export function useMutation<T = any, D extends any[] = any[]>(
         if (onCatch) {
           onCatch(e)
         } else {
-          onError(e)
+          onErrorToast(e)
         }
         throw e
       }
     },
-    [onTry, onCatch, onError]
+    [onTry, onCatch]
   )
 }

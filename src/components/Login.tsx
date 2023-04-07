@@ -8,7 +8,7 @@ import Logo from '../../public/logo512.png'
 
 import { OFFLINE_MODE } from '@src/config'
 import { useAuth } from '@src/context/AuthContext'
-import { useErrorToast } from '@src/hooks/useErrorToast'
+import { onErrorToast } from '@src/hooks/useErrorToast'
 import { Button } from '@src/ui/Button'
 import { Input } from '@src/ui/Input'
 import { LoginReq } from '@src/user/types'
@@ -20,7 +20,6 @@ export interface LoginFormProps {
 export const LoginForm = (props: LoginFormProps) => {
   const { onSuccess } = props
   const { register, handleSubmit } = useForm<LoginReq>()
-  const onError = useErrorToast()
   const { login } = useAuth()
   const onSubmit = async (credentials: LoginReq) => {
     try {
@@ -28,7 +27,7 @@ export const LoginForm = (props: LoginFormProps) => {
       onSuccess?.()
       toast.success('ลงชื่อเข้าใช้สำเร็จ !')
     } catch (e: any) {
-      onError(e)
+      onErrorToast(e)
     }
   }
   return (

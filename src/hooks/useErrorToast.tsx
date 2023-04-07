@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { useCallback } from 'react'
 import { useEffect } from 'react'
 import { toast } from 'react-hot-toast'
 
@@ -10,42 +9,45 @@ export type ErrorToastOptions = {
   code?: number
 }
 
-export function useErrorToast() {
-  return useCallback((error: unknown) => {
-    const toastData = getErrorData(error)
-    if (toastData.status) {
-      toast[toastData.status](
-        toastData.description ? (
-          <div>
-            <b>{toastData.title}</b>
-            <p>{toastData.description}</p>
-          </div>
-        ) : (
-          toastData.title
-        )
-      )
-    } else {
-      toast(
-        toastData.description ? (
-          <div>
-            <b>{toastData.title}</b>
-            <p>{toastData.description}</p>
-          </div>
-        ) : (
-          toastData.title
-        )
-      )
-    }
-  }, [])
+export function onErrorToast(error: unknown) {
+  const toastData = getErrorData(error)
+  errorToast(toastData)
 }
 
-export function useErrorToaster(errorData: ErrorToastOptions | undefined) {
-  const errorToast = useErrorToast()
+function errorToast(toastData: ErrorToastOptions) {
+  if (toastData.status) {
+    toast[toastData.status](
+      toastData.description ? (
+        <div>
+          <b>{toastData.title}</b>
+          <p>{toastData.description}</p>
+        </div>
+      ) : (
+        toastData.title
+      ),
+      { id: toastData.title }
+    )
+  } else {
+    toast(
+      toastData.description ? (
+        <div>
+          <b>{toastData.title}</b>
+          <p>{toastData.description}</p>
+        </div>
+      ) : (
+        toastData.title
+      ),
+      { id: toastData.title }
+    )
+  }
+}
+
+export function useErrorToaster(toastData: ErrorToastOptions | undefined) {
   useEffect(() => {
-    if (errorData) {
-      errorToast(errorData)
+    if (toastData) {
+      errorToast(toastData)
     }
-  }, [errorData, errorToast])
+  }, [toastData])
 }
 
 export function getErrorData(error: unknown): ErrorToastOptions {
@@ -129,6 +131,7 @@ export function getErrorData(error: unknown): ErrorToastOptions {
     }
   }
   const err = new Error(error as any)
+  console.error(error)
   return {
     title: err.name,
     description: err.message,

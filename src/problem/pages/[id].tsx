@@ -24,7 +24,7 @@ import { useAuth } from '@src/context/AuthContext'
 import { withCookies } from '@src/context/HttpClient'
 import { useClipboard } from '@src/hooks/useClipboard'
 import { useDisclosure } from '@src/hooks/useDisclosure'
-import { useErrorToast } from '@src/hooks/useErrorToast'
+import { onErrorToast } from '@src/hooks/useErrorToast'
 import { useMutation } from '@src/hooks/useMutation'
 import { CopyIcon } from '@src/icons/CopyIcon'
 import { Problem, Testcase } from '@src/problem/types'
@@ -191,7 +191,6 @@ const ExampleTable = ({ examples, problemId }: ExampleTableProps) => {
     }
   }
 
-  const onError = useErrorToast()
   const onSave = async () => {
     onClose()
     try {
@@ -204,7 +203,7 @@ const ExampleTable = ({ examples, problemId }: ExampleTableProps) => {
         setTestcases(updatedProblem.examples)
       }
     } catch (e: unknown) {
-      onError(e)
+      onErrorToast(e)
       setTestcases(examples)
     }
   }

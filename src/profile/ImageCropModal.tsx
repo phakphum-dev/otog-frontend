@@ -5,7 +5,7 @@ import { mutate } from 'swr'
 
 import { useAuth } from '@src/context/AuthContext'
 import { storage } from '@src/firebase'
-import { useErrorToast } from '@src/hooks/useErrorToast'
+import { onErrorToast } from '@src/hooks/useErrorToast'
 import { useUserBigAvatar } from '@src/profile/useAvartar'
 import { Button } from '@src/ui/Button'
 import {
@@ -107,7 +107,6 @@ export const ImageCropModal = (props: ImageUploadModalProps) => {
     setCroppedAreaPixels(croppedAreaPixels)
   }
 
-  const onError = useErrorToast()
   const uploadCroppedImage = async () => {
     if (user && url && croppedAreaPixels) {
       try {
@@ -126,7 +125,7 @@ export const ImageCropModal = (props: ImageUploadModalProps) => {
               // setProgress(progress)
             },
             (error) => {
-              onError(error)
+              onErrorToast(error)
             },
             () => {
               fetchUrl()
@@ -140,7 +139,7 @@ export const ImageCropModal = (props: ImageUploadModalProps) => {
           )
         }
       } catch (e: any) {
-        onError(e)
+        onErrorToast(e)
       }
     }
   }
