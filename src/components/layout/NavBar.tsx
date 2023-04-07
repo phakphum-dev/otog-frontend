@@ -75,7 +75,7 @@ export const NavBar = () => {
             </NextLink>
             <div className="flex-1" />
             <IconButton
-              className="p-2 sm:hidden md:hidden"
+              className="p-2 sm:hidden"
               variant="ghost"
               aria-label="Open menu"
               onClick={onOpen}
