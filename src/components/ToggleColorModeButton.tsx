@@ -12,9 +12,9 @@ export const ToggleColorModeButton = forwardRef<
   HTMLButtonElement,
   Omit<IconButtonProps, 'icon'>
 >((props, ref) => {
-  const { theme, setTheme } = useTheme()
+  const { resolvedTheme, setTheme } = useTheme()
   const toggleColorMode = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light')
+    setTheme(resolvedTheme === 'light' ? 'dark' : 'light')
   }
   return (
     <ClientOnly
@@ -31,7 +31,7 @@ export const ToggleColorModeButton = forwardRef<
         rounded="full"
         aria-label="Toggle color mode"
         onClick={toggleColorMode}
-        icon={theme === 'light' ? <MoonIcon /> : <SunIcon />}
+        icon={resolvedTheme === 'light' ? <MoonIcon /> : <SunIcon />}
         {...props}
         ref={ref}
       />
