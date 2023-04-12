@@ -2,7 +2,11 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { FaTasks } from 'react-icons/fa'
 
-import { getSubmission, keySubmission, useSubmission } from '../queries'
+import {
+  getSubmissionWithSourceCode,
+  keySubmissionWithSourceCode,
+  useSubmissionWithSourceCode,
+} from '../queries'
 
 import { SubmissionContent } from '@src/components/Code'
 import { PageContainer } from '@src/components/layout/PageContainer'
@@ -14,7 +18,7 @@ import { Link } from '@src/ui/Link'
 export default function SubmissionPage() {
   const router = useRouter()
   const id = Number(router.query.id)
-  const { data: submission } = useSubmission(id)
+  const { data: submission } = useSubmissionWithSourceCode(id)
   return (
     <PageContainer maxSize="md">
       <Head>
@@ -41,6 +45,10 @@ export const getServerSideProps = withCookies(async (context) => {
   if (Number.isNaN(id)) {
     return { notFound: true }
   }
-  const submission = getSubmission(id)
-  return { props: { fallback: { [keySubmission(id)]: await submission } } }
+  const submission = getSubmissionWithSourceCode(id)
+  return {
+    props: {
+      fallback: { [keySubmissionWithSourceCode(id)]: await submission },
+    },
+  }
 })

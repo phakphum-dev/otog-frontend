@@ -4,7 +4,11 @@ import useSWRInfinite, { SWRInfiniteResponse } from 'swr/infinite'
 
 import { isGrading } from '../theme/useStatusColor'
 import { ONE_SECOND } from '../utils/time'
-import { SubmissionWithProblem, SubmissionWithSourceCode } from './types'
+import {
+  Submission,
+  SubmissionWithProblem,
+  SubmissionWithSourceCode,
+} from './types'
 
 import { useAuth } from '@src/context/AuthContext'
 import { http } from '@src/context/HttpClient'
@@ -86,12 +90,29 @@ export function useSubmissionRow(initialSubmission: SubmissionWithProblem) {
   )
 }
 
+export function keySubmissionWithSourceCode(submissionId: number) {
+  return `submission/${submissionId}/code`
+}
+
+export function getSubmissionWithSourceCode(submissionId: number) {
+  return http.get<SubmissionWithSourceCode>(
+    keySubmissionWithSourceCode(submissionId)
+  )
+}
+
+export function useSubmissionWithSourceCode(submissionId: number) {
+  return useSWR(
+    submissionId === 0 ? null : keySubmissionWithSourceCode(submissionId),
+    () => getSubmissionWithSourceCode(submissionId)
+  )
+}
+
 export function keySubmission(submissionId: number) {
   return `submission/${submissionId}`
 }
 
 export function getSubmission(submissionId: number) {
-  return http.get<SubmissionWithSourceCode>(keySubmission(submissionId))
+  return http.get<Submission>(keySubmission(submissionId))
 }
 
 export function useSubmission(submissionId: number) {

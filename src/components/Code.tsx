@@ -8,7 +8,7 @@ import { FaRegShareSquare } from 'react-icons/fa'
 import { API_HOST, APP_HOST } from '@src/config'
 import { useClipboard } from '@src/hooks/useClipboard'
 import { CopyIcon } from '@src/icons/CopyIcon'
-import { useSubmission } from '@src/submission/queries'
+import { useSubmissionWithSourceCode } from '@src/submission/queries'
 import {
   SubmissionWithProblem,
   SubmissionWithSourceCode,
@@ -39,7 +39,7 @@ const language: Record<string, string> = {
 
 export const CodeModal = (props: CodeModalProps) => {
   const { onClose, isOpen, submissionId } = props
-  const { data: submission } = useSubmission(submissionId)
+  const { data: submission } = useSubmissionWithSourceCode(submissionId)
 
   return (
     <Modal onClose={onClose} isOpen={isOpen} size="xl">
