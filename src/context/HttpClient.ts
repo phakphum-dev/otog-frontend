@@ -21,6 +21,9 @@ export const getAccessToken = () => {
 export const setAccessToken = (token: string | null) => {
   setState({ accessToken: token })
 }
+export const removeAccessToken = () => {
+  setState({ accessToken: null })
+}
 
 const authMiddleware =
   (next: FetchLike): FetchLike =>

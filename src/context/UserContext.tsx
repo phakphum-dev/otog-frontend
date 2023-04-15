@@ -4,6 +4,8 @@ import { createContext, useCallback, useContext } from 'react'
 import { ReactNode } from 'react'
 import { useSWRConfig } from 'swr'
 
+import { removeAccessToken } from './HttpClient'
+
 import { User } from '@src/user/types'
 
 export interface UserProviderProps {
@@ -28,8 +30,9 @@ export const UserProvider = (props: { children: ReactNode }) => {
   // SWR cache is Map by default
   const cache = useSWRConfig().cache as Map<string, any>
   const router = useRouter()
-  const logout = useCallback(() => {
-    signOut({ redirect: false })
+  const logout = useCallback(async () => {
+    await signOut({ redirect: false })
+    removeAccessToken()
     cache.clear()
     router.push('/login')
   }, [router, cache])
