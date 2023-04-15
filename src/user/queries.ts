@@ -2,11 +2,11 @@ import useSWR from 'swr'
 
 import { CreateUser, User, UserProfile } from './types'
 
-import { api } from '@src/api'
+import { client } from '@src/api'
 import { useUserData } from '@src/context/UserContext'
 
 export async function getUsers() {
-  return api.get('user').json<User[]>()
+  return client.get('user').json<User[]>()
 }
 
 export function useUsers() {
@@ -18,7 +18,7 @@ export function keyUser(userId: number) {
 }
 
 export async function getUser(userId: number) {
-  return api.get(`user/${userId}/profile`).json<UserProfile>()
+  return client.get(`user/${userId}/profile`).json<UserProfile>()
 }
 
 export function useUser(userId: number) {
@@ -26,7 +26,7 @@ export function useUser(userId: number) {
 }
 
 export async function getOnlineUsers() {
-  return api.get('user/online').json<User[]>()
+  return client.get('user/online').json<User[]>()
 }
 
 export function useOnlineUsers() {
@@ -37,9 +37,9 @@ export function useOnlineUsers() {
 }
 
 export async function registerUser(userData: CreateUser) {
-  return api.url('auth/register').post(userData).json<User>()
+  return client.url('auth/register').post(userData).json<User>()
 }
 
 export async function editShowname(userId: number, showName: string) {
-  return api.url(`user/${userId}/name`).patch({ showName }).json<User>()
+  return client.url(`user/${userId}/name`).patch({ showName }).json<User>()
 }

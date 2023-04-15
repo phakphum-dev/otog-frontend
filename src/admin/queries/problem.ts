@@ -1,4 +1,4 @@
-import { api } from '@src/api'
+import { client } from '@src/api'
 import { Problem, Testcase } from '@src/problem/types'
 
 export type CreateProblem = Pick<
@@ -8,24 +8,27 @@ export type CreateProblem = Pick<
 
 // TODO: type safe
 export async function createProblem(formData: FormData) {
-  return api.url('problem').post(formData).json<Problem>()
+  return client.url('problem').post(formData).json<Problem>()
 }
 
 export async function updateProblem(problemId: number, formData: FormData) {
-  return api.url(`problem/${problemId}`).put(formData).json<Problem>()
+  return client.url(`problem/${problemId}`).put(formData).json<Problem>()
 }
 
 export async function toggleProblem(problemId: number, show: boolean) {
-  return api.url(`problem/${problemId}`).patch({ show }).json<Problem>()
+  return client.url(`problem/${problemId}`).patch({ show }).json<Problem>()
 }
 
 export async function deleteProblem(problemId: number) {
-  return api.url(`problem/${problemId}`).delete().json<Problem>()
+  return client.url(`problem/${problemId}`).delete().json<Problem>()
 }
 
 export async function updateProblemExamples(
   problemId: number,
   examples: Testcase[]
 ) {
-  return api.url(`problem/${problemId}/examples`).put(examples).json<Problem>()
+  return client
+    .url(`problem/${problemId}/examples`)
+    .put(examples)
+    .json<Problem>()
 }

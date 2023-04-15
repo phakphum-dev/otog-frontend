@@ -10,7 +10,7 @@ import {
   SubmissionWithSourceCode,
 } from './types'
 
-import { api } from '@src/api'
+import { client } from '@src/api'
 import { useUserData } from '@src/context/UserContext'
 
 export function useAllSubmissions() {
@@ -98,7 +98,7 @@ export function keySubmissionWithSourceCode(submissionId: number) {
 }
 
 export function getSubmissionWithSourceCode(submissionId: number) {
-  return api
+  return client
     .get(keySubmissionWithSourceCode(submissionId))
     .json<SubmissionWithSourceCode>()
 }
@@ -115,7 +115,7 @@ export function keySubmission(submissionId: number) {
 }
 
 export function getSubmission(submissionId: number) {
-  return api.get(keySubmission(submissionId)).json<Submission>()
+  return client.get(keySubmission(submissionId)).json<Submission>()
 }
 
 export function useSubmission(submissionId: number) {
@@ -125,7 +125,7 @@ export function useSubmission(submissionId: number) {
 }
 
 export async function getLatestSubmission() {
-  return api.get('submission/latest').res(async (r) => {
+  return client.get('submission/latest').res(async (r) => {
     try {
       return (await r.json()) as SubmissionWithProblem
     } catch {
@@ -148,7 +148,7 @@ export function keyLatestProblemSubmission(problemId: number) {
 }
 
 export async function getLatestProblemSubmission(problemId: number) {
-  return api
+  return client
     .get(keyLatestProblemSubmission(problemId))
     .json<SubmissionWithSourceCode>()
 }

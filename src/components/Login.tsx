@@ -10,7 +10,7 @@ import Logo from '../../public/logo512.png'
 
 import { OFFLINE_MODE } from '@src/config'
 import { useUserData } from '@src/context/UserContext'
-import { onErrorToast } from '@src/hooks/useErrorToast'
+import { errorToast, onErrorToast } from '@src/hooks/useErrorToast'
 import { Button } from '@src/ui/Button'
 import { Input } from '@src/ui/Input'
 import { LoginReq } from '@src/user/types'
@@ -26,11 +26,22 @@ export const LoginForm = (props: LoginFormProps) => {
   const { clearCache } = useUserData()
   const onSubmit = async (credentials: LoginReq) => {
     try {
-      await signIn('otog', { ...credentials, redirect: false })
-      toast.success('ลงชื่อเข้าใช้สำเร็จ !')
-      clearCache()
-      onSuccess?.()
-    } catch (e: any) {
+      const response = await signIn('otog', { ...credentials, redirect: false })
+      if (response?.ok) {
+        toast.success('ลงชื่อเข้าใช้สำเร็จ !')
+        clearCache()
+        onSuccess?.()
+      } else if (response?.status === 401) {
+        errorToast({
+          title: 'ลงชื่อเข้าใช้งานไม่สำเร็จ !',
+          description: 'ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง',
+          status: 'error',
+          code: 401,
+        })
+      } else {
+        throw response
+      }
+    } catch (e: unknown) {
       onErrorToast(e)
     }
   }

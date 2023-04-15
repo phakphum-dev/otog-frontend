@@ -2,11 +2,11 @@ import { useSession } from 'next-auth/react'
 import { ReactNode, useMemo } from 'react'
 import { SWRConfig } from 'swr'
 
-import { api, setAccessToken } from '../api'
+import { client, setAccessToken } from '../api'
 
 import { onErrorToast } from '@src/hooks/useErrorToast'
 
-const fetcher = (url: string) => api.get(url).json()
+const fetcher = (url: string) => client.get(url).json()
 
 export const SWRProvider = (props: {
   children: ReactNode

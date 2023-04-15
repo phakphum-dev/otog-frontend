@@ -13,7 +13,7 @@ export function onErrorToast(error: unknown) {
   errorToast(toastData)
 }
 
-function errorToast(toastData: ErrorToastOptions) {
+export function errorToast(toastData: ErrorToastOptions) {
   if (toastData.status) {
     toast[toastData.status](
       toastData.description ? (

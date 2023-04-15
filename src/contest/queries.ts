@@ -2,11 +2,11 @@ import useSWR from 'swr'
 
 import { Contest, ContestPrize, ContestScoreboard } from './types'
 
-import { api } from '@src/api'
+import { client } from '@src/api'
 import { SubmissionWithProblem } from '@src/submission/types'
 
 export async function getCurrentContest() {
-  return api.get('contest/now').res(async (r) => {
+  return client.get('contest/now').res(async (r) => {
     try {
       return (await r.json()) as Contest
     } catch {
@@ -24,7 +24,7 @@ export function keyContest(contestId: number) {
 }
 
 export async function getContest(contestId: number | undefined) {
-  return api.get(`contest/${contestId}`).json<Contest>()
+  return client.get(`contest/${contestId}`).json<Contest>()
 }
 
 export function useContest(contestId: number | undefined) {
@@ -34,7 +34,7 @@ export function useContest(contestId: number | undefined) {
 }
 
 export async function getContests() {
-  return api.get('contest').json<Contest[]>()
+  return client.get('contest').json<Contest[]>()
 }
 
 export function useContests() {
@@ -46,7 +46,7 @@ export function keyContestScoreboard(contestId: number) {
 }
 
 export async function getContestScoreboard(contestId: number) {
-  return api.get(keyContestScoreboard(contestId)).json<ContestScoreboard>()
+  return client.get(keyContestScoreboard(contestId)).json<ContestScoreboard>()
 }
 
 export function useContestScoreboard(contestId: number) {
@@ -60,7 +60,7 @@ export function keyContestPrize(contestId: number) {
 }
 
 export function getContestPrize(contestId: number) {
-  return api.get(keyContestPrize(contestId)).json<ContestPrize>()
+  return client.get(keyContestPrize(contestId)).json<ContestPrize>()
 }
 
 export function useContestPrize(contestId: number) {
@@ -77,7 +77,7 @@ export async function submitContestProblem(
   formData.set('sourceCode', file)
   formData.set('language', language)
   formData.set('contestId', `${contestId}`)
-  return api
+  return client
     .url(`submission/problem/${problemId}`)
     .post(formData)
     .json<SubmissionWithProblem>()

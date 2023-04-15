@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth'
 import type { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import { WretchError } from 'wretch/resolver'
 
 // import GoogleProvider from 'next-auth/providers/google'
 import { api } from '@src/api'
@@ -26,8 +27,12 @@ export const authOptions: NextAuthOptions = {
         try {
           return await api.url('auth/login').post(credentials).json<AuthRes>()
         } catch (e: unknown) {
+          if (e instanceof WretchError && e.status === 401) {
+            return null
+          }
+          // the server wont return 500 anyway
           console.error(e)
-          return null
+          throw e
         }
       },
     }),

@@ -3,7 +3,7 @@ import useSWR from 'swr'
 
 import { ONE_SECOND, getRemaining } from '.'
 
-import { api } from '@src/api'
+import { client } from '@src/api'
 
 export function useTimer(start: string, end: string) {
   const [remaining, setRemaining] = useState(() => getRemaining(start, end))
@@ -29,7 +29,7 @@ export function useTimer(start: string, end: string) {
 }
 
 export async function getServerTime() {
-  return api.get('time').json<string>()
+  return client.get('time').json<string>()
 }
 
 export function useServerTime() {

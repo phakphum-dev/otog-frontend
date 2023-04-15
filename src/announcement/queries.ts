@@ -2,10 +2,10 @@ import useSWR from 'swr'
 
 import { Announcement } from './types'
 
-import { api } from '@src/api'
+import { client } from '@src/api'
 
 export async function getAnnouncements() {
-  return api.get('announcement').json<Announcement[]>()
+  return client.get('announcement').json<Announcement[]>()
 }
 
 export function useAnnouncements() {
@@ -14,15 +14,18 @@ export function useAnnouncements() {
 
 type PostAnnouncementBody = Pick<Announcement, 'value'>
 export function createAnnouncement(body: PostAnnouncementBody) {
-  return api.url('announcement').post(body).json<Announcement>()
+  return client.url('announcement').post(body).json<Announcement>()
 }
 
 export function deleteAnnouncemet(announcementId: number) {
-  return api.url(`announcement/${announcementId}`).delete().json<Announcement>()
+  return client
+    .url(`announcement/${announcementId}`)
+    .delete()
+    .json<Announcement>()
 }
 
 export function toggleAnnouncemet(announcementId: number, show: boolean) {
-  return api
+  return client
     .url(`announcement/${announcementId}`)
     .patch({ show })
     .json<Announcement>()
@@ -32,7 +35,7 @@ export function updateAnnouncement(
   announcementId: number,
   announcementData: Announcement
 ) {
-  return api
+  return client
     .url(`announcement/${announcementId}`)
     .put(announcementData)
     .json<Announcement>()

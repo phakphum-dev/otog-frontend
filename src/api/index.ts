@@ -42,7 +42,12 @@ const authMiddleware =
   }
 
 export const api = wretch(isServer ? API_HOST_SSR : API_HOST, { secure })
+
+export const client = api
   .middlewares([authMiddleware])
   .options({ mode: 'cors' })
-// Handle 403 errors
-// .resolve((_) => _.forbidden(handle403))
+// .resolve((r) => {
+//   r.forbidden(async () => {
+//     const res = await w.get('auth/refresh/token').json<AuthRes>()
+//   })
+// })
