@@ -117,17 +117,12 @@ const filterButton = [
 ] as const
 
 export const getServerSideProps = withSession(async () => {
-  try {
-    const announcement = await getAnnouncements()
-    return {
-      props: {
-        fallback: {
-          announcement: await announcement,
-        },
+  const announcement = await getAnnouncements()
+  return {
+    props: {
+      fallback: {
+        announcement: await announcement,
       },
-    }
-  } catch (e) {
-    console.log(e)
+    },
   }
-  return { props: {} }
 })

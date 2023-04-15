@@ -21,6 +21,7 @@ export function withSession<
       context.res,
       authOptions
     )
+    // console.log('with session', session?.user.username)
     if (session) {
       setAccessToken(session.accessToken)
     }
