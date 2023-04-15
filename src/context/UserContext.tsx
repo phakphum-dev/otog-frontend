@@ -4,7 +4,7 @@ import { createContext, useCallback, useContext } from 'react'
 import { ReactNode } from 'react'
 import { useSWRConfig } from 'swr'
 
-import { removeAccessToken } from './HttpClient'
+import { removeAccessToken } from '../api'
 
 import { User } from '@src/user/types'
 

@@ -3,7 +3,7 @@ import useSWR from 'swr'
 
 import { ONE_SECOND, getRemaining } from '.'
 
-import { api } from '@src/context/HttpClient'
+import { api } from '@src/api'
 
 export function useTimer(start: string, end: string) {
   const [remaining, setRemaining] = useState(() => getRemaining(start, end))

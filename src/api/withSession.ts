@@ -6,7 +6,7 @@ import {
 import { Session, getServerSession } from 'next-auth'
 import { ParsedUrlQuery } from 'querystring'
 
-import { setAccessToken } from '@src/context/HttpClient'
+import { setAccessToken } from '@src/api'
 import { authOptions } from '@src/pages/api/auth/[...nextauth]'
 
 export function withSession<

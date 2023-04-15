@@ -1,4 +1,4 @@
-import { api } from '@src/context/HttpClient'
+import { api } from '@src/api'
 import { Problem, Testcase } from '@src/problem/types'
 
 export type CreateProblem = Pick<

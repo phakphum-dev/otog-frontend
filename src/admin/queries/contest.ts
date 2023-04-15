@@ -1,5 +1,5 @@
+import { api } from '@src/api'
 import { Contest, CreateContest } from '@src/contest/types'
-import { api } from '@src/context/HttpClient'
 import { Problem } from '@src/problem/types'
 
 export async function createContest(contest: CreateContest) {

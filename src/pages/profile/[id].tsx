@@ -5,7 +5,7 @@ import { unstable_serialize } from 'swr'
 
 import { getAvatarUrl } from '../../profile/useAvartar'
 
-import { withSession } from '@src/auth'
+import { withSession } from '@src/api/withSession'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { useUserData } from '@src/context/UserContext'

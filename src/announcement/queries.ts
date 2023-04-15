@@ -2,7 +2,7 @@ import useSWR from 'swr'
 
 import { Announcement } from './types'
 
-import { api } from '@src/context/HttpClient'
+import { api } from '@src/api'
 
 export async function getAnnouncements() {
   return api.get('announcement').json<Announcement[]>()

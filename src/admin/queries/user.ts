@@ -1,4 +1,4 @@
-import { api } from '@src/context/HttpClient'
+import { api } from '@src/api'
 import { CreateUser, EditUser, User } from '@src/user/types'
 
 export async function createUser(userData: CreateUser) {

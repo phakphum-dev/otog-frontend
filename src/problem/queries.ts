@@ -2,7 +2,7 @@ import useSWR from 'swr'
 
 import { Problem, ProblemWithSubmission } from './types'
 
-import { api } from '@src/context/HttpClient'
+import { api } from '@src/api'
 import { User } from '@src/user/types'
 
 export function usePassedUsers(problemId: number) {

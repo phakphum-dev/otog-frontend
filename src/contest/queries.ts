@@ -2,7 +2,7 @@ import useSWR from 'swr'
 
 import { Contest, ContestPrize, ContestScoreboard } from './types'
 
-import { api } from '@src/context/HttpClient'
+import { api } from '@src/api'
 import { SubmissionWithProblem } from '@src/submission/types'
 
 export async function getCurrentContest() {

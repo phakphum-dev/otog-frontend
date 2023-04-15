@@ -18,7 +18,7 @@ import {
   toggleProblem,
   updateProblem,
 } from '@src/admin/queries/problem'
-import { withSession } from '@src/auth'
+import { withSession } from '@src/api/withSession'
 import { FileInput } from '@src/components/FileInput'
 import { RenderLater } from '@src/components/RenderLater'
 import { PageContainer } from '@src/components/layout/PageContainer'

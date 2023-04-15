@@ -5,7 +5,7 @@ import { FaPuzzlePiece } from 'react-icons/fa'
 
 import { AnnouncementCarousel } from '@src/announcement/components/AnnouncementCarousel'
 import { getAnnouncements } from '@src/announcement/queries'
-import { withSession } from '@src/auth'
+import { withSession } from '@src/api/withSession'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { useUserData } from '@src/context/UserContext'

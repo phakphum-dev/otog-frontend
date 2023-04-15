@@ -10,7 +10,7 @@ import {
   SubmissionWithSourceCode,
 } from './types'
 
-import { api } from '@src/context/HttpClient'
+import { api } from '@src/api'
 import { useUserData } from '@src/context/UserContext'
 
 export function useAllSubmissions() {

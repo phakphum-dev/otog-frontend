@@ -1,4 +1,4 @@
-import { api } from '@src/context/HttpClient'
+import { api } from '@src/api'
 import { SubmissionWithProblem } from '@src/submission/types'
 
 export async function submitProblem(

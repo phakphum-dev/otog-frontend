@@ -2,7 +2,7 @@ import useSWR from 'swr'
 
 import { CreateUser, User, UserProfile } from './types'
 
-import { api } from '@src/context/HttpClient'
+import { api } from '@src/api'
 import { useUserData } from '@src/context/UserContext'
 
 export async function getUsers() {

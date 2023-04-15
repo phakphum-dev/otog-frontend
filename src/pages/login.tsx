@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { withSession } from '@src/auth'
+import { withSession } from '@src/api/withSession'
 import { CenteredCard, LoginForm } from '@src/components/Login'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { OFFLINE_MODE } from '@src/config'

@@ -8,7 +8,7 @@ import {
   useSubmissionWithSourceCode,
 } from '../../submission/queries'
 
-import { withSession } from '@src/auth'
+import { withSession } from '@src/api/withSession'
 import { SubmissionContent } from '@src/components/Code'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'

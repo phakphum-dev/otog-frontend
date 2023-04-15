@@ -5,7 +5,7 @@ import { FaPencilAlt, FaPlusCircle, FaTools } from 'react-icons/fa'
 import { mutate } from 'swr'
 
 import { editUser } from '@src/admin/queries/user'
-import { withSession } from '@src/auth'
+import { withSession } from '@src/api/withSession'
 import { RenderLater } from '@src/components/RenderLater'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'

@@ -18,7 +18,7 @@ import {
   toggleContestProblem,
   updateContest,
 } from '@src/admin/queries/contest'
-import { withSession } from '@src/auth'
+import { withSession } from '@src/api/withSession'
 import { DatePicker } from '@src/components/DatePick'
 import { RenderLater } from '@src/components/RenderLater'
 import { SortTh, useSortedTable } from '@src/components/SortableTable'

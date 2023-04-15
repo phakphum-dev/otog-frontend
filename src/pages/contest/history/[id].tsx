@@ -6,7 +6,7 @@ import { ComponentProps, useMemo } from 'react'
 import { CgDetailsLess, CgDetailsMore } from 'react-icons/cg'
 import { FaMedal, FaTrophy } from 'react-icons/fa'
 
-import { withSession } from '@src/auth'
+import { withSession } from '@src/api/withSession'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { API_HOST } from '@src/config'

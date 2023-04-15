@@ -6,7 +6,7 @@ import { FaTrophy } from 'react-icons/fa'
 import { mutate } from 'swr'
 
 import { AnnouncementCarousel } from '@src/announcement/components/AnnouncementCarousel'
-import { withSession } from '@src/auth'
+import { withSession } from '@src/api/withSession'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { OFFLINE_MODE } from '@src/config'

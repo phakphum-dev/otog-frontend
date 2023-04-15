@@ -2,7 +2,7 @@ import { useSession } from 'next-auth/react'
 import { ReactNode, useMemo } from 'react'
 import { SWRConfig } from 'swr'
 
-import { api, setAccessToken } from './HttpClient'
+import { api, setAccessToken } from '../api'
 
 import { onErrorToast } from '@src/hooks/useErrorToast'
 
@@ -17,8 +17,8 @@ export const SWRProvider = (props: {
   // this will run before render and only rerun when session change
   useMemo(() => {
     console.log('set new token')
-    setAccessToken(session && session.accessToken)
-  }, [session])
+    setAccessToken(session?.accessToken ?? null)
+  }, [session?.accessToken])
   return (
     <SWRConfig value={{ fetcher, onError: onErrorToast, fallback }}>
       {children}

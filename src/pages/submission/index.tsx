@@ -4,7 +4,7 @@ import { FaTasks } from 'react-icons/fa'
 
 import { getLatestSubmission } from '../../submission/queries'
 
-import { withSession } from '@src/auth'
+import { withSession } from '@src/api/withSession'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { SubmissionTable } from '@src/submission/SubmissionTable'

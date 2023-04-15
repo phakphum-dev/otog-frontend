@@ -4,7 +4,7 @@ import NextLink from 'next/link'
 
 import ComputerImage from '../../public/computer.svg'
 
-import { withSession } from '@src/auth'
+import { withSession } from '@src/api/withSession'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { OFFLINE_MODE } from '@src/config'
 import { Button } from '@src/ui/Button'
