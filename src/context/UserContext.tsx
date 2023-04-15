@@ -13,6 +13,7 @@ export interface UserProviderProps {
   user: User | null
   isAuthenticated: boolean
   isAdmin: boolean
+  clearCache: () => void
 }
 
 const UserContext = createContext({} as UserProviderProps)
@@ -29,14 +30,17 @@ export const UserProvider = (props: { children: ReactNode }) => {
 
   // SWR cache is Map by default
   const cache = useSWRConfig().cache as Map<string, any>
+  const clearCache = useCallback(() => {
+    cache.clear()
+  }, [cache])
   const router = useRouter()
   const logout = useCallback(async () => {
     await signOut({ redirect: false })
+    await router.push('/login')
     removeAccessToken()
-    cache.clear()
-    router.push('/login')
-  }, [router, cache])
+    clearCache()
+  }, [router, clearCache])
 
-  const value = { user, isAuthenticated, isAdmin, logout }
+  const value = { user, isAuthenticated, isAdmin, logout, clearCache }
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>
 }

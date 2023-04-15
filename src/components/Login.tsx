@@ -9,6 +9,7 @@ import { FaGoogle } from 'react-icons/fa'
 import Logo from '../../public/logo512.png'
 
 import { OFFLINE_MODE } from '@src/config'
+import { useUserData } from '@src/context/UserContext'
 import { onErrorToast } from '@src/hooks/useErrorToast'
 import { Button } from '@src/ui/Button'
 import { Input } from '@src/ui/Input'
@@ -22,10 +23,12 @@ export const LoginForm = (props: LoginFormProps) => {
   const { onSuccess } = props
   const { data: session } = useSession()
   const { register, handleSubmit } = useForm<LoginReq>()
+  const { clearCache } = useUserData()
   const onSubmit = async (credentials: LoginReq) => {
     try {
       await signIn('otog', { ...credentials, redirect: false })
       toast.success('ลงชื่อเข้าใช้สำเร็จ !')
+      clearCache()
       onSuccess?.()
     } catch (e: any) {
       onErrorToast(e)
