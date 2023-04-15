@@ -2,13 +2,13 @@ import { useCallback, useEffect, useMemo, useReducer } from 'react'
 import { mutate } from 'swr'
 import useSWRInfinite from 'swr/infinite'
 
-import { useAuth } from '../context/AuthContext'
+import { useUserData } from '../context/UserContext'
 import { Message } from './types'
 
 import { useSocket } from '@src/context/SocketContext'
 
 const useLoadChat = () => {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated } = useUserData()
 
   const {
     data: oldMessages,
@@ -111,7 +111,7 @@ export const useChat = (isOpen: boolean) => {
   const [{ emitMessage: emitChat, newMessages, hasUnread }, dispatch] =
     useChatSocket()
   const { socket } = useSocket()
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated } = useUserData()
   useEffect(() => {
     if (socket) {
       if (isAuthenticated) {

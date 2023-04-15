@@ -11,7 +11,7 @@ import { toggleProblem } from '@src/admin/queries/problem'
 import { SortTh, useSortedTable } from '@src/components/SortableTable'
 import { problemSortFuncs } from '@src/components/SortableTable/utils'
 import { API_HOST } from '@src/config'
-import { useAuth } from '@src/context/AuthContext'
+import { useUserData } from '@src/context/UserContext'
 import { UseDisclosureReturn, useDisclosure } from '@src/hooks/useDisclosure'
 import { useMutation } from '@src/hooks/useMutation'
 import { ProblemWithSubmission } from '@src/problem/types'
@@ -71,7 +71,7 @@ export const ProblemTable = (props: ProblemTableProps) => {
     router.push('/submission')
   }
 
-  const { isAdmin } = useAuth()
+  const { isAdmin } = useUserData()
 
   return sortedProblems ? (
     <div className="overflow-x-auto">
@@ -190,7 +190,7 @@ const ProblemRow = (props: ProblemRowProps) => {
     onPassedOpen()
     setModalPassed(problem.id)
   }
-  const { isAdmin } = useAuth()
+  const { isAdmin } = useUserData()
 
   const bg = useStatusColor(problem.submission)
 
@@ -274,7 +274,12 @@ const PassedModal = (props: PassedModalProps) => {
           <div className="flex flex-col gap-2">
             {users ? (
               users.map((user) => (
-                <NextLink href={`/profile/${user.id}`} key={user.id}>
+                <NextLink
+                  href={`/profile/${user.id}`}
+                  key={user.id}
+                  passHref
+                  legacyBehavior
+                >
                   <Link className="max-w-[300px]" variant="hidden">
                     {user.showName}
                   </Link>

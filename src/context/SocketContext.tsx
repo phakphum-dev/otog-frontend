@@ -1,3 +1,4 @@
+import { useSession } from 'next-auth/react'
 import {
   ReactNode,
   createContext,
@@ -7,10 +8,8 @@ import {
 } from 'react'
 import socketIOClient, { Socket } from 'socket.io-client'
 
-import { http } from './HttpClient'
-
 import { OFFLINE_MODE, SOCKET_HOST } from '@src/config'
-import { useAuth } from '@src/context/AuthContext'
+import { useUserData } from '@src/context/UserContext'
 
 export interface ConfirmProviderProps {
   socket: Socket | undefined
@@ -20,18 +19,19 @@ const SocketContext = createContext({} as ConfirmProviderProps)
 
 export const SocketProvider = ({ children }: { children?: ReactNode }) => {
   const [socket, setSocket] = useState<Socket>()
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated } = useUserData()
+  const { data: session } = useSession()
   useEffect(() => {
     if (!OFFLINE_MODE && isAuthenticated) {
       const socketClient = socketIOClient(SOCKET_HOST, {
-        auth: { token: http.getAccessToken() },
+        auth: { token: session?.accessToken },
       })
       setSocket(socketClient)
       return () => {
         socketClient.disconnect()
       }
     }
-  }, [isAuthenticated])
+  }, [session, isAuthenticated])
 
   const value = { socket }
   return (

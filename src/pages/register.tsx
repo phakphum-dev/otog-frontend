@@ -40,7 +40,7 @@ export default function RegisterPage() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-4">
             <div className="mx-auto w-[100px]">
-              <Image src={Logo} />
+              <Image src={Logo} alt="" />
             </div>
             <Input
               {...register('username')}
@@ -69,5 +69,3 @@ export default function RegisterPage() {
     </PageContainer>
   )
 }
-
-export { getServerSideCookies as getServerSideProps } from '@src/context/HttpClient'

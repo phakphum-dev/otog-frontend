@@ -2,7 +2,7 @@ import { OrangeSubmitButton } from './SubmitButton'
 import { SubmitModal } from './SubmitModal'
 
 import { API_HOST } from '@src/config'
-import { useAuth } from '@src/context/AuthContext'
+import { useUserData } from '@src/context/UserContext'
 import { useDisclosure } from '@src/hooks/useDisclosure'
 import { useLatestSubmission } from '@src/submission/queries'
 import { Link } from '@src/ui/Link'
@@ -13,7 +13,7 @@ export interface LatestSubmissionProps {
 
 export const LatestSubmission = ({ onSuccess }: LatestSubmissionProps) => {
   const submitModal = useDisclosure()
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated } = useUserData()
   const { data: submission } = useLatestSubmission()
 
   return isAuthenticated && submission ? (

@@ -10,7 +10,7 @@ import { ToggleColorModeButton } from '../ToggleColorModeButton'
 import { PageContainer } from './PageContainer'
 
 import { OFFLINE_MODE } from '@src/config'
-import { useAuth } from '@src/context/AuthContext'
+import { useUserData } from '@src/context/UserContext'
 import { useDisclosure } from '@src/hooks/useDisclosure'
 import { ChevronDownIcon } from '@src/icons/ChevronDownIcon'
 import { HamburgerIcon } from '@src/icons/HamburgerIcon'
@@ -41,7 +41,7 @@ export const NavBar = () => {
     onClose()
   }, [pathname, onClose])
 
-  const { isAuthenticated, user, logout, isAdmin } = useAuth()
+  const { isAuthenticated, user, isAdmin, logout } = useUserData()
   const { url } = useUserSmallAvatar()
 
   const entries =
@@ -62,9 +62,13 @@ export const NavBar = () => {
       <div className="fixed top-0 left-0 z-20 h-14 w-full bg-white py-2 shadow-md dark:bg-gray-800">
         <PageContainer>
           <div className="flex">
-            <NextLink href={isAdmin ? '/admin/contest' : '/'} passHref>
+            <NextLink
+              href={isAdmin ? '/admin/contest' : '/'}
+              passHref
+              legacyBehavior
+            >
               <Link className="flex items-center gap-2 text-gray-800 dark:text-white">
-                <Image src={Logo} width={32} height={32} />
+                <Image src={Logo} width={32} height={32} alt="" />
                 <div className="text-xl font-bold">
                   <div className="hidden md:inline-block xl:hidden">OTOG</div>
                   <div className="hidden xl:inline-block">
@@ -106,7 +110,7 @@ export const NavBar = () => {
           <DrawerBody>
             <div className="mt-2 mr-6 flex flex-col items-start gap-3">
               {user && (
-                <NextLink href={`/profile/${user.id}`} passHref>
+                <NextLink href={`/profile/${user.id}`} passHref legacyBehavior>
                   <DrawerButton as="a">
                     <div className="flex items-center gap-2 py-2">
                       <Avatar src={url} name={user.showName} />
@@ -146,7 +150,7 @@ const NavItem = forwardRef<HTMLAnchorElement, ItemProps & LinkProps>(
     const isActive = usePathActive(href)
     const { pathname } = useRouter()
     return (
-      <NextLink href={href} passHref scroll={pathname === href}>
+      <NextLink href={href} passHref legacyBehavior scroll={pathname === href}>
         <Link
           variant="nav"
           className="p-2 font-normal hover:no-underline"
@@ -167,7 +171,7 @@ const DrawerItem = forwardRef<HTMLButtonElement, ItemProps & ButtonProps>(
     const isActive = usePathActive(href) || active
     const { pathname } = useRouter()
     return (
-      <NextLink href={href} passHref scroll={pathname === href}>
+      <NextLink href={href} passHref legacyBehavior scroll={pathname === href}>
         <DrawerButton
           as="a"
           className={
@@ -200,7 +204,7 @@ const DrawerButton = forwardRef<HTMLButtonElement, ButtonProps>(
 )
 
 const AvatarMenu = () => {
-  const { user, isAdmin, logout } = useAuth()
+  const { user, isAdmin, logout } = useUserData()
   const { url } = useUserSmallAvatar()
   return (
     <Menu>
@@ -218,7 +222,7 @@ const AvatarMenu = () => {
       {/* fix render menulist on ssr */}
       <MenuList>
         {!OFFLINE_MODE && (
-          <NextLink href={`/profile/${user?.id}`} passHref>
+          <NextLink href={`/profile/${user?.id}`} passHref legacyBehavior>
             <MenuItem as="a">โปรไฟล์</MenuItem>
           </NextLink>
         )}

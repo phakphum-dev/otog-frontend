@@ -1,4 +1,7 @@
-export default function Error({ title = 'Page not found', statusCode = 404 }) {
+export default function Error({
+  title = 'Internal server error',
+  statusCode = 500,
+}) {
   return (
     <div className="flex flex-1 items-center justify-center">
       <div className="flex h-[50px] items-center gap-4">
@@ -9,5 +12,3 @@ export default function Error({ title = 'Page not found', statusCode = 404 }) {
     </div>
   )
 }
-
-export { getServerSideCookies as getServerSideProps } from '@src/context/HttpClient'

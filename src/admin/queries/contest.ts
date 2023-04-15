@@ -1,17 +1,17 @@
 import { Contest, CreateContest } from '@src/contest/types'
-import { http } from '@src/context/HttpClient'
+import { api } from '@src/context/HttpClient'
 import { Problem } from '@src/problem/types'
 
 export async function createContest(contest: CreateContest) {
-  return http.post<Contest, CreateContest>('contest', contest)
+  return api.url('contest').post(contest).json<Contest>()
 }
 
 export async function updateContest(contestId: number, contest: CreateContest) {
-  return http.put<Contest>(`contest/${contestId}`, contest)
+  return api.url(`contest/${contestId}`).put(contest).json<Contest>()
 }
 
 export async function deleteContest(contestId: number) {
-  return http.del<Contest>(`contest/${contestId}`)
+  return api.url(`contest/${contestId}`).delete().json<Contest>()
 }
 
 export async function toggleContestProblem(
@@ -19,8 +19,8 @@ export async function toggleContestProblem(
   problemId: number,
   show: boolean
 ) {
-  return http.patch<Problem>(`contest/${contestId}`, {
-    problemId,
-    show,
-  })
+  return api
+    .url(`contest/${contestId}`)
+    .patch({ problemId, show })
+    .json<Problem>()
 }

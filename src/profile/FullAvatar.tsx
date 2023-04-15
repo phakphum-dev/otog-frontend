@@ -5,8 +5,8 @@ import { toast } from 'react-hot-toast'
 import { FaCropAlt } from 'react-icons/fa'
 
 import { UploadFileButton } from '@src/components/FileInput'
-import { useAuth } from '@src/context/AuthContext'
 import { useConfirmModal } from '@src/context/ConfirmContext'
+import { useUserData } from '@src/context/UserContext'
 import { storage } from '@src/firebase'
 import { useDisclosure } from '@src/hooks/useDisclosure'
 import { onErrorToast } from '@src/hooks/useErrorToast'
@@ -26,7 +26,7 @@ import { IconButton } from '@src/ui/IconButton'
 
 export const FullAvatarUpload = () => {
   const cropModal = useDisclosure()
-  const { user } = useAuth()
+  const { user } = useUserData()
   const { url, fetchUrl: reloadBigAvatar } = useUserBigAvatar()
   const { fetchUrl: reloadSmallAvatar } = useUserSmallAvatar()
 

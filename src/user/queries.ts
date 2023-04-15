@@ -2,11 +2,11 @@ import useSWR from 'swr'
 
 import { CreateUser, User, UserProfile } from './types'
 
-import { useAuth } from '@src/context/AuthContext'
-import { http } from '@src/context/HttpClient'
+import { api } from '@src/context/HttpClient'
+import { useUserData } from '@src/context/UserContext'
 
 export async function getUsers() {
-  return http.get<User[]>('user')
+  return api.get('user').json<User[]>()
 }
 
 export function useUsers() {
@@ -18,7 +18,7 @@ export function keyUser(userId: number) {
 }
 
 export async function getUser(userId: number) {
-  return http.get<UserProfile>(`user/${userId}/profile`)
+  return api.get(`user/${userId}/profile`).json<UserProfile>()
 }
 
 export function useUser(userId: number) {
@@ -26,20 +26,20 @@ export function useUser(userId: number) {
 }
 
 export async function getOnlineUsers() {
-  return http.get<User[]>('user/online')
+  return api.get('user/online').json<User[]>()
 }
 
 export function useOnlineUsers() {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated } = useUserData()
   return useSWR(isAuthenticated ? 'user/online' : null, getOnlineUsers, {
     revalidateOnMount: false,
   })
 }
 
 export async function registerUser(userData: CreateUser) {
-  return http.post<User>('auth/register', userData)
+  return api.url('auth/register').post(userData).json<User>()
 }
 
 export async function editShowname(userId: number, showName: string) {
-  return http.patch<User>(`user/${userId}/name`, { showName })
+  return api.url(`user/${userId}/name`).patch({ showName }).json<User>()
 }

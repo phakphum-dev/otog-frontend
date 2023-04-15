@@ -1,10 +1,10 @@
-import { http } from '@src/context/HttpClient'
+import { api } from '@src/context/HttpClient'
 import { CreateUser, EditUser, User } from '@src/user/types'
 
 export async function createUser(userData: CreateUser) {
-  return http.post<User>('user', userData)
+  return api.url('user').post(userData).json<User>()
 }
 
 export async function editUser(userId: number, userData: EditUser) {
-  return http.put<User>(`user/${userId}`, userData)
+  return api.url(`user/${userId}`).put(userData).json<User>()
 }

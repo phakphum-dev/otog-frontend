@@ -1,6 +1,6 @@
 import useSWRImmutable from 'swr/immutable'
 
-import { useAuth } from '@src/context/AuthContext'
+import { useUserData } from '@src/context/UserContext'
 import { storage } from '@src/firebase'
 
 export type AvatarKey = { userId: number; small: boolean }
@@ -46,11 +46,11 @@ export const useSmallAvatar = (userId: number | undefined) => {
 }
 
 export const useUserBigAvatar = () => {
-  const { user } = useAuth()
+  const { user } = useUserData()
   return useBigAvatar(user?.id)
 }
 
 export const useUserSmallAvatar = () => {
-  const { user } = useAuth()
+  const { user } = useUserData()
   return useSmallAvatar(user?.id)
 }

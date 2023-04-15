@@ -5,7 +5,7 @@ import { CodeModal, ErrorModal } from '../components/Code'
 import { SubmissionWithProblem } from './types'
 
 import { API_HOST } from '@src/config'
-import { useAuth } from '@src/context/AuthContext'
+import { useUserData } from '@src/context/UserContext'
 import { useDisclosure } from '@src/hooks/useDisclosure'
 import { useOnScreen } from '@src/hooks/useOnScreen'
 import {
@@ -153,7 +153,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
 
   const errorDisclosure = useDisclosure()
 
-  const { user, isAdmin } = useAuth()
+  const { user, isAdmin } = useUserData()
   const bg = useStatusColor(submission, true)
 
   if (!submission) {
@@ -173,7 +173,11 @@ const SubmissionRow = (props: SubmissionRowProps) => {
         )}
       </Td>
       <Td>
-        <NextLink href={`/profile/${submission.user.id}`}>
+        <NextLink
+          href={`/profile/${submission.user.id}`}
+          passHref
+          legacyBehavior
+        >
           <Link className="max-w-[300px] line-clamp-3" variant="hidden">
             {submission.user.showName}
             {isAdmin && ` (${submission.user.username})`}

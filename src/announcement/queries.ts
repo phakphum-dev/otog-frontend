@@ -2,10 +2,10 @@ import useSWR from 'swr'
 
 import { Announcement } from './types'
 
-import { http } from '@src/context/HttpClient'
+import { api } from '@src/context/HttpClient'
 
 export async function getAnnouncements() {
-  return http.get<Announcement[]>('announcement')
+  return api.get('announcement').json<Announcement[]>()
 }
 
 export function useAnnouncements() {
@@ -14,23 +14,26 @@ export function useAnnouncements() {
 
 type PostAnnouncementBody = Pick<Announcement, 'value'>
 export function createAnnouncement(body: PostAnnouncementBody) {
-  return http.post<Announcement>('announcement', body)
+  return api.url('announcement').post(body).json<Announcement>()
 }
 
 export function deleteAnnouncemet(announcementId: number) {
-  return http.del<Announcement>(`announcement/${announcementId}`)
+  return api.url(`announcement/${announcementId}`).delete().json<Announcement>()
 }
 
 export function toggleAnnouncemet(announcementId: number, show: boolean) {
-  return http.patch<Announcement>(`announcement/${announcementId}`, { show })
+  return api
+    .url(`announcement/${announcementId}`)
+    .patch({ show })
+    .json<Announcement>()
 }
 
 export function updateAnnouncement(
   announcementId: number,
   announcementData: Announcement
 ) {
-  return http.put<Announcement>(
-    `announcement/${announcementId}`,
-    announcementData
-  )
+  return api
+    .url(`announcement/${announcementId}`)
+    .put(announcementData)
+    .json<Announcement>()
 }

@@ -1,13 +1,12 @@
-import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import NextLink from 'next/link'
 
 import ComputerImage from '../../public/computer.svg'
 
+import { withSession } from '@src/auth'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { OFFLINE_MODE } from '@src/config'
-import { getServerSideCookies } from '@src/context/HttpClient'
 import { Button } from '@src/ui/Button'
 
 export default function HomePage() {
@@ -25,12 +24,12 @@ export default function HomePage() {
             Code and Create algorithms efficiently.
           </div>
           <div className="flex gap-4">
-            <NextLink href="/register" passHref>
+            <NextLink href="/register" passHref legacyBehavior>
               <Button as="a" className="w-[100px]" colorScheme="otog">
                 Sign Up
               </Button>
             </NextLink>
-            <NextLink href="/login" passHref>
+            <NextLink href="/login" passHref legacyBehavior>
               <Button as="a" className="w-[100px]" variant="outline">
                 Sign in
               </Button>
@@ -38,14 +37,14 @@ export default function HomePage() {
           </div>
         </div>
         <div className="flex flex-1 items-center justify-center">
-          <Image src={ComputerImage} />
+          <Image src={ComputerImage} alt="" />
         </div>
       </div>
     </PageContainer>
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps = withSession(async (session) => {
   if (OFFLINE_MODE) {
     return {
       redirect: {
@@ -54,8 +53,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     }
   }
-  const serverSideCookies = getServerSideCookies(context)
-  if (serverSideCookies.props.accessToken) {
+  if (session) {
     return {
       redirect: {
         permanent: false,
@@ -63,5 +61,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     }
   }
-  return serverSideCookies
-}
+  return { props: {} }
+})

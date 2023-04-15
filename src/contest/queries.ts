@@ -2,11 +2,17 @@ import useSWR from 'swr'
 
 import { Contest, ContestPrize, ContestScoreboard } from './types'
 
-import { http } from '@src/context/HttpClient'
+import { api } from '@src/context/HttpClient'
 import { SubmissionWithProblem } from '@src/submission/types'
 
 export async function getCurrentContest() {
-  return http.get<Contest | null>('contest/now')
+  return api.get('contest/now').res(async (r) => {
+    try {
+      return (await r.json()) as Contest
+    } catch {
+      return null
+    }
+  })
 }
 
 export function useCurrentContest() {
@@ -18,7 +24,7 @@ export function keyContest(contestId: number) {
 }
 
 export async function getContest(contestId: number | undefined) {
-  return http.get<Contest>(`contest/${contestId}`)
+  return api.get(`contest/${contestId}`).json<Contest>()
 }
 
 export function useContest(contestId: number | undefined) {
@@ -28,7 +34,7 @@ export function useContest(contestId: number | undefined) {
 }
 
 export async function getContests() {
-  return http.get<Contest[]>('contest')
+  return api.get('contest').json<Contest[]>()
 }
 
 export function useContests() {
@@ -40,7 +46,7 @@ export function keyContestScoreboard(contestId: number) {
 }
 
 export async function getContestScoreboard(contestId: number) {
-  return http.get<ContestScoreboard>(keyContestScoreboard(contestId))
+  return api.get(keyContestScoreboard(contestId)).json<ContestScoreboard>()
 }
 
 export function useContestScoreboard(contestId: number) {
@@ -54,7 +60,7 @@ export function keyContestPrize(contestId: number) {
 }
 
 export function getContestPrize(contestId: number) {
-  return http.get<ContestPrize>(keyContestPrize(contestId))
+  return api.get(keyContestPrize(contestId)).json<ContestPrize>()
 }
 
 export function useContestPrize(contestId: number) {
@@ -71,8 +77,8 @@ export async function submitContestProblem(
   formData.set('sourceCode', file)
   formData.set('language', language)
   formData.set('contestId', `${contestId}`)
-  return http.post<SubmissionWithProblem>(
-    `submission/problem/${problemId}`,
-    formData
-  )
+  return api
+    .url(`submission/problem/${problemId}`)
+    .post(formData)
+    .json<SubmissionWithProblem>()
 }

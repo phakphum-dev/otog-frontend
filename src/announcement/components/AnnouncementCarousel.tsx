@@ -13,7 +13,7 @@ import {
   useAnnouncementContext,
 } from './useAnnouncementContext'
 
-import { useAuth } from '@src/context/AuthContext'
+import { useUserData } from '@src/context/UserContext'
 import { useDisclosure } from '@src/hooks/useDisclosure'
 import { IconButton } from '@src/ui/IconButton'
 
@@ -26,7 +26,7 @@ export interface AnnouncementCarouselProps {
 export const AnnouncementCarousel = (props: AnnouncementCarouselProps) => {
   const { defaultShow = false } = props
   const [show, setShow] = useState(defaultShow)
-  const { isAuthenticated, isAdmin } = useAuth()
+  const { isAuthenticated, isAdmin } = useUserData()
 
   const { data } = useAnnouncements()
   const [announcements, setAnnouncements] = useState<Announcement[]>([])
@@ -57,7 +57,7 @@ export const AnnouncementCarousel = (props: AnnouncementCarouselProps) => {
 }
 
 const AnnouncementComponent = () => {
-  const { isAuthenticated, isAdmin } = useAuth()
+  const { isAuthenticated, isAdmin } = useUserData()
   const {
     nextShowIndex,
     filteredAnnouncements,
