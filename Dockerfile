@@ -25,6 +25,8 @@ COPY --from=prod-deps /build/node_modules ./node_modules
 COPY --from=build /build/.next ./.next
 COPY --from=build /build/public ./public
 COPY --from=build /build/next.config.js ./next.config.js
+COPY --from=build /build/.env.local ./.env.local
+COPY --from=build /build/.env.production ./.env.production
 # Expose listening port
 EXPOSE 3000
 
