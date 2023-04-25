@@ -127,7 +127,7 @@ export function useSubmission(submissionId: number) {
 export async function getLatestSubmission() {
   return client
     .get('submission/latest')
-    .json<{ latestSubmission: SubmissionWithProblem }>()
+    .json<{ latestSubmission: SubmissionWithProblem | null }>()
     .then((r) => r.latestSubmission)
 }
 
@@ -147,7 +147,8 @@ export function keyLatestProblemSubmission(problemId: number) {
 export async function getLatestProblemSubmission(problemId: number) {
   return client
     .get(keyLatestProblemSubmission(problemId))
-    .json<SubmissionWithSourceCode>()
+    .json<{ latestSubmission: SubmissionWithSourceCode | null }>()
+    .then((r) => r.latestSubmission)
 }
 
 export function useLatestProblemSubmission(problemId: number) {
@@ -158,7 +159,7 @@ export function useLatestProblemSubmission(problemId: number) {
     {
       revalidateOnFocus: false,
       onSuccess: (data, key) => {
-        if (isGrading(data)) {
+        if (data && isGrading(data)) {
           setTimeout(() => mutate(key), ONE_SECOND)
         }
       },
