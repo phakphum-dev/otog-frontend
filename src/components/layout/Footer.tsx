@@ -11,9 +11,9 @@ export const Footer = () => (
         <span>หากมีข้อสงสัย กรุณายกมือถาม</span>
       ) : (
         <span>
-          หากมีข้อแนะนำ หรือข้อสงสัย{' '}
+          สามารถรายงานปัญหา
           <Link href={GITHUB_LINK} isExternal>
-            ติดต่อเรา
+            ได้ที่นี่
           </Link>
         </span>
       )}
