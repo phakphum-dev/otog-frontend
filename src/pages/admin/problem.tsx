@@ -2,6 +2,7 @@ import Head from 'next/head'
 import NextLink from 'next/link'
 import { FormEvent, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-hot-toast'
 import {
   FaEye,
   FaEyeSlash,
@@ -26,6 +27,7 @@ import { Title, TitleLayout } from '@src/components/layout/Title'
 import { API_HOST } from '@src/config'
 import { useConfirmModal } from '@src/context/ConfirmContext'
 import { UseDisclosureReturn, useDisclosure } from '@src/hooks/useDisclosure'
+import { onErrorToast } from '@src/hooks/useErrorToast'
 import { useFileInput } from '@src/hooks/useFileInput'
 import { useMutation } from '@src/hooks/useMutation'
 import { useProblems } from '@src/problem/queries'
@@ -92,9 +94,12 @@ const CreateProblemModalButton = () => {
       await createProblemMutation(new FormData(e.currentTarget))
       mutate('problem')
       createModal.onClose()
+      toast.success('เพิ่มโจทย์สำเร็จ!')
       resetPdfInput()
       resetZipInput()
-    } catch {}
+    } catch (e: unknown) {
+      onErrorToast(e)
+    }
   }
 
   return (
