@@ -37,7 +37,7 @@ export default function ContestPage() {
           <div className="flex flex-1 items-center justify-center">
             <div className="flex flex-col items-center gap-4">
               <h1 className="text-4xl font-bold">ยังไม่มีการแข่งขัน</h1>
-              <NextLink href="/contest/history" passHref>
+              <NextLink href="/contest/history" passHref legacyBehavior>
                 <Button as="a">ประวัติการแข่งขัน</Button>
               </NextLink>
             </div>
