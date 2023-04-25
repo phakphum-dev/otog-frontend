@@ -8,11 +8,15 @@ export type CreateProblem = Pick<
 
 // TODO: type safe
 export async function createProblem(formData: FormData) {
-  return client.url('problem').post(formData).json<Problem>()
+  return client.url('problem').formData(formData).post().json<Problem>()
 }
 
 export async function updateProblem(problemId: number, formData: FormData) {
-  return client.url(`problem/${problemId}`).put(formData).json<Problem>()
+  return client
+    .url(`problem/${problemId}`)
+    .formData(Object.fromEntries(formData))
+    .put()
+    .json<Problem>()
 }
 
 export async function toggleProblem(problemId: number, show: boolean) {
