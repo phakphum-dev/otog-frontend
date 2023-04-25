@@ -6,11 +6,9 @@ export async function submitProblem(
   file: File,
   language: string
 ) {
-  const formData = new FormData()
-  formData.set('sourceCode', file)
-  formData.set('language', language)
   return client
     .url(`submission/problem/${problemId}`)
-    .post(formData)
+    .formData({ sourceCode: file, language: language })
+    .post()
     .json<SubmissionWithProblem>()
 }

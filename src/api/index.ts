@@ -1,4 +1,5 @@
 import wretch, { FetchLike } from 'wretch'
+import FormDataAddon from 'wretch/addons/formData'
 import { create } from 'zustand'
 
 import {
@@ -51,6 +52,7 @@ let waiting: null | Resolve[]
 
 export const client = api
   .middlewares([authMiddleware])
+  .addon(FormDataAddon)
   .catcher(401, async (_, req) => {
     if (Array.isArray(waiting)) {
       await new Promise((resolve) => {
