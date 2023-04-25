@@ -3,7 +3,6 @@ import clsx from 'clsx'
 import produce from 'immer'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { parseCookies } from 'nookies'
 import {
   ChangeEvent,
   Dispatch,
@@ -92,14 +91,13 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
 }
 
 export const getServerSideProps = withSession<WriteSolutionPageProps>(
-  async (_, context) => {
+  async (session, context) => {
     const id = Number(context.query.id)
     if (Number.isNaN(id)) {
       return { notFound: true }
     }
-    const { accessToken = null } = parseCookies(context)
     const problem = getProblem(id)
-    const submission = accessToken ? getLatestProblemSubmission(id) : null
+    const submission = session ? getLatestProblemSubmission(id) : null
     return {
       props: {
         submission: await submission,
