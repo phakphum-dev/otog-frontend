@@ -125,13 +125,10 @@ export function useSubmission(submissionId: number) {
 }
 
 export async function getLatestSubmission() {
-  return client.get('submission/latest').res(async (r) => {
-    try {
-      return (await r.json()) as SubmissionWithProblem
-    } catch {
-      return null
-    }
-  })
+  return client
+    .get('submission/latest')
+    .json<{ latestSubmission: SubmissionWithProblem }>()
+    .then((r) => r.latestSubmission)
 }
 
 export function useLatestSubmission() {

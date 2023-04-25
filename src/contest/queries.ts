@@ -6,13 +6,10 @@ import { client } from '@src/api'
 import { SubmissionWithProblem } from '@src/submission/types'
 
 export async function getCurrentContest() {
-  return client.get('contest/now').res(async (r) => {
-    try {
-      return (await r.json()) as Contest
-    } catch {
-      return null
-    }
-  })
+  return client
+    .get('contest/now')
+    .json<{ currentContest: Contest | null }>()
+    .then((r) => r.currentContest)
 }
 
 export function useCurrentContest() {
