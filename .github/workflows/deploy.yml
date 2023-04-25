@@ -31,8 +31,8 @@ jobs:
 
       - name: Set up environment
         run: |
-          echo "NEXT_PUBLIC_SEGMENT_API_KEY=${{ secrets.SEGMENT_API_KEY }}" >> .env.local
           echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" >> .env.local
+        # echo "NEXT_PUBLIC_SEGMENT_API_KEY=${{ secrets.SEGMENT_API_KEY }}" >> .env.local
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
