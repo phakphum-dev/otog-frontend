@@ -7,12 +7,13 @@ import { toast } from 'react-hot-toast'
 
 import Logo from '../../public/logo512.png'
 
+import { api } from '@src/api'
 import { OFFLINE_MODE } from '@src/config'
 import { useUserData } from '@src/context/UserContext'
 import { errorToast, onErrorToast } from '@src/hooks/useErrorToast'
 import { Button } from '@src/ui/Button'
 import { Input } from '@src/ui/Input'
-import { LoginReq } from '@src/user/types'
+import { AuthRes, LoginReq } from '@src/user/types'
 
 export interface LoginFormProps {
   onSuccess?: () => void
@@ -25,7 +26,11 @@ export const LoginForm = (props: LoginFormProps) => {
   const { clearCache } = useUserData()
   const onSubmit = async (credentials: LoginReq) => {
     try {
-      const response = await signIn('otog', { ...credentials, redirect: false })
+      const user = await api.url('auth/login').post(credentials).json<AuthRes>()
+      const response = await signIn('otog', {
+        accessToken: user.accessToken,
+        redirect: false,
+      })
       if (response?.ok) {
         toast.success('ลงชื่อเข้าใช้สำเร็จ !')
         clearCache()

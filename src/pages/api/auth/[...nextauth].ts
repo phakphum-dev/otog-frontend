@@ -7,7 +7,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 
 // import GoogleProvider from 'next-auth/providers/google'
 import { api, secure, setAccessToken } from '@src/api'
-import { AuthRes } from '@src/user/types'
+import { AuthRes, User } from '@src/user/types'
 
 class ServerContext {
   req?: {
@@ -38,19 +38,18 @@ export const authOptions: NextAuthOptions = {
       id: 'otog',
       name: 'OTOG',
       credentials: {
-        username: { label: 'Username', type: 'text' },
-        password: { label: 'Password', type: 'password' },
+        accessToken: { label: 'accessToken', type: 'text' },
+        // username: { label: 'Username', type: 'text' },
+        // password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        return await api
-          .url('auth/login')
-          .post(credentials)
-          .res(async (r) => {
-            const setCookie = r.headers.get('set-cookie')
-            if (!setCookie) throw new Error('no set cookie')
-            serverContext.res!.setHeader('set-cookie', setCookie)
-            return (await r.json()) as AuthRes
-          })
+        if (credentials) {
+          return {
+            user: getUserData(credentials.accessToken),
+            accessToken: credentials.accessToken,
+          }
+        }
+        return null
       },
     }),
   ],
@@ -107,12 +106,9 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   return await NextAuth(req, res, authOptions)
 }
 
-// export function getUserData(accessToken: string | null): User | null {
-//   if (accessToken) {
-//     const { id, username, showName, role, rating } = jwtDecode<
-//       User & JwtPayload
-//     >(accessToken)
-//     return { id, username, showName, role, rating }
-//   }
-//   return null
-// }
+export function getUserData(accessToken: string): User {
+  const { id, username, showName, role, rating } = jwtDecode<User & JwtPayload>(
+    accessToken
+  )
+  return { id, username, showName, role, rating }
+}
