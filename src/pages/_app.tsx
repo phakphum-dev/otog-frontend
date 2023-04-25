@@ -1,5 +1,7 @@
 import { loader } from '@monaco-editor/react'
 import 'focus-visible/dist/focus-visible'
+import { Session } from 'next-auth'
+import { SessionProvider } from 'next-auth/react'
 import { ThemeProvider } from 'next-themes'
 import { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
@@ -12,10 +14,10 @@ import { Chat } from '@src/chat'
 import { Footer } from '@src/components/layout/Footer'
 import { NavBar } from '@src/components/layout/NavBar'
 import { OFFLINE_MODE } from '@src/config'
-import { AuthProvider } from '@src/context/AuthContext'
 import { ConfirmModalProvider } from '@src/context/ConfirmContext'
 import { SWRProvider } from '@src/context/SWRContext'
 import { SocketProvider } from '@src/context/SocketContext'
+import { UserProvider } from '@src/context/UserContext'
 import { useAnalytics } from '@src/hooks/useAnalytics'
 import { ErrorToastOptions, useErrorToaster } from '@src/hooks/useErrorToast'
 import '@src/styles/nprogress.css'
@@ -36,14 +38,13 @@ if (OFFLINE_MODE) {
 }
 
 type MyAppProps = AppProps<{
-  colorModeCookie: string
-  accessToken: string
   errorData: ErrorToastOptions
   fallback: { [key: string]: string }
+  session: Session
 }>
 
 export default function MyApp({ Component, pageProps }: MyAppProps) {
-  const { accessToken, errorData, fallback, ...props } = pageProps
+  const { errorData, fallback, session, ...props } = pageProps
   useErrorToaster(errorData)
   useAnalytics()
   return (
@@ -62,29 +63,31 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      <Toaster
-        position="bottom-center"
-        toastOptions={{
-          className: 'dark:bg-gray-800 dark:text-alpha-white-900',
-        }}
-      />
-      <ThemeProvider attribute="class">
-        <ConfirmModalProvider>
-          <SWRProvider fallback={fallback}>
-            <AuthProvider value={accessToken}>
-              <SocketProvider>
-                <TopProgressBar />
-                <div className="flex min-h-screen flex-col">
-                  <NavBar />
-                  <Component {...props} />
-                  {!OFFLINE_MODE && <Chat />}
-                  <Footer />
-                </div>
-              </SocketProvider>
-            </AuthProvider>
-          </SWRProvider>
-        </ConfirmModalProvider>
-      </ThemeProvider>
+      <SessionProvider session={session} refetchOnWindowFocus={false}>
+        <SWRProvider fallback={fallback} session={session}>
+          <UserProvider>
+            <SocketProvider>
+              <ThemeProvider attribute="class">
+                <Toaster
+                  position="bottom-center"
+                  toastOptions={{
+                    className: 'dark:bg-gray-800 dark:text-alpha-white-900',
+                  }}
+                />
+                <ConfirmModalProvider>
+                  <TopProgressBar />
+                  <div className="flex min-h-screen flex-col">
+                    <NavBar />
+                    <Component {...props} />
+                    {!OFFLINE_MODE && <Chat />}
+                    <Footer />
+                  </div>
+                </ConfirmModalProvider>
+              </ThemeProvider>
+            </SocketProvider>
+          </UserProvider>
+        </SWRProvider>
+      </SessionProvider>
     </>
   )
 }

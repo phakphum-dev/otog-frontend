@@ -1,11 +1,10 @@
-import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
+import { withSession } from '@src/api/withSession'
 import { CenteredCard, LoginForm } from '@src/components/Login'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { OFFLINE_MODE } from '@src/config'
-import { getServerSideCookies } from '@src/context/HttpClient'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -25,15 +24,24 @@ export default function LoginPage() {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const serverSideCookies = getServerSideCookies(context)
-  if (serverSideCookies.props.accessToken) {
+export const getServerSideProps = withSession(async (session) => {
+  if (session) {
     return {
       redirect: {
-        permanent: false,
         destination: OFFLINE_MODE ? '/contest' : '/problem',
+        permanent: false,
       },
     }
   }
-  return serverSideCookies
-}
+  return { props: {} }
+  // const serverSideCookies = getServerSideCookies(context)
+  // if (serverSideCookies.props.accessToken) {
+  //   return {
+  //     redirect: {
+  //       permanent: false,
+  //       destination: OFFLINE_MODE ? '/contest' : '/problem',
+  //     },
+  //   }
+  // }
+  // return serverSideCookies
+})

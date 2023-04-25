@@ -1,1 +1,29 @@
-export { default, getServerSideProps } from '@src/submission/pages/all'
+import Head from 'next/head'
+import NextLink from 'next/link'
+import { FaTasks } from 'react-icons/fa'
+
+import { PageContainer } from '@src/components/layout/PageContainer'
+import { Title, TitleLayout } from '@src/components/layout/Title'
+import { useUserData } from '@src/context/UserContext'
+import { AllSubmissionTable } from '@src/submission/SubmissionTable'
+import { Button } from '@src/ui/Button'
+
+export default function SubmissionPage() {
+  const { isAuthenticated } = useUserData()
+  return (
+    <PageContainer>
+      <Head>
+        <title>Submission | OTOG</title>
+      </Head>
+      <TitleLayout>
+        <Title icon={<FaTasks />}>ผลตรวจรวม</Title>
+        {isAuthenticated && (
+          <NextLink href="/submission" passHref legacyBehavior>
+            <Button as="a">ผลตรวจของคุณ</Button>
+          </NextLink>
+        )}
+      </TitleLayout>
+      <AllSubmissionTable />
+    </PageContainer>
+  )
+}

@@ -18,10 +18,7 @@ export type EditUser = Pick<User, 'username' | 'role' | 'showName'> & {
   password?: string
 }
 
-export interface LoginReq {
-  username: string
-  password: string
-}
+export type LoginReq = Record<'username' | 'password', string>
 
 export interface AuthRes {
   user: User

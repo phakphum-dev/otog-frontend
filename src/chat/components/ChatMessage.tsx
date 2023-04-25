@@ -5,7 +5,7 @@ import { Children, ReactElement, cloneElement, memo } from 'react'
 import { Message } from '../types'
 
 import { Avatar } from '@src/components/Avatar'
-import { useAuth } from '@src/context/AuthContext'
+import { useUserData } from '@src/context/UserContext'
 import { useSmallAvatar } from '@src/profile/useAvartar'
 import { Link } from '@src/ui/Link'
 import { toThDate } from '@src/utils/time'
@@ -24,7 +24,7 @@ export const ChatMessage = memo(
       messageBelow,
     } = props
 
-    const { user } = useAuth()
+    const { user } = useUserData()
     const isSelf = user?.id === sender.id
     const isOther = !isSelf
     const shouldDisplayDate =
@@ -117,7 +117,7 @@ export const emojiPattern =
 const SmallAvatar = ({ userId, name }: { userId: number; name: string }) => {
   const { url } = useSmallAvatar(userId)
   return (
-    <NextLink href={`/profile/${userId}`} passHref>
+    <NextLink href={`/profile/${userId}`} passHref legacyBehavior>
       <Avatar className="mr-1 cursor-pointer" src={url} name={name} />
     </NextLink>
   )

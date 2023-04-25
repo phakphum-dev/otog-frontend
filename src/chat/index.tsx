@@ -14,7 +14,7 @@ import { IoChatbubbleEllipses, IoClose, IoSend } from 'react-icons/io5'
 import { ChatMessage } from './components/ChatMessage'
 
 import { useChat } from '@src/chat/useChat'
-import { useAuth } from '@src/context/AuthContext'
+import { useUserData } from '@src/context/UserContext'
 import { useDisclosure } from '@src/hooks/useDisclosure'
 import { useOnScreen } from '@src/hooks/useOnScreen'
 import { Button } from '@src/ui/Button'
@@ -112,7 +112,7 @@ export const Chat = () => {
     onClose: onModalClose,
   } = useDisclosure()
 
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated } = useUserData()
   if (!isAuthenticated) {
     return null
   }
@@ -261,7 +261,12 @@ const OnlineUserModal = (props: OnlineUserModalProps) => {
           <div className="flex flex-col gap-2">
             {onlineUsers ? (
               onlineUsers.map((user) => (
-                <NextLink href={`/profile/${user.id}`} key={user.id} passHref>
+                <NextLink
+                  href={`/profile/${user.id}`}
+                  key={user.id}
+                  passHref
+                  legacyBehavior
+                >
                   <Link
                     className="max-w-[300px]"
                     variant="hidden"

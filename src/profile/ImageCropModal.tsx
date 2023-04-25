@@ -3,7 +3,7 @@ import Cropper from 'react-easy-crop'
 import { Area } from 'react-easy-crop/types'
 import { mutate } from 'swr'
 
-import { useAuth } from '@src/context/AuthContext'
+import { useUserData } from '@src/context/UserContext'
 import { storage } from '@src/firebase'
 import { onErrorToast } from '@src/hooks/useErrorToast'
 import { useUserBigAvatar } from '@src/profile/useAvartar'
@@ -98,7 +98,7 @@ export async function getCroppedImage(
 export const ImageCropModal = (props: ImageUploadModalProps) => {
   const { isOpen, onClose } = props
 
-  const { user } = useAuth()
+  const { user } = useUserData()
   const { url, fetchUrl } = useUserBigAvatar()
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)

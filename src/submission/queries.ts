@@ -10,8 +10,8 @@ import {
   SubmissionWithSourceCode,
 } from './types'
 
-import { useAuth } from '@src/context/AuthContext'
-import { http } from '@src/context/HttpClient'
+import { client } from '@src/api'
+import { useUserData } from '@src/context/UserContext'
 
 export function useAllSubmissions() {
   return useSWRInfinite<SubmissionWithProblem[]>(
@@ -32,7 +32,7 @@ export function useAllSubmissions() {
 }
 
 export function useSubmissions(userId?: number) {
-  const { user } = useAuth()
+  const { user } = useUserData()
   return useSWRInfinite<SubmissionWithProblem[]>(
     (pageIndex, previousPageData) => {
       if (!user) return null
@@ -64,7 +64,10 @@ export function useInfiniteSubmissionTable(
     [setSize]
   )
   const hasMore =
-    isValidating || submissionsList![submissionsList!.length - 1].length > 0
+    isValidating ||
+    (submissionsList &&
+      submissionsList.length > 0 &&
+      submissionsList.at(-1)!.length > 0)
   const loadMore = useCallback(() => {
     setSize((size) => size + 1)
   }, [setSize])
@@ -77,7 +80,7 @@ export function useInfiniteSubmissionTable(
 
 export function useSubmissionRow(initialSubmission: SubmissionWithProblem) {
   return useSWR<SubmissionWithProblem>(
-    isGrading(initialSubmission) ? `/submission/${initialSubmission.id}` : null,
+    isGrading(initialSubmission) ? `submission/${initialSubmission.id}` : null,
     {
       fallbackData: initialSubmission,
       revalidateOnMount: true,
@@ -95,9 +98,9 @@ export function keySubmissionWithSourceCode(submissionId: number) {
 }
 
 export function getSubmissionWithSourceCode(submissionId: number) {
-  return http.get<SubmissionWithSourceCode>(
-    keySubmissionWithSourceCode(submissionId)
-  )
+  return client
+    .get(keySubmissionWithSourceCode(submissionId))
+    .json<SubmissionWithSourceCode>()
 }
 
 export function useSubmissionWithSourceCode(submissionId: number) {
@@ -112,7 +115,7 @@ export function keySubmission(submissionId: number) {
 }
 
 export function getSubmission(submissionId: number) {
-  return http.get<Submission>(keySubmission(submissionId))
+  return client.get(keySubmission(submissionId)).json<Submission>()
 }
 
 export function useSubmission(submissionId: number) {
@@ -122,12 +125,15 @@ export function useSubmission(submissionId: number) {
 }
 
 export async function getLatestSubmission() {
-  return http.get<SubmissionWithProblem>('submission/latest')
+  return client
+    .get('submission/latest')
+    .json<{ latestSubmission: SubmissionWithProblem }>()
+    .then((r) => r.latestSubmission)
 }
 
 export function useLatestSubmission() {
-  const { isAuthenticated } = useAuth()
-  return useSWR<SubmissionWithProblem>(
+  const { isAuthenticated } = useUserData()
+  return useSWR(
     isAuthenticated ? 'submission/latest' : null,
     getLatestSubmission,
     { revalidateOnMount: true }
@@ -139,13 +145,13 @@ export function keyLatestProblemSubmission(problemId: number) {
 }
 
 export async function getLatestProblemSubmission(problemId: number) {
-  return http.get<SubmissionWithSourceCode>(
-    keyLatestProblemSubmission(problemId)
-  )
+  return client
+    .get(keyLatestProblemSubmission(problemId))
+    .json<SubmissionWithSourceCode>()
 }
 
 export function useLatestProblemSubmission(problemId: number) {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated } = useUserData()
   return useSWR(
     isAuthenticated && problemId ? keyLatestProblemSubmission(problemId) : null,
     () => getLatestProblemSubmission(problemId),

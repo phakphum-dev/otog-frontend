@@ -2,11 +2,14 @@ import useSWR from 'swr'
 
 import { Contest, ContestPrize, ContestScoreboard } from './types'
 
-import { http } from '@src/context/HttpClient'
+import { client } from '@src/api'
 import { SubmissionWithProblem } from '@src/submission/types'
 
 export async function getCurrentContest() {
-  return http.get<Contest | null>('contest/now')
+  return client
+    .get('contest/now')
+    .json<{ currentContest: Contest | null }>()
+    .then((r) => r.currentContest)
 }
 
 export function useCurrentContest() {
@@ -18,7 +21,7 @@ export function keyContest(contestId: number) {
 }
 
 export async function getContest(contestId: number | undefined) {
-  return http.get<Contest>(`contest/${contestId}`)
+  return client.get(`contest/${contestId}`).json<Contest>()
 }
 
 export function useContest(contestId: number | undefined) {
@@ -28,7 +31,7 @@ export function useContest(contestId: number | undefined) {
 }
 
 export async function getContests() {
-  return http.get<Contest[]>('contest')
+  return client.get('contest').json<Contest[]>()
 }
 
 export function useContests() {
@@ -40,7 +43,7 @@ export function keyContestScoreboard(contestId: number) {
 }
 
 export async function getContestScoreboard(contestId: number) {
-  return http.get<ContestScoreboard>(keyContestScoreboard(contestId))
+  return client.get(keyContestScoreboard(contestId)).json<ContestScoreboard>()
 }
 
 export function useContestScoreboard(contestId: number) {
@@ -54,7 +57,7 @@ export function keyContestPrize(contestId: number) {
 }
 
 export function getContestPrize(contestId: number) {
-  return http.get<ContestPrize>(keyContestPrize(contestId))
+  return client.get(keyContestPrize(contestId)).json<ContestPrize>()
 }
 
 export function useContestPrize(contestId: number) {
@@ -71,8 +74,8 @@ export async function submitContestProblem(
   formData.set('sourceCode', file)
   formData.set('language', language)
   formData.set('contestId', `${contestId}`)
-  return http.post<SubmissionWithProblem>(
-    `submission/problem/${problemId}`,
-    formData
-  )
+  return client
+    .url(`submission/problem/${problemId}`)
+    .post(formData)
+    .json<SubmissionWithProblem>()
 }
