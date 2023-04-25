@@ -7,7 +7,7 @@ import { Session, getServerSession } from 'next-auth'
 import { ParsedUrlQuery } from 'querystring'
 
 import { setAccessToken } from '@src/api'
-import { authOptions } from '@src/pages/api/auth/[...nextauth]'
+import { authOptions, serverContext } from '@src/pages/api/auth/[...nextauth]'
 
 export function withSession<
   P extends { [key: string]: any },
@@ -16,15 +16,11 @@ export function withSession<
   callback: (session: Session | null, context: Context) => Promise<T>
 ): GetServerSideProps<P> {
   return async (context) => {
-    const session = await getServerSession(
-      context.req,
-      context.res,
-      authOptions
-    )
-    // console.log('with session', session?.user.username)
-    if (session) {
-      setAccessToken(session.accessToken)
-    }
+    const { req, res } = context
+    serverContext.req = req
+    serverContext.res = res
+    const session = await getServerSession(req, res, authOptions)
+    setAccessToken(session?.accessToken ?? null)
     const result = await callback(session, context)
     if ('props' in result) {
       return { props: { ...result.props, session } }

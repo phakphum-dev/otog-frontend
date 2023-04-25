@@ -63,8 +63,8 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      <SessionProvider session={session}>
-        <SWRProvider fallback={fallback}>
+      <SessionProvider session={session} refetchOnWindowFocus={false}>
+        <SWRProvider fallback={fallback} session={session}>
           <UserProvider>
             <SocketProvider>
               <ThemeProvider attribute="class">

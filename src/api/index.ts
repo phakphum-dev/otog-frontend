@@ -1,5 +1,5 @@
 import wretch, { FetchLike } from 'wretch'
-import { createStore } from 'zustand'
+import { create } from 'zustand'
 
 import {
   API_HOST,
@@ -8,13 +8,14 @@ import {
   isProduction,
   isServer,
 } from '@src/config'
+import { AuthRes } from '@src/user/types'
 
-const secure = !OFFLINE_MODE && isProduction
+export const secure = !OFFLINE_MODE && isProduction
 
-export const tokenStore = createStore<{ accessToken: string | null }>(() => ({
+export const useTokenStore = create<{ accessToken: string | null }>(() => ({
   accessToken: null,
 }))
-const { getState, setState } = tokenStore
+const { getState, setState } = useTokenStore
 export const getAccessToken = () => {
   return getState().accessToken
 }
@@ -41,13 +42,37 @@ const authMiddleware =
     return next(url, opts)
   }
 
-export const api = wretch(isServer ? API_HOST_SSR : API_HOST, { secure })
+export const api = wretch(isServer ? API_HOST_SSR : API_HOST, {
+  secure,
+}).options({ mode: 'cors', credentials: 'include' })
+
+type Resolve = (value?: unknown) => void
+let waiting: null | Resolve[]
 
 export const client = api
   .middlewares([authMiddleware])
-  .options({ mode: 'cors' })
-// .resolve((r) => {
-//   r.forbidden(async () => {
-//     const res = await w.get('auth/refresh/token').json<AuthRes>()
-//   })
-// })
+  .catcher(401, async (_, req) => {
+    if (Array.isArray(waiting)) {
+      await new Promise((resolve) => {
+        waiting!.push(resolve)
+      })
+    } else {
+      waiting = []
+      await api
+        .auth(`Bearer ${getAccessToken()}`)
+        .get('auth/refresh/token')
+        .forbidden((e) => {
+          throw e
+        })
+        .json<AuthRes>()
+        .then((r) => setAccessToken(r.accessToken))
+      waiting.forEach((resolve) => resolve())
+      waiting = null
+    }
+    return req
+      .fetch()
+      .unauthorized((err) => {
+        throw err
+      })
+      .json()
+  })

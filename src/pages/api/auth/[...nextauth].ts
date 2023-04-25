@@ -1,11 +1,28 @@
+import * as cookie from 'cookie'
+import jwtDecode, { JwtPayload } from 'jwt-decode'
+import { NextApiRequest, NextApiResponse } from 'next'
 import NextAuth from 'next-auth'
 import type { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { WretchError } from 'wretch/resolver'
 
 // import GoogleProvider from 'next-auth/providers/google'
-import { api } from '@src/api'
+import { api, secure, setAccessToken } from '@src/api'
 import { AuthRes } from '@src/user/types'
+
+class ServerContext {
+  req?: {
+    cookies: Partial<{
+      [key: string]: string
+    }>
+  }
+  res?: {
+    setHeader(
+      name: string,
+      value: number | string | ReadonlyArray<string>
+    ): void
+  }
+}
+export const serverContext = new ServerContext()
 
 export const authOptions: NextAuthOptions = {
   pages: {
@@ -24,16 +41,15 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        try {
-          return await api.url('auth/login').post(credentials).json<AuthRes>()
-        } catch (e: unknown) {
-          if (e instanceof WretchError && e.status === 401) {
-            return null
-          }
-          // the server wont return 500 anyway
-          console.error(e)
-          throw e
-        }
+        return await api
+          .url('auth/login')
+          .post(credentials)
+          .res(async (r) => {
+            const setCookie = r.headers.get('set-cookie')
+            if (!setCookie) throw new Error('no set cookie')
+            serverContext.res!.setHeader('set-cookie', setCookie)
+            return (await r.json()) as AuthRes
+          })
       },
     }),
   ],
@@ -42,8 +58,40 @@ export const authOptions: NextAuthOptions = {
       // console.log('session', session, token)
       return { ...session, ...token }
     },
-    async jwt({ token, user, account }) {
-      // console.log('jwt', token, user, account)
+    async jwt({ token, user, account, trigger, session }) {
+      if (trigger === 'update' && session?.accessToken) {
+        // console.log('update', session.accessToken.at(-1))
+        token.accessToken = session.accessToken
+        return token
+      }
+      if (token.accessToken) {
+        const accessToken = token.accessToken as string
+        const { exp } = jwtDecode<JwtPayload>(accessToken)
+        if (exp! * 1000 < Date.now()) {
+          const RID = serverContext.req!.cookies['RID']
+          if (!RID) throw new Error('No refresh token')
+          const result = await api
+            .auth(`Bearer ${accessToken}`)
+            .headers({
+              cookie: cookie.serialize('RID', RID, {
+                httpOnly: true,
+                secure,
+              }),
+            })
+            .get('auth/refresh/token')
+            .forbidden((e) => {
+              throw e
+            })
+            .res(async (r) => {
+              const setCookie = r.headers.get('set-cookie')
+              if (!setCookie) throw new Error('no set cookie')
+              serverContext.res!.setHeader('set-cookie', setCookie)
+              return (await r.json()) as AuthRes
+            })
+          setAccessToken(result.accessToken)
+          return { ...token, ...result }
+        }
+      }
       if (account?.provider === 'otog') {
         return { ...token, ...user }
       }
@@ -52,7 +100,11 @@ export const authOptions: NextAuthOptions = {
   },
 }
 
-export default NextAuth(authOptions)
+export default async function auth(req: NextApiRequest, res: NextApiResponse) {
+  serverContext.req = req
+  serverContext.res = res
+  return await NextAuth(req, res, authOptions)
+}
 
 // export function getUserData(accessToken: string | null): User | null {
 //   if (accessToken) {

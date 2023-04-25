@@ -1,8 +1,9 @@
+import { Session } from 'next-auth'
 import { useSession } from 'next-auth/react'
-import { ReactNode, useMemo } from 'react'
+import { ReactNode, useEffect, useMemo } from 'react'
 import { SWRConfig } from 'swr'
 
-import { client, setAccessToken } from '../api'
+import { client, setAccessToken, useTokenStore } from '../api'
 
 import { onErrorToast } from '@src/hooks/useErrorToast'
 
@@ -11,14 +12,24 @@ const fetcher = (url: string) => client.get(url).json()
 export const SWRProvider = (props: {
   children: ReactNode
   fallback: { [key: string]: any }
+  session: Session
 }) => {
-  const { children, fallback = {} } = props
-  const { data: session } = useSession()
-  // this will run before render and only rerun when session change
+  const { children, fallback = {}, session: pageSession } = props
+  const { update, data: dataSession } = useSession()
+  // this will run before render and only rerun when there's update from getServerSideProps
   useMemo(() => {
-    console.log('set new token')
-    setAccessToken(session?.accessToken ?? null)
-  }, [session?.accessToken])
+    if (pageSession !== undefined) {
+      const accessToken = pageSession && pageSession.accessToken
+      setAccessToken(accessToken)
+    }
+  }, [pageSession])
+  // call update session to the server when accessToken's changed
+  useEffect(() => {
+    if (dataSession === null) return
+    return useTokenStore.subscribe(({ accessToken }) => {
+      update({ accessToken })
+    })
+  }, [update, dataSession])
   return (
     <SWRConfig value={{ fetcher, onError: onErrorToast, fallback }}>
       {children}

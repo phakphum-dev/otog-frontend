@@ -1,10 +1,9 @@
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 import Image from 'next/image'
 import NextLink from 'next/link'
 import { ReactNode } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
-import { FaGoogle } from 'react-icons/fa'
 
 import Logo from '../../public/logo512.png'
 
@@ -21,7 +20,7 @@ export interface LoginFormProps {
 
 export const LoginForm = (props: LoginFormProps) => {
   const { onSuccess } = props
-  const { data: session } = useSession()
+  // const { data: session } = useSession()
   const { register, handleSubmit } = useForm<LoginReq>()
   const { clearCache } = useUserData()
   const onSubmit = async (credentials: LoginReq) => {
@@ -67,13 +66,13 @@ export const LoginForm = (props: LoginFormProps) => {
         <Button type="submit" colorScheme="otog">
           เข้าสู่ระบบ
         </Button>
-        {session ? (
+        {/* {session ? (
           <Button onClick={() => signOut()}>Sign out here</Button>
         ) : (
           <Button onClick={() => signIn('google')} leftIcon={<FaGoogle />}>
             ลงชื่อเข้าใช้ด้วย Google
           </Button>
-        )}
+        )} */}
         {!OFFLINE_MODE && (
           <>
             <hr />
