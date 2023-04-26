@@ -31,7 +31,13 @@ export const ToggleColorModeButton = forwardRef<
         rounded="full"
         aria-label="Toggle color mode"
         onClick={toggleColorMode}
-        icon={resolvedTheme === 'light' ? <MoonIcon /> : <SunIcon />}
+        icon={
+          resolvedTheme === 'light' ? (
+            <MoonIcon className="text-gray-500" />
+          ) : (
+            <SunIcon />
+          )
+        }
         {...props}
         ref={ref}
       />

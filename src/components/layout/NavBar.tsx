@@ -37,10 +37,13 @@ export const NavBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef(null)
 
-  const { pathname } = useRouter()
+  const router = useRouter()
   useEffect(() => {
-    onClose()
-  }, [pathname, onClose])
+    router.events.on('routeChangeComplete', onClose)
+    return () => {
+      router.events.off('routeChangeComplete', onClose)
+    }
+  }, [router, onClose])
 
   const { isAuthenticated, user, isAdmin, logout } = useUserData()
   const { url } = useUserSmallAvatar()
@@ -53,55 +56,56 @@ export const NavBar = () => {
             href: isAdmin ? '/submission/all' : '/submission',
             title: 'ผลตรวจ',
           },
-
           { href: '/contest', title: 'แข่งขัน' },
         ]
       : []
 
   return (
     <>
-      <div className="fixed top-0 left-0 z-20 h-14 w-full bg-white py-2 shadow-md dark:bg-gray-800">
-        <PageContainer>
-          <div className="flex">
-            <NextLink
-              href={isAdmin ? '/admin/contest' : '/'}
-              passHref
-              legacyBehavior
-            >
-              <Link className="flex items-center gap-2 text-gray-800 dark:text-white">
-                <Image src={Logo} width={32} height={32} alt="" />
-                <div className="text-xl font-bold">
-                  <div className="hidden md:inline-block xl:hidden">OTOG</div>
-                  <div className="hidden xl:inline-block">
-                    One Tambon One Grader
-                  </div>
-                </div>
-              </Link>
-            </NextLink>
-            <div className="flex-1" />
-            <IconButton
-              className="p-2 sm:hidden"
-              variant="ghost"
-              aria-label="Open menu"
-              onClick={onOpen}
-              icon={<HamburgerIcon />}
-              ref={btnRef}
-            />
-            <div className={clsx('hidden gap-4 sm:flex ')}>
-              {entries.map((item) => (
-                <NavItem key={item.href} {...item} />
-              ))}
-              {user ? (
-                <AvatarMenu />
-              ) : (
-                <NavItem href="/login" title="เข้าสู่ระบบ" />
-              )}
-              <ToggleColorModeButton
-                variant="ghost"
-                className="hidden md:inline-flex"
+      <div className="fixed top-0 left-0 z-20 h-14 w-full bg-white shadow-sm dark:bg-gray-800">
+        <PageContainer className="flex">
+          <NextLink
+            href={isAdmin ? '/admin/contest' : '/'}
+            passHref
+            legacyBehavior
+          >
+            <Link className="flex items-center text-gray-800 dark:text-white">
+              <Image
+                src={Logo}
+                width={32}
+                height={32}
+                alt="One Tambon One Grader Logo"
               />
-            </div>
+            </Link>
+          </NextLink>
+          <div className="ml-10 hidden gap-6 sm:flex">
+            {entries.map((item) => (
+              <NavItem key={item.href} {...item} />
+            ))}
           </div>
+          <div className="flex-1" />
+          <div className="p-2">
+            <SearchMenu />
+          </div>
+          <div className="hidden gap-2 py-2 sm:flex">
+            <ToggleColorModeButton
+              variant="ghost"
+              className="hidden sm:inline-flex"
+            />
+            {user ? (
+              <AvatarMenu />
+            ) : (
+              <NavItem href="/login" title="เข้าสู่ระบบ" />
+            )}
+          </div>
+          <IconButton
+            className="my-2 p-2 sm:hidden"
+            variant="ghost"
+            aria-label="Open menu"
+            onClick={onOpen}
+            icon={<HamburgerIcon />}
+            ref={btnRef}
+          />
         </PageContainer>
       </div>
       <Drawer isOpen={isOpen} onClose={onClose}>
@@ -124,7 +128,10 @@ export const NavBar = () => {
                 <DrawerItem key={item.href} {...item} />
               ))}
               {isAuthenticated ? (
-                <DrawerButton className="text-red-500" onClick={logout}>
+                <DrawerButton
+                  className="text-red-500 dark:text-red-500"
+                  onClick={logout}
+                >
                   ออกจากระบบ
                 </DrawerButton>
               ) : (
@@ -136,7 +143,6 @@ export const NavBar = () => {
         </DrawerContent>
       </Drawer>
       <div className="h-14 w-full bg-transparent" />
-      <SearchMenu />
     </>
   )
 }
@@ -155,7 +161,7 @@ const NavItem = forwardRef<HTMLAnchorElement, ItemProps & LinkProps>(
       <NextLink href={href} passHref legacyBehavior scroll={pathname === href}>
         <Link
           variant="nav"
-          className="p-2 font-normal hover:no-underline"
+          className="flex items-center border-y-2 border-transparent px-2 py-2 font-medium tracking-wide !no-underline hover:border-b-gray-400 active:border-b-otog-400"
           isActive={isActive}
           {...rest}
           ref={ref}

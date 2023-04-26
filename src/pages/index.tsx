@@ -37,7 +37,7 @@ export default function HomePage() {
           </div>
         </div>
         <div className="flex flex-1 items-center justify-center">
-          <Image src={ComputerImage} alt="" />
+          <Image src={ComputerImage} alt="computer image" />
         </div>
       </div>
     </PageContainer>

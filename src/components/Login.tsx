@@ -53,7 +53,7 @@ export const LoginForm = (props: LoginFormProps) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-4">
         <div className="mx-auto w-[100px]">
-          <Image src={Logo} alt="" />
+          <Image src={Logo} alt="otog logo" />
         </div>
         <Input
           {...register('username')}
