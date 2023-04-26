@@ -69,21 +69,26 @@ export const NavBar = () => {
             passHref
             legacyBehavior
           >
-            <Link className="flex items-center text-gray-800 dark:text-white">
+            <Link className="flex items-center text-gray-800 hover:no-underline dark:text-white">
               <Image
                 src={Logo}
                 width={32}
                 height={32}
                 alt="One Tambon One Grader Logo"
               />
+              <h1 className="ml-3 hidden text-xl font-bold lg:flex">
+                One Tambon One Grader
+              </h1>
+              {/* Smaller Version */}
+              <h1 className="ml-3 flex text-xl font-bold lg:hidden">OTOG</h1>
             </Link>
           </NextLink>
-          <div className="ml-10 hidden gap-6 sm:flex">
+          <div className="flex-1" />
+          <div className="hidden gap-6 sm:flex">
             {entries.map((item) => (
               <NavItem key={item.href} {...item} />
             ))}
           </div>
-          <div className="flex-1" />
           <div className="p-2">
             <SearchMenu />
           </div>
