@@ -1,12 +1,13 @@
 import { VariantProps, cva } from 'class-variance-authority'
 import clsx from 'clsx'
 import { ComponentProps, forwardRef } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 const inputStyles = cva(
-  'block w-full bg-inherit border text-md border-slate-300 dark:border-alpha-white-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:dark:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-colors disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none',
+  'block w-full bg-inherit placeholder-slate-400 focus:outline-none  transition-colors disabled:bg-slate-50 disabled:text-slate-500 disabled:shadow-none',
   {
     variants: {
-      variant: {
+      type: {
         lg: 'text-lg px-4 h-12',
         md: 'text-md px-4 h-10',
         sm: 'text-sm px-3 h-8',
@@ -16,10 +17,16 @@ const inputStyles = cva(
         md: 'rounded-md',
         '2xl': 'rounded-2xl',
       },
+      variant: {
+        outline:
+          'border border-slate-300 dark:border-alpha-white-300 focus:border-sky-500 focus:dark:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:border-slate-200',
+        unstyled: '',
+      },
     },
     defaultVariants: {
-      variant: 'md',
+      type: 'md',
       rounded: 'md',
+      variant: 'outline',
     },
   }
 )
@@ -28,10 +35,10 @@ export type InputProps = ComponentProps<'input'> &
   VariantProps<typeof inputStyles>
 
 export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
-  const { variant, rounded, className, ...rest } = props
+  const { type, rounded, variant, className, ...rest } = props
   return (
     <input
-      className={inputStyles({ variant, rounded, className })}
+      className={twMerge(inputStyles({ type, rounded, variant }), className)}
       ref={ref}
       {...rest}
     />
@@ -43,11 +50,11 @@ export type TextareaProps = ComponentProps<'textarea'> &
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   (props, ref) => {
-    const { variant, rounded, className, ...rest } = props
+    const { type: variant, rounded, className, ...rest } = props
     return (
       <textarea
         className={inputStyles({
-          variant,
+          type: variant,
           rounded,
           className: clsx(className, 'resize-none px-3 py-2 text-sm'),
         })}
@@ -63,12 +70,12 @@ export type SelectProps = ComponentProps<'select'> &
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
   (props, ref) => {
-    const { variant, rounded, className, ...rest } = props
+    const { type: variant, rounded, className, ...rest } = props
     return (
       <div className={clsx('relative', className)}>
         <select
           className={inputStyles({
-            variant,
+            type: variant,
             rounded,
             className: clsx(
               className,

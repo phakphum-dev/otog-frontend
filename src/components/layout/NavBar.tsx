@@ -8,6 +8,7 @@ import Logo from '../../../public/logo512.png'
 import { Avatar } from '../Avatar'
 import { ToggleColorModeButton } from '../ToggleColorModeButton'
 import { PageContainer } from './PageContainer'
+import { SearchMenu } from './SearchMenu'
 
 import { OFFLINE_MODE } from '@src/config'
 import { useUserData } from '@src/context/UserContext'
@@ -135,6 +136,7 @@ export const NavBar = () => {
         </DrawerContent>
       </Drawer>
       <div className="h-14 w-full bg-transparent" />
+      <SearchMenu />
     </>
   )
 }

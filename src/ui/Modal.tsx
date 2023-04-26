@@ -7,6 +7,7 @@ import {
   createContext,
   useContext,
 } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 import { CloseIcon } from '@src/icons/CloseIcon'
 import { IconButton } from '@src/ui/IconButton'
@@ -17,7 +18,7 @@ export type ModalContextValue = {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
   isCentered?: boolean
 }
-type PropsChildren = { children?: ReactNode }
+type Props = { children?: ReactNode; className?: string }
 export type ModalProps = PropsWithChildren<ModalContextValue>
 const ModalContext = createContext<ModalContextValue>({} as ModalContextValue)
 const useModalContext = () => useContext(ModalContext)
@@ -33,7 +34,7 @@ export const Modal = (props: ModalProps) => {
     </ModalContext.Provider>
   )
 }
-export const ModalContent = ({ children }: PropsChildren) => {
+export const ModalContent = ({ children }: Props) => {
   const { size, isCentered } = useModalContext()
   return (
     <div className="fixed inset-0 overflow-y-auto">
@@ -86,17 +87,17 @@ export const ModalOverlay = () => {
     </Transition.Child>
   )
 }
-export const ModalBody = ({ children }: PropsChildren) => {
-  return <div className="px-6 py-2">{children}</div>
+export const ModalBody = ({ children, className }: Props) => {
+  return <div className={twMerge('px-6 py-2', className)}>{children}</div>
 }
-export const ModalHeader = ({ children }: PropsChildren) => {
+export const ModalHeader = ({ children }: Props) => {
   return (
     <Dialog.Title as="h3" className="px-6 py-4 text-xl font-medium leading-6">
       {children}
     </Dialog.Title>
   )
 }
-export const ModalFooter = ({ children }: PropsChildren) => {
+export const ModalFooter = ({ children }: Props) => {
   return <div className="flex justify-end px-6 py-4">{children}</div>
 }
 export const ModalCloseButton = () => {
