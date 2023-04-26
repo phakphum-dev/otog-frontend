@@ -45,7 +45,9 @@ const authMiddleware =
 
 export const api = wretch(isServer ? API_HOST_SSR : API_HOST, {
   secure,
-}).options({ mode: 'cors', credentials: 'include' })
+  mode: 'cors',
+  credentials: 'include',
+})
 
 type Resolve = (value?: unknown) => void
 let waiting: null | Resolve[]

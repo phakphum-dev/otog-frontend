@@ -84,20 +84,21 @@ export const NavBar = () => {
             ))}
           </div>
           <div className="flex-1" />
-          <div className="p-2">
+          <div className="py-2">
             <SearchMenu />
           </div>
-          <div className="hidden gap-2 py-2 sm:flex">
+          <div className="ml-2 hidden gap-2 py-2 sm:flex">
             <ToggleColorModeButton
               variant="ghost"
-              className="hidden sm:inline-flex"
+              className="hidden sm:inline-flex "
             />
-            {user ? (
-              <AvatarMenu />
-            ) : (
-              <NavItem href="/login" title="เข้าสู่ระบบ" />
-            )}
+            {user && <AvatarMenu />}
           </div>
+          {!user && (
+            <div className="ml-2 hidden sm:flex">
+              <NavItem href="/login" title="เข้าสู่ระบบ" />
+            </div>
+          )}
           <IconButton
             className="my-2 p-2 sm:hidden"
             variant="ghost"
