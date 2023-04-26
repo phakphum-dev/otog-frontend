@@ -89,7 +89,7 @@ export const SearchMenu = () => {
 
   const menuRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    if (!menuRef.current && eventRef.current === 'mouse') return
+    if (!menuRef.current || eventRef.current === 'mouse') return
     const node = menuRef.current?.firstChild?.childNodes[active] as Element
     if (!node) return
     scrollIntoView(node, {
@@ -97,6 +97,7 @@ export const SearchMenu = () => {
       block: 'nearest',
       inline: 'nearest',
       boundary: menuRef.current,
+      behavior: 'smooth',
     })
   }, [active])
 
@@ -125,34 +126,41 @@ export const SearchMenu = () => {
               ref={menuRef}
             >
               <ul className="flex flex-col gap-2">
-                {results.map((problem, index) => (
-                  <NextLink href={`/problem/${problem.id}`} key={problem.id}>
-                    <li
-                      className=":bg-orange-400 flex flex-row items-center gap-6 rounded-md bg-gray-100 px-6 py-4 dark:bg-gray-600 dark:active:bg-orange-600"
-                      data-active={active === index}
-                      onMouseEnter={() => {
-                        setActive(index)
-                        eventRef.current = 'mouse'
-                      }}
-                    >
-                      <FaHashtag
-                        className="fill-gray-400 active:fill-white dark:fill-gray-500 active:dark:fill-white"
-                        data-active={active === index}
-                      />
-                      <div className="flex flex-col">
-                        <p
-                          className="text-sm font-semibold text-gray-500 active:text-white dark:text-gray-400 active:dark:text-white"
-                          data-active={active === index}
-                        >
-                          {problem.id}
-                        </p>
-                        <p className="text-md font-semibold group-hover:text-white">
-                          {problem.name}
-                        </p>
-                      </div>
-                    </li>
-                  </NextLink>
-                ))}
+                {results.map((problem, index) => {
+                  const selected = active === index
+                  return (
+                    <NextLink href={`/problem/${problem.id}`} key={problem.id}>
+                      <li
+                        role="option"
+                        className=":bg-orange-400 flex flex-row items-center gap-6 rounded-md bg-gray-100 px-6 py-4 active:bg-orange-400 dark:bg-gray-600 dark:active:bg-orange-600"
+                        data-active={selected}
+                        onMouseEnter={() => {
+                          eventRef.current = 'mouse'
+                          setActive(index)
+                        }}
+                      >
+                        <FaHashtag
+                          className="fill-gray-400 active:fill-white dark:fill-gray-500 active:dark:fill-white"
+                          data-active={selected}
+                        />
+                        <div className="flex flex-col">
+                          <p
+                            className="text-sm font-semibold text-gray-500 active:text-white dark:text-gray-400 active:dark:text-white"
+                            data-active={selected}
+                          >
+                            {problem.id}
+                          </p>
+                          <p
+                            className="text-md font-semibold active:text-white"
+                            data-active={selected}
+                          >
+                            {problem.name}
+                          </p>
+                        </div>
+                      </li>
+                    </NextLink>
+                  )
+                })}
               </ul>
             </div>
           </>
