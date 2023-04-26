@@ -111,7 +111,7 @@ export const SearchMenu = () => {
             ref={inputRef}
             className="pl-8"
             variant="unstyled"
-            type="lg"
+            sz="lg"
             onKeyDown={onKeyDown}
             value={value}
             onChange={(e) => setValue(e.target.value)}

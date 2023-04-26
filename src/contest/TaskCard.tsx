@@ -133,7 +133,7 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
   return (
     <form onSubmit={onFileSubmit}>
       <div className="flex flex-col gap-2 sm:flex-row">
-        <Select name="language" type="sm" className="flex-1">
+        <Select name="language" sz="sm" className="flex-1">
           <option value="cpp">C++</option>
           <option value="c">C</option>
           <option value="python" disabled={OFFLINE_MODE}>
@@ -214,7 +214,7 @@ export const ContestEditorForm = (props: ContestEditorFormProps) => {
       <div className="flex gap-2 sm:gap-8">
         <Select
           name="language"
-          type="sm"
+          sz="sm"
           className="flex-1"
           onChange={onSelectChange}
         >

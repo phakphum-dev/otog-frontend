@@ -7,7 +7,7 @@ const inputStyles = cva(
   'block w-full bg-inherit placeholder-slate-400 focus:outline-none  transition-colors disabled:bg-slate-50 disabled:text-slate-500 disabled:shadow-none',
   {
     variants: {
-      type: {
+      sz: {
         lg: 'text-lg px-4 h-12',
         md: 'text-md px-4 h-10',
         sm: 'text-sm px-3 h-8',
@@ -24,7 +24,7 @@ const inputStyles = cva(
       },
     },
     defaultVariants: {
-      type: 'md',
+      sz: 'md',
       rounded: 'md',
       variant: 'outline',
     },
@@ -35,10 +35,10 @@ export type InputProps = ComponentProps<'input'> &
   VariantProps<typeof inputStyles>
 
 export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
-  const { type, rounded, variant, className, ...rest } = props
+  const { sz, rounded, variant, className, ...rest } = props
   return (
     <input
-      className={twMerge(inputStyles({ type, rounded, variant }), className)}
+      className={twMerge(inputStyles({ sz, rounded, variant }), className)}
       ref={ref}
       {...rest}
     />
@@ -50,11 +50,11 @@ export type TextareaProps = ComponentProps<'textarea'> &
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   (props, ref) => {
-    const { type: variant, rounded, className, ...rest } = props
+    const { sz, rounded, className, ...rest } = props
     return (
       <textarea
         className={inputStyles({
-          type: variant,
+          sz,
           rounded,
           className: clsx(className, 'resize-none px-3 py-2 text-sm'),
         })}
@@ -70,12 +70,12 @@ export type SelectProps = ComponentProps<'select'> &
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
   (props, ref) => {
-    const { type: variant, rounded, className, ...rest } = props
+    const { sz, rounded, className, ...rest } = props
     return (
       <div className={clsx('relative', className)}>
         <select
           className={inputStyles({
-            type: variant,
+            sz,
             rounded,
             className: clsx(
               className,

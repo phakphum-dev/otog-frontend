@@ -52,7 +52,7 @@ export const FileInput = forwardRef(
           value={isDragActive ? 'วางไฟล์ที่นี่' : fileName ?? ''}
           placeholder="ยังไม่ได้เลือกไฟล์"
           onClick={onClick}
-          type={variant}
+          sz={variant}
           readOnly
         />
         <div className="absolute top-0 right-0 z-0 flex w-[100px] items-center justify-end">
