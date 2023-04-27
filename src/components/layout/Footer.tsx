@@ -19,10 +19,10 @@ export const Footer = () => (
       )}
       <span>
         {OFFLINE_MODE ? (
-          '© 2023 Phakphum Dev Team'
+          '© 2021 Phakphum Dev Team'
         ) : (
           <Link variant="hidden" href={CONTACT_LINK} isExternal>
-            © 2023 Phakphum Dev Team
+            © 2021 Phakphum Dev Team
           </Link>
         )}
       </span>
