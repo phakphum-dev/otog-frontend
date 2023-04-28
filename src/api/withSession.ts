@@ -13,7 +13,7 @@ export function withSession<
   P extends { [key: string]: any },
   T extends GetServerSidePropsResult<P> = GetServerSidePropsResult<P>
 >(
-  callback: (session: Session | null, context: Context) => Promise<T>
+  callback: (session: Session | null, context: Context) => Promise<T> | T
 ): GetServerSideProps<P> {
   return async (context) => {
     const { req, res } = context

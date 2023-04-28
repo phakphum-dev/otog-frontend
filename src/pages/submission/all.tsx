@@ -2,6 +2,7 @@ import Head from 'next/head'
 import NextLink from 'next/link'
 import { FaTasks } from 'react-icons/fa'
 
+import { withSession } from '@src/api/withSession'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
 import { useUserData } from '@src/context/UserContext'
@@ -27,3 +28,5 @@ export default function SubmissionPage() {
     </PageContainer>
   )
 }
+
+export const getServerSideProps = withSession(() => ({ props: {} }))
