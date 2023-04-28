@@ -300,7 +300,6 @@ const ExampleRow = ({ input, output, row = 0 }: ExampleRowType) => {
           onClick={onInputCopy}
           icon={<CopyIcon />}
           size="sm"
-          variant="ghost"
           className="invisible absolute top-2 right-2 group-hover/input:visible"
         />
         <div className="overflow-x-auto px-6 py-4">
@@ -314,7 +313,6 @@ const ExampleRow = ({ input, output, row = 0 }: ExampleRowType) => {
           onClick={onOutputCopy}
           icon={<CopyIcon />}
           size="sm"
-          variant="ghost"
           className="invisible absolute top-2 right-2 group-hover/output:visible"
         />
         <div className="overflow-x-auto px-6 py-4">
