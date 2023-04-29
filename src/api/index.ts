@@ -1,6 +1,6 @@
 import wretch, { FetchLike } from 'wretch'
 import FormDataAddon from 'wretch/addons/formData'
-import { create } from 'zustand'
+import { createStore } from 'zustand'
 
 import {
   API_HOST,
@@ -13,10 +13,10 @@ import { AuthRes } from '@src/user/types'
 
 export const secure = !OFFLINE_MODE && isProduction
 
-export const useTokenStore = create<{ accessToken: string | null }>(() => ({
+export const tokenStore = createStore<{ accessToken: string | null }>(() => ({
   accessToken: null,
 }))
-const { getState, setState } = useTokenStore
+const { getState, setState, subscribe } = tokenStore
 export const getAccessToken = () => {
   return getState().accessToken
 }
@@ -26,6 +26,9 @@ export const setAccessToken = (token: string | null) => {
 export const removeAccessToken = () => {
   setState({ accessToken: null })
 }
+subscribe(({ accessToken }) => {
+  console.log(accessToken && accessToken.at(-1))
+})
 
 const authMiddleware =
   (next: FetchLike): FetchLike =>

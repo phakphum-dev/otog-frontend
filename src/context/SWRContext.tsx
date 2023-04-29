@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react'
 import { ReactNode, useEffect, useMemo } from 'react'
 import { SWRConfig } from 'swr'
 
-import { client, setAccessToken, useTokenStore } from '../api'
+import { client, setAccessToken, tokenStore } from '../api'
 
 import { onErrorToast } from '@src/hooks/useErrorToast'
 
@@ -26,7 +26,7 @@ export const SWRProvider = (props: {
   // call update session to the server when accessToken is updated on the client
   useEffect(() => {
     if (dataSession === null) return
-    return useTokenStore.subscribe(({ accessToken }) => {
+    return tokenStore.subscribe(({ accessToken }) => {
       update({ accessToken })
     })
   }, [update, dataSession])
