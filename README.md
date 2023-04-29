@@ -30,16 +30,16 @@ There are 3 main modules for otog
 
 ## Running Locally
 
-First, run yarn to install dependencies
+First, run pnpm to install dependencies
 
 ```bash
-yarn
+pnpm i
 ```
 
-After that, run yarn dev
+After that, run pnpm dev
 
 ```bash
-yarn dev
+pnpm dev
 ```
 
 Open http://localhost:3000 with your browser to see the result.

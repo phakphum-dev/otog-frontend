@@ -1,16 +1,17 @@
 FROM node:14-alpine AS base
+RUN npm i -g pnpm
 WORKDIR /build
 
 # Prepare for installing dependencies
 # Utilise Docker cache to save re-installing dependencies if unchanged
-COPY package.json yarn.lock ./
-RUN yarn --frozen-lockfile
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 
 FROM base as build
 # Copy the rest files
 COPY . .
 # Build application
-RUN yarn build
+RUN pnpm build
 
 FROM base as prod-deps
 # Prune unused dependencies
@@ -31,4 +32,4 @@ COPY --from=build /build/.env.production ./.env.production
 EXPOSE 3000
 
 # Start script
-CMD yarn start
+CMD pnpm start
