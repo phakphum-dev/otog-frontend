@@ -62,11 +62,12 @@ jobs:
         run: echo ${{ steps.connect_vpn.outputs.STATUS }}
 
       - name: Deploy to host
-        uses: appleboy/ssh-action@v0.1.4
+        uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
+          script_stop: true
           script: |
             docker pull ${{ env.IMAGE_NAME }}:latest
             cd otog-frontend
