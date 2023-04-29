@@ -15,7 +15,7 @@ RUN pnpm build
 
 FROM base as prod-deps
 # Prune unused dependencies
-RUN npm prune --production
+RUN pnpm prune --prod
 
 FROM node:16-alpine AS production
 ENV NODE_ENV production
