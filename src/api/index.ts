@@ -16,7 +16,7 @@ export const secure = !OFFLINE_MODE && isProduction
 export const tokenStore = createStore<{ accessToken: string | null }>(() => ({
   accessToken: null,
 }))
-const { getState, setState, subscribe } = tokenStore
+const { getState, setState } = tokenStore
 export const getAccessToken = () => {
   return getState().accessToken
 }
@@ -26,9 +26,6 @@ export const setAccessToken = (token: string | null) => {
 export const removeAccessToken = () => {
   setState({ accessToken: null })
 }
-subscribe(({ accessToken }) => {
-  console.log(accessToken && accessToken.at(-1))
-})
 
 const authMiddleware =
   (next: FetchLike): FetchLike =>
