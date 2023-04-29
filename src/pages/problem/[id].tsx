@@ -83,7 +83,11 @@ export default function WriteSolutionPage(props: WriteSolutionPageProps) {
             </div>
           </div>
         </TitleLayout>
-        <EditorForm problem={problem} submission={submission} />
+        <EditorForm
+          problem={problem}
+          submission={submission}
+          key={problem.id}
+        />
         <ExampleTable problemId={id} examples={problem.examples ?? []} />
       </div>
     </PageContainer>
