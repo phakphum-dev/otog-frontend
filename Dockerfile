@@ -1,4 +1,4 @@
-FROM node:14-alpine AS base
+FROM node:16-alpine AS base
 RUN npm i -g pnpm
 WORKDIR /build
 
@@ -17,7 +17,7 @@ FROM base as prod-deps
 # Prune unused dependencies
 RUN npm prune --production
 
-FROM node:14-alpine AS production
+FROM node:16-alpine AS production
 ENV NODE_ENV production
 WORKDIR /app
 # Copy only necessary file for running app
