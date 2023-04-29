@@ -165,6 +165,9 @@ devDependencies:
   '@types/cookie':
     specifier: ^0.4.1
     version: 0.4.1
+  '@types/is-hotkey':
+    specifier: ^0.1.7
+    version: 0.1.7
   '@types/node':
     specifier: ^14.14.22
     version: 14.14.22
@@ -2381,7 +2384,6 @@ packages:
 
   /@types/is-hotkey@0.1.7:
     resolution: {integrity: sha512-yB5C7zcOM7idwYZZ1wKQ3pTfjA9BbvFqRWvKB46GFddxnJtHwi/b9y84ykQtxQPg5qhdpg4Q/kWU3EGoCTmLzQ==}
-    dev: false
 
   /@types/json-schema@7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
