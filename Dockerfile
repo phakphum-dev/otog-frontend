@@ -17,7 +17,7 @@ FROM base as prod-deps
 # Prune unused dependencies
 RUN pnpm prune --prod
 
-FROM node:16-alpine AS production
+FROM base AS production
 ENV NODE_ENV production
 WORKDIR /app
 # Copy only necessary file for running app
