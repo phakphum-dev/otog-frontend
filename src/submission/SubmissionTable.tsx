@@ -178,7 +178,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
           passHref
           legacyBehavior
         >
-          <Link className="max-w-[300px] line-clamp-3" variant="hidden">
+          <Link className="w-36 break-all line-clamp-3" variant="hidden">
             {submission.user.showName}
           </Link>
         </NextLink>

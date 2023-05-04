@@ -17,7 +17,7 @@ import { getUser, keyUser, useUser } from '@src/user/queries'
 export default function ProfilePage() {
   const router = useRouter()
   const id = Number(router.query.id)
-  const { user } = useUserData()
+  const { user, isAdmin } = useUserData()
   const { data: userData } = useUser(id)
 
   return (
@@ -26,7 +26,9 @@ export default function ProfilePage() {
         <title>Profile #{id} | OTOG</title>
       </Head>
       <TitleLayout>
-        <Title icon={<FaUser />}>{userData!.showName}</Title>
+        <Title icon={<FaUser />}>
+          {userData!.showName + (isAdmin ? ` (${userData!.username})` : ``)}
+        </Title>
       </TitleLayout>
       <div className="flex flex-col gap-2">
         <div className="flex flex-col gap-8 md:flex-row">
