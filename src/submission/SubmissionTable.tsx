@@ -180,7 +180,6 @@ const SubmissionRow = (props: SubmissionRowProps) => {
         >
           <Link className="max-w-[300px] line-clamp-3" variant="hidden">
             {submission.user.showName}
-            {isAdmin && ` (${submission.user.username})`}
           </Link>
         </NextLink>
       </Td>
