@@ -224,14 +224,32 @@ const SubmissionRow = (props: SubmissionRowProps) => {
   )
 }
 
-function splitCases(result: string) {
+export function splitCases(result: string) {
+  // if (result.includes('[') || result.includes('(')) {
+  //   const bracketExp = /[[(].*?[\])]/g
+  //   return [...result.matchAll(bracketExp)]
+  // }
   const tokens: string[] = []
-  if (result.includes('[') || result.includes('(')) {
-    const bracketExp = /[[(].*?[\])]/g
-    return [...result.matchAll(bracketExp)]
+  let count = 0
+  let str = ''
+  for (const c of result) {
+    if (c === ']' || c === ')') {
+      tokens.push(str + c)
+      count = 0
+      str = ''
+    } else if (count === 10) {
+      tokens.push(str)
+      count = 1
+      str = c
+    } else if (c === '[' || c === '(') {
+      str += c
+    } else {
+      str += c
+      count += 1
+    }
   }
-  for (let i = 0; i < result.length; i += 10) {
-    tokens.push(result.slice(i, i + 10))
+  if (str) {
+    tokens.push(str)
   }
   return tokens
 }
