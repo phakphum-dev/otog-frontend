@@ -48,7 +48,6 @@ export const authOptions: NextAuthOptions = {
           .post(credentials)
           .res(async (r) => {
             const setCookie = r.headers.get('set-cookie')
-            console.log(setCookie)
             if (!setCookie) throw new Error('no set cookie')
             serverContext.res!.setHeader('set-cookie', setCookie)
             return (await r.json()) as AuthRes
