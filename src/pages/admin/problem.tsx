@@ -91,10 +91,15 @@ const CreateProblemModalButton = () => {
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      await createProblemMutation(new FormData(e.currentTarget))
+      const promise = createProblemMutation(new FormData(e.currentTarget))
+      toast.promise(promise, {
+        loading: 'กำลังเพิ่มโจทย์',
+        error: 'เพิ่มโจทย์ไม่สำเร็จ',
+        success: 'เพิ่มโจทย์สำเร็จ!',
+      })
+      await promise
       mutate('problem')
       createModal.onClose()
-      toast.success('เพิ่มโจทย์สำเร็จ!')
       resetPdfInput()
       resetZipInput()
     } catch (e: unknown) {
@@ -216,7 +221,14 @@ const EditProblemModal = (props: EditProblemModalProps) => {
       Object.keys(value).forEach((key) => formData.append(key, value[key]))
       pdf && formData.append('pdf', pdf)
       zip && formData.append('zip', zip)
-      await updateProblemMutation(problem.id, formData)
+
+      const promise = updateProblemMutation(problem.id, formData)
+      toast.promise(promise, {
+        loading: 'กำลังแก้โจทย์',
+        error: 'แก้โจทย์ไม่สำเร็จ',
+        success: 'แก้โจทย์สำเร็จ!',
+      })
+      await promise
       mutate('problem')
       editModal.onClose()
       resetPdfInput()
