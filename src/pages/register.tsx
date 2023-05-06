@@ -6,7 +6,6 @@ import { toast } from 'react-hot-toast'
 
 import Logo from '../../public/logo512.png'
 
-import { CenteredCard } from '@src/components/Login'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { useMutation } from '@src/hooks/useMutation'
 import { Button } from '@src/ui/Button'
@@ -36,7 +35,7 @@ export default function RegisterPage() {
       <Head>
         <title>Register | OTOG</title>
       </Head>
-      <CenteredCard>
+      <div className="mx-auto my-16 w-max rounded-md border p-4 shadow-md">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-4">
             <div className="mx-auto w-[100px]">
@@ -65,7 +64,7 @@ export default function RegisterPage() {
             </Button>
           </div>
         </form>
-      </CenteredCard>
+      </div>
     </PageContainer>
   )
 }

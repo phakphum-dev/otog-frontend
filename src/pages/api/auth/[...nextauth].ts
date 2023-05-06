@@ -38,18 +38,21 @@ export const authOptions: NextAuthOptions = {
       id: 'otog',
       name: 'OTOG',
       credentials: {
-        accessToken: { label: 'accessToken', type: 'text' },
-        // username: { label: 'Username', type: 'text' },
-        // password: { label: 'Password', type: 'password' },
+        // accessToken: { label: 'accessToken', type: 'text' },
+        username: { label: 'Username', type: 'text' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        if (credentials) {
-          return {
-            user: getUserData(credentials.accessToken),
-            accessToken: credentials.accessToken,
-          }
-        }
-        return null
+        return await api
+          .url('auth/login')
+          .post(credentials)
+          .res(async (r) => {
+            const setCookie = r.headers.get('set-cookie')
+            console.log(setCookie)
+            if (!setCookie) throw new Error('no set cookie')
+            serverContext.res!.setHeader('set-cookie', setCookie)
+            return (await r.json()) as AuthRes
+          })
       },
     }),
   ],
