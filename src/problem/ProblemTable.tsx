@@ -3,7 +3,6 @@ import { useRouter } from 'next/router'
 import { memo, useEffect, useMemo, useState } from 'react'
 
 import { CodeModal } from '../components/Code'
-import { SubmitButton } from '../submission/submit/SubmitButton'
 import { SubmitModal } from '../submission/submit/SubmitModal'
 import { usePassedUsers, useProblems } from './queries'
 
@@ -16,7 +15,6 @@ import { UseDisclosureReturn, useDisclosure } from '@src/hooks/useDisclosure'
 import { useMutation } from '@src/hooks/useMutation'
 import { ProblemWithSubmission } from '@src/problem/types'
 import { Submission } from '@src/submission/types'
-import { useStatusColor } from '@src/theme/useStatusColor'
 import { Button } from '@src/ui/Button'
 import { Link } from '@src/ui/Link'
 import {
@@ -31,6 +29,10 @@ import {
 import { Spinner } from '@src/ui/Spinner'
 import { Table, Td, Th } from '@src/ui/Table'
 import { ONE_SECOND } from '@src/utils/time'
+import { IconButton } from '@src/ui/IconButton'
+import { FaCheckCircle, FaEye, FaEyeSlash, FaFileUpload } from 'react-icons/fa'
+import { FiExternalLink } from 'react-icons/fi'
+import clsx from 'clsx'
 
 export type FilterFunction = (problem: ProblemWithSubmission) => boolean
 export interface ProblemTableProps {
@@ -71,31 +73,34 @@ export const ProblemTable = (props: ProblemTableProps) => {
     router.push('/submission')
   }
 
-  const { isAdmin } = useUserData()
-
   return sortedProblems ? (
-    <div className="overflow-x-auto">
+    <div className="rounded-lg bg-white shadow-md dark:border dark:border-gray-700 dark:bg-gray-800">
       <Table>
         <thead>
-          <tr>
-            <SortTh className="w-20" centered sortBy="id" {...sortingProps}>
+          <tr className="bg-gray-50 dark:bg-slate-800">
+            <SortTh
+              className="hidden w-20 rounded-tl-lg sm:table-cell"
+              centered
+              sortBy="id"
+              {...sortingProps}
+            >
               #
             </SortTh>
-            <Th>ชื่อ</Th>
-            {isAdmin && (
-              <SortTh
-                className="w-20"
-                centered
-                sortBy="status"
-                {...sortingProps}
-              >
-                สถานะ
-              </SortTh>
-            )}
-            <SortTh className="w-20" centered sortBy="passed" {...sortingProps}>
+            <Th className="rounded-tl-lg sm:rounded-tl-none">ชื่อ</Th>
+            <SortTh
+              className="hidden w-20 sm:table-cell"
+              centered
+              sortBy="passed"
+              {...sortingProps}
+            >
               ผ่าน
             </SortTh>
-            <SortTh className="w-24" centered sortBy="sent" {...sortingProps}>
+            <SortTh
+              className="w-24 overflow-hidden rounded-tr-lg"
+              centered
+              sortBy="sent"
+              {...sortingProps}
+            >
               ส่ง
             </SortTh>
           </tr>
@@ -192,8 +197,6 @@ const ProblemRow = (props: ProblemRowProps) => {
   }
   const { isAdmin } = useUserData()
 
-  const bg = useStatusColor(problem.submission)
-
   const [show, setShow] = useState(problem.show)
   useEffect(() => {
     setShow(problem.show)
@@ -201,7 +204,7 @@ const ProblemRow = (props: ProblemRowProps) => {
 
   const toggleProblemMutation = useMutation(toggleProblem)
   const onToggle = async () => {
-    setShow((show) => !show)
+    setShow(!show)
     try {
       const { show: newValue } = await toggleProblemMutation(problem.id, !show)
       setShow(newValue)
@@ -209,10 +212,10 @@ const ProblemRow = (props: ProblemRowProps) => {
       setShow(show)
     }
   }
-
+  const status = problem.submission?.status
   return (
-    <tr className={bg}>
-      <Td className="text-center">
+    <tr className="group/row relative">
+      <Td className="hidden text-center text-sm font-semibold text-gray-600 dark:text-gray-400 sm:table-cell">
         {problem.submission ? (
           <Button onClick={onCodeModalOpen} variant="link">
             {problem.id}
@@ -225,22 +228,15 @@ const ProblemRow = (props: ProblemRowProps) => {
         <Link
           isExternal
           href={`${API_HOST}problem/doc/${problem.id}`}
-          variant={show ? 'default' : 'close'}
+          className={clsx(!show && 'text-gray-500 hover:text-otog')}
         >
-          <p>{problem.name}</p>
-          <p>
+          <p className="font-semibold tracking-wide">{problem.name}</p>
+          <p className="mt-0.5 text-sm">
             ({problem.timeLimit / ONE_SECOND} วินาที {problem.memoryLimit} MB)
           </p>
         </Link>
       </Td>
-      {isAdmin && (
-        <Td className="text-center">
-          <Link variant={show ? 'hidden' : 'close'} onClick={onToggle}>
-            {show ? 'เปิด' : 'ซ่อน'}
-          </Link>
-        </Td>
-      )}
-      <Td className="text-center">
+      <Td className="text-bold hidden text-center text-sm font-semibold text-gray-600 dark:text-gray-400 sm:table-cell">
         {problem.passedCount &&
         (isAdmin || problem.submission?.status === 'accept') ? (
           <Button variant="link" onClick={onPassedModalOpen}>
@@ -251,7 +247,41 @@ const ProblemRow = (props: ProblemRowProps) => {
         )}
       </Td>
       <Td className="text-center">
-        <SubmitButton onClick={onSubmitModalOpen} />
+        {status ? (
+          <IconButton
+            aria-label="Upload file"
+            variant="outline"
+            icon={status === 'accept' ? <FaCheckCircle /> : <FaFileUpload />}
+            colorScheme={status === 'accept' ? 'otog-green' : 'otog-red'}
+            onClick={onSubmitModalOpen}
+          />
+        ) : (
+          <IconButton
+            aria-label="Upload file"
+            variant="outline"
+            icon={<FaFileUpload />}
+            className="text-gray-600 dark:text-alpha-white-700"
+            onClick={onSubmitModalOpen}
+          />
+        )}
+        {isAdmin && (
+          <IconButton
+            size="sm"
+            rounded="full"
+            onClick={onToggle}
+            variant="outline"
+            className="invisible absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 group-hover/row:visible"
+            icon={show ? <FaEye /> : <FaEyeSlash />}
+          />
+        )}
+        <NextLink href={`/problem/${problem.id}`}>
+          <IconButton
+            size="sm"
+            rounded="full"
+            className="invisible absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 group-hover/row:visible"
+            icon={<FiExternalLink />}
+          />
+        </NextLink>
       </Td>
     </tr>
   )

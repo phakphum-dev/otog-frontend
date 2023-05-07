@@ -62,7 +62,7 @@ export const NavBar = () => {
 
   return (
     <>
-      <div className="fixed top-0 left-0 z-20 h-14 w-full bg-white shadow-sm dark:bg-gray-800">
+      <div className="fixed left-0 top-0 z-20 h-14 w-full bg-white shadow-sm dark:border dark:border-gray-700 dark:bg-gray-800">
         <PageContainer className="flex">
           <NextLink
             href={isAdmin ? '/admin/contest' : '/'}
@@ -114,7 +114,7 @@ export const NavBar = () => {
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerBody>
-            <div className="mt-2 mr-6 flex flex-col items-start gap-3">
+            <div className="mr-6 mt-2 flex flex-col items-start gap-3">
               {user && (
                 <NextLink href={`/profile/${user.id}`} passHref legacyBehavior>
                   <DrawerButton as="a">
@@ -224,6 +224,7 @@ const AvatarMenu = () => {
         as={Button}
         p="xs"
         variant="ghost"
+        className="text-gray-500"
         rightIcon={<ChevronDownIcon />}
       >
         <Avatar src={url} name={user!.showName} />

@@ -163,6 +163,18 @@ const buttonStyles = cva(
         className:
           'text-orange-600 dark:text-orange-200 hover:bg-orange-50 hover:dark:bg-orange-200/12 active:bg-orange-100 active:dark:bg-orange-200/24',
       },
+      {
+        variant: 'outline',
+        colorScheme: 'otog-green',
+        className:
+          'dark:border-white/16 border-black/8 bg-otog-green-50 text-otog-green-700 hover:bg-otog-green-100 active:bg-otog-green-200 dark:bg-otog-green-800 dark:text-green-50 dark:hover:bg-otog-green-700 dark:active:bg-otog-green-600',
+      },
+      {
+        variant: 'outline',
+        colorScheme: 'otog-red',
+        className:
+          'dark:border-white/16 border-black/8 bg-otog-red-50 text-otog-red-700 hover:bg-otog-red-100 active:bg-otog-red-200 dark:bg-otog-red-800 dark:text-red-50 dark:hover:bg-otog-red-700 dark:active:bg-otog-red-600',
+      },
     ],
   }
 )

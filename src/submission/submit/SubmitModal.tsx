@@ -94,7 +94,7 @@ export const SubmitModal = (props: SubmitModalProps) => {
                 >
                   <Button as="a">{submitted ? 'แก้ไข' : 'ใหม่'}</Button>
                 </NextLink>
-                <Button colorScheme="otog" type="submit">
+                <Button colorScheme="otog" type="submit" disabled={isLoading}>
                   ส่ง
                 </Button>
               </div>

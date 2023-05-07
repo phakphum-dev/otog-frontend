@@ -81,7 +81,7 @@ const AnnouncementComponent = () => {
   }
 
   return (
-    <div className="group relative flex h-[150px] cursor-pointer pt-4">
+    <div className="group relative my-8 flex h-[180px] cursor-pointer select-none">
       {filteredAnnouncements.map((announcement, index, all) => (
         <MotionDiv
           key={announcement.id}
@@ -89,7 +89,7 @@ const AnnouncementComponent = () => {
             show: { y: 0, transition: { duration: 0.5 } },
             hidden: { y: -HEIGHT * 1.2, transition: { duration: 0.5 } },
           }}
-          className="absolute flex h-[150px] max-h-[150px] w-full items-center justify-center overflow-hidden bg-white text-center dark:bg-gray-800"
+          className="absolute flex h-[180px] max-h-[180px] w-full items-center justify-center overflow-hidden rounded-lg border bg-white text-center dark:bg-gray-800"
           style={{ zIndex: all.length - index }}
           animate={index >= showIndex ? 'show' : 'hidden'}
           onClick={nextShowIndex}
@@ -100,7 +100,7 @@ const AnnouncementComponent = () => {
       {isAdmin && (
         <>
           <IconButton
-            className="invisible absolute right-0 top-4 z-10 group-hover:visible"
+            className="invisible absolute right-0 top-0 z-10 group-hover:visible"
             aria-label="edit-announcements"
             icon={hasAnnouncements ? <FaPencilAlt /> : <FaPlus />}
             onClick={hasAnnouncements ? onOpen : firstCreate}

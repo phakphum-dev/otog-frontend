@@ -10,7 +10,9 @@ export const SubmitButton = forwardRef<HTMLButtonElement, SubmitButtonProps>(
     return (
       <IconButton
         aria-label="Upload file"
+        variant="outline"
         icon={<FaFileUpload />}
+        className="text-gray-600"
         {...props}
         ref={ref}
       />

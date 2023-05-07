@@ -39,7 +39,7 @@ const thStyles = cva(
       },
       size: {
         sm: 'px-4 py-1',
-        md: 'px-6 py-3',
+        md: 'px-6 py-4',
       },
     },
     defaultVariants: { textAlign: 'start', variant: 'simple' },
