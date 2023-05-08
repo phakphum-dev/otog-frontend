@@ -55,7 +55,7 @@ export const ModalContent = ({ children }: Props) => {
         >
           <Dialog.Panel
             className={clsx(
-              'relative my-16 flex transform flex-col overflow-hidden rounded-md bg-white text-left align-middle shadow-xl transition-all dark:bg-gray-700',
+              'relative my-16 flex transform flex-col overflow-hidden rounded-md bg-white text-left align-middle shadow-xl transition-all dark:bg-gray-800',
               size === 'xs' && 'w-modal-xs',
               size === 'sm' && 'w-modal-sm',
               size === 'md' && 'w-modal-md',
