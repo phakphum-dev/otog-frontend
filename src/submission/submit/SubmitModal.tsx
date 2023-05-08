@@ -47,9 +47,6 @@ export const SubmitModal = (props: SubmitModalProps) => {
     onOpen: onLoad,
     onClose: onLoaded,
   } = useDisclosure()
-  useEffect(() => {
-    console.log(isLoading)
-  }, [isLoading])
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (isLoading || !file) return
