@@ -79,14 +79,14 @@ export const ProblemTable = (props: ProblemTableProps) => {
         <thead>
           <tr className="bg-gray-50 dark:bg-slate-800">
             <SortTh
-              className="hidden w-20 sm:table-cell"
+              className="hidden w-20 rounded-tl-lg sm:table-cell"
               centered
               sortBy="id"
               {...sortingProps}
             >
               #
             </SortTh>
-            <Th>ชื่อ</Th>
+            <Th className="rounded-tl-lg sm:rounded-tl-none">ชื่อ</Th>
             <SortTh
               className="hidden w-20 sm:table-cell"
               centered
