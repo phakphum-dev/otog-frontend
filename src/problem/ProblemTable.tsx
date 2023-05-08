@@ -74,19 +74,19 @@ export const ProblemTable = (props: ProblemTableProps) => {
   }
 
   return sortedProblems ? (
-    <div className="rounded-lg bg-white shadow-md dark:border dark:border-gray-700 dark:bg-gray-800">
-      <Table>
+    <div>
+      <Table className="border-separate border-spacing-0 rounded-lg border bg-white shadow-md dark:border dark:border-gray-700 dark:bg-gray-800">
         <thead>
           <tr className="bg-gray-50 dark:bg-slate-800">
             <SortTh
-              className="hidden w-20 rounded-tl-lg sm:table-cell"
+              className="hidden w-20 sm:table-cell"
               centered
               sortBy="id"
               {...sortingProps}
             >
               #
             </SortTh>
-            <Th className="rounded-tl-lg sm:rounded-tl-none">ชื่อ</Th>
+            <Th>ชื่อ</Th>
             <SortTh
               className="hidden w-20 sm:table-cell"
               centered
