@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { toast } from 'react-hot-toast'
+import { WretchError } from 'wretch/resolver'
 
 export type ErrorToastOptions = {
   title: string
@@ -50,6 +51,12 @@ export function useErrorToaster(toastData: ErrorToastOptions | undefined) {
 }
 
 export function getErrorData(error: unknown): ErrorToastOptions {
+  if (error instanceof WretchError) {
+    return {
+      title: `${error.status} ${error.json.message}`,
+      status: 'error',
+    }
+  }
   const err = new Error(error as any)
   console.error(error)
   return {

@@ -19,6 +19,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@src/ui/Modal'
+import { onErrorToast } from '@src/hooks/useErrorToast'
 
 export interface SubmitModalProps extends UseDisclosureReturn {
   problem: Problem
@@ -46,6 +47,9 @@ export const SubmitModal = (props: SubmitModalProps) => {
     onOpen: onLoad,
     onClose: onLoaded,
   } = useDisclosure()
+  useEffect(() => {
+    console.log(isLoading)
+  }, [isLoading])
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (isLoading || !file) return
@@ -56,6 +60,8 @@ export const SubmitModal = (props: SubmitModalProps) => {
       resetFile()
       onSuccess?.()
       onClose()
+    } catch (e) {
+      onErrorToast(e)
     } finally {
       onLoaded()
     }

@@ -140,7 +140,9 @@ function EditorForm(props: {
     try {
       await submitProblemMutation(problem.id, file, language)
       router.push('/submission')
-    } catch {}
+    } catch (e) {
+      onErrorToast(e)
+    }
   }
 
   return (
@@ -245,7 +247,7 @@ const ExampleTable = ({ examples, problemId }: ExampleTableProps) => {
         </Table>
         {isAdmin && !isEditing && (
           <IconButton
-            className="invisible absolute right-0 top-0 translate-x-1/2 -translate-y-1/2 group-hover/table:visible"
+            className="invisible absolute right-0 top-0 -translate-y-1/2 translate-x-1/2 group-hover/table:visible"
             size="sm"
             rounded="full"
             icon={<FaPencilAlt />}
@@ -254,7 +256,7 @@ const ExampleTable = ({ examples, problemId }: ExampleTableProps) => {
         )}
         {isEditing && (
           <IconButton
-            className="invisible absolute right-0 bottom-0 translate-x-1/2 translate-y-1/2 group-hover/table:visible"
+            className="invisible absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 group-hover/table:visible"
             size="xs"
             rounded="full"
             icon={<FaPlus />}
@@ -305,7 +307,7 @@ const ExampleRow = ({ input, output, row = 0 }: ExampleRowType) => {
           icon={<CopyIcon />}
           size="sm"
           variant="ghost"
-          className="invisible absolute top-2 right-2 group-hover/input:visible"
+          className="invisible absolute right-2 top-2 group-hover/input:visible"
         />
         <div className="overflow-x-auto px-6 py-4">
           <code className="whitespace-pre" id="input">
@@ -319,7 +321,7 @@ const ExampleRow = ({ input, output, row = 0 }: ExampleRowType) => {
           icon={<CopyIcon />}
           size="sm"
           variant="ghost"
-          className="invisible absolute top-2 right-2 group-hover/output:visible"
+          className="invisible absolute right-2 top-2 group-hover/output:visible"
         />
         <div className="overflow-x-auto px-6 py-4">
           <code className="whitespace-pre" id="output">
@@ -390,7 +392,7 @@ const EditTestcase = ({
           icon={<FaTrash />}
           size="xs"
           rounded="full"
-          className="invisible absolute top-1/2 right-0 float-right translate-x-1/2 -translate-y-1/2 group-hover/testcase:visible"
+          className="invisible absolute right-0 top-1/2 float-right -translate-y-1/2 translate-x-1/2 group-hover/testcase:visible"
           onClick={onRemove}
         />
       </Td>
