@@ -230,9 +230,9 @@ const AvatarMenu = () => {
       {/* fix render menulist on ssr */}
       <MenuList>
         {!OFFLINE_MODE && (
-          <NextLink href={`/profile/${user?.id}`} passHref legacyBehavior>
-            <MenuItem as="a">โปรไฟล์</MenuItem>
-          </NextLink>
+          <MenuItem as={NextLink} href={`/profile/${user?.id}`}>
+            โปรไฟล์
+          </MenuItem>
         )}
         <MenuItem className="text-red-500" onClick={logout}>
           ออกจากระบบ

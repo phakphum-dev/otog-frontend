@@ -45,10 +45,11 @@ export const MenuItem = <Root extends React.ElementType>({
     <MenuHeadless.Item as={Fragment}>
       {({ active, close }) => (
         <Button
+          variant=""
           as={as}
           className={clsx(
+            'inline-flex w-full justify-start rounded-none px-3 py-1.5 font-normal',
             active && 'bg-gray-100 dark:bg-alpha-white-100',
-            'inline-flex w-full px-3 py-1.5',
             className
           )}
           onClick={(e: any) => {
@@ -57,7 +58,6 @@ export const MenuItem = <Root extends React.ElementType>({
           }}
           {...props}
         >
-          {' '}
           {children}
         </Button>
       )}
