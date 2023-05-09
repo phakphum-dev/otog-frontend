@@ -20,7 +20,7 @@ export const ToggleColorModeButton = forwardRef<
     <ClientOnly
       fallback={
         <IconButton
-          rounded="full"
+          rounded
           aria-label="Toggle color mode"
           onClick={toggleColorMode}
           icon={<FaCircle />}
@@ -28,7 +28,7 @@ export const ToggleColorModeButton = forwardRef<
       }
     >
       <IconButton
-        rounded="full"
+        rounded
         aria-label="Toggle color mode"
         onClick={toggleColorMode}
         icon={

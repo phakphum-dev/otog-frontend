@@ -1,6 +1,7 @@
 import { Menu as MenuHeadless, Transition } from '@headlessui/react'
 import clsx from 'clsx'
-import { ComponentProps, Fragment, ReactNode, createElement } from 'react'
+import { Fragment, ReactNode } from 'react'
+import { Button, ButtonProps } from './Button'
 
 type PropsChildren = { children?: ReactNode }
 
@@ -33,33 +34,33 @@ export const MenuList = ({ children }: PropsChildren) => {
   )
 }
 
-export const MenuItem = ({
+export const MenuItem = <Root extends React.ElementType>({
   children,
   className,
-  as = 'button',
   onClick,
+  as,
   ...props
-}: ComponentProps<'button'> & { as?: 'button' | 'a' }) => {
+}: ButtonProps<Root>) => {
   return (
     <MenuHeadless.Item as={Fragment}>
-      {({ active, close }) =>
-        createElement(
-          as,
-          {
-            className: clsx(
-              active && 'bg-gray-100 dark:bg-alpha-white-100',
-              'inline-flex w-full px-3 py-1.5',
-              className
-            ),
-            onClick: (e: any) => {
-              onClick?.(e)
-              close()
-            },
-            ...props,
-          },
-          children
-        )
-      }
+      {({ active, close }) => (
+        <Button
+          as={as}
+          className={clsx(
+            active && 'bg-gray-100 dark:bg-alpha-white-100',
+            'inline-flex w-full px-3 py-1.5',
+            className
+          )}
+          onClick={(e: any) => {
+            onClick?.(e)
+            close()
+          }}
+          {...props}
+        >
+          {' '}
+          {children}
+        </Button>
+      )}
     </MenuHeadless.Item>
   )
 }

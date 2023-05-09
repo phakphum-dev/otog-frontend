@@ -24,16 +24,22 @@ export default function HomePage() {
             Code and Create algorithms efficiently.
           </div>
           <div className="flex gap-4">
-            <NextLink href="/register" passHref legacyBehavior>
-              <Button as="a" className="w-[100px]" colorScheme="otog">
-                Sign Up
-              </Button>
-            </NextLink>
-            <NextLink href="/login" passHref legacyBehavior>
-              <Button as="a" className="w-[100px]" variant="outline">
-                Sign in
-              </Button>
-            </NextLink>
+            <Button
+              as={NextLink}
+              className="w-[100px]"
+              colorScheme="otog"
+              href="/register"
+            >
+              Sign Up
+            </Button>
+            <Button
+              as={NextLink}
+              href="/login"
+              className="w-[100px]"
+              variant="outline"
+            >
+              Sign in
+            </Button>
           </div>
         </div>
         <div className="flex flex-1 items-center justify-center">

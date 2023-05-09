@@ -18,11 +18,9 @@ export default function SubmissionPage() {
       </Head>
       <TitleLayout>
         <Title icon={<FaTasks />}>ผลตรวจ</Title>
-        <NextLink href="/submission/all" passHref legacyBehavior>
-          <Button as="a" variant="outline">
-            ผลตรวจรวม
-          </Button>
-        </NextLink>
+        <Button as={NextLink} href="/submission/all" variant="outline">
+          ผลตรวจรวม
+        </Button>
       </TitleLayout>
       <SubmissionTable />
     </PageContainer>

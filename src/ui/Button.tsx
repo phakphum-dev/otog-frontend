@@ -1,6 +1,7 @@
 import clsx from 'clsx'
-import {
+import React, {
   ComponentProps,
+  ForwardedRef,
   PropsWithChildren,
   ReactNode,
   createElement,
@@ -15,14 +16,8 @@ import { VariantProps, tv } from 'tailwind-variants'
  */
 
 const buttonStyles = tv({
-  base: 'inline-flex justify-center items-center select-none transition-colors font-semibold disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap',
+  base: 'inline-flex justify-center items-center select-none transition-colors font-semibold disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap rounded-md',
   variants: {
-    variant: {
-      solid: '',
-      outline: 'border border-current',
-      ghost: 'bg-transparent',
-      link: 'hover:underline',
-    },
     colorScheme: {
       gray: '',
       otog: '',
@@ -36,30 +31,24 @@ const buttonStyles = tv({
       'otog-orange': '',
     },
     size: {
-      lg: 'h-12 min-w-12 text-lg',
-      md: 'h-10 min-w-10 text-md',
-      sm: 'h-8 min-w-8 text-sm',
-      xs: 'h-6 min-w-6 text-xs',
-      none: '',
+      lg: 'h-12 min-w-12 text-lg px-6',
+      md: 'h-10 min-w-10 text-md px-4',
+      sm: 'h-8 min-w-8 text-sm px-3',
+      xs: 'h-6 min-w-6 text-xs px-2',
     },
-    p: {
-      lg: 'px-6',
-      md: 'px-4',
-      sm: 'px-3',
-      xs: 'px-2',
-      none: '',
+    variant: {
+      solid: '',
+      outline: 'border border-current',
+      ghost: 'bg-transparent',
+      link: 'hover:underline px-0',
     },
     fullWidth: { true: 'w-full' },
-    rounded: {
-      full: 'rounded-full',
-      md: 'rounded-md',
-    },
+    rounded: { true: 'rounded-full' },
   },
   defaultVariants: {
     variant: 'solid',
     colorScheme: 'gray',
     size: 'md',
-    rounded: 'md',
     p: 'md',
   },
   compoundVariants: [
@@ -176,21 +165,41 @@ const buttonStyles = tv({
   ],
 })
 
-export type ButtonProps = PropsWithChildren<
-  VariantProps<typeof buttonStyles> &
-    ComponentProps<'button'> & {
-      as?: 'a' | 'button'
-      leftIcon?: ReactNode
-      rightIcon?: ReactNode
-      fullWidth?: boolean
-      isActive?: boolean
-    }
+export type DistributiveOmit<T, K extends keyof any> = T extends any
+  ? Omit<T, K>
+  : never
+
+export type PolymorphicProps<
+  DefaultProps,
+  RootComponentType extends React.ElementType
+> = DefaultProps &
+  DistributiveOmit<
+    React.ComponentPropsWithRef<RootComponentType>,
+    keyof DefaultProps
+  >
+
+export type ButtonProps<
+  RootComponentType extends React.ElementType = 'button'
+> = PropsWithChildren<
+  PolymorphicProps<
+    VariantProps<typeof buttonStyles> &
+      ComponentProps<'button'> & {
+        leftIcon?: ReactNode
+        rightIcon?: ReactNode
+        fullWidth?: boolean
+        isActive?: boolean
+        href?: string
+      } & {
+        as?: RootComponentType
+      },
+    RootComponentType
+  >
 >
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  (
+export const Button = forwardRef(
+  <RootComponentType extends React.ElementType>(
     {
-      as = 'button',
+      as,
       className,
       children,
       variant,
@@ -199,21 +208,19 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       leftIcon,
       rightIcon,
       rounded,
-      p,
       isActive = false,
       fullWidth = false,
       ...props
-    },
-    ref
+    }: ButtonProps<RootComponentType>,
+    ref: ForwardedRef<HTMLButtonElement>
   ) => {
     return createElement(
-      as,
+      as ?? 'button',
       {
         className: buttonStyles({
           variant,
           colorScheme,
-          size: variant === 'link' ? 'none' : size,
-          p: p ?? (variant === 'link' ? 'none' : size),
+          size,
           fullWidth,
           rounded,
           className,

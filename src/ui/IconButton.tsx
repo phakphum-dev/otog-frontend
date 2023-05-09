@@ -1,15 +1,16 @@
 import { ReactElement, forwardRef } from 'react'
 
 import { Button, ButtonProps } from './Button'
+import clsx from 'clsx'
 
 export type IconButtonProps = ButtonProps & {
   icon: ReactElement
 }
 
 export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
-  ({ icon, ...rest }, ref) => {
+  ({ icon, className, ...rest }, ref) => {
     return (
-      <Button p="none" {...rest} ref={ref}>
+      <Button className={clsx('px-0', className)} {...rest} ref={ref}>
         {icon}
       </Button>
     )

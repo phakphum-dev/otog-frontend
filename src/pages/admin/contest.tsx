@@ -63,15 +63,15 @@ export default function AdminContestPage() {
       <TitleLayout>
         <Title icon={<FaTools />}>ระบบ GOTO</Title>
         <div className="flex gap-2">
-          <NextLink href="/admin/contest" passHref legacyBehavior>
-            <Button as="a">แข่งขัน</Button>
-          </NextLink>
-          <NextLink href="/admin/problem" passHref legacyBehavior>
-            <Button as="a">โจทย์</Button>
-          </NextLink>
-          <NextLink href="/admin/user" passHref legacyBehavior>
-            <Button as="a">ผู้ใช้งาน</Button>
-          </NextLink>
+          <Button as={NextLink} href="/admin/contest">
+            แข่งขัน
+          </Button>
+          <Button as={NextLink} href="/admin/problem">
+            โจทย์
+          </Button>
+          <Button as={NextLink} href="/admin/user">
+            ผู้ใช้งาน
+          </Button>
         </div>
       </TitleLayout>
       <div className="flex flex-col gap-4">

@@ -37,9 +37,9 @@ export default function ContestPage() {
           <div className="flex flex-1 items-center justify-center">
             <div className="flex flex-col items-center gap-4">
               <h1 className="text-4xl font-bold">ยังไม่มีการแข่งขัน</h1>
-              <NextLink href="/contest/history" passHref legacyBehavior>
-                <Button as="a">ประวัติการแข่งขัน</Button>
-              </NextLink>
+              <Button as={NextLink} href="/contest/history">
+                ประวัติการแข่งขัน
+              </Button>
             </div>
           </div>
         </PageContainer>
@@ -136,18 +136,17 @@ export const PostContest = (props: ContestProps) => {
           <h1 className="text-center text-4xl font-bold">
             การแข่งขัน {contest.name} จบลงแล้ว
           </h1>
-          <NextLink
+          <Button
+            as={NextLink}
             href={
               OFFLINE_MODE
                 ? '/easter_egg.gif'
                 : `/contest/history/${contest.id}`
             }
-            passHref
+            colorScheme="otog"
           >
-            <Button as="a" colorScheme="otog">
-              สรุปผลการแข่งขัน
-            </Button>
-          </NextLink>
+            สรุปผลการแข่งขัน
+          </Button>
         </div>
       </div>
     </PageContainer>

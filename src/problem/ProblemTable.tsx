@@ -196,7 +196,7 @@ const ProblemRow = (props: ProblemRowProps) => {
           {isAdmin && (
             <IconButton
               size="sm"
-              rounded="full"
+              rounded
               onClick={onToggle}
               variant="outline"
               className="invisible absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 group-hover/row:visible"
@@ -206,7 +206,7 @@ const ProblemRow = (props: ProblemRowProps) => {
           <NextLink href={`/problem/${problem.id}`}>
             <IconButton
               size="sm"
-              rounded="full"
+              rounded
               className="invisible absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 group-hover/row:visible"
               icon={<FiExternalLink />}
             />

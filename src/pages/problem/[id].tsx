@@ -249,7 +249,7 @@ const ExampleTable = ({ examples, problemId }: ExampleTableProps) => {
           <IconButton
             className="invisible absolute right-0 top-0 -translate-y-1/2 translate-x-1/2 group-hover/table:visible"
             size="sm"
-            rounded="full"
+            rounded
             icon={<FaPencilAlt />}
             onClick={onEditOpen}
           />
@@ -258,7 +258,7 @@ const ExampleTable = ({ examples, problemId }: ExampleTableProps) => {
           <IconButton
             className="invisible absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 group-hover/table:visible"
             size="xs"
-            rounded="full"
+            rounded
             icon={<FaPlus />}
             onClick={onAddEmptyExample}
           />
@@ -387,7 +387,7 @@ const EditTestcase = ({
         <IconButton
           icon={<FaTrash />}
           size="xs"
-          rounded="full"
+          rounded
           className="invisible absolute right-0 top-1/2 float-right -translate-y-1/2 translate-x-1/2 group-hover/testcase:visible"
           onClick={onRemove}
         />

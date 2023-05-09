@@ -107,7 +107,7 @@ export const SearchMenu = () => {
     <>
       <IconButton
         variant="ghost"
-        rounded="full"
+        rounded
         icon={<IoSearch className="fill-gray-500 dark:fill-white" />}
         onClick={onOpen}
       />

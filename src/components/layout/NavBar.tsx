@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import Image from 'next/image'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import { forwardRef, useEffect, useRef } from 'react'
+import { ForwardedRef, forwardRef, useEffect, useRef } from 'react'
 
 import Logo from '../../../public/logo512.png'
 import { Avatar } from '../Avatar'
@@ -116,14 +116,12 @@ export const NavBar = () => {
           <DrawerBody>
             <div className="mr-6 mt-2 flex flex-col items-start gap-3">
               {user && (
-                <NextLink href={`/profile/${user.id}`} passHref legacyBehavior>
-                  <DrawerButton as="a">
-                    <div className="flex items-center gap-2 py-2">
-                      <Avatar src={url} name={user.showName} />
-                      <div className="line-clamp-1"> {user.showName}</div>
-                    </div>
-                  </DrawerButton>
-                </NextLink>
+                <DrawerButton as={NextLink} href={`/profile/${user.id}`}>
+                  <div className="flex items-center gap-2 py-2">
+                    <Avatar src={url} name={user.showName} />
+                    <div className="line-clamp-1"> {user.showName}</div>
+                  </div>
+                </DrawerButton>
               )}
               {entries.map((item) => (
                 <DrawerItem key={item.href} {...item} />
@@ -180,37 +178,38 @@ const DrawerItem = forwardRef<HTMLButtonElement, ItemProps & ButtonProps>(
     const isActive = usePathActive(href) || active
     const { pathname } = useRouter()
     return (
-      <NextLink href={href} passHref legacyBehavior scroll={pathname === href}>
-        <DrawerButton
-          as="a"
-          className={
-            isActive
-              ? 'text-gray-800 dark:text-white'
-              : 'text-gray-500 dark:text-gray-400'
-          }
-          {...rest}
-          ref={ref}
-        >
-          {title}
-        </DrawerButton>
-      </NextLink>
+      <DrawerButton
+        as={NextLink}
+        href={href}
+        scroll={pathname === href}
+        className={
+          isActive
+            ? 'text-gray-800 dark:text-white'
+            : 'text-gray-500 dark:text-gray-400'
+        }
+        {...rest}
+        ref={ref}
+      >
+        {title}
+      </DrawerButton>
     )
   }
 )
 
-const DrawerButton = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, ...props }, ref) => {
-    return (
-      <Button
-        variant="ghost"
-        fullWidth
-        className={clsx('justify-start px-2 font-normal', className)}
-        {...props}
-        ref={ref}
-      />
-    )
-  }
-)
+const DrawerButton = <RootComponentType extends React.ElementType>(
+  { className, ...props }: ButtonProps<RootComponentType>,
+  ref: ForwardedRef<HTMLButtonElement>
+) => {
+  return (
+    <Button
+      variant="ghost"
+      fullWidth
+      className={clsx('justify-start px-2 font-normal', className)}
+      {...props}
+      ref={ref}
+    />
+  )
+}
 
 const AvatarMenu = () => {
   const { user, isAdmin, logout } = useUserData()
@@ -222,9 +221,8 @@ const AvatarMenu = () => {
       )}
       <MenuButton
         as={Button}
-        p="xs"
         variant="ghost"
-        className="text-gray-500"
+        className="px-2 text-gray-500"
         rightIcon={<ChevronDownIcon />}
       >
         <Avatar src={url} name={user!.showName} />
