@@ -12,6 +12,7 @@ export const Avatar = forwardRef<HTMLAnchorElement, AvatarProps>(
     const { name, src, className, ...rest } = props
     return src ? (
       <img
+        alt="avatar"
         className={clsx('h-6 w-6 rounded-full object-cover', className)}
         src={src}
         {...rest}
