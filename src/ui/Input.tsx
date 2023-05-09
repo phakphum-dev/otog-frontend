@@ -3,7 +3,7 @@ import { ComponentProps, forwardRef } from 'react'
 import { VariantProps, tv } from 'tailwind-variants'
 
 const inputStyles = tv({
-  base: 'block w-full bg-inherit placeholder-slate-400 focus:outline-none  transition-colors disabled:bg-slate-50 disabled:text-slate-500 disabled:shadow-none',
+  base: 'block w-full bg-inherit placeholder-slate-400 focus:outline-none transition-colors disabled:bg-slate-50 disabled:text-slate-500 disabled:shadow-none',
   variants: {
     sz: {
       lg: 'text-lg px-4 h-12',
@@ -18,7 +18,7 @@ const inputStyles = tv({
     variant: {
       outline:
         'border border-slate-300 dark:border-alpha-white-300 focus:border-sky-500 focus:dark:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:border-slate-200',
-      unstyled: '',
+      unstyled: ' ',
     },
   },
   defaultVariants: {
@@ -53,7 +53,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         className={inputStyles({
           sz,
           rounded,
-          className: clsx(className, 'resize-none px-3 py-2 text-sm'),
+          className: clsx('resize-none px-3 py-2 text-sm', className),
         })}
         ref={ref}
         {...rest}
