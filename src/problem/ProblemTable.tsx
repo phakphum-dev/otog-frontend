@@ -14,7 +14,6 @@ import { useUserData } from '@src/context/UserContext'
 import { UseDisclosureReturn, useDisclosure } from '@src/hooks/useDisclosure'
 import { useMutation } from '@src/hooks/useMutation'
 import { ProblemWithSubmission } from '@src/problem/types'
-import { Submission } from '@src/submission/types'
 import { Button } from '@src/ui/Button'
 import { Link } from '@src/ui/Link'
 import {
@@ -42,14 +41,6 @@ export interface ProblemTableProps {
 export const ProblemTable = (props: ProblemTableProps) => {
   const { filter } = props
 
-  const [modalProblem, setModalProblem] = useState<ProblemWithSubmission>()
-  const [modalSubmission, setModalSubmission] = useState<Submission>()
-  const [modalPassed, setModalPassed] = useState<number>()
-
-  const submitModal = useDisclosure()
-  const codeModal = useDisclosure()
-  const passedModal = useDisclosure()
-
   const { data: problems } = useProblems()
 
   const sortingProps = useSortedTable('id', 'desc')
@@ -67,11 +58,6 @@ export const ProblemTable = (props: ProblemTableProps) => {
     }
     return filteredProblems
   }, [problems, filter, sortFuncName, sortOrder])
-
-  const router = useRouter()
-  const onSubmitSuccess = () => {
-    router.push('/submission')
-  }
 
   return sortedProblems ? (
     <div>
@@ -92,33 +78,10 @@ export const ProblemTable = (props: ProblemTableProps) => {
         </thead>
         <tbody>
           {sortedProblems.map((problem) => (
-            <ProblemRow
-              key={problem.id}
-              problem={problem}
-              onSubmitOpen={submitModal.onOpen}
-              setModalProblem={setModalProblem}
-              onCodeOpen={codeModal.onOpen}
-              setModalSubmission={setModalSubmission}
-              onPassedOpen={passedModal.onOpen}
-              setModalPassed={setModalPassed}
-            />
+            <ProblemRow key={problem.id} problem={problem} />
           ))}
         </tbody>
       </Table>
-      {modalProblem && (
-        <SubmitModal
-          problem={modalProblem}
-          onSuccess={onSubmitSuccess}
-          submitted={!!modalProblem.submission}
-          {...submitModal}
-        />
-      )}
-      {modalSubmission && (
-        <CodeModal {...codeModal} submissionId={modalSubmission.id} />
-      )}
-      {modalPassed && (
-        <PassedModal {...passedModal} modalPassed={modalPassed} />
-      )}
     </div>
   ) : (
     <div className="flex justify-center py-16">
@@ -127,43 +90,15 @@ export const ProblemTable = (props: ProblemTableProps) => {
   )
 }
 
-interface ModalProblemProps {
-  onSubmitOpen: () => void
-  setModalProblem: (problem: ProblemWithSubmission | undefined) => void
-  onCodeOpen: () => void
-  setModalSubmission: (submission: Submission | undefined) => void
-  onPassedOpen: () => void
-  setModalPassed: (problemId: number) => void
-}
-
-interface ProblemRowProps extends ModalProblemProps {
+interface ProblemRowProps {
   problem: ProblemWithSubmission
 }
 
 const ProblemRow = (props: ProblemRowProps) => {
-  const {
-    problem,
-    onSubmitOpen,
-    setModalProblem,
-    onCodeOpen,
-    setModalSubmission,
-    onPassedOpen,
-    setModalPassed,
-  } = props
-  const onSubmitModalOpen = () => {
-    onSubmitOpen()
-    setModalProblem(problem)
-  }
-  const onCodeModalOpen = () => {
-    if (problem.submission) {
-      onCodeOpen()
-      setModalSubmission(problem.submission)
-    }
-  }
-  const onPassedModalOpen = () => {
-    onPassedOpen()
-    setModalPassed(problem.id)
-  }
+  const { problem } = props
+  const submitModal = useDisclosure()
+  const codeModal = useDisclosure()
+  const passedModal = useDisclosure()
   const { isAdmin } = useUserData()
 
   const [show, setShow] = useState(problem.show)
@@ -181,93 +116,111 @@ const ProblemRow = (props: ProblemRowProps) => {
       setShow(show)
     }
   }
+
+  const router = useRouter()
+  const onSubmitSuccess = () => {
+    router.push('/submission')
+  }
   const status = problem.submission?.status
+  const submitted = !!problem.submission
   return (
-    <Tr className="group/row relative">
-      <Td className="hidden text-center text-sm font-semibold text-gray-600 dark:text-gray-400 sm:table-cell">
-        {problem.submission ? (
-          <Button onClick={onCodeModalOpen} variant="link">
-            {problem.id}
-          </Button>
-        ) : (
-          problem.id
-        )}
-      </Td>
-      <Td>
-        <Link
-          isExternal
-          href={`${API_HOST}problem/doc/${problem.id}`}
-          className={clsx(!show && 'text-gray-500 hover:text-otog')}
-        >
-          <p className="font-semibold tracking-wide">{problem.name}</p>
-          <p className="mt-0.5 text-sm">
-            ({problem.timeLimit / ONE_SECOND} วินาที {problem.memoryLimit} MB)
-          </p>
-        </Link>
-      </Td>
-      <Td className="text-bold hidden text-center text-sm font-semibold text-gray-600 dark:text-gray-400 sm:table-cell">
-        {problem.passedCount &&
-        (isAdmin || problem.submission?.status === 'accept') ? (
-          <Button variant="link" onClick={onPassedModalOpen}>
-            {problem.passedCount}
-          </Button>
-        ) : (
-          problem.passedCount
-        )}
-      </Td>
-      <Td className="text-center">
-        {status ? (
-          <IconButton
-            aria-label="Upload file"
-            variant="outline"
-            icon={status === 'accept' ? <FaCheckCircle /> : <FaFileUpload />}
-            colorScheme={status === 'accept' ? 'otog-green' : 'otog-red'}
-            onClick={onSubmitModalOpen}
-          />
-        ) : (
-          <IconButton
-            aria-label="Upload file"
-            variant="outline"
-            icon={<FaFileUpload />}
-            className="text-gray-600 dark:text-alpha-white-700"
-            onClick={onSubmitModalOpen}
-          />
-        )}
-        {isAdmin && (
-          <IconButton
-            size="sm"
-            rounded="full"
-            onClick={onToggle}
-            variant="outline"
-            className="invisible absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 group-hover/row:visible"
-            icon={show ? <FaEye /> : <FaEyeSlash />}
-          />
-        )}
-        <NextLink href={`/problem/${problem.id}`}>
-          <IconButton
-            size="sm"
-            rounded="full"
-            className="invisible absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 group-hover/row:visible"
-            icon={<FiExternalLink />}
-          />
-        </NextLink>
-      </Td>
-    </Tr>
+    <>
+      <SubmitModal
+        problem={problem}
+        onSuccess={onSubmitSuccess}
+        submitted={submitted}
+        {...submitModal}
+      />
+      {!!problem.submission && (
+        <CodeModal {...codeModal} submissionId={problem.submission.id} />
+      )}
+      <PassedModal {...passedModal} problemId={problem.id} />
+      <Tr className="group/row relative">
+        <Td className="hidden text-center text-sm font-semibold text-gray-600 dark:text-gray-400 sm:table-cell">
+          {problem.submission ? (
+            <Button onClick={codeModal.onOpen} variant="link">
+              {problem.id}
+            </Button>
+          ) : (
+            problem.id
+          )}
+        </Td>
+        <Td>
+          <Link
+            isExternal
+            href={`${API_HOST}problem/doc/${problem.id}`}
+            className={clsx(!show && 'text-gray-500 hover:text-otog')}
+          >
+            <p className="font-semibold tracking-wide">{problem.name}</p>
+            <p className="mt-0.5 text-sm">
+              ({problem.timeLimit / ONE_SECOND} วินาที {problem.memoryLimit} MB)
+            </p>
+          </Link>
+        </Td>
+        <Td className="text-bold hidden text-center text-sm font-semibold text-gray-600 dark:text-gray-400 sm:table-cell">
+          {problem.passedCount &&
+          (isAdmin || problem.submission?.status === 'accept') ? (
+            <Button variant="link" onClick={passedModal.onOpen}>
+              {problem.passedCount}
+            </Button>
+          ) : (
+            problem.passedCount
+          )}
+        </Td>
+        <Td className="text-center">
+          {status ? (
+            <IconButton
+              aria-label="Upload file"
+              variant="outline"
+              icon={status === 'accept' ? <FaCheckCircle /> : <FaFileUpload />}
+              colorScheme={status === 'accept' ? 'otog-green' : 'otog-red'}
+              onClick={submitModal.onOpen}
+            />
+          ) : (
+            <IconButton
+              aria-label="Upload file"
+              variant="outline"
+              icon={<FaFileUpload />}
+              className="text-gray-600 dark:text-alpha-white-700"
+              onClick={submitModal.onOpen}
+            />
+          )}
+          {isAdmin && (
+            <IconButton
+              size="sm"
+              rounded="full"
+              onClick={onToggle}
+              variant="outline"
+              className="invisible absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 group-hover/row:visible"
+              icon={show ? <FaEye /> : <FaEyeSlash />}
+            />
+          )}
+          <NextLink href={`/problem/${problem.id}`}>
+            <IconButton
+              size="sm"
+              rounded="full"
+              className="invisible absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 group-hover/row:visible"
+              icon={<FiExternalLink />}
+            />
+          </NextLink>
+        </Td>
+      </Tr>
+    </>
   )
 }
 
 interface PassedModalProps extends UseDisclosureReturn {
-  modalPassed: number
+  problemId: number
 }
 
 const PassedModal = (props: PassedModalProps) => {
-  const { isOpen, onClose, modalPassed } = props
-  const { data: users } = usePassedUsers(modalPassed)
+  const { isOpen, onClose, problemId } = props
+  const { data: users } = usePassedUsers(isOpen ? problemId : null)
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xs">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>ผู้ที่ผ่านข้อที่ {modalPassed}</ModalHeader>
+        <ModalHeader>ผู้ที่ผ่านข้อที่ {problemId}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <div className="flex flex-col gap-2">

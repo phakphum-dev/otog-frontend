@@ -39,7 +39,9 @@ const language: Record<string, string> = {
 
 export const CodeModal = (props: CodeModalProps) => {
   const { onClose, isOpen, submissionId } = props
-  const { data: submission } = useSubmissionWithSourceCode(submissionId)
+  const { data: submission } = useSubmissionWithSourceCode(
+    isOpen ? submissionId : 0
+  )
 
   return (
     <Modal onClose={onClose} isOpen={isOpen} size="xl">
@@ -132,7 +134,7 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
               code={submission.sourceCode}
               language={submission.language}
             />
-            <div className="absolute top-2 right-2 flex gap-2">
+            <div className="absolute right-2 top-2 flex gap-2">
               <IconButton
                 aria-label="share"
                 icon={<FaRegShareSquare />}

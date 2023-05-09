@@ -5,8 +5,8 @@ import { Problem, ProblemWithSubmission } from './types'
 import { client } from '@src/api'
 import { User } from '@src/user/types'
 
-export function usePassedUsers(problemId: number) {
-  return useSWR<User[]>(`problem/${problemId}/user`)
+export function usePassedUsers(problemId: number | null) {
+  return useSWR<User[]>(problemId === null ? null : `problem/${problemId}/user`)
 }
 
 export function keyProblem(id: number) {

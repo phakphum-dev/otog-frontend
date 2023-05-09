@@ -62,7 +62,7 @@ export const NavBar = () => {
 
   return (
     <>
-      <div className="fixed left-0 top-0 z-20 h-14 w-full bg-white shadow-sm dark:border-b dark:border-gray-700 dark:bg-gray-800">
+      <div className="fixed left-0 top-0 z-20 h-14 w-full border-b bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
         <PageContainer className="flex">
           <NextLink
             href={isAdmin ? '/admin/contest' : '/'}
