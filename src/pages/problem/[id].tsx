@@ -147,6 +147,7 @@ function EditorForm(props: {
   return (
     <>
       <Editor
+        className="overflow-hidden rounded-md"
         height="75vh"
         language={language}
         theme="vs-dark"
@@ -303,10 +304,9 @@ const ExampleRow = ({ input, output }: ExampleRowType) => {
           onClick={onInputCopy}
           icon={<CopyIcon />}
           size="sm"
-          variant="ghost"
           className="invisible absolute right-2 top-2 group-hover/input:visible"
         />
-        <div className="overflow-x-auto px-6 py-4">
+        <div className="overflow-x-auto px-6 py-4 pr-12">
           <code className="whitespace-pre" id="input">
             {input}
           </code>
@@ -317,10 +317,9 @@ const ExampleRow = ({ input, output }: ExampleRowType) => {
           onClick={onOutputCopy}
           icon={<CopyIcon />}
           size="sm"
-          variant="ghost"
           className="invisible absolute right-2 top-2 group-hover/output:visible"
         />
-        <div className="overflow-x-auto px-6 py-4">
+        <div className="overflow-x-auto px-6 py-4 pr-12">
           <code className="whitespace-pre" id="output">
             {output}
           </code>
