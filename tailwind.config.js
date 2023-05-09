@@ -200,7 +200,6 @@ module.exports = {
     },
   },
   plugins: [
-    require('@tailwindcss/line-clamp'),
     // custom plugin for 'active' class
     plugin(function ({ addVariant, e }) {
       addVariant('active', [
