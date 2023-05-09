@@ -1,5 +1,4 @@
 import Editor from '@monaco-editor/react'
-import clsx from 'clsx'
 import produce from 'immer'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -34,7 +33,7 @@ import { Button } from '@src/ui/Button'
 import { IconButton } from '@src/ui/IconButton'
 import { Select } from '@src/ui/Input'
 import { Link } from '@src/ui/Link'
-import { Table, Td, Th } from '@src/ui/Table'
+import { Table, Td, Th, Tr } from '@src/ui/Table'
 import { ONE_SECOND } from '@src/utils/time'
 
 const defaultValue = `#include <iostream>
@@ -223,12 +222,12 @@ const ExampleTable = ({ examples, problemId }: ExampleTableProps) => {
     <div className="mt-6 flex flex-col gap-2">
       <h3 className="text-xl font-bold">ตัวอย่าง</h3>
       <div className="group/table relative">
-        <Table className="table-fixed" id="example-table">
+        <Table variant="rounded" className="table-fixed" id="example-table">
           <thead>
-            <tr className="bg-gray-50 dark:bg-gray-900">
-              <Th className="border">Input</Th>
-              <Th className="border">Output</Th>
-            </tr>
+            <Tr className="bg-gray-50 dark:bg-slate-800">
+              <Th className="border-l">Input</Th>
+              <Th className="border-x">Output</Th>
+            </Tr>
           </thead>
           <tbody>
             {isEditing
@@ -241,7 +240,7 @@ const ExampleTable = ({ examples, problemId }: ExampleTableProps) => {
                   />
                 ))
               : examples.map((test, index) => (
-                  <ExampleRow {...test} row={index} key={index} />
+                  <ExampleRow {...test} key={index} />
                 ))}
           </tbody>
         </Table>
@@ -281,11 +280,9 @@ const ExampleTable = ({ examples, problemId }: ExampleTableProps) => {
 type ExampleRowType = {
   input: string
   output: string
-  row?: number
 }
 
-const ExampleRow = ({ input, output, row = 0 }: ExampleRowType) => {
-  const isOdd = row & 1
+const ExampleRow = ({ input, output }: ExampleRowType) => {
   const { onCopy: onInputCopy, hasCopied: inputCopied } = useClipboard(input)
   const { onCopy: onOutputCopy, hasCopied: outputCopied } = useClipboard(output)
 
@@ -300,8 +297,8 @@ const ExampleRow = ({ input, output, row = 0 }: ExampleRowType) => {
     }
   }, [outputCopied])
   return (
-    <tr className={clsx(isOdd && 'bg-gray-50 dark:bg-gray-900')}>
-      <Td className="group/input relative border-x p-0 align-top">
+    <Tr>
+      <Td className="group/input relative border-l p-0 align-top">
         <IconButton
           onClick={onInputCopy}
           icon={<CopyIcon />}
@@ -329,7 +326,7 @@ const ExampleRow = ({ input, output, row = 0 }: ExampleRowType) => {
           </code>
         </div>
       </Td>
-    </tr>
+    </Tr>
   )
 }
 
@@ -368,7 +365,7 @@ const EditTestcase = ({
     )
   }
   return (
-    <tr className="group/testcase relative">
+    <Tr className="group/testcase relative">
       <Td className="relative border-x p-0 align-top">
         <code>
           <textarea
@@ -396,6 +393,6 @@ const EditTestcase = ({
           onClick={onRemove}
         />
       </Td>
-    </tr>
+    </Tr>
   )
 }
