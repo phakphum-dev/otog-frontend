@@ -15,7 +15,7 @@ import {
   useSubmissions,
 } from '@src/submission/queries'
 import { LatestSubmission } from '@src/submission/submit/LatestSubmission'
-import { isGraded, isGrading, useStatusColor } from '@src/theme/useStatusColor'
+import { isGraded, isGrading, getBgColor } from '@src/theme/useStatusColor'
 import { Button } from '@src/ui/Button'
 import { Link } from '@src/ui/Link'
 import { Spinner } from '@src/ui/Spinner'
@@ -154,7 +154,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
   const errorDisclosure = useDisclosure()
 
   const { user, isAdmin } = useUserData()
-  const bg = useStatusColor(submission, true)
+  const bg = getBgColor(submission, true)
 
   if (!submission) {
     return null

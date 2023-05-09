@@ -18,7 +18,7 @@ import { Problem } from '@src/problem/types'
 import { useLatestProblemSubmission } from '@src/submission/queries'
 import { useDropFile } from '@src/submission/submit/useDropFile'
 import { SubmissionWithProblem } from '@src/submission/types'
-import { isGraded, isGrading, useStatusColor } from '@src/theme/useStatusColor'
+import { isGraded, isGrading, getBgColor } from '@src/theme/useStatusColor'
 import { Button } from '@src/ui/Button'
 import { IconButton } from '@src/ui/IconButton'
 import { Select } from '@src/ui/Input'
@@ -244,7 +244,7 @@ export interface TaskSubmissionTableProps {
 
 export const TaskSubmissionTable = (props: TaskSubmissionTableProps) => {
   const { submission } = props
-  const bg = useStatusColor(submission)
+  const bg = getBgColor(submission)
 
   const errorDisclosure = useDisclosure()
   const codeDisclosure = useDisclosure()

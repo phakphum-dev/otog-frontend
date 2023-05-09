@@ -1,6 +1,6 @@
 import { Submission } from '@src/submission/types'
 
-export function useStatusColor(
+export function getBgColor(
   submission: Submission | undefined | null,
   exceptReject = false
 ) {
