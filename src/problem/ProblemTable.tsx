@@ -1,6 +1,6 @@
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import { memo, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { CodeModal } from '../components/Code'
 import { SubmitModal } from '../submission/submit/SubmitModal'
@@ -27,7 +27,7 @@ import {
   ModalOverlay,
 } from '@src/ui/Modal'
 import { Spinner } from '@src/ui/Spinner'
-import { Table, Td, Th } from '@src/ui/Table'
+import { Table, Td, Th, Tr } from '@src/ui/Table'
 import { ONE_SECOND } from '@src/utils/time'
 import { IconButton } from '@src/ui/IconButton'
 import { FaCheckCircle, FaEye, FaEyeSlash, FaFileUpload } from 'react-icons/fa'
@@ -75,46 +75,34 @@ export const ProblemTable = (props: ProblemTableProps) => {
 
   return sortedProblems ? (
     <div>
-      <Table className="border-separate border-spacing-0 rounded-lg border bg-white shadow-md dark:border dark:border-gray-700 dark:bg-gray-800">
+      <Table variant="rounded" className="shadow-md">
         <thead>
           <tr className="bg-gray-50 dark:bg-slate-800">
-            <SortTh
-              className="hidden w-20 rounded-tl-lg sm:table-cell"
-              centered
-              sortBy="id"
-              {...sortingProps}
-            >
+            <SortTh className="w-20" centered sortBy="id" {...sortingProps}>
               #
             </SortTh>
-            <Th className="rounded-tl-lg sm:rounded-tl-none">ชื่อ</Th>
-            <SortTh
-              className="hidden w-20 sm:table-cell"
-              centered
-              sortBy="passed"
-              {...sortingProps}
-            >
+            <Th>ชื่อ</Th>
+            <SortTh className="w-20" centered sortBy="passed" {...sortingProps}>
               ผ่าน
             </SortTh>
-            <SortTh
-              className="w-24 overflow-hidden rounded-tr-lg"
-              centered
-              sortBy="sent"
-              {...sortingProps}
-            >
+            <SortTh className="w-24" centered sortBy="sent" {...sortingProps}>
               ส่ง
             </SortTh>
           </tr>
         </thead>
         <tbody>
-          <ProblemsRows
-            problems={sortedProblems}
-            onSubmitOpen={submitModal.onOpen}
-            setModalProblem={setModalProblem}
-            onCodeOpen={codeModal.onOpen}
-            setModalSubmission={setModalSubmission}
-            onPassedOpen={passedModal.onOpen}
-            setModalPassed={setModalPassed}
-          />
+          {sortedProblems.map((problem) => (
+            <ProblemRow
+              key={problem.id}
+              problem={problem}
+              onSubmitOpen={submitModal.onOpen}
+              setModalProblem={setModalProblem}
+              onCodeOpen={codeModal.onOpen}
+              setModalSubmission={setModalSubmission}
+              onPassedOpen={passedModal.onOpen}
+              setModalPassed={setModalPassed}
+            />
+          ))}
         </tbody>
       </Table>
       {modalProblem && (
@@ -147,25 +135,6 @@ interface ModalProblemProps {
   onPassedOpen: () => void
   setModalPassed: (problemId: number) => void
 }
-
-interface ProblemRowsProps extends ModalProblemProps {
-  problems: ProblemWithSubmission[]
-}
-
-const ProblemsRows = memo(
-  (props: ProblemRowsProps) => {
-    const { problems, ...rest } = props
-
-    return (
-      <>
-        {problems.map((problem) => (
-          <ProblemRow key={problem.id} problem={problem} {...rest} />
-        ))}
-      </>
-    )
-  },
-  (prevProps, nextProps) => prevProps.problems === nextProps.problems
-)
 
 interface ProblemRowProps extends ModalProblemProps {
   problem: ProblemWithSubmission
@@ -214,7 +183,7 @@ const ProblemRow = (props: ProblemRowProps) => {
   }
   const status = problem.submission?.status
   return (
-    <tr className="group/row relative">
+    <Tr className="group/row relative">
       <Td className="hidden text-center text-sm font-semibold text-gray-600 dark:text-gray-400 sm:table-cell">
         {problem.submission ? (
           <Button onClick={onCodeModalOpen} variant="link">
@@ -283,7 +252,7 @@ const ProblemRow = (props: ProblemRowProps) => {
           />
         </NextLink>
       </Td>
-    </tr>
+    </Tr>
   )
 }
 
