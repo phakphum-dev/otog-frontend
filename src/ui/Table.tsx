@@ -1,6 +1,5 @@
-import { VariantProps, cva } from 'class-variance-authority'
 import { ComponentProps, createContext, useContext } from 'react'
-import { twMerge } from 'tailwind-merge'
+import { VariantProps, tv } from 'tailwind-variants'
 
 export type TableStyleValue = VariantProps<typeof tableStyles>
 export type TableProps = ComponentProps<'table'> & TableStyleValue
@@ -9,7 +8,8 @@ const TableContext = createContext<TableStyleValue>({
   size: 'sm',
 })
 
-const tableStyles = cva('w-full', {
+const tableStyles = tv({
+  base: 'w-full',
   variants: {
     variant: {
       simple: '',
@@ -33,47 +33,39 @@ export const Table = ({
 }: TableProps) => {
   return (
     <TableContext.Provider value={{ size, variant }}>
-      <table
-        className={twMerge(tableStyles({ size, variant }), className)}
-        {...props}
-      >
+      <table className={tableStyles({ size, variant, className })} {...props}>
         {children}
       </table>
     </TableContext.Provider>
   )
 }
-const thStyles = cva(
-  'text-gray-600 dark:text-gray-400 text-xs font-bold spacing tracking-wider',
-  {
-    variants: {
-      textAlign: { start: 'text-start', center: 'text-center' },
-      variant: {
-        simple: 'border-b border-gray-100 dark:border-gray-700 ',
-        rounded:
-          'border-y border-gray-100 first:rounded-tl-lg first:border-l last:rounded-tr-lg last:border-r dark:border-gray-700',
-        unstyled: '',
-      },
-      size: {
-        sm: 'px-4 py-1',
-        md: 'px-6 py-4',
-      },
+const thStyles = tv({
+  base: 'text-gray-600 dark:text-gray-400 text-xs font-bold spacing tracking-wider',
+  variants: {
+    textAlign: { start: 'text-start', center: 'text-center' },
+    variant: {
+      simple: 'border-b border-gray-100 dark:border-gray-700 ',
+      rounded:
+        'border-y border-gray-100 first:rounded-tl-lg first:border-l last:rounded-tr-lg last:border-r dark:border-gray-700',
+      unstyled: '',
     },
-    defaultVariants: { textAlign: 'start', variant: 'simple' },
-  }
-)
+    size: {
+      sm: 'px-4 py-1',
+      md: 'px-6 py-4',
+    },
+  },
+  defaultVariants: { textAlign: 'start', variant: 'simple' },
+})
 export type ThProps = ComponentProps<'th'> & VariantProps<typeof thStyles>
 export const Th = ({ className, textAlign, children, ...props }: ThProps) => {
   const styles = useTableContext()
   return (
-    <th
-      className={twMerge(thStyles({ textAlign, ...styles }), className)}
-      {...props}
-    >
+    <th className={thStyles({ textAlign, ...styles, className })} {...props}>
       {children}
     </th>
   )
 }
-const tdStyles = cva('', {
+const tdStyles = tv({
   variants: {
     variant: {
       simple: 'border-b border-gray-100 dark:border-gray-700 ',
@@ -92,13 +84,13 @@ export type TdProps = ComponentProps<'td'> & VariantProps<typeof tdStyles>
 export const Td = ({ className, children, ...props }: TdProps) => {
   const styles = useTableContext()
   return (
-    <td className={twMerge(tdStyles({ ...styles }), className)} {...props}>
+    <td className={tdStyles({ ...styles, className })} {...props}>
       {children}
     </td>
   )
 }
 
-const trStyles = cva('', {
+const trStyles = tv({
   variants: {
     variant: {
       simple: '',
@@ -113,7 +105,7 @@ export type TrProps = ComponentProps<'tr'> & VariantProps<typeof trStyles>
 export const Tr = ({ className, children, ...props }: TrProps) => {
   const styles = useTableContext()
   return (
-    <tr className={twMerge(trStyles({ ...styles }), className)} {...props}>
+    <tr className={trStyles({ ...styles, className })} {...props}>
       {children}
     </tr>
   )
