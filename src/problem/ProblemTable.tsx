@@ -60,29 +60,37 @@ export const ProblemTable = (props: ProblemTableProps) => {
   }, [problems, filter, sortFuncName, sortOrder])
 
   return sortedProblems ? (
-    <div>
-      <Table variant="rounded" className="shadow-md">
-        <thead>
-          <tr className="bg-gray-50 dark:bg-slate-800">
-            <SortTh className="w-20" centered sortBy="id" {...sortingProps}>
-              #
-            </SortTh>
-            <Th>ชื่อ</Th>
-            <SortTh className="w-20" centered sortBy="passed" {...sortingProps}>
-              ผ่าน
-            </SortTh>
-            <SortTh className="w-24" centered sortBy="sent" {...sortingProps}>
-              ส่ง
-            </SortTh>
-          </tr>
-        </thead>
-        <tbody>
-          {sortedProblems.map((problem) => (
-            <ProblemRow key={problem.id} problem={problem} />
-          ))}
-        </tbody>
-      </Table>
-    </div>
+    <Table variant="rounded" className="shadow-md">
+      <thead>
+        <tr className="bg-gray-50 dark:bg-slate-800">
+          <SortTh
+            className="w-20 max-sm:hidden"
+            centered
+            sortBy="id"
+            {...sortingProps}
+          >
+            #
+          </SortTh>
+          <Th className="max-sm:rounded-tl-lg max-sm:border-l">ชื่อ</Th>
+          <SortTh
+            className="w-20 max-sm:hidden"
+            centered
+            sortBy="passed"
+            {...sortingProps}
+          >
+            ผ่าน
+          </SortTh>
+          <SortTh className="w-24" centered sortBy="sent" {...sortingProps}>
+            ส่ง
+          </SortTh>
+        </tr>
+      </thead>
+      <tbody>
+        {sortedProblems.map((problem) => (
+          <ProblemRow key={problem.id} problem={problem} />
+        ))}
+      </tbody>
+    </Table>
   ) : (
     <div className="flex justify-center py-16">
       <Spinner size="xl" />
@@ -135,8 +143,8 @@ const ProblemRow = (props: ProblemRowProps) => {
         <CodeModal {...codeModal} submissionId={problem.submission.id} />
       )}
       <PassedModal {...passedModal} problemId={problem.id} />
-      <Tr className="group/row relative">
-        <Td className="hidden text-center text-sm font-semibold text-gray-600 dark:text-gray-400 sm:table-cell">
+      <Tr className="group/row relative max-sm:[&>:nth-child(2)]:last:rounded-bl-lg">
+        <Td className="text-center text-sm font-semibold text-gray-600 dark:text-gray-400 max-sm:hidden">
           {problem.submission ? (
             <Button onClick={codeModal.onOpen} variant="link">
               {problem.id}
@@ -145,7 +153,7 @@ const ProblemRow = (props: ProblemRowProps) => {
             problem.id
           )}
         </Td>
-        <Td>
+        <Td className="max-sm:border-l">
           <Link
             isExternal
             href={`${API_HOST}problem/doc/${problem.id}`}
@@ -157,7 +165,7 @@ const ProblemRow = (props: ProblemRowProps) => {
             </p>
           </Link>
         </Td>
-        <Td className="text-bold hidden text-center text-sm font-semibold text-gray-600 dark:text-gray-400 sm:table-cell">
+        <Td className="text-bold text-center text-sm font-semibold text-gray-600 dark:text-gray-400 max-sm:hidden">
           {problem.passedCount &&
           (isAdmin || problem.submission?.status === 'accept') ? (
             <Button variant="link" onClick={passedModal.onOpen}>
