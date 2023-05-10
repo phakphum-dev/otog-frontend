@@ -198,8 +198,8 @@ const DrawerButton = <RootComponentType extends React.ElementType>(
       variant="ghost"
       fullWidth
       className={clsx('justify-start px-2 font-normal', className)}
-      ref={ref}
       {...props}
+      ref={ref}
     >
       {children}
     </Button>

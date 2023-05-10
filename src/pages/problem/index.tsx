@@ -1,6 +1,12 @@
 import clsx from 'clsx'
 import Head from 'next/head'
-import { Dispatch, SetStateAction, useState } from 'react'
+import {
+  Dispatch,
+  ForwardedRef,
+  SetStateAction,
+  forwardRef,
+  useState,
+} from 'react'
 
 import { AnnouncementCarousel } from '@src/announcement/components/AnnouncementCarousel'
 import { getAnnouncements } from '@src/announcement/queries'
@@ -60,27 +66,27 @@ type OtogButtonProps = ButtonProps & {
   number?: number
 }
 
-const OtogButton = ({
-  label,
-  number,
-  colorScheme,
-  isLoading,
-  ...props
-}: OtogButtonProps) => {
-  return (
-    <Button
-      className={clsx(
-        'aspect-5/4 h-auto flex-col rounded-lg py-2 max-sm:w-28 sm:h-full sm:flex-1 sm:gap-2',
-        isLoading && 'animate-pulse'
-      )}
-      colorScheme={isLoading ? 'gray' : colorScheme}
-      {...props}
-    >
-      <h6>{!isLoading && label}</h6>
-      <h3 className="text-3xl font-bold md:text-4xl">{number}</h3>
-    </Button>
-  )
-}
+const OtogButton = forwardRef(
+  (
+    { label, number, colorScheme, isLoading, ...props }: OtogButtonProps,
+    ref: ForwardedRef<HTMLButtonElement>
+  ) => {
+    return (
+      <Button
+        className={clsx(
+          'aspect-5/4 h-auto flex-col rounded-lg py-2 max-sm:w-28 sm:h-full sm:flex-1 sm:gap-2',
+          isLoading && 'animate-pulse'
+        )}
+        colorScheme={isLoading ? 'gray' : colorScheme}
+        {...props}
+        ref={ref}
+      >
+        <h6>{!isLoading && label}</h6>
+        <h3 className="text-3xl font-bold md:text-4xl">{number}</h3>
+      </Button>
+    )
+  }
+)
 
 export const getServerSideProps = withSession(async () => {
   const announcement = await getAnnouncements()

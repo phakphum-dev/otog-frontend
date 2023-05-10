@@ -38,6 +38,8 @@ export const MenuItem = <T extends React.ElementType>({
   children,
   className,
   onClick,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  ref,
   ...props
 }: PolymorphButtonProps<T>) => {
   return (

@@ -1,6 +1,12 @@
 import { PolymorphicProps } from '@src/utils/types'
 import clsx from 'clsx'
-import React, { ComponentProps, ReactNode, createElement } from 'react'
+import React, {
+  ComponentProps,
+  ForwardedRef,
+  ReactNode,
+  createElement,
+  forwardRef,
+} from 'react'
 import { VariantProps, tv } from 'tailwind-variants'
 
 /*
@@ -170,43 +176,51 @@ export type ButtonProps = ComponentProps<'button'> &
 export type PolymorphButtonProps<T extends React.ElementType> =
   PolymorphicProps<ButtonProps, T>
 
-export const Button = <T extends React.ElementType>({
-  as,
-  className,
-  children,
-  variant,
-  colorScheme,
-  size,
-  leftIcon,
-  rightIcon,
-  rounded,
-  isActive = false,
-  fullWidth = false,
-  ...props
-}: PolymorphButtonProps<T>) => {
-  return createElement(
-    as ?? 'button',
+export const Button = forwardRef(
+  <T extends React.ElementType>(
     {
-      className: buttonStyles({
-        variant,
-        colorScheme,
-        size,
-        fullWidth,
-        rounded,
-        className,
-      }),
-      'data-active': isActive,
-      type: 'button',
-      // ref,
-      ...props,
-    },
-    <>
-      {leftIcon && <ButtonIcon className="mr-2">{leftIcon}</ButtonIcon>}
-      {children}
-      {rightIcon && <ButtonIcon className="ml-2">{rightIcon}</ButtonIcon>}
-    </>
-  )
-}
+      as,
+      className,
+      children,
+      variant,
+      colorScheme,
+      size,
+      leftIcon,
+      rightIcon,
+      rounded,
+      isActive = false,
+      fullWidth = false,
+      ...props
+    }: PolymorphButtonProps<T>,
+    ref: ForwardedRef<HTMLButtonElement>
+  ) => {
+    return createElement(
+      as ?? 'button',
+      {
+        className: buttonStyles({
+          variant,
+          colorScheme,
+          size,
+          fullWidth,
+          rounded,
+          className,
+        }),
+        'data-active': isActive,
+        type: 'button',
+        ref,
+        ...props,
+      },
+      <>
+        {leftIcon && <ButtonIcon className="mr-2">{leftIcon}</ButtonIcon>}
+        {children}
+        {rightIcon && <ButtonIcon className="ml-2">{rightIcon}</ButtonIcon>}
+      </>
+    )
+  }
+) as <T extends React.ElementType>(
+  props: PolymorphButtonProps<T>
+) => React.ReactElement
+// for fix weird forwardRef typing
 
 const ButtonIcon = ({
   children,
