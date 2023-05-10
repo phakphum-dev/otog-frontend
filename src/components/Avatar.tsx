@@ -12,7 +12,7 @@ export const Avatar = forwardRef<HTMLDivElement, AvatarProps>((props, ref) => {
   return src ? (
     <img
       alt="avatar"
-      className={clsx('h-6 min-w-6 rounded-full object-cover', className)}
+      className={clsx('h-6 w-6 min-w-6 rounded-full object-cover', className)}
       src={src}
       {...rest}
     />
