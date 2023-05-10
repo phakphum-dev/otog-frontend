@@ -106,7 +106,8 @@ export function getSubmissionWithSourceCode(submissionId: number) {
 export function useSubmissionWithSourceCode(submissionId: number) {
   return useSWR(
     submissionId === 0 ? null : keySubmissionWithSourceCode(submissionId),
-    () => getSubmissionWithSourceCode(submissionId)
+    () => getSubmissionWithSourceCode(submissionId),
+    { revalidateIfStale: false }
   )
 }
 

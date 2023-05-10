@@ -6,7 +6,10 @@ import { client } from '@src/api'
 import { User } from '@src/user/types'
 
 export function usePassedUsers(problemId: number | null) {
-  return useSWR<User[]>(problemId === null ? null : `problem/${problemId}/user`)
+  return useSWR<User[]>(
+    problemId === null ? null : `problem/${problemId}/user`,
+    { revalidateIfStale: false }
+  )
 }
 
 export function keyProblem(id: number) {

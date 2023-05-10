@@ -31,7 +31,15 @@ export const SWRProvider = (props: {
     })
   }, [update, dataSession])
   return (
-    <SWRConfig value={{ fetcher, onError: onErrorToast, fallback }}>
+    <SWRConfig
+      value={{
+        fetcher,
+        onError: onErrorToast,
+        fallback,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+      }}
+    >
       {children}
     </SWRConfig>
   )
