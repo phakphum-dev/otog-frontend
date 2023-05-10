@@ -8,7 +8,7 @@ import { FileInput } from '../components/FileInput'
 import { submitContestProblem } from './queries'
 
 import { API_HOST, OFFLINE_MODE } from '@src/config'
-import { useDisclosure } from '@src/hooks/useDisclosure'
+import { useDisclosure, useDisclosured } from '@src/hooks/useDisclosure'
 import { useMutation } from '@src/hooks/useMutation'
 import { ChevronDownIcon } from '@src/icons/ChevronDownIcon'
 import { ChevronUpIcon } from '@src/icons/ChevronUpIcon'
@@ -247,7 +247,7 @@ export const TaskSubmissionTable = (props: TaskSubmissionTableProps) => {
   const bg = getBgColor(submission)
 
   const errorDisclosure = useDisclosure()
-  const codeDisclosure = useDisclosure()
+  const codeDisclosure = useDisclosured()
 
   return (
     <div className="overflow-x-auto">

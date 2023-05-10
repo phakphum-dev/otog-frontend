@@ -6,7 +6,7 @@ import { SubmissionWithProblem } from './types'
 
 import { API_HOST } from '@src/config'
 import { useUserData } from '@src/context/UserContext'
-import { useDisclosure } from '@src/hooks/useDisclosure'
+import { useDisclosure, useDisclosured } from '@src/hooks/useDisclosure'
 import { useOnScreen } from '@src/hooks/useOnScreen'
 import {
   useAllSubmissions,
@@ -64,7 +64,7 @@ interface SubmissionTableBaseProps {
 
 export const InfiniteSubmissionTable = (props: SubmissionTableBaseProps) => {
   const { submissionsList, loadMore, hasMore = false } = props
-  const codeDisclosure = useDisclosure()
+  const codeDisclosure = useDisclosured()
   const [submissionId, setSubmissionId] = useState<number>(0)
   const { ref, isIntersecting } = useOnScreen()
   useEffect(() => {
@@ -178,7 +178,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
           passHref
           legacyBehavior
         >
-          <Link className="w-36 break-all line-clamp-3" variant="hidden">
+          <Link className="line-clamp-3 w-36 break-all" variant="hidden">
             {submission.user.showName}
           </Link>
         </NextLink>

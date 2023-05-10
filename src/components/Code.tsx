@@ -26,8 +26,9 @@ import {
   ModalProps,
 } from '@src/ui/Modal'
 import { ONE_SECOND, toThDate } from '@src/utils/time'
+import { UseDisclosuredReturn } from '@src/hooks/useDisclosure'
 
-export interface CodeModalProps extends Omit<ModalProps, 'children'> {
+export interface CodeModalProps extends UseDisclosuredReturn {
   submissionId: number
 }
 
@@ -38,9 +39,9 @@ const language: Record<string, string> = {
 }
 
 export const CodeModal = (props: CodeModalProps) => {
-  const { onClose, isOpen, submissionId } = props
+  const { onClose, isOpen, opened, submissionId } = props
   const { data: submission } = useSubmissionWithSourceCode(
-    isOpen ? submissionId : 0
+    opened ? submissionId : 0
   )
 
   return (

@@ -11,7 +11,11 @@ import { SortTh, useSortedTable } from '@src/components/SortableTable'
 import { problemSortFuncs } from '@src/components/SortableTable/utils'
 import { API_HOST } from '@src/config'
 import { useUserData } from '@src/context/UserContext'
-import { UseDisclosureReturn, useDisclosure } from '@src/hooks/useDisclosure'
+import {
+  UseDisclosuredReturn,
+  useDisclosure,
+  useDisclosured,
+} from '@src/hooks/useDisclosure'
 import { useMutation } from '@src/hooks/useMutation'
 import { ProblemWithSubmission } from '@src/problem/types'
 import { Button } from '@src/ui/Button'
@@ -108,8 +112,8 @@ interface ProblemRowProps {
 const ProblemRow = (props: ProblemRowProps) => {
   const { problem } = props
   const submitModal = useDisclosure()
-  const codeModal = useDisclosure()
-  const passedModal = useDisclosure()
+  const codeModal = useDisclosured()
+  const passedModal = useDisclosured()
   const { isAdmin } = useUserData()
 
   const [show, setShow] = useState(problem.show)
@@ -220,13 +224,13 @@ const ProblemRow = (props: ProblemRowProps) => {
   )
 }
 
-interface PassedModalProps extends UseDisclosureReturn {
+interface PassedModalProps extends UseDisclosuredReturn {
   problemId: number
 }
 
 const PassedModal = (props: PassedModalProps) => {
-  const { isOpen, onClose, problemId } = props
-  const { data: users } = usePassedUsers(isOpen ? problemId : null)
+  const { isOpen, onClose, opened, problemId } = props
+  const { data: users } = usePassedUsers(opened ? problemId : null)
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xs">
       <ModalOverlay />
