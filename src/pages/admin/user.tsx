@@ -244,14 +244,14 @@ const UserAdminRow = (props: ProblemAdminProps) => {
     <tr>
       <Td>{user.id}</Td>
       <Td className="max-w-[200px]">
-        <NextLink href={`/profile/${user.id}`}>
-          <Link variant="hidden">{user.username}</Link>
-        </NextLink>
+        <Link as={NextLink} href={`/profile/${user.id}`} variant="hidden">
+          {user.username}
+        </Link>
       </Td>
       <Td className="max-w-[200px]">
-        <NextLink href={`/profile/${user.id}`}>
-          <Link variant="hidden">{user.showName}</Link>
-        </NextLink>
+        <Link as={NextLink} href={`/profile/${user.id}`} variant="hidden">
+          {user.showName}
+        </Link>
       </Td>
       <Td className="capitalize">{user.role}</Td>
       <Td>

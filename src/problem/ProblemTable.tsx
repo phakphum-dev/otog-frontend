@@ -203,14 +203,14 @@ const ProblemRow = (props: ProblemRowProps) => {
               icon={show ? <FaEye /> : <FaEyeSlash />}
             />
           )}
-          <NextLink href={`/problem/${problem.id}`}>
-            <IconButton
-              size="sm"
-              rounded
-              className="invisible absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 group-hover/row:visible"
-              icon={<FiExternalLink />}
-            />
-          </NextLink>
+          <IconButton
+            as={NextLink}
+            href={`/problem/${problem.id}`}
+            size="sm"
+            rounded
+            className="invisible absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 group-hover/row:visible"
+            icon={<FiExternalLink />}
+          />
         </Td>
       </Tr>
     </>

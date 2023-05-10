@@ -72,7 +72,7 @@ const OnlineUsersTooltip = (props: TooltipProps) => {
           {onlineUsers.slice(0, MAX_LENGTH).map((user) => (
             <div className="flex items-center gap-2" key={user.id}>
               <div className="h-2 w-2 rounded-full bg-green-400" />
-              <div className="max-w-[275px] line-clamp-3">{user.showName}</div>
+              <div className="line-clamp-3 max-w-[275px]">{user.showName}</div>
             </div>
           ))}
           {onlineUsers.length > MAX_LENGTH && (
@@ -261,20 +261,16 @@ const OnlineUserModal = (props: OnlineUserModalProps) => {
           <div className="flex flex-col gap-2">
             {onlineUsers ? (
               onlineUsers.map((user) => (
-                <NextLink
-                  href={`/profile/${user.id}`}
+                <Link
+                  as={NextLink}
                   key={user.id}
-                  passHref
-                  legacyBehavior
+                  href={`/profile/${user.id}`}
+                  className="max-w-[300px]"
+                  variant="hidden"
+                  onClick={onClose}
                 >
-                  <Link
-                    className="max-w-[300px]"
-                    variant="hidden"
-                    onClick={onClose}
-                  >
-                    {user.showName}
-                  </Link>
-                </NextLink>
+                  {user.showName}
+                </Link>
               ))
             ) : (
               <div className="flex justify-center">

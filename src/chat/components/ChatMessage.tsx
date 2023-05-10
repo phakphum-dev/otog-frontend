@@ -69,9 +69,12 @@ export const ChatMessage = memo(
           )}
           <div className="flex flex-col items-start">
             {displayName && (
-              <div className="max-w-[270px] px-1 text-xs text-gray-500 line-clamp-3">
+              <NextLink
+                href={`/user/${sender.id}`}
+                className="mb-0.5 ml-1 line-clamp-3 max-w-[270px] px-1 text-xs text-gray-500"
+              >
                 {sender.showName}
-              </div>
+              </NextLink>
             )}
             {isEmoji ? (
               <div
@@ -117,8 +120,8 @@ export const emojiPattern =
 const SmallAvatar = ({ userId, name }: { userId: number; name: string }) => {
   const { url } = useSmallAvatar(userId)
   return (
-    <NextLink href={`/profile/${userId}`} passHref legacyBehavior>
-      <Avatar className="mr-1 cursor-pointer" src={url} name={name} />
+    <NextLink href={`/profile/${userId}`} className="mr-1">
+      <Avatar src={url} name={name} />
     </NextLink>
   )
 }

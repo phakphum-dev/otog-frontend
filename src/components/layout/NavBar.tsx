@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import Image from 'next/image'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import { ForwardedRef, forwardRef, useEffect, useRef } from 'react'
+import { ForwardedRef, useEffect, useRef } from 'react'
 
 import Logo from '../../../public/logo512.png'
 import { Avatar } from '../Avatar'
@@ -16,7 +16,7 @@ import { useDisclosure } from '@src/hooks/useDisclosure'
 import { ChevronDownIcon } from '@src/icons/ChevronDownIcon'
 import { HamburgerIcon } from '@src/icons/HamburgerIcon'
 import { useUserSmallAvatar } from '@src/profile/useAvartar'
-import { Button, ButtonProps } from '@src/ui/Button'
+import { Button, PolymorphButtonProps } from '@src/ui/Button'
 import {
   Drawer,
   DrawerBody,
@@ -25,7 +25,7 @@ import {
   DrawerOverlay,
 } from '@src/ui/Drawer'
 import { IconButton } from '@src/ui/IconButton'
-import { Link, LinkProps } from '@src/ui/Link'
+import { Link } from '@src/ui/Link'
 import { Menu, MenuButton, MenuItem, MenuList } from '@src/ui/Menu'
 
 function usePathActive(href: string) {
@@ -64,20 +64,18 @@ export const NavBar = () => {
     <>
       <div className="fixed left-0 top-0 z-20 h-14 w-full border-b bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
         <PageContainer className="flex">
-          <NextLink
+          <Link
+            as={NextLink}
             href={isAdmin ? '/admin/contest' : '/'}
-            passHref
-            legacyBehavior
+            className="flex items-center text-gray-800 dark:text-white"
           >
-            <Link className="flex items-center text-gray-800 dark:text-white">
-              <Image
-                src={Logo}
-                width={32}
-                height={32}
-                alt="One Tambon One Grader Logo"
-              />
-            </Link>
-          </NextLink>
+            <Image
+              src={Logo}
+              width={32}
+              height={32}
+              alt="One Tambon One Grader Logo"
+            />
+          </Link>
           <div className="ml-10 hidden gap-6 sm:flex">
             {entries.map((item) => (
               <NavItem key={item.href} {...item} />
@@ -146,58 +144,53 @@ export const NavBar = () => {
   )
 }
 interface ItemProps {
-  active?: boolean
   href: string
   title: string
+  active?: boolean
 }
 
-const NavItem = forwardRef<HTMLAnchorElement, ItemProps & LinkProps>(
-  (props, ref) => {
-    const { href, title, ...rest } = props
-    const isActive = usePathActive(href)
-    const { pathname } = useRouter()
-    return (
-      <NextLink href={href} passHref legacyBehavior scroll={pathname === href}>
-        <Link
-          variant="nav"
-          className="flex items-center border-y-2 border-transparent px-2 py-2 font-medium tracking-wide !no-underline hover:border-b-gray-400 active:border-b-otog-400"
-          isActive={isActive}
-          {...rest}
-          ref={ref}
-        >
-          {title}
-        </Link>
-      </NextLink>
-    )
-  }
-)
+const NavItem = (props: ItemProps) => {
+  const { href, title, ...rest } = props
+  const isActive = usePathActive(href)
+  const { pathname } = useRouter()
+  return (
+    <Link
+      as={NextLink}
+      scroll={pathname === href}
+      href={href}
+      variant="nav"
+      className="flex items-center border-y-2 border-transparent px-2 py-2 font-medium tracking-wide !no-underline hover:border-b-gray-400 active:border-b-otog-400"
+      isActive={isActive}
+      {...rest}
+    >
+      {title}
+    </Link>
+  )
+}
 
-const DrawerItem = forwardRef<HTMLButtonElement, ItemProps & ButtonProps>(
-  (props, ref) => {
-    const { href, title, active, ...rest } = props
-    const isActive = usePathActive(href) || active
-    const { pathname } = useRouter()
-    return (
-      <DrawerButton
-        as={NextLink}
-        href={href}
-        scroll={pathname === href}
-        className={
-          isActive
-            ? 'text-gray-800 dark:text-white'
-            : 'text-gray-500 dark:text-gray-400'
-        }
-        {...rest}
-        ref={ref}
-      >
-        {title}
-      </DrawerButton>
-    )
-  }
-)
+const DrawerItem = (props: ItemProps) => {
+  const { href, title, active, ...rest } = props
+  const isActive = usePathActive(href) || active
+  const { pathname } = useRouter()
+  return (
+    <DrawerButton
+      as={NextLink}
+      href={href}
+      scroll={pathname === href}
+      className={
+        isActive
+          ? 'text-gray-800 dark:text-white'
+          : 'text-gray-500 dark:text-gray-400'
+      }
+      {...rest}
+    >
+      {title}
+    </DrawerButton>
+  )
+}
 
 const DrawerButton = <RootComponentType extends React.ElementType>(
-  { className, ...props }: ButtonProps<RootComponentType>,
+  { className, children, ...props }: PolymorphButtonProps<RootComponentType>,
   ref: ForwardedRef<HTMLButtonElement>
 ) => {
   return (
@@ -205,9 +198,11 @@ const DrawerButton = <RootComponentType extends React.ElementType>(
       variant="ghost"
       fullWidth
       className={clsx('justify-start px-2 font-normal', className)}
-      {...props}
       ref={ref}
-    />
+      {...props}
+    >
+      {children}
+    </Button>
   )
 }
 
@@ -234,7 +229,7 @@ const AvatarMenu = () => {
             โปรไฟล์
           </MenuItem>
         )}
-        <MenuItem className="text-red-500" onClick={logout}>
+        <MenuItem className="text-red-500 dark:text-red-500" onClick={logout}>
           ออกจากระบบ
         </MenuItem>
       </MenuList>

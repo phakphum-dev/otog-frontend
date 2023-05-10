@@ -55,7 +55,7 @@ export const FileInput = forwardRef(
           sz={variant}
           readOnly
         />
-        <div className="absolute top-0 right-0 z-0 flex w-[100px] items-center justify-end">
+        <div className="absolute right-0 top-0 z-0 flex w-[100px] items-center justify-end">
           <Button
             className="relative rounded-l-none font-normal text-gray-600 dark:text-white"
             onClick={onClick}

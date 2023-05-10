@@ -1,7 +1,7 @@
 import { Menu as MenuHeadless, Transition } from '@headlessui/react'
 import clsx from 'clsx'
 import { Fragment, ReactNode } from 'react'
-import { Button, ButtonProps } from './Button'
+import { Button, PolymorphButtonProps } from './Button'
 
 type PropsChildren = { children?: ReactNode }
 
@@ -34,22 +34,19 @@ export const MenuList = ({ children }: PropsChildren) => {
   )
 }
 
-export const MenuItem = <Root extends React.ElementType>({
+export const MenuItem = <T extends React.ElementType>({
   children,
   className,
   onClick,
-  as,
   ...props
-}: ButtonProps<Root>) => {
+}: PolymorphButtonProps<T>) => {
   return (
     <MenuHeadless.Item as={Fragment}>
-      {({ active, close }) => (
+      {({ close }) => (
         <Button
-          variant=""
-          as={as}
+          variant="ghost"
           className={clsx(
             'inline-flex w-full justify-start rounded-none px-3 py-1.5 font-normal',
-            active && 'bg-gray-100 dark:bg-alpha-white-100',
             className
           )}
           onClick={(e: any) => {

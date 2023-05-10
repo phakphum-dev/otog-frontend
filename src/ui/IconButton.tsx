@@ -1,14 +1,18 @@
-import { ReactElement, forwardRef } from 'react'
+import { ForwardedRef, ReactElement, forwardRef } from 'react'
 
-import { Button, ButtonProps } from './Button'
+import { Button, PolymorphButtonProps } from './Button'
 import clsx from 'clsx'
 
-export type IconButtonProps = ButtonProps & {
-  icon: ReactElement
-}
+export type IconButtonProps<T extends React.ElementType = 'button'> =
+  PolymorphButtonProps<T> & {
+    icon: ReactElement
+  }
 
-export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
-  ({ icon, className, ...rest }, ref) => {
+export const IconButton = forwardRef(
+  <Root extends React.ElementType>(
+    { icon, className, ...rest }: IconButtonProps<Root>,
+    ref: ForwardedRef<HTMLButtonElement>
+  ) => {
     return (
       <Button className={clsx('px-0', className)} {...rest} ref={ref}>
         {icon}

@@ -138,11 +138,14 @@ export default function ContestHistory() {
               >
                 <Td>{user.rank}</Td>
                 <Td className={clsx(!isOpen && 'line-clamp-1')}>
-                  <NextLink href={`/profile/${user.id}`}>
-                    <Link className="line-clamp-3" variant="hidden">
-                      {user.showName}
-                    </Link>
-                  </NextLink>
+                  <Link
+                    className="line-clamp-3"
+                    variant="hidden"
+                    as={NextLink}
+                    href={`/profile/${user.id}`}
+                  >
+                    {user.showName}
+                  </Link>
                 </Td>
                 <Td>{getTotalScore(user)}</Td>
                 {isOpen &&
@@ -212,17 +215,15 @@ export default function ContestHistory() {
                             <div>-</div>
                           ) : (
                             submissions.map((submission) => (
-                              <NextLink
+                              <Link
+                                as={NextLink}
                                 href={`/profile/${submission.user.id}`}
                                 key={submission.id}
+                                className="line-clamp-1 max-w-[250px]"
+                                variant="hidden"
                               >
-                                <Link
-                                  className="max-w-[250px] line-clamp-1"
-                                  variant="hidden"
-                                >
-                                  {submission.user.showName}
-                                </Link>
-                              </NextLink>
+                                {submission.user.showName}
+                              </Link>
                             ))
                           )}
                         </div>

@@ -1,5 +1,7 @@
-import { ComponentProps, PropsWithChildren, forwardRef } from 'react'
+import { ComponentProps, ForwardedRef, forwardRef } from 'react'
 import { VariantProps, tv } from 'tailwind-variants'
+import { createElement } from 'react'
+import { PolymorphicProps } from '@src/utils/types'
 
 const linkStyles = tv({
   base: 'cursor-pointer hover:underline focus-visible:underline',
@@ -18,17 +20,21 @@ const linkStyles = tv({
   },
 })
 
-export type LinkProps = PropsWithChildren<
-  VariantProps<typeof linkStyles> &
-    ComponentProps<'a'> & {
-      isExternal?: boolean
-      isActive?: boolean
-    }
+export type LinkProps = ComponentProps<'a'> &
+  VariantProps<typeof linkStyles> & {
+    isExternal?: boolean
+    isActive?: boolean
+  }
+
+export type PolymorphLinkProps<T extends React.ElementType> = PolymorphicProps<
+  LinkProps,
+  T
 >
 
-export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
-  (
+export const Link = forwardRef(
+  <T extends React.ElementType>(
     {
+      as,
       className,
       children,
       href,
@@ -36,22 +42,21 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
       isActive = false,
       isExternal = false,
       ...props
-    },
-    ref
+    }: PolymorphLinkProps<T>,
+    ref: ForwardedRef<HTMLAnchorElement>
   ) => {
-    return (
-      // eslint-disable-next-line react/jsx-no-target-blank
-      <a
-        className={linkStyles({ variant, className })}
-        href={href}
-        target={isExternal ? '_blank' : undefined}
-        rel={isExternal ? 'noopener' : undefined}
-        data-active={isActive}
-        ref={ref}
-        {...props}
-      >
-        {children}
-      </a>
+    return createElement(
+      as ?? 'a',
+      {
+        className: linkStyles({ variant, className }),
+        href,
+        target: isExternal ? '_blank' : undefined,
+        rel: isExternal ? 'noopener' : undefined,
+        'data-active': isActive,
+        ref,
+        ...props,
+      },
+      children
     )
   }
 )
