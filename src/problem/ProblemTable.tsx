@@ -34,9 +34,9 @@ import { Table, Td, Th, Tr } from '@src/ui/Table'
 import { ONE_SECOND } from '@src/utils/time'
 import { IconButton } from '@src/ui/IconButton'
 import { FaCheckCircle, FaEye, FaEyeSlash, FaFileUpload } from 'react-icons/fa'
-import { FiExternalLink } from 'react-icons/fi'
 import clsx from 'clsx'
 import { Filter, filters } from './filters'
+import { EditIcon } from '@src/icons/EditIcon'
 
 export type FilterFunction = (problem: ProblemWithSubmission) => boolean
 export interface ProblemTableProps {
@@ -216,7 +216,7 @@ const ProblemRow = (props: ProblemRowProps) => {
             size="sm"
             rounded
             className="invisible absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 group-hover/row:visible"
-            icon={<FiExternalLink />}
+            icon={<EditIcon />}
           />
         </Td>
       </Tr>
