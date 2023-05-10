@@ -32,14 +32,15 @@ import { IconButton } from '@src/ui/IconButton'
 import { FaCheckCircle, FaEye, FaEyeSlash, FaFileUpload } from 'react-icons/fa'
 import { FiExternalLink } from 'react-icons/fi'
 import clsx from 'clsx'
+import { Filter, filters } from './filters'
 
 export type FilterFunction = (problem: ProblemWithSubmission) => boolean
 export interface ProblemTableProps {
-  filter: FilterFunction
+  filterName: Filter
 }
 
 export const ProblemTable = (props: ProblemTableProps) => {
-  const { filter } = props
+  const { filterName } = props
 
   const { data: problems } = useProblems()
 
@@ -48,16 +49,18 @@ export const ProblemTable = (props: ProblemTableProps) => {
 
   const sortedProblems = useMemo(() => {
     if (problems === undefined) return undefined
-    const filteredProblems = problems.filter(filter).map((problem) => ({
-      ...problem,
-      submission: problem.submission?.id ? problem.submission : null,
-    }))
+    const filteredProblems = problems
+      .filter(filters[filterName].filter)
+      .map((problem) => ({
+        ...problem,
+        submission: problem.submission?.id ? problem.submission : null,
+      }))
     filteredProblems.sort(problemSortFuncs[sortFuncName])
     if (sortOrder === 'desc') {
       filteredProblems.reverse()
     }
     return filteredProblems
-  }, [problems, filter, sortFuncName, sortOrder])
+  }, [problems, filterName, sortFuncName, sortOrder])
 
   return sortedProblems ? (
     <Table variant="rounded" className="shadow-md">
