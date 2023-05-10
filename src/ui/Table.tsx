@@ -12,14 +12,14 @@ const tableStyles = tv({
   base: 'w-full',
   variants: {
     variant: {
-      simple: '',
+      simple: ' ',
       rounded:
         'border-separate border-spacing-0 rounded-lg bg-white dark:bg-gray-800',
-      unstyled: '',
+      unstyled: ' ',
     },
     size: {
-      sm: '',
-      md: '',
+      sm: ' ',
+      md: ' ',
     },
   },
 })
@@ -47,7 +47,7 @@ const thStyles = tv({
       simple: 'border-b border-gray-100 dark:border-gray-700 ',
       rounded:
         'border-y border-gray-100 first:rounded-tl-lg first:border-l last:rounded-tr-lg last:border-r dark:border-gray-700',
-      unstyled: '',
+      unstyled: ' ',
     },
     size: {
       sm: 'px-4 py-1',
@@ -71,7 +71,7 @@ const tdStyles = tv({
       simple: 'border-b border-gray-100 dark:border-gray-700 ',
       rounded:
         'border-b border-gray-100 first:border-l last:border-r dark:border-gray-700',
-      unstyled: '',
+      unstyled: ' ',
     },
     size: {
       sm: 'px-4 py-2 leading-4 text-sm',
@@ -93,10 +93,10 @@ export const Td = ({ className, children, ...props }: TdProps) => {
 const trStyles = tv({
   variants: {
     variant: {
-      simple: '',
+      simple: ' ',
       rounded:
         '[&_td:first-child]:last:rounded-bl-lg [&_td:last-child]:last:rounded-br-lg',
-      unstyled: '',
+      unstyled: ' ',
     },
   },
   defaultVariants: { variant: 'simple' },
