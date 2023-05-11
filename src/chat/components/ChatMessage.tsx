@@ -70,7 +70,7 @@ export const ChatMessage = memo(
           <div className="flex flex-col items-start">
             {displayName && (
               <NextLink
-                href={`/user/${sender.id}`}
+                href={`/profile/${sender.id}`}
                 className="mb-0.5 ml-1 line-clamp-3 max-w-[270px] px-1 text-xs text-gray-500"
               >
                 {sender.showName}
