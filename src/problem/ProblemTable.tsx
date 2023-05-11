@@ -166,7 +166,9 @@ const ProblemRow = (props: ProblemRowProps) => {
             href={`${API_HOST}problem/doc/${problem.id}`}
             className={clsx(!show && 'text-gray-500 hover:text-otog')}
           >
-            <p className="font-semibold tracking-wide">{problem.name}</p>
+            <p className="break-all font-semibold tracking-wide">
+              {problem.name}
+            </p>
             <p className="mt-0.5 text-sm">
               ({problem.timeLimit / ONE_SECOND} วินาที {problem.memoryLimit} MB)
             </p>
