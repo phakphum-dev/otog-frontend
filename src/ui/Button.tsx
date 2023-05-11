@@ -25,6 +25,7 @@ const buttonStyles = tv({
       green: ' ',
       orange: ' ',
       blue: ' ',
+      yellow: ' ',
       'otog-blue': ' ',
       'otog-green': ' ',
       'otog-red': ' ',
@@ -87,6 +88,12 @@ const buttonStyles = tv({
       colorScheme: 'orange',
       className:
         'text-white dark:text-gray-800 bg-orange-500 dark:bg-orange-200 hover:bg-orange-600 dark:hover:bg-orange-300 disabled:hover:bg-orange-500 disabled:hover:dark:bg-orange-200 active:bg-orange-700 active:dark:bg-orange-400',
+    },
+    {
+      variant: 'solid',
+      colorScheme: 'yellow',
+      className:
+        'text-gray-900 dark:text-gray-800 bg-yellow-400 dark:bg-yellow-200 hover:bg-yellow-500 dark:hover:bg-yellow-300 disabled:hover:bg-yellow-700 disabled:hover:dark:bg-yellow-200 active:bg-yellow-600 active:dark:bg-yellow-400',
     },
     {
       variant: 'solid',

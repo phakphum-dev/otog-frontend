@@ -48,6 +48,7 @@ import {
 } from '@src/ui/Modal'
 import { Spinner } from '@src/ui/Spinner'
 import { Table, Td, Th } from '@src/ui/Table'
+import { rejudgeProblem } from '@src/submission/queries'
 
 export default function AdminProblemPage() {
   return (
@@ -386,6 +387,19 @@ const ProblemAdminRow = (props: ProblemAdminProps) => {
     }
   }
 
+  const rejudgeProblemMutation = useMutation(rejudgeProblem)
+  const rejudge = async () => {
+    try {
+      const promise = rejudgeProblemMutation(problem.id)
+      toast.promise(promise, {
+        loading: 'กำลังตรวจใหม่',
+        error: 'ส่งตรวจใหม่ไม่สำเร็จ',
+        success: 'ส่งตรวจใหม่สำเร็จ',
+      })
+    } catch (e) {
+      onErrorToast(e)
+    }
+  }
   const editModal = useDisclosure()
 
   return (
@@ -415,7 +429,12 @@ const ProblemAdminRow = (props: ProblemAdminProps) => {
             colorScheme={isOpen ? 'orange' : 'gray'}
             onClick={onToggle}
           />
-          <IconButton icon={<FaSync />} aria-label="config" disabled />
+          <IconButton
+            icon={<FaSync />}
+            aria-label="config"
+            colorScheme="yellow"
+            onClick={rejudge}
+          />
         </ButtonGroup>
       </Td>
     </tr>
