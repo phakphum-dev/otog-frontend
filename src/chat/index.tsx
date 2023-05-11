@@ -63,7 +63,7 @@ const ChatButton = forwardRef<HTMLButtonElement, ChatButtonProps>(
   )
 )
 
-const OnlineUsersTooltip = (props: TooltipProps) => {
+const OnlineUsersTooltip = ({ children, ...props }: TooltipProps) => {
   const { data: onlineUsers } = useOnlineUsers()
   return onlineUsers ? (
     <Tooltip
@@ -85,9 +85,11 @@ const OnlineUsersTooltip = (props: TooltipProps) => {
         </div>
       }
       {...props}
-    />
+    >
+      {children}
+    </Tooltip>
   ) : (
-    <>{props.children}</>
+    <>{children}</>
   )
 }
 

@@ -33,7 +33,6 @@ export function useOnlineUsers() {
   const { isAuthenticated } = useUserData()
   return useSWR(isAuthenticated ? 'user/online' : null, getOnlineUsers, {
     revalidateOnMount: false,
-    revalidateOnFocus: true,
   })
 }
 

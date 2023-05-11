@@ -31,7 +31,7 @@ export const SocketProvider = ({ children }: { children?: ReactNode }) => {
         socketClient.disconnect()
       }
     }
-  }, [session, isAuthenticated])
+  }, [session?.accessToken, isAuthenticated])
 
   const value = { socket }
   return (

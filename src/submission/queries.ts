@@ -136,8 +136,7 @@ export function useLatestSubmission() {
   const { isAuthenticated } = useUserData()
   return useSWR(
     isAuthenticated ? 'submission/latest' : null,
-    getLatestSubmission,
-    { revalidateOnMount: true }
+    getLatestSubmission
   )
 }
 

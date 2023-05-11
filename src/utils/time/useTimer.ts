@@ -33,5 +33,5 @@ export async function getServerTime() {
 }
 
 export function useServerTime() {
-  return useSWR<string>('time', getServerTime, { revalidateOnMount: true })
+  return useSWR<string>('time', getServerTime)
 }
