@@ -11,11 +11,11 @@
 // import { useMutation } from '@src/hooks/useMutation'
 // import { IconButton } from '@src/ui/IconButton'
 // import { editShowname } from '@src/user/queries'
-// import { UserProfile } from '@src/user/types'
+import { UserProfile } from '@src/user/types'
 
-// interface EditableNameProps {
-//   userData: UserProfile
-// }
+interface EditableNameProps {
+  userData: UserProfile
+}
 
 // export const EditableName = (props: EditableNameProps) => {
 //   const { userData } = props
