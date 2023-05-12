@@ -1,7 +1,6 @@
-import { AnnouncementEditor } from './AnnouncementEditor'
-import { useAnnouncementContext } from './useAnnouncementContext'
+import { useAnnouncements } from '../queries'
+import { AnnouncementEdit } from './AnnouncementEditor'
 
-import { Button } from '@src/ui/Button'
 import {
   Modal,
   ModalBody,
@@ -18,30 +17,22 @@ interface AnnouncementModalProps {
 }
 export const AnnouncementModal = (props: AnnouncementModalProps) => {
   const { isOpen, onClose } = props
-  const { currentAnnouncement, onSave, deleteIndex } = useAnnouncementContext()
+  const { data: announcements } = useAnnouncements()
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="3xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>ประกาศ #{currentAnnouncement.id}</ModalHeader>
+        <ModalHeader>ประกาศ</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <AnnouncementEditor />
+          {announcements?.map((announcement) => (
+            <AnnouncementEdit
+              announcement={announcement}
+              key={announcement.id}
+            />
+          ))}
         </ModalBody>
-
-        <ModalFooter>
-          <Button
-            className="mr-3"
-            colorScheme="red"
-            variant="ghost"
-            onClick={deleteIndex}
-          >
-            ลบ
-          </Button>
-          <Button colorScheme="green" onClick={onSave}>
-            บันทึก
-          </Button>
-        </ModalFooter>
+        <ModalFooter />
       </ModalContent>
     </Modal>
   )

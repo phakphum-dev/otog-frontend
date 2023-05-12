@@ -24,7 +24,7 @@ export function deleteAnnouncemet(announcementId: number) {
     .json<Announcement>()
 }
 
-export function toggleAnnouncemet(announcementId: number, show: boolean) {
+export function toggleAnnouncement(announcementId: number, show: boolean) {
   return client
     .url(`announcement/${announcementId}`)
     .patch({ show })

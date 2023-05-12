@@ -1,14 +1,13 @@
 import isHotkey from 'is-hotkey'
 import { KeyboardEvent, ReactElement, useMemo } from 'react'
 import {
-  FaAngleLeft,
-  FaAngleRight,
   FaBold,
   FaCode,
   FaEye,
   FaEyeSlash,
   FaItalic,
   FaLink,
+  FaPen,
   FaPlus,
   FaUnderline,
 } from 'react-icons/fa'
@@ -33,11 +32,26 @@ import {
 } from 'slate-react'
 
 import { HEIGHT } from './constants'
-import { useAnnouncementContext } from './useAnnouncementContext'
 
 import { ButtonGroup } from '@src/ui/ButtonGroup'
 import { IconButton } from '@src/ui/IconButton'
 import { Link } from '@src/ui/Link'
+import { Button } from '@src/ui/Button'
+import { useDisclosure } from '@src/hooks/useDisclosure'
+import { Announcement } from '../types'
+import {
+  createAnnouncement,
+  deleteAnnouncemet,
+  toggleAnnouncement,
+  updateAnnouncement,
+  useAnnouncements,
+} from '../queries'
+import produce from 'immer'
+import { useMutation } from '@src/hooks/useMutation'
+import { toast } from 'react-hot-toast'
+import { onErrorToast } from '@src/hooks/useErrorToast'
+import { useConfirmModal } from '@src/context/ConfirmContext'
+import { createEmptyAnnouncement } from './utils'
 
 type CustomText = {
   text: string
@@ -233,17 +247,59 @@ const BlockButton = ({ format, icon, className }: BlockButtonProps) => {
   )
 }
 
-export const AnnouncementEditor = () => {
-  const {
-    currentAnnouncement,
-    onChange,
-    nextIndex,
-    prevIndex,
-    insertIndex,
-    toggleShow,
-  } = useAnnouncementContext()
+type AnnouncementEditorProps = {
+  announcement: Announcement
+  onClose: () => void
+}
+
+export const AnnouncementEditor = ({
+  announcement,
+  onClose,
+}: AnnouncementEditorProps) => {
+  const { mutate } = useAnnouncements()
+
+  const onChange = (value: Descendant[]) => {
+    mutate(
+      produce((announcements) => {
+        const ann: Announcement = announcements.find(
+          (a: Announcement) => a.id === announcement.id
+        )
+        ann.value = value
+      }),
+      false
+    )
+  }
+  const updateAnnouncementMutaion = useMutation(updateAnnouncement)
+  const onSave = async () => {
+    try {
+      await updateAnnouncementMutaion(announcement.id, announcement)
+      onClose()
+      toast.success('อัปเดตประกาศแล้ว')
+    } catch (e) {
+      onErrorToast(e)
+    }
+  }
+
+  const deleteAnnouncementMutation = useMutation(deleteAnnouncemet)
+  const confirm = useConfirmModal()
+  const deleteIndex = async () => {
+    confirm({
+      title: `ยืนยันลบการประกาศ`,
+      subtitle: `คุณต้องการที่จะลบประกาศ #${announcement.id} ใช่หรือไม่ ?`,
+      submitText: 'ยืนยัน',
+      cancleText: 'ยกเลิก',
+      onSubmit: async () => {
+        try {
+          await deleteAnnouncementMutation(announcement.id)
+        } finally {
+          await mutate()
+        }
+      },
+    })
+  }
+
   const editor = useMemo(() => withReact(withHistory(createEditor())), [])
-  editor.children = currentAnnouncement.value
+  editor.children = announcement.value
   const handleHotkey = (event: KeyboardEvent<HTMLDivElement>) => {
     for (const hotkey in HOTKEYS) {
       if (isHotkey(hotkey, event)) {
@@ -258,13 +314,9 @@ export const AnnouncementEditor = () => {
     }
   }
   return (
-    <div className="flex flex-col gap-2 py-4">
-      <Slate
-        editor={editor}
-        value={currentAnnouncement.value}
-        onChange={onChange}
-      >
-        <div className="flex justify-between gap-2">
+    <div className="flex flex-col gap-2 border-b py-4 last:border-b-0">
+      <Slate editor={editor} value={announcement.value} onChange={onChange}>
+        <div className="flex flex-wrap justify-between gap-2">
           <div className="flex gap-2">
             <ButtonGroup isAttached>
               <MarkButton format="bold" icon={<FaBold />} />
@@ -283,40 +335,20 @@ export const AnnouncementEditor = () => {
           <BlockButton format="bulleted-list" icon={<FaListUl />} /> */}
             </ButtonGroup>
           </div>
-          <div className="flex gap-2">
-            <IconButton
+          <div className="flex gap-2 max-sm:ml-auto">
+            <Button
+              colorScheme="red"
+              variant="ghost"
               size="sm"
-              icon={currentAnnouncement.show ? <FaEye /> : <FaEyeSlash />}
-              aria-label="toggle visibillity"
-              variant="outline"
-              onClick={toggleShow}
-            />
-            <ButtonGroup isAttached>
-              <IconButton
-                size="sm"
-                icon={<FaAngleLeft />}
-                aria-label="previous"
-                variant="outline"
-                onClick={prevIndex}
-              />
-              <IconButton
-                size="sm"
-                icon={<FaAngleRight />}
-                aria-label="next"
-                variant="outline"
-                onClick={nextIndex}
-              />
-            </ButtonGroup>
-            <IconButton
-              size="sm"
-              icon={<FaPlus />}
-              aria-label="add new announcement"
-              variant="outline"
-              onClick={insertIndex}
-            />
+              onClick={deleteIndex}
+            >
+              ลบ
+            </Button>
+            <Button colorScheme="green" onClick={onSave} size="sm">
+              บันทึก
+            </Button>
           </div>
         </div>
-        <hr />
         <div
           className="flex w-full flex-col justify-center gap-2 overflow-hidden text-center"
           style={{ height: HEIGHT }}
@@ -345,5 +377,87 @@ export const ReadonlyEditor = ({ value }: ReadonlyEditorProps) => {
     <Slate editor={editor} value={value} onChange={() => {}}>
       <Editable readOnly renderElement={Element} renderLeaf={Leaf} />
     </Slate>
+  )
+}
+
+export const AnnouncementEdit = ({
+  announcement,
+}: {
+  announcement: Announcement
+}) => {
+  const { isOpen: isEditing, onClose, onOpen: onEdit } = useDisclosure()
+
+  const { mutate } = useAnnouncements()
+  const toggleAnnouncementMutation = useMutation(toggleAnnouncement)
+  const toggleShow = async () => {
+    try {
+      mutate(
+        produce((announcements) => {
+          const ann: Announcement = announcements.find(
+            (a: Announcement) => a.id === announcement.id
+          )
+          ann.show = !announcement.show
+        }),
+        false
+      )
+      const { show: newShow } = await toggleAnnouncementMutation(
+        announcement.id,
+        !announcement.show
+      )
+      if (newShow) {
+        toast.success('ประกาศสำเร็จ')
+      } else {
+        toast.success('นำประกาศออกแล้ว')
+      }
+    } catch (e) {
+      onErrorToast(e)
+    }
+  }
+
+  const createAnnouncementMutation = useMutation(createAnnouncement)
+  const insert = async () => {
+    try {
+      const announcementData = await createAnnouncementMutation(
+        createEmptyAnnouncement()
+      )
+      mutate(
+        produce((announcements) => {
+          announcements.push(announcementData)
+        })
+      )
+    } catch (e) {
+      onErrorToast(e)
+    }
+  }
+
+  return isEditing ? (
+    <AnnouncementEditor
+      announcement={announcement}
+      onClose={onClose}
+      key={announcement.id}
+    />
+  ) : (
+    <div
+      className="group/edit relative border-b py-4 last:border-b-0"
+      key={announcement.id}
+    >
+      <div
+        className="flex w-full flex-col justify-center gap-2 overflow-hidden text-center"
+        style={{ height: HEIGHT }}
+      >
+        <ReadonlyEditor value={announcement.value} />
+      </div>
+      <div className="invisible absolute right-0 top-1 flex gap-2 group-hover/edit:visible">
+        <IconButton
+          icon={announcement.show ? <FaEye /> : <FaEyeSlash />}
+          size="sm"
+          onClick={toggleShow}
+        />
+        <IconButton icon={<FaPen />} size="sm" onClick={onEdit} />
+      </div>
+      <div className="invisible absolute bottom-1 right-0 flex gap-2 group-hover/edit:visible">
+        <IconButton icon={<FaPlus />} size="sm" onClick={insert} />
+      </div>
+    </div>
   )
 }

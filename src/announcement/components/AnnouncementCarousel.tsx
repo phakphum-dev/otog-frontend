@@ -1,21 +1,21 @@
 import { Collapse } from '@chakra-ui/transition'
 import { motion } from 'framer-motion'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FaPencilAlt, FaPlus } from 'react-icons/fa'
 
-import { useAnnouncements } from '../queries'
-import { Announcement } from '../types'
+import { createAnnouncement, useAnnouncements } from '../queries'
 import { ReadonlyEditor } from './AnnouncementEditor'
 import { AnnouncementModal } from './AnnouncementModal'
 import { HEIGHT, INTERVAL } from './constants'
-import {
-  AnnouncementProvider,
-  useAnnouncementContext,
-} from './useAnnouncementContext'
 
 import { useUserData } from '@src/context/UserContext'
 import { useDisclosure } from '@src/hooks/useDisclosure'
 import { IconButton } from '@src/ui/IconButton'
+import { Announcement } from '../types'
+import { useMutation } from '@src/hooks/useMutation'
+import { createEmptyAnnouncement } from './utils'
+import produce from 'immer'
+import { onErrorToast } from '@src/hooks/useErrorToast'
 
 const MotionDiv = motion.div
 
@@ -28,43 +28,68 @@ export const AnnouncementCarousel = (props: AnnouncementCarouselProps) => {
   const [show, setShow] = useState(defaultShow)
   const { isAuthenticated, isAdmin } = useUserData()
 
-  const { data } = useAnnouncements()
-  const [announcements, setAnnouncements] = useState<Announcement[]>([])
-  useEffect(() => {
-    if (data) setAnnouncements(data)
-  }, [data])
+  const { data: announcements } = useAnnouncements()
 
   const filteredAnnouncements = useMemo(
-    () => data?.filter((announcements) => announcements.show) ?? [],
-    [data]
+    () => announcements?.filter((announcements) => announcements.show) ?? [],
+    [announcements]
   )
 
+  const hasAnnouncement =
+    isAuthenticated && (filteredAnnouncements.length > 0 || isAdmin)
   useEffect(() => {
-    if (isAuthenticated && (filteredAnnouncements.length > 0 || isAdmin)) {
+    if (hasAnnouncement) {
       setShow(true)
     }
-  }, [isAdmin, isAuthenticated, filteredAnnouncements, defaultShow])
+  }, [hasAnnouncement])
 
-  return (
-    <Collapse in={show}>
-      <AnnouncementProvider
-        value={{ announcements, setAnnouncements, filteredAnnouncements }}
-      >
-        <AnnouncementComponent />
-      </AnnouncementProvider>
+  return hasAnnouncement ? (
+    <Collapse in={hasAnnouncement && show}>
+      <AnnouncementComponent filteredAnnouncements={filteredAnnouncements} />
     </Collapse>
+  ) : (
+    <div className="mt-12" />
   )
 }
 
-const AnnouncementComponent = () => {
+export type AnnouncementComponentProps = {
+  filteredAnnouncements: Announcement[]
+}
+
+const AnnouncementComponent = ({
+  filteredAnnouncements,
+}: AnnouncementComponentProps) => {
   const { isAuthenticated, isAdmin } = useUserData()
-  const {
-    nextShowIndex,
-    filteredAnnouncements,
-    showIndex,
-    announcements,
-    insertIndex,
-  } = useAnnouncementContext()
+
+  const { data: announcements = [] } = useAnnouncements()
+  const { mutate } = useAnnouncements()
+
+  const [showIndex, setIndex] = useState(0)
+
+  const nextShowIndex = useCallback(() => {
+    const newIndex = (showIndex + 1) % filteredAnnouncements.length
+    setIndex(newIndex)
+    const matchedIndex = announcements.findIndex(
+      (announcement) => announcement.id === filteredAnnouncements[newIndex].id
+    )
+    if (matchedIndex !== -1) setIndex(matchedIndex)
+  }, [filteredAnnouncements, showIndex, announcements])
+
+  const createAnnouncementMutation = useMutation(createAnnouncement)
+  const insertIndex = async () => {
+    try {
+      const announcementData = await createAnnouncementMutation(
+        createEmptyAnnouncement()
+      )
+      mutate(
+        produce((announcements) => {
+          announcements.push(announcementData)
+        })
+      )
+    } catch (e) {
+      onErrorToast(e)
+    }
+  }
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
