@@ -50,7 +50,7 @@ export const TaskCard = memo((props: TaskCardProps) => {
     <div className="rounded-lg border shadow-sm">
       <Button
         className={clsx(
-          'justify-between p-2 sm:p-6',
+          'justify-between p-4 py-6 sm:p-6',
           isOpen && 'rounded-b-none'
         )}
         fullWidth
@@ -69,7 +69,7 @@ export const TaskCard = memo((props: TaskCardProps) => {
       </Button>
       <Collapse in={isOpen}>
         <hr />
-        <div className="flex flex-col gap-4 p-2 sm:p-6 sm:pt-4">
+        <div className="flex flex-col gap-4 p-4 sm:p-6 sm:pt-4">
           <div className="flex gap-2">
             <div className="flex-1">
               <Link isExternal href={`${API_HOST}problem/doc/${problem.id}`}>
