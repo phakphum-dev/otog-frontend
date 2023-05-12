@@ -69,11 +69,7 @@ const AnnouncementComponent = ({
   const nextShowIndex = useCallback(() => {
     const newIndex = (showIndex + 1) % filteredAnnouncements.length
     setIndex(newIndex)
-    const matchedIndex = announcements.findIndex(
-      (announcement) => announcement.id === filteredAnnouncements[newIndex].id
-    )
-    if (matchedIndex !== -1) setIndex(matchedIndex)
-  }, [filteredAnnouncements, showIndex, announcements])
+  }, [filteredAnnouncements, showIndex])
 
   const createAnnouncementMutation = useMutation(createAnnouncement)
   const insertIndex = async () => {
