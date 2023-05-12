@@ -56,7 +56,6 @@ You may need to run backend and grader as well
 - cookie consent
 - next.js 13 server component migration
 - automatic rating system
-- code rejudge
 - code sharing
 - improve admin monitoring
 - improve SEO
