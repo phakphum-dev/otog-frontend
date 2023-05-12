@@ -20,17 +20,25 @@ import { Button, ButtonProps } from '@src/ui/Button'
 import { Filter, filters, filterNames } from '@src/problem/filters'
 
 export default function ProblemPage() {
-  const { isAuthenticated } = useUserData()
-  const [filter, setFilter] = useState<Filter>('total')
   return (
     <PageContainer maxSize="md">
       <Head>
         <title>Problem | OTOG</title>
       </Head>
       <AnnouncementCarousel defaultShow={true} />
+      <ProblemContent />
+    </PageContainer>
+  )
+}
+
+export const ProblemContent = () => {
+  const { isAuthenticated } = useUserData()
+  const [filter, setFilter] = useState<Filter>('total')
+  return (
+    <>
       {isAuthenticated && <Buttons setFilter={setFilter} />}
       <ProblemTable filterName={filter} />
-    </PageContainer>
+    </>
   )
 }
 
