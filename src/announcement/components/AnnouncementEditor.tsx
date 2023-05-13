@@ -8,7 +8,6 @@ import {
   FaItalic,
   FaLink,
   FaPen,
-  FaPlus,
   FaUnderline,
 } from 'react-icons/fa'
 import { MdLooks3, MdLooks4, MdLooksOne, MdLooksTwo } from 'react-icons/md'
@@ -40,7 +39,6 @@ import { Button } from '@src/ui/Button'
 import { useDisclosure } from '@src/hooks/useDisclosure'
 import { Announcement } from '../types'
 import {
-  createAnnouncement,
   deleteAnnouncemet,
   toggleAnnouncement,
   updateAnnouncement,
@@ -51,7 +49,6 @@ import { useMutation } from '@src/hooks/useMutation'
 import { toast } from 'react-hot-toast'
 import { onErrorToast } from '@src/hooks/useErrorToast'
 import { useConfirmModal } from '@src/context/ConfirmContext'
-import { createEmptyAnnouncement } from './utils'
 
 type CustomText = {
   text: string
@@ -414,22 +411,6 @@ export const AnnouncementEdit = ({
     }
   }
 
-  const createAnnouncementMutation = useMutation(createAnnouncement)
-  const insert = async () => {
-    try {
-      const announcementData = await createAnnouncementMutation(
-        createEmptyAnnouncement()
-      )
-      mutate(
-        produce((announcements) => {
-          announcements.push(announcementData)
-        })
-      )
-    } catch (e) {
-      onErrorToast(e)
-    }
-  }
-
   return isEditing ? (
     <AnnouncementEditor
       announcement={announcement}
@@ -438,7 +419,7 @@ export const AnnouncementEdit = ({
     />
   ) : (
     <div
-      className="group/edit relative border-b py-4 last:border-b-0"
+      className="relative border-b py-4 last:border-b-0"
       key={announcement.id}
     >
       <div
@@ -447,16 +428,14 @@ export const AnnouncementEdit = ({
       >
         <ReadonlyEditor value={announcement.value} />
       </div>
-      <div className="invisible absolute right-0 top-1 flex gap-2 group-hover/edit:visible">
-        <IconButton
-          icon={announcement.show ? <FaEye /> : <FaEyeSlash />}
-          size="sm"
-          onClick={toggleShow}
-        />
+      <IconButton
+        className="absolute right-0 top-1"
+        icon={announcement.show ? <FaEye /> : <FaEyeSlash />}
+        size="sm"
+        onClick={toggleShow}
+      />
+      <div className="absolute right-10 top-1">
         <IconButton icon={<FaPen />} size="sm" onClick={onEdit} />
-      </div>
-      <div className="invisible absolute bottom-1 right-0 flex gap-2 group-hover/edit:visible">
-        <IconButton icon={<FaPlus />} size="sm" onClick={insert} />
       </div>
     </div>
   )
