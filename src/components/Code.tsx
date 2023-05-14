@@ -124,7 +124,7 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
       onErrorToast(e)
     }
   }
-  const { isAdmin, user } = useUserData()
+  const { user } = useUserData()
 
   return (
     <div className="flex flex-col gap-2">
@@ -163,7 +163,7 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
               language={submission.language}
             />
             <div className="absolute right-2 top-2 flex gap-2">
-              {canShare && (isAdmin || submission.user.id === user?.id) && (
+              {canShare && submission.user.id === user?.id && (
                 <IconButton
                   aria-label="share"
                   icon={submission?.public ? <FaGlobe /> : <FaRegShareSquare />}
