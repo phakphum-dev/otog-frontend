@@ -24,19 +24,21 @@ export default function SubmissionPage() {
       <Head>
         <title>Submission #{submission!.id} | OTOG</title>
       </Head>
-      <TitleLayout>
-        <Title icon={<FaTasks />}>
-          ผลตรวจข้อ{' '}
-          <Link
-            variant="hidden"
-            isExternal
-            href={`${API_HOST}problem/doc/${submission?.problem.id}`}
-          >
-            {submission!.problem.name}
-          </Link>
-        </Title>
-      </TitleLayout>
-      <SubmissionContent submission={submission} />
+      <div className="mt-4 rounded-md p-6 shadow-md">
+        <TitleLayout className="mt-0">
+          <Title icon={<FaTasks />}>
+            ผลตรวจข้อ{' '}
+            <Link
+              variant="hidden"
+              isExternal
+              href={`${API_HOST}problem/doc/${submission?.problem.id}`}
+            >
+              {submission!.problem.name}
+            </Link>
+          </Title>
+        </TitleLayout>
+        <SubmissionContent submission={submission} />
+      </div>
     </PageContainer>
   )
 }

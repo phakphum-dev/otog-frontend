@@ -170,3 +170,10 @@ export function useLatestProblemSubmission(problemId: number) {
 export async function rejudgeProblem(problemId: number) {
   return client.url(`submission/problem/${problemId}/rejudge`).patch()
 }
+
+export async function shareCode(submissionId: number, show = true) {
+  return client
+    .url(`submission/${submissionId}/share`)
+    .patch({ show })
+    .json<Submission>()
+}

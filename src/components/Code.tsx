@@ -3,7 +3,7 @@ import Highlight, { Language, defaultProps } from 'prism-react-renderer'
 import theme from 'prism-react-renderer/themes/vsDark'
 import { useEffect } from 'react'
 import { toast } from 'react-hot-toast'
-import { FaRegShareSquare } from 'react-icons/fa'
+import { FaGlobe, FaRegShareSquare } from 'react-icons/fa'
 
 import { API_HOST, APP_HOST } from '@src/config'
 import { useClipboard } from '@src/hooks/useClipboard'
@@ -27,9 +27,15 @@ import {
 } from '@src/ui/Modal'
 import { ONE_SECOND, toThDate } from '@src/utils/time'
 import { UseDisclosuredReturn } from '@src/hooks/useDisclosure'
+import { useMutation } from '@src/hooks/useMutation'
+import { shareCode } from '@src/submission/queries'
+import { onErrorToast } from '@src/hooks/useErrorToast'
+import produce from 'immer'
+import { useUserData } from '@src/context/UserContext'
 
 export interface CodeModalProps extends UseDisclosuredReturn {
   submissionId: number
+  canShare?: boolean
 }
 
 const language: Record<string, string> = {
@@ -39,7 +45,7 @@ const language: Record<string, string> = {
 }
 
 export const CodeModal = (props: CodeModalProps) => {
-  const { onClose, isOpen, opened, submissionId } = props
+  const { onClose, isOpen, opened, submissionId, canShare } = props
   const { data: submission } = useSubmissionWithSourceCode(
     opened ? submissionId : 0
   )
@@ -63,7 +69,7 @@ export const CodeModal = (props: CodeModalProps) => {
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <SubmissionContent submission={submission} />
+          <SubmissionContent submission={submission} canShare={canShare} />
         </ModalBody>
         <ModalFooter />
       </ModalContent>
@@ -73,10 +79,11 @@ export const CodeModal = (props: CodeModalProps) => {
 
 export interface SubmissionContentProps {
   submission?: SubmissionWithSourceCode
+  canShare?: boolean
 }
 
 export const SubmissionContent = (props: SubmissionContentProps) => {
-  const { submission } = props
+  const { submission, canShare = true } = props
 
   const { onCopy, hasCopied } = useClipboard(submission?.sourceCode ?? '')
   useEffect(() => {
@@ -85,19 +92,39 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
     }
   }, [hasCopied])
 
-  const { onCopy: onLinkCopy, hasCopied: hasLinkCopied } = useClipboard(
+  const { onCopy: onLinkCopy } = useClipboard(
     submission ? `${APP_HOST}submission/${submission.id}` : ''
   )
-  useEffect(() => {
-    if (hasLinkCopied) {
-      toast.success(
-        <div>
-          <b>เปิดการแชร์ (เฉพาะแอดมิน)</b>
-          <p>คัดลอกลิงก์ไปยังคลิปบอร์ดแล้ว</p>
-        </div>
+  const { mutate } = useSubmissionWithSourceCode(submission ? submission.id : 0)
+  const shareCodeMutation = useMutation(shareCode)
+  const onShare = async () => {
+    if (!submission) return
+    try {
+      const { public: isPublic } = await shareCodeMutation(
+        submission.id,
+        !submission.public
       )
+      if (isPublic) {
+        onLinkCopy()
+        toast.success(
+          <div>
+            <b>เปิดการแชร์สำเร็จ</b>
+            <p>คัดลอกลิงก์ไปยังคลิปบอร์ดแล้ว</p>
+          </div>
+        )
+      } else {
+        toast.success('ปิดการแชร์แล้ว')
+      }
+      mutate(
+        produce((submission) => {
+          submission.public = isPublic
+        })
+      )
+    } catch (e) {
+      onErrorToast(e)
     }
-  }, [hasLinkCopied])
+  }
+  const { isAdmin, user } = useUserData()
 
   return (
     <div className="flex flex-col gap-2">
@@ -136,12 +163,14 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
               language={submission.language}
             />
             <div className="absolute right-2 top-2 flex gap-2">
-              <IconButton
-                aria-label="share"
-                icon={<FaRegShareSquare />}
-                size="sm"
-                onClick={onLinkCopy}
-              />
+              {canShare && (isAdmin || submission.user.id === user?.id) && (
+                <IconButton
+                  aria-label="share"
+                  icon={submission?.public ? <FaGlobe /> : <FaRegShareSquare />}
+                  size="sm"
+                  onClick={onShare}
+                />
+              )}
               <IconButton
                 aria-label="copy"
                 icon={<CopyIcon />}

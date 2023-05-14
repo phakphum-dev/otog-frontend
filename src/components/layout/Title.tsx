@@ -1,5 +1,6 @@
 import clsx from 'clsx'
 import { ComponentProps, ReactNode } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 type TitleProps = {
   icon?: ReactNode
@@ -23,8 +24,18 @@ export const Title = ({
   )
 }
 
-export function TitleLayout({ children }: { children?: ReactNode }) {
+export function TitleLayout({
+  children,
+  className,
+}: {
+  children?: ReactNode
+  className?: string
+}) {
   return (
-    <div className="mt-8 mb-4 flex items-end justify-between">{children}</div>
+    <div
+      className={twMerge('mb-4 mt-8 flex items-end justify-between', className)}
+    >
+      {children}
+    </div>
   )
 }

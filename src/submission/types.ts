@@ -16,6 +16,7 @@ export interface Submission {
   contestId: number | null
   status: Status
   language: Language
+  public: boolean
 }
 
 export type SubmissionWithProblem = Submission & {

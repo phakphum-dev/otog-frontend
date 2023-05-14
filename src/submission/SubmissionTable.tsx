@@ -162,7 +162,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
   return (
     <tr className={bg}>
       <Td className="h-16">
-        {user?.id === submission?.user.id || isAdmin ? (
+        {submission.public || user?.id === submission?.user.id || isAdmin ? (
           <Button variant="link" onClick={onCodeModalOpen}>
             {submission?.id}
           </Button>

@@ -266,7 +266,11 @@ export const TaskSubmissionTable = (props: TaskSubmissionTableProps) => {
               <Button variant="link" size="sm" onClick={codeDisclosure.onOpen}>
                 ล่าสุด
               </Button>
-              <CodeModal submissionId={submission.id} {...codeDisclosure} />
+              <CodeModal
+                submissionId={submission.id}
+                {...codeDisclosure}
+                canShare={false}
+              />
             </Td>
             <Td>
               {submission.errmsg ? (
