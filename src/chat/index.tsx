@@ -263,16 +263,18 @@ const OnlineUserModal = (props: OnlineUserModalProps) => {
           <div className="flex flex-col gap-2">
             {onlineUsers ? (
               onlineUsers.map((user) => (
-                <Link
-                  as={NextLink}
-                  key={user.id}
-                  href={`/profile/${user.id}`}
-                  className="max-w-[300px]"
-                  variant="hidden"
-                  onClick={onClose}
-                >
-                  {user.showName}
-                </Link>
+                <div key={user.id} className="flex items-center gap-2">
+                  <div className="h-2 w-2 rounded-full bg-green-400" />
+                  <Link
+                    as={NextLink}
+                    href={`/profile/${user.id}`}
+                    className="max-w-[300px]"
+                    variant="hidden"
+                    onClick={onClose}
+                  >
+                    {user.showName}
+                  </Link>
+                </div>
               ))
             ) : (
               <div className="flex justify-center">
