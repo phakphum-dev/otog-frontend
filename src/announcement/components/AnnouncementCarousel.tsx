@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FaPencilAlt, FaPlus } from 'react-icons/fa'
 
-import { createAnnouncement, useAnnouncements } from '../queries'
+import { useAnnouncements } from '../queries'
 import { ReadonlyEditor } from './AnnouncementEditor'
 import { AnnouncementModal } from './AnnouncementModal'
 import { HEIGHT, INTERVAL } from './constants'
@@ -12,98 +12,79 @@ import { useUserData } from '@src/context/UserContext'
 import { useDisclosure } from '@src/hooks/useDisclosure'
 import { IconButton } from '@src/ui/IconButton'
 import { Announcement } from '../types'
-import { useMutation } from '@src/hooks/useMutation'
-import { createEmptyAnnouncement } from './utils'
-import produce from 'immer'
-import { onErrorToast } from '@src/hooks/useErrorToast'
+import { AnnouncementProvider } from './AnnouncementProvier'
 
 const MotionDiv = motion.div
 
 export interface AnnouncementCarouselProps {
   defaultShow?: boolean
+  contestId?: number
+}
+
+export const AnnouncementComponent = (props: AnnouncementCarouselProps) => {
+  const { defaultShow, contestId } = props
+  return (
+    <AnnouncementProvider value={{ contestId }}>
+      <AnnouncementCarousel defaultShow={defaultShow} />
+    </AnnouncementProvider>
+  )
 }
 
 export const AnnouncementCarousel = (props: AnnouncementCarouselProps) => {
   const { defaultShow = false } = props
   const [show, setShow] = useState(defaultShow)
-  const { isAuthenticated, isAdmin } = useUserData()
+  const { isAdmin } = useUserData()
 
   const { data: announcements } = useAnnouncements()
 
-  const filteredAnnouncements = useMemo(
+  const shownAnnouncements = useMemo(
     () => announcements?.filter((announcements) => announcements.show) ?? [],
     [announcements]
   )
 
-  const hasAnnouncement =
-    isAuthenticated && (filteredAnnouncements.length > 0 || isAdmin)
+  const hasAnnouncement = shownAnnouncements.length > 0 || isAdmin
   useEffect(() => {
-    if (hasAnnouncement) {
-      setShow(true)
-    }
+    setShow(hasAnnouncement)
   }, [hasAnnouncement])
 
   return hasAnnouncement ? (
     <Collapse in={hasAnnouncement && show}>
-      <AnnouncementComponent filteredAnnouncements={filteredAnnouncements} />
+      <AnnouncementCards shownAnnouncements={shownAnnouncements} />
     </Collapse>
   ) : (
     <div className="mt-12" />
   )
 }
 
-export type AnnouncementComponentProps = {
-  filteredAnnouncements: Announcement[]
+export type AnnouncementCardsProps = {
+  shownAnnouncements: Announcement[]
 }
 
-const AnnouncementComponent = ({
-  filteredAnnouncements,
-}: AnnouncementComponentProps) => {
+const AnnouncementCards = ({ shownAnnouncements }: AnnouncementCardsProps) => {
   const { isAuthenticated, isAdmin } = useUserData()
 
   const { data: announcements = [] } = useAnnouncements()
-  const { mutate } = useAnnouncements()
 
   const [showIndex, setIndex] = useState(0)
 
   const nextShowIndex = useCallback(() => {
-    const newIndex = (showIndex + 1) % filteredAnnouncements.length
+    const newIndex = (showIndex + 1) % shownAnnouncements.length
     setIndex(newIndex)
-  }, [filteredAnnouncements, showIndex])
-
-  const createAnnouncementMutation = useMutation(createAnnouncement)
-  const insertIndex = async () => {
-    try {
-      const announcementData = await createAnnouncementMutation(
-        createEmptyAnnouncement()
-      )
-      mutate(
-        produce((announcements) => {
-          announcements.push(announcementData)
-        })
-      )
-    } catch (e) {
-      onErrorToast(e)
-    }
-  }
+  }, [shownAnnouncements, showIndex])
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   useEffect(() => {
-    if (!isOpen && isAuthenticated && filteredAnnouncements.length > 0) {
+    if (!isOpen && isAuthenticated && shownAnnouncements.length > 1) {
       const interval = setInterval(() => nextShowIndex(), INTERVAL)
       return () => clearInterval(interval)
     }
-  }, [isAuthenticated, showIndex, filteredAnnouncements, nextShowIndex, isOpen])
+  }, [isAuthenticated, showIndex, shownAnnouncements, nextShowIndex, isOpen])
   const hasAnnouncements = announcements.length > 0
-  const firstCreate = async () => {
-    await insertIndex()
-    onOpen()
-  }
 
   return (
     <div className="group relative my-8 flex h-[180px] cursor-pointer select-none">
-      {filteredAnnouncements.map((announcement, index, all) => (
+      {shownAnnouncements.map((announcement, index, all) => (
         <MotionDiv
           key={announcement.id}
           variants={{
@@ -124,12 +105,10 @@ const AnnouncementComponent = ({
             className="invisible absolute right-0 top-0 z-10 group-hover:visible"
             aria-label="edit-announcements"
             icon={hasAnnouncements ? <FaPencilAlt /> : <FaPlus />}
-            onClick={hasAnnouncements ? onOpen : firstCreate}
+            onClick={onOpen}
             variant="ghost"
           />
-          {isOpen && hasAnnouncements && (
-            <AnnouncementModal onClose={onClose} isOpen={isOpen} />
-          )}
+          {isOpen && <AnnouncementModal onClose={onClose} isOpen={isOpen} />}
         </>
       )}
     </div>

@@ -3,18 +3,29 @@ import useSWR from 'swr'
 import { Announcement } from './types'
 
 import { client } from '@src/api'
+import { useAnnouncementContext } from './components/AnnouncementProvier'
 
-export async function getAnnouncements() {
-  return client.get('announcement').json<Announcement[]>()
+export function keyAnnouncement(contestId?: number) {
+  return contestId ? `announcement/contest/${contestId}` : 'announcement'
+}
+
+export async function getAnnouncements(contestId?: number) {
+  const url = contestId ? `announcement/contest/${contestId}` : 'announcement'
+  return client.get(url).json<Announcement[]>()
 }
 
 export function useAnnouncements() {
-  return useSWR('announcement', getAnnouncements)
+  const { contestId } = useAnnouncementContext()
+  return useSWR(keyAnnouncement(contestId), () => getAnnouncements(contestId))
 }
 
 type PostAnnouncementBody = Pick<Announcement, 'value'>
-export function createAnnouncement(body: PostAnnouncementBody) {
-  return client.url('announcement').post(body).json<Announcement>()
+export function createAnnouncement(
+  body: PostAnnouncementBody,
+  contestId?: number
+) {
+  const url = contestId ? `announcement/contest/${contestId}` : 'announcement'
+  return client.url(url).post(body).json<Announcement>()
 }
 
 export function deleteAnnouncemet(announcementId: number) {

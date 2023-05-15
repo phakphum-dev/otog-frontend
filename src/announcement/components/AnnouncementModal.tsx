@@ -16,6 +16,7 @@ import { useMutation } from '@src/hooks/useMutation'
 import { createEmptyAnnouncement } from './utils'
 import produce from 'immer'
 import { onErrorToast } from '@src/hooks/useErrorToast'
+import { useAnnouncementContext } from './AnnouncementProvier'
 
 interface AnnouncementModalProps {
   isOpen: boolean
@@ -26,10 +27,12 @@ export const AnnouncementModal = (props: AnnouncementModalProps) => {
   const { data: announcements, mutate } = useAnnouncements()
 
   const createAnnouncementMutation = useMutation(createAnnouncement)
+  const { contestId } = useAnnouncementContext()
   const insert = async () => {
     try {
       const announcementData = await createAnnouncementMutation(
-        createEmptyAnnouncement()
+        createEmptyAnnouncement(),
+        contestId
       )
       mutate(
         produce((announcements) => {

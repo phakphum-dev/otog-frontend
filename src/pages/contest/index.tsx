@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { FaTrophy } from 'react-icons/fa'
 import { mutate } from 'swr'
 
-import { AnnouncementCarousel } from '@src/announcement/components/AnnouncementCarousel'
+import { AnnouncementComponent } from '@src/announcement/components/AnnouncementCarousel'
 import { withSession } from '@src/api/withSession'
 import { PageContainer } from '@src/components/layout/PageContainer'
 import { Title, TitleLayout } from '@src/components/layout/Title'
@@ -20,6 +20,7 @@ import {
   useServerTime,
   useTimer,
 } from '@src/utils/time/useTimer'
+import { getAnnouncements, keyAnnouncement } from '@src/announcement/queries'
 
 export default function ContestPage() {
   const { data: serverTime } = useServerTime()
@@ -108,7 +109,7 @@ export const MidContest = (props: ContestProps) => {
   }, [remaining, contest.id, router])
   return (
     <PageContainer maxSize="md">
-      <AnnouncementCarousel defaultShow={true} />
+      <AnnouncementComponent defaultShow={true} contestId={contest.id} />
       <TitleLayout>
         <Title icon={<FaTrophy />} lineClamp>
           {contest.name}
@@ -154,12 +155,24 @@ export const PostContest = (props: ContestProps) => {
 }
 
 export const getServerSideProps = withSession(async () => {
-  const contest = getCurrentContest()
   const time = getServerTime()
+  const contest = await getCurrentContest()
+  if (contest) {
+    const announcement = getAnnouncements(contest.id)
+    return {
+      props: {
+        fallback: {
+          'contest/now': contest,
+          time: await time,
+          [keyAnnouncement(contest?.id)]: await announcement,
+        },
+      },
+    }
+  }
   return {
     props: {
       fallback: {
-        'contest/now': await contest,
+        'contest/now': contest,
         time: await time,
       },
     },

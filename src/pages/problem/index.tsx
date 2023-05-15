@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react'
 
-import { AnnouncementCarousel } from '@src/announcement/components/AnnouncementCarousel'
+import { AnnouncementComponent } from '@src/announcement/components/AnnouncementCarousel'
 import { getAnnouncements } from '@src/announcement/queries'
 import { withSession } from '@src/api/withSession'
 import { PageContainer } from '@src/components/layout/PageContainer'
@@ -25,7 +25,7 @@ export default function ProblemPage() {
       <Head>
         <title>Problem | OTOG</title>
       </Head>
-      <AnnouncementCarousel defaultShow={true} />
+      <AnnouncementComponent defaultShow={true} />
       <ProblemContent />
     </PageContainer>
   )

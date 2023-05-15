@@ -4,4 +4,5 @@ export interface Announcement {
   id: number
   value: Descendant[]
   show: boolean
+  contestId: number | null
 }
