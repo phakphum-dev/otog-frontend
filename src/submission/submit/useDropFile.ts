@@ -8,7 +8,7 @@ interface UseDropFileOptions {
 }
 
 export function useDropFile({
-  accept = '.c,.cpp,.py',
+  accept = '.c,.cpp,.cc,.py',
 }: UseDropFileOptions = {}) {
   const { acceptedFiles, getRootProps, getInputProps, isDragActive } =
     useDropzone({

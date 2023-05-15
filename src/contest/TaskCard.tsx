@@ -148,7 +148,7 @@ export const ContestFileForm = (props: ContestFileFormProps) => {
           <FileInput
             required
             name="sourceCode"
-            accept=".c,.cpp,.py"
+            accept=".c,.cpp,.cc,.py"
             variant="sm"
             {...fileInputProps}
           />
