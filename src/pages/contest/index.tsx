@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { FaTrophy } from 'react-icons/fa'
 import { mutate } from 'swr'
 
@@ -21,6 +21,7 @@ import {
   useTimer,
 } from '@src/utils/time/useTimer'
 import { getAnnouncements, keyAnnouncement } from '@src/announcement/queries'
+import clsx from 'clsx'
 
 export default function ContestPage() {
   const { data: serverTime } = useServerTime()
@@ -130,6 +131,50 @@ export const MidContest = (props: ContestProps) => {
 
 export const PostContest = (props: ContestProps) => {
   const { contest } = props
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  useEffect(() => {
+    if (!OFFLINE_MODE) return
+    const distanceBetween = (
+      p1x: number,
+      p1y: number,
+      p2x: number,
+      p2y: number
+    ) => {
+      const dx = p1x - p2x
+      const dy = p1y - p2y
+      return Math.sqrt(dx * dx + dy * dy)
+    }
+    const onMouseMove = (event: MouseEvent) => {
+      const button = buttonRef.current
+      if (!button) return
+      const width = button.offsetWidth
+      const height = button.offsetHeight
+      const radius = Math.max(width * 0.75, height * 0.75, 100)
+
+      const parent = button.parentNode as HTMLDivElement
+      const bx = parent.offsetLeft + button.offsetLeft + width / 2
+      const by = parent.offsetTop + button.offsetTop + height / 2
+
+      const dist = distanceBetween(event.clientX, event.clientY, bx, by)
+      const angle = Math.atan2(event.clientY - by, event.clientX - bx)
+
+      const ox = -1 * Math.cos(angle) * Math.max(radius - dist, 0)
+      const oy = -1 * Math.sin(angle) * Math.max(radius - dist, 0)
+
+      const rx = oy / 2
+      const ry = -ox / 2
+
+      button.style.transform = `translate(${ox}px, ${oy}px) rotateX(${rx}deg) rotateY(${ry}deg)`
+      button.style.boxShadow = `0px ${Math.abs(oy)}px ${
+        (Math.abs(oy) / radius) * 40
+      }px rgba(0,0,0,0.15)`
+    }
+    document.addEventListener('mousemove', onMouseMove)
+    return () => {
+      document.removeEventListener('mousedown', onMouseMove)
+    }
+  }, [])
+
   return (
     <PageContainer className="flex">
       <div className="flex flex-1 items-center justify-center">
@@ -137,17 +182,28 @@ export const PostContest = (props: ContestProps) => {
           <h1 className="text-center text-4xl font-bold">
             การแข่งขัน {contest.name} จบลงแล้ว
           </h1>
-          <Button
-            as={NextLink}
-            href={
-              OFFLINE_MODE
-                ? '/easter_egg.gif'
-                : `/contest/history/${contest.id}`
-            }
-            colorScheme="otog"
-          >
-            สรุปผลการแข่งขัน
-          </Button>
+          <div className="relative">
+            <Button
+              style={{
+                transformStyle: 'preserve-3d',
+                transition: 'all 0.1s ease',
+              }}
+              className={clsx(
+                OFFLINE_MODE &&
+                  "cursor-none after:absolute after:left-0 after:top-0 after:-z-10 after:h-full after:w-full after:rounded-md after:bg-otog-200 after:content-[''] after:-translate-z-2"
+              )}
+              ref={buttonRef}
+              as={NextLink}
+              href={
+                OFFLINE_MODE
+                  ? '/easter_egg.gif'
+                  : `/contest/history/${contest.id}`
+              }
+              colorScheme="otog"
+            >
+              สรุปผลการแข่งขัน
+            </Button>
+          </div>
         </div>
       </div>
     </PageContainer>
