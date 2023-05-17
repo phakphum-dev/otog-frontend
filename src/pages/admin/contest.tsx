@@ -48,6 +48,7 @@ import {
 } from '@src/ui/Modal'
 import { Spinner } from '@src/ui/Spinner'
 import { Table, Td, Th } from '@src/ui/Table'
+import { onErrorToast } from '@src/hooks/useErrorToast'
 
 export default function AdminContestPage() {
   const [contestId, setContestId] = useState<number>()
@@ -116,7 +117,8 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
   const { register, handleSubmit, reset } = useForm<UpdataContestData>()
   useEffect(() => {
     if (contest) {
-      reset(contest)
+      const { mode, name, gradingMode } = contest
+      reset({ mode, name, gradingMode })
       setStartDate(new Date(contest.timeStart))
       setEndDate(new Date(contest.timeEnd))
     }
@@ -134,7 +136,9 @@ const EditContestModalButton = (props: EditContestModalButtonProps) => {
       await mutate('contest')
       await mutate(`contest/${contest.id}`)
       editModal.onClose()
-    } catch {}
+    } catch (e) {
+      onErrorToast(e)
+    }
   }
 
   const confirm = useConfirmModal()
