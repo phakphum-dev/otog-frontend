@@ -211,17 +211,17 @@ const AvatarMenu = () => {
   const { url } = useUserSmallAvatar()
   return (
     <Menu>
-      {OFFLINE_MODE && !isAdmin && (
-        <div className="p-2">สวัสดี {user?.showName}</div>
-      )}
-      <MenuButton
-        as={Button}
-        variant="ghost"
-        className="px-2 text-gray-500"
-        rightIcon={<ChevronDownIcon />}
-      >
-        <Avatar src={url} name={user!.showName} />
-      </MenuButton>
+      <div className="flex items-center gap-2">
+        {OFFLINE_MODE && !isAdmin && <span>สวัสดี {user?.showName}</span>}
+        <MenuButton
+          as={Button}
+          variant="ghost"
+          className="px-2 text-gray-500"
+          rightIcon={<ChevronDownIcon />}
+        >
+          <Avatar src={url} name={user!.showName} />
+        </MenuButton>
+      </div>
       {/* fix render menulist on ssr */}
       <MenuList>
         {!OFFLINE_MODE && (
