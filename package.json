@@ -60,7 +60,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
-    "@trivago/prettier-plugin-sort-imports": "^3.1.1",
+    "@trivago/prettier-plugin-sort-imports": "^4.1.1",
     "@types/chart.js": "^2.9.32",
     "@types/chartjs-plugin-annotation": "^0.5.2",
     "@types/cookie": "^0.4.1",
