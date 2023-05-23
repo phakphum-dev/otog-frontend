@@ -106,14 +106,4 @@ export const getServerSideProps = withSession(async (session) => {
     }
   }
   return { props: {} }
-  // const serverSideCookies = getServerSideCookies(context)
-  // if (serverSideCookies.props.accessToken) {
-  //   return {
-  //     redirect: {
-  //       permanent: false,
-  //       destination: OFFLINE_MODE ? '/contest' : '/problem',
-  //     },
-  //   }
-  // }
-  // return serverSideCookies
 })
