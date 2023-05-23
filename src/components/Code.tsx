@@ -14,6 +14,7 @@ import {
   SubmissionWithSourceCode,
 } from '@src/submission/types'
 import { IconButton } from '@src/ui/IconButton'
+import { Button } from '@src/ui/Button'
 import { Link } from '@src/ui/Link'
 import {
   Modal,
@@ -32,6 +33,7 @@ import { shareCode } from '@src/submission/queries'
 import { onErrorToast } from '@src/hooks/useErrorToast'
 import produce from 'immer'
 import { useUserData } from '@src/context/UserContext'
+import { useDisclosure } from '@src/hooks/useDisclosure'
 
 export interface CodeModalProps extends UseDisclosuredReturn {
   submissionId: number
@@ -124,7 +126,9 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
       onErrorToast(e)
     }
   }
-  const { user } = useUserData()
+  const errorDisclosure = useDisclosure()
+
+  const { user, isAdmin } = useUserData()
 
   return (
     <div className="flex flex-col gap-2">
@@ -132,7 +136,18 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
         {submission ? (
           <>
             <div>
-              ผลตรวจ: <code>{submission.result}</code>
+              ผลตรวจ:{' '}
+              {submission.errmsg &&
+              (isAdmin || user?.id === submission.user.id) ? (
+                <>
+                  <Button variant="link" onClick={errorDisclosure.onOpen}>
+                    {submission.result}
+                  </Button>
+                  <ErrorModal {...errorDisclosure} submission={submission} />
+                </>
+              ) : (
+                <code>{submission.result}</code>
+              )}
             </div>
             <div>คะแนน: {submission.score}</div>
             <div>ภาษา: {language[submission.language]}</div>

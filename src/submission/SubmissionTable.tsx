@@ -22,6 +22,7 @@ import { Spinner } from '@src/ui/Spinner'
 import { Table, Td, Th } from '@src/ui/Table'
 import { Tooltip } from '@src/ui/Tooltip'
 import { ONE_SECOND, toThDate } from '@src/utils/time'
+import clsx from 'clsx'
 
 export const SubmissionTable = () => {
   const submissionsResponse = useSubmissions()
@@ -89,7 +90,7 @@ export const InfiniteSubmissionTable = (props: SubmissionTableBaseProps) => {
             <Th>#</Th>
             <Th>ชื่อ</Th>
             <Th>ข้อ</Th>
-            <Th>ผลตรวจ</Th>
+            <Th>คะแนน</Th>
             <Th>เวลารวม</Th>
             {/* <Th>คะแนน</Th> */}
           </tr>
@@ -160,66 +161,64 @@ const SubmissionRow = (props: SubmissionRowProps) => {
     return null
   }
   return (
-    <tr className={bg}>
-      <Td className="h-16">
-        {submission.public || user?.id === submission?.user.id || isAdmin ? (
-          <Button variant="link" onClick={onCodeModalOpen}>
-            {submission?.id}
-          </Button>
-        ) : (
-          <Tooltip placement="top" label={toThDate(submission.creationDate)}>
-            <div className="px-1">{submission.id}</div>
-          </Tooltip>
+    <NextLink href={`/submission/${submission.id}`} passHref legacyBehavior>
+      <tr
+        className={clsx(
+          bg,
+          'cursor-pointer'
         )}
-      </Td>
-      <Td>
-        <NextLink
-          href={`/profile/${submission.user.id}`}
-          passHref
-          legacyBehavior
-        >
-          <Link className="line-clamp-3 w-36 break-all" variant="hidden">
-            {submission.user.showName}
-          </Link>
-        </NextLink>
-      </Td>
-      <Td>
-        <Link
-          isExternal
-          href={`${API_HOST}problem/doc/${submission.problem.id}`}
-          variant="hidden"
-        >
-          {submission.problem.name}
-        </Link>
-      </Td>
-      <Td>
-        {submission.errmsg && (isAdmin || user?.id === submission.user.id) ? (
-          <>
-            <Button variant="link" onClick={errorDisclosure.onOpen}>
-              {submission.result}
+      >
+        <Td className="h-16">
+          {submission.public || user?.id === submission?.user.id || isAdmin ? (
+            <Button variant="link" onClick={onCodeModalOpen}>
+              {submission?.id}
             </Button>
-            <ErrorModal {...errorDisclosure} submission={submission} />
-          </>
-        ) : isGrading(submission) ? (
-          <div className="flex items-center gap-2">
-            <Spinner size="xs" />
-            <div>{submission.result}</div>
-          </div>
-        ) : isGraded(submission) && !submission.errmsg ? (
-          <div className="flex flex-wrap">
-            {splitCases(submission.result).map((token, index) => (
-              <code key={index}>{token}</code>
-            ))}
-          </div>
-        ) : (
-          submission.result
-        )}
-      </Td>
-      <Td className="whitespace-nowrap">
-        {submission.timeUsed / ONE_SECOND} s
-      </Td>
-      {/* <Td>{submission.score}</Td> */}
-    </tr>
+          ) : (
+            <Tooltip placement="top" label={toThDate(submission.creationDate)}>
+              <div className="px-1">{submission.id}</div>
+            </Tooltip>
+          )}
+        </Td>
+        <Td>
+          <NextLink
+            href={`/profile/${submission.user.id}`}
+            passHref
+            legacyBehavior
+          >
+            <Link className="line-clamp-3 w-36 break-all" variant="hidden">
+              {submission.user.showName}
+            </Link>
+          </NextLink>
+        </Td>
+        <Td>
+          <NextLink
+            href={`/problem/${submission.problem.id}`}
+            passHref
+            legacyBehavior
+          >
+            <Link className="line-clamp-3 w-36 break-all" variant="hidden">
+              {submission.problem.name}
+            </Link>
+          </NextLink>
+        </Td>
+        <Td>
+          {isGrading(submission) ? (
+            <div className="flex items-center gap-2">
+              <Spinner size="xs" />
+              <div>{submission.result}</div>
+            </div>
+          ) : isGraded(submission) && !submission.errmsg ? (
+            submission.score
+          ) : (
+            submission.result
+          )}
+        </Td>
+        <Td className="whitespace-nowrap">
+          {submission.timeUsed / ONE_SECOND} s
+        </Td>
+        {/* <Td>{submission.score}</Td> */}
+      </tr>
+    </NextLink>
   )
 }
 
