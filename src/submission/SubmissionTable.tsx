@@ -1,12 +1,9 @@
 import NextLink from 'next/link'
-import { Dispatch, SetStateAction, memo, useEffect, useState } from 'react'
+import { memo, useEffect } from 'react'
 
-import { CodeModal, ErrorModal } from '../components/Code'
 import { SubmissionWithProblem } from './types'
 
-import { API_HOST } from '@src/config'
 import { useUserData } from '@src/context/UserContext'
-import { useDisclosure, useDisclosured } from '@src/hooks/useDisclosure'
 import { useOnScreen } from '@src/hooks/useOnScreen'
 import {
   useAllSubmissions,
@@ -16,7 +13,6 @@ import {
 } from '@src/submission/queries'
 import { LatestSubmission } from '@src/submission/submit/LatestSubmission'
 import { isGraded, isGrading, getBgColor } from '@src/theme/useStatusColor'
-import { Button } from '@src/ui/Button'
 import { Link } from '@src/ui/Link'
 import { Spinner } from '@src/ui/Spinner'
 import { Table, Td, Th } from '@src/ui/Table'
@@ -65,8 +61,6 @@ interface SubmissionTableBaseProps {
 
 export const InfiniteSubmissionTable = (props: SubmissionTableBaseProps) => {
   const { submissionsList, loadMore, hasMore = false } = props
-  const codeDisclosure = useDisclosured()
-  const [submissionId, setSubmissionId] = useState<number>(0)
   const { ref, isIntersecting } = useOnScreen()
   useEffect(() => {
     if (isIntersecting && hasMore) {
@@ -102,8 +96,6 @@ export const InfiniteSubmissionTable = (props: SubmissionTableBaseProps) => {
                 <SubmissionRows
                   key={submissions[0].id}
                   submissions={submissions}
-                  onOpen={codeDisclosure.onOpen}
-                  setSubmissionId={setSubmissionId}
                 />
               )
           )}
@@ -114,17 +106,11 @@ export const InfiniteSubmissionTable = (props: SubmissionTableBaseProps) => {
           <Spinner size="lg" />
         </div>
       )}
-      <CodeModal submissionId={submissionId} {...codeDisclosure} />
     </div>
   )
 }
 
-interface ModalSubmissionProps {
-  onOpen: () => void
-  setSubmissionId: Dispatch<SetStateAction<number>>
-}
-
-interface SubmissionRowsProps extends ModalSubmissionProps {
+interface SubmissionRowsProps {
   submissions: SubmissionWithProblem[]
 }
 
@@ -139,87 +125,80 @@ const SubmissionRows = memo((props: SubmissionRowsProps) => {
   )
 })
 
-interface SubmissionRowProps extends ModalSubmissionProps {
+interface SubmissionRowProps {
   submission: SubmissionWithProblem
 }
 
 const SubmissionRow = (props: SubmissionRowProps) => {
-  const { submission: initialData, onOpen, setSubmissionId } = props
+  const { submission: initialData } = props
   const { data: submission } = useSubmissionRow(initialData)
 
-  const onCodeModalOpen = () => {
-    onOpen()
-    setSubmissionId(submission?.id ?? 0)
-  }
-
-  const errorDisclosure = useDisclosure()
-
   const { user, isAdmin } = useUserData()
-  const bg = getBgColor(submission, true)
+  const bg = getBgColor(submission)
 
   if (!submission) {
     return null
   }
-  return (
-    <NextLink href={`/submission/${submission.id}`} passHref legacyBehavior>
-      <tr
-        className={clsx(
-          bg,
-          'cursor-pointer'
+
+  const accessible =
+    submission.public || user?.id === submission?.user.id || isAdmin
+
+  const SubmissionElement = (
+    <tr className={clsx(accessible && bg, accessible && 'cursor-pointer')}>
+      <Td className="h-16">
+        <Tooltip placement="top" label={toThDate(submission.creationDate)}>
+          <div className="px-1">{submission.id}</div>
+        </Tooltip>
+      </Td>
+      <Td>
+        <NextLink
+          href={`/profile/${submission.user.id}`}
+          passHref
+          legacyBehavior
+        >
+          <Link className="line-clamp-3 w-36 break-all" variant="hidden">
+            {submission.user.showName}
+          </Link>
+        </NextLink>
+      </Td>
+      <Td>
+        <NextLink
+          href={`/problem/${submission.problem.id}`}
+          passHref
+          legacyBehavior
+        >
+          <Link className="line-clamp-3 w-36 break-all" variant="hidden">
+            {submission.problem.name}
+          </Link>
+        </NextLink>
+      </Td>
+      <Td>
+        {isGrading(submission) ? (
+          <div className="flex items-center gap-2">
+            <Spinner size="xs" />
+            <div>{submission.result}</div>
+          </div>
+        ) : isGraded(submission) && !submission.errmsg ? (
+          submission.score
+        ) : (
+          submission.result
         )}
-      >
-        <Td className="h-16">
-          {submission.public || user?.id === submission?.user.id || isAdmin ? (
-            <Button variant="link" onClick={onCodeModalOpen}>
-              {submission?.id}
-            </Button>
-          ) : (
-            <Tooltip placement="top" label={toThDate(submission.creationDate)}>
-              <div className="px-1">{submission.id}</div>
-            </Tooltip>
-          )}
-        </Td>
-        <Td>
-          <NextLink
-            href={`/profile/${submission.user.id}`}
-            passHref
-            legacyBehavior
-          >
-            <Link className="line-clamp-3 w-36 break-all" variant="hidden">
-              {submission.user.showName}
-            </Link>
-          </NextLink>
-        </Td>
-        <Td>
-          <NextLink
-            href={`/problem/${submission.problem.id}`}
-            passHref
-            legacyBehavior
-          >
-            <Link className="line-clamp-3 w-36 break-all" variant="hidden">
-              {submission.problem.name}
-            </Link>
-          </NextLink>
-        </Td>
-        <Td>
-          {isGrading(submission) ? (
-            <div className="flex items-center gap-2">
-              <Spinner size="xs" />
-              <div>{submission.result}</div>
-            </div>
-          ) : isGraded(submission) && !submission.errmsg ? (
-            submission.score
-          ) : (
-            submission.result
-          )}
-        </Td>
-        <Td className="whitespace-nowrap">
-          {submission.timeUsed / ONE_SECOND} s
-        </Td>
-        {/* <Td>{submission.score}</Td> */}
-      </tr>
-    </NextLink>
+      </Td>
+      <Td className="whitespace-nowrap">
+        {submission.timeUsed / ONE_SECOND} s
+      </Td>
+      {/* <Td>{submission.score}</Td> */}
+    </tr>
   )
+
+  if (accessible) {
+    return (
+      <NextLink href={`/submission/${submission.id}`} passHref legacyBehavior>
+        {SubmissionElement}
+      </NextLink>
+    )
+  }
+  return SubmissionElement
 }
 
 export function splitCases(result: string) {

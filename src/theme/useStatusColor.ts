@@ -1,9 +1,6 @@
 import { Submission } from '@src/submission/types'
 
-export function getBgColor(
-  submission: Submission | undefined | null,
-  exceptReject = false
-) {
+export function getBgColor(submission: Submission | undefined | null) {
   if (submission) {
     if (submission.status === 'accept') {
       return 'bg-accept-50 dark:bg-accept-900 hover:bg-accept-100 active:bg-accept-200 dark:hover:bg-accept-800 active:dark:bg-accept-700'
