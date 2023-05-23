@@ -1,12 +1,9 @@
 import NextLink from 'next/link'
-import { Dispatch, SetStateAction, memo, useEffect, useState } from 'react'
+import { memo, useEffect } from 'react'
 
-import { CodeModal, ErrorModal } from '../components/Code'
 import { SubmissionWithProblem } from './types'
 
-import { API_HOST } from '@src/config'
 import { useUserData } from '@src/context/UserContext'
-import { useDisclosure, useDisclosured } from '@src/hooks/useDisclosure'
 import { useOnScreen } from '@src/hooks/useOnScreen'
 import {
   useAllSubmissions,
@@ -16,12 +13,12 @@ import {
 } from '@src/submission/queries'
 import { LatestSubmission } from '@src/submission/submit/LatestSubmission'
 import { isGraded, isGrading, getBgColor } from '@src/theme/useStatusColor'
-import { Button } from '@src/ui/Button'
 import { Link } from '@src/ui/Link'
 import { Spinner } from '@src/ui/Spinner'
 import { Table, Td, Th } from '@src/ui/Table'
 import { Tooltip } from '@src/ui/Tooltip'
 import { ONE_SECOND, toThDate } from '@src/utils/time'
+import clsx from 'clsx'
 
 export const SubmissionTable = () => {
   const submissionsResponse = useSubmissions()
@@ -64,8 +61,6 @@ interface SubmissionTableBaseProps {
 
 export const InfiniteSubmissionTable = (props: SubmissionTableBaseProps) => {
   const { submissionsList, loadMore, hasMore = false } = props
-  const codeDisclosure = useDisclosured()
-  const [submissionId, setSubmissionId] = useState<number>(0)
   const { ref, isIntersecting } = useOnScreen()
   useEffect(() => {
     if (isIntersecting && hasMore) {
@@ -89,7 +84,7 @@ export const InfiniteSubmissionTable = (props: SubmissionTableBaseProps) => {
             <Th>#</Th>
             <Th>ชื่อ</Th>
             <Th>ข้อ</Th>
-            <Th>ผลตรวจ</Th>
+            <Th>คะแนน</Th>
             <Th>เวลารวม</Th>
             {/* <Th>คะแนน</Th> */}
           </tr>
@@ -101,8 +96,6 @@ export const InfiniteSubmissionTable = (props: SubmissionTableBaseProps) => {
                 <SubmissionRows
                   key={submissions[0].id}
                   submissions={submissions}
-                  onOpen={codeDisclosure.onOpen}
-                  setSubmissionId={setSubmissionId}
                 />
               )
           )}
@@ -113,17 +106,11 @@ export const InfiniteSubmissionTable = (props: SubmissionTableBaseProps) => {
           <Spinner size="lg" />
         </div>
       )}
-      <CodeModal submissionId={submissionId} {...codeDisclosure} />
     </div>
   )
 }
 
-interface ModalSubmissionProps {
-  onOpen: () => void
-  setSubmissionId: Dispatch<SetStateAction<number>>
-}
-
-interface SubmissionRowsProps extends ModalSubmissionProps {
+interface SubmissionRowsProps {
   submissions: SubmissionWithProblem[]
 }
 
@@ -138,39 +125,30 @@ const SubmissionRows = memo((props: SubmissionRowsProps) => {
   )
 })
 
-interface SubmissionRowProps extends ModalSubmissionProps {
+interface SubmissionRowProps {
   submission: SubmissionWithProblem
 }
 
 const SubmissionRow = (props: SubmissionRowProps) => {
-  const { submission: initialData, onOpen, setSubmissionId } = props
+  const { submission: initialData } = props
   const { data: submission } = useSubmissionRow(initialData)
 
-  const onCodeModalOpen = () => {
-    onOpen()
-    setSubmissionId(submission?.id ?? 0)
-  }
-
-  const errorDisclosure = useDisclosure()
-
   const { user, isAdmin } = useUserData()
-  const bg = getBgColor(submission, true)
+  const bg = getBgColor(submission)
 
   if (!submission) {
     return null
   }
-  return (
-    <tr className={bg}>
+
+  const accessible =
+    submission.public || user?.id === submission?.user.id || isAdmin
+
+  const SubmissionElement = (
+    <tr className={clsx(accessible && bg, accessible && 'cursor-pointer')}>
       <Td className="h-16">
-        {submission.public || user?.id === submission?.user.id || isAdmin ? (
-          <Button variant="link" onClick={onCodeModalOpen}>
-            {submission?.id}
-          </Button>
-        ) : (
-          <Tooltip placement="top" label={toThDate(submission.creationDate)}>
-            <div className="px-1">{submission.id}</div>
-          </Tooltip>
-        )}
+        <Tooltip placement="top" label={toThDate(submission.creationDate)}>
+          <div className="px-1">{submission.id}</div>
+        </Tooltip>
       </Td>
       <Td>
         <NextLink
@@ -184,33 +162,24 @@ const SubmissionRow = (props: SubmissionRowProps) => {
         </NextLink>
       </Td>
       <Td>
-        <Link
-          isExternal
-          href={`${API_HOST}problem/doc/${submission.problem.id}`}
-          variant="hidden"
+        <NextLink
+          href={`/problem/${submission.problem.id}`}
+          passHref
+          legacyBehavior
         >
-          {submission.problem.name}
-        </Link>
+          <Link className="line-clamp-3 w-36 break-all" variant="hidden">
+            {submission.problem.name}
+          </Link>
+        </NextLink>
       </Td>
       <Td>
-        {submission.errmsg && (isAdmin || user?.id === submission.user.id) ? (
-          <>
-            <Button variant="link" onClick={errorDisclosure.onOpen}>
-              {submission.result}
-            </Button>
-            <ErrorModal {...errorDisclosure} submission={submission} />
-          </>
-        ) : isGrading(submission) ? (
+        {isGrading(submission) ? (
           <div className="flex items-center gap-2">
             <Spinner size="xs" />
             <div>{submission.result}</div>
           </div>
         ) : isGraded(submission) && !submission.errmsg ? (
-          <div className="flex flex-wrap">
-            {splitCases(submission.result).map((token, index) => (
-              <code key={index}>{token}</code>
-            ))}
-          </div>
+          submission.score
         ) : (
           submission.result
         )}
@@ -221,6 +190,15 @@ const SubmissionRow = (props: SubmissionRowProps) => {
       {/* <Td>{submission.score}</Td> */}
     </tr>
   )
+
+  if (accessible) {
+    return (
+      <NextLink href={`/submission/${submission.id}`} passHref legacyBehavior>
+        {SubmissionElement}
+      </NextLink>
+    )
+  }
+  return SubmissionElement
 }
 
 export function splitCases(result: string) {

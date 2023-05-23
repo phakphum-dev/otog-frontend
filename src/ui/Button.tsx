@@ -41,7 +41,7 @@ const buttonStyles = tv({
       solid: ' ',
       outline: 'border border-current',
       ghost: 'bg-transparent',
-      link: 'hover:underline px-0',
+      link: 'hover:underline px-0 h-auto',
     },
     fullWidth: { true: 'w-full' },
     rounded: { true: 'rounded-full' },
