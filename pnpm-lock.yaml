@@ -53,8 +53,8 @@ dependencies:
     specifier: ^3.3.3
     version: 3.3.3
   eslint-config-prettier:
-    specifier: ^7.2.0
-    version: 7.2.0(eslint@7.32.0)
+    specifier: ^8.8.0
+    version: 8.8.0(eslint@7.32.0)
   firebase:
     specifier: ^8.10.1
     version: 8.10.1
@@ -104,8 +104,8 @@ dependencies:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
   react-dropzone:
-    specifier: ^11.5.1
-    version: 11.7.1(react@18.2.0)
+    specifier: ^14.2.3
+    version: 14.2.3(react@18.2.0)
   react-easy-crop:
     specifier: ^3.3.2
     version: 3.5.3(react-dom@18.2.0)(react@18.2.0)
@@ -134,8 +134,8 @@ dependencies:
     specifier: ^4.1.2
     version: 4.6.1
   swr:
-    specifier: 2.0.0-rc.0
-    version: 2.0.0-rc.0(react@18.2.0)
+    specifier: 2.1.5
+    version: 2.1.5(react@18.2.0)
   tailwind-merge:
     specifier: ^1.12.0
     version: 1.12.0
@@ -203,7 +203,7 @@ devDependencies:
     version: 7.32.0
   eslint-plugin-prettier:
     specifier: ^3.3.1
-    version: 3.4.1(eslint-config-prettier@7.2.0)(eslint@7.32.0)(prettier@2.8.8)
+    version: 3.4.1(eslint-config-prettier@8.8.0)(eslint@7.32.0)(prettier@2.8.8)
   eslint-plugin-react:
     specifier: ^7.22.0
     version: 7.32.2(eslint@7.32.0)
@@ -1489,7 +1489,7 @@ packages:
     resolution: {integrity: sha512-6hIHBSV+ZVehf9dcKZLT7p5PEKHGhDwky2k8RKkmOvUoYP3S+dXsKupyZpqx5apjd9f+php4vXk4LuS+ADsrWw==}
     dependencies:
       '@motionone/utils': 10.15.1
-      tslib: 2.4.0
+      tslib: 2.5.0
     dev: false
 
   /@motionone/generators@10.15.1:
@@ -4044,15 +4044,15 @@ packages:
       source-map: 0.6.1
     dev: true
 
-  /eslint-config-prettier@7.2.0(eslint@7.32.0):
-    resolution: {integrity: sha512-rV4Qu0C3nfJKPOAhFujFxB7RMP+URFyQqqOZW9DMRD7ZDTFyjaIlETU3xzHELt++4ugC0+Jm084HQYkkJe+Ivg==}
+  /eslint-config-prettier@8.8.0(eslint@7.32.0):
+    resolution: {integrity: sha512-wLbQiFre3tdGgpDv67NQKnJuTlcUVYHas3k+DZCc2U2BadthoEY4B7hLPvAxaqdyOGCzuLfii2fqGph10va7oA==}
     hasBin: true
     peerDependencies:
       eslint: '>=7.0.0'
     dependencies:
       eslint: 7.32.0
 
-  /eslint-plugin-prettier@3.4.1(eslint-config-prettier@7.2.0)(eslint@7.32.0)(prettier@2.8.8):
+  /eslint-plugin-prettier@3.4.1(eslint-config-prettier@8.8.0)(eslint@7.32.0)(prettier@2.8.8):
     resolution: {integrity: sha512-htg25EUYUeIhKHXjOinK4BgCcDwtLHjqaxCDsMy5nbnUMkKFvIhMVCp+5GFUXQ4Nr8lBsPqtGAqBenbpFqAA2g==}
     engines: {node: '>=6.0.0'}
     peerDependencies:
@@ -4064,7 +4064,7 @@ packages:
         optional: true
     dependencies:
       eslint: 7.32.0
-      eslint-config-prettier: 7.2.0(eslint@7.32.0)
+      eslint-config-prettier: 8.8.0(eslint@7.32.0)
       prettier: 2.8.8
       prettier-linter-helpers: 1.0.0
     dev: true
@@ -4296,9 +4296,9 @@ packages:
     dependencies:
       flat-cache: 3.0.4
 
-  /file-selector@0.4.0:
-    resolution: {integrity: sha512-iACCiXeMYOvZqlF1kTiYINzgepRBymz1wwjiuup9u9nayhb6g4fSwiyJ/6adli+EPwrWtpgQAh2PoS7HukEGEg==}
-    engines: {node: '>= 10'}
+  /file-selector@0.6.0:
+    resolution: {integrity: sha512-QlZ5yJC0VxHxQQsQhXvBaC7VRJ2uaxTf+Tfpu4Z/OcVQJVpZO+DGU0rkoVW5ce2SccxugvpBJoMvUs59iILYdw==}
+    engines: {node: '>= 12'}
     dependencies:
       tslib: 2.5.0
     dev: false
@@ -6331,14 +6331,14 @@ packages:
       react: 18.2.0
       scheduler: 0.23.0
 
-  /react-dropzone@11.7.1(react@18.2.0):
-    resolution: {integrity: sha512-zxCMwhfPy1olUEbw3FLNPLhAm/HnaYH5aELIEglRbqabizKAdHs0h+WuyOpmA+v1JXn0++fpQDdNfUagWt5hJQ==}
+  /react-dropzone@14.2.3(react@18.2.0):
+    resolution: {integrity: sha512-O3om8I+PkFKbxCukfIR3QAGftYXDZfOE2N1mr/7qebQJHs7U+/RSL/9xomJNpRg9kM5h9soQSdf0Gc7OHF5Fug==}
     engines: {node: '>= 10.13'}
     peerDependencies:
-      react: '>= 16.8'
+      react: '>= 16.8 || 18.0.0'
     dependencies:
       attr-accept: 2.2.2
-      file-selector: 0.4.0
+      file-selector: 0.6.0
       prop-types: 15.8.1
       react: 18.2.0
     dev: false
@@ -6878,9 +6878,8 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  /swr@2.0.0-rc.0(react@18.2.0):
-    resolution: {integrity: sha512-QOp+4Cqnb/uuLKeuRDh7aT+ws6wSWWKPqfyIpBXK8DM3IugOYeLO5v+390I0p1MIfRd0CQlAIJZBEgmHaTfDuA==}
-    engines: {pnpm: '7'}
+  /swr@2.1.5(react@18.2.0):
+    resolution: {integrity: sha512-/OhfZMcEpuz77KavXST5q6XE9nrOBOVcBLWjMT+oAE/kQHyE3PASrevXCtQDZ8aamntOfFkbVJp7Il9tNBQWrw==}
     peerDependencies:
       react: ^16.11.0 || ^17.0.0 || ^18.0.0
     dependencies:
