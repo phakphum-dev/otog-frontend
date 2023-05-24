@@ -1,18 +1,16 @@
 import { useEffect } from 'react'
-import { useDropzone } from 'react-dropzone'
+import { Accept, useDropzone } from 'react-dropzone'
 
 import { useFileInput } from '@src/hooks/useFileInput'
 
-interface UseDropFileOptions {
-  accept?: string
+const ACCEPTS: Accept = {
+  'text/plain': ['.c', '.cc', '.cpp', '.py'],
 }
 
-export function useDropFile({
-  accept = '.c,.cpp,.cc,.py',
-}: UseDropFileOptions = {}) {
+export function useDropFile() {
   const { acceptedFiles, getRootProps, getInputProps, isDragActive } =
     useDropzone({
-      accept,
+      accept: ACCEPTS,
       multiple: false,
     })
 
