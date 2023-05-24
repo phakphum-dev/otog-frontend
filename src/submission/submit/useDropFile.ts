@@ -12,6 +12,7 @@ export function useDropFile() {
     useDropzone({
       accept: ACCEPTS,
       multiple: false,
+      noClick: true,
     })
 
   const draggedFile = acceptedFiles[0]
