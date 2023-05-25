@@ -12,7 +12,12 @@ import {
   useSubmissions,
 } from '@src/submission/queries'
 import { LatestSubmission } from '@src/submission/submit/LatestSubmission'
-import { isGraded, isGrading, getBgColor } from '@src/theme/useStatusColor'
+import {
+  isGraded,
+  isGrading,
+  getBgColor,
+  getBgHoveredColor,
+} from '@src/theme/useStatusColor'
 import { Link } from '@src/ui/Link'
 import { Spinner } from '@src/ui/Spinner'
 import { Table, Td, Th } from '@src/ui/Table'
@@ -135,6 +140,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
 
   const { user, isAdmin } = useUserData()
   const bg = getBgColor(submission)
+  const bgHovered = getBgHoveredColor(submission)
 
   if (!submission) {
     return null
@@ -144,7 +150,7 @@ const SubmissionRow = (props: SubmissionRowProps) => {
     submission.public || user?.id === submission?.user.id || isAdmin
 
   const SubmissionElement = (
-    <tr className={clsx(accessible && bg, accessible && 'cursor-pointer')}>
+    <tr className={clsx(bg, accessible && bgHovered)}>
       <Td className="h-16">
         <Tooltip placement="top" label={toThDate(submission.creationDate)}>
           <div className="px-1">{submission.id}</div>
