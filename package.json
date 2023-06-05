@@ -49,7 +49,7 @@
     "scroll-into-view-if-needed": "^3.0.10",
     "slate": "^0.94.1",
     "slate-history": "^0.93.0",
-    "slate-react": "^0.75.0",
+    "slate-react": "^0.95.0",
     "socket.io-client": "^4.1.2",
     "swr": "2.1.5",
     "tailwind-merge": "^1.12.0",
