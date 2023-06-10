@@ -9,7 +9,10 @@ services:
       - 3000:3000
     networks:
       - otog-network
+      - api-gateway
 
 networks:
   otog-network:
     name: otog-network
+  api-gateway:
+    external: true
