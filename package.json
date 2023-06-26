@@ -27,7 +27,7 @@
     "eslint-config-prettier": "^8.8.0",
     "firebase": "^8.10.1",
     "focus-visible": "^5.2.0",
-    "framer-motion": "^7.6.1",
+    "framer-motion": "^10.12.17",
     "immer": "^9.0.12",
     "is-hotkey": "^0.2.0",
     "jwt-decode": "^3.1.2",
