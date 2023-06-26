@@ -128,8 +128,8 @@ dependencies:
     specifier: ^0.93.0
     version: 0.93.0(slate@0.94.1)
   slate-react:
-    specifier: ^0.75.0
-    version: 0.75.0(react-dom@18.2.0)(react@18.2.0)(slate@0.94.1)
+    specifier: ^0.97.1
+    version: 0.97.1(react-dom@18.2.0)(react@18.2.0)(slate@0.94.1)
   socket.io-client:
     specifier: ^4.1.2
     version: 4.6.1
@@ -1426,6 +1426,10 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
+
+  /@juggle/resize-observer@3.4.0:
+    resolution: {integrity: sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==}
+    dev: false
 
   /@kurkle/color@0.3.2:
     resolution: {integrity: sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==}
@@ -6629,13 +6633,14 @@ packages:
       slate: 0.94.1
     dev: false
 
-  /slate-react@0.75.0(react-dom@18.2.0)(react@18.2.0)(slate@0.94.1):
-    resolution: {integrity: sha512-zo2+n+BQ+/Q33JU2r6Yyb+NEo7kOfZ5deMm8bFQrp5gw++Mq2OOz+W+v7lwRD7rZDp+SREXBMMGCYhQ0shWZmw==}
+  /slate-react@0.97.1(react-dom@18.2.0)(react@18.2.0)(slate@0.94.1):
+    resolution: {integrity: sha512-+1LMIVusBwduzBOsoX0u6ah7qgpOIlVOdbVpUrowSc5uZTXViBvAQnvSD6edOjtRUI62IFtPSvDAoHRm+E55+g==}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
       slate: '>=0.65.3'
     dependencies:
+      '@juggle/resize-observer': 3.4.0
       '@types/is-hotkey': 0.1.7
       '@types/lodash': 4.14.194
       direction: 1.0.4
