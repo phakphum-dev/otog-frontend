@@ -67,7 +67,7 @@ export const ProblemTable = (props: ProblemTableProps) => {
   }, [problems, filterName, sortFuncName, sortOrder])
 
   return sortedProblems ? (
-    <Table variant="rounded" className="shadow-md">
+    <Table variant="rounded">
       <thead>
         <tr className="bg-gray-50 dark:bg-slate-800">
           <SortTh
