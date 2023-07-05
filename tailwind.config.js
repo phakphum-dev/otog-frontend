@@ -162,6 +162,9 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-inter)'],
+      },
       animation: {
         spin: 'spin 0.45s linear infinite',
       },

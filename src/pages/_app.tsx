@@ -20,8 +20,15 @@ import { SocketProvider } from '@src/context/SocketContext'
 import { UserProvider } from '@src/context/UserContext'
 import { useAnalytics } from '@src/hooks/useAnalytics'
 import { ErrorToastOptions, useErrorToaster } from '@src/hooks/useErrorToast'
-import '@src/styles/nprogress.css'
+import { Inter } from 'next/font/google'
 
+const inter = Inter({
+  weight: ['400', '500', '700'],
+  subsets: ['latin'],
+  variable: '--font-inter',
+})
+
+import '@src/styles/nprogress.css'
 const TopProgressBar = dynamic(
   () => import('@src/components/layout/ProgressBar'),
   {
@@ -76,12 +83,14 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
                 />
                 <ConfirmModalProvider>
                   <TopProgressBar />
-                  <div className="flex min-h-screen flex-col">
+                  <main
+                    className={`${inter.variable} flex min-h-screen flex-col font-sans`}
+                  >
                     <NavBar />
                     <Component {...props} />
                     {!OFFLINE_MODE && <Chat />}
                     <Footer />
-                  </div>
+                  </main>
                 </ConfirmModalProvider>
               </ThemeProvider>
             </SocketProvider>
