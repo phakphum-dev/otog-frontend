@@ -17,7 +17,7 @@ export default function HomePage() {
       </Head>
       <div className="flex flex-col gap-16 md:flex-row md:pb-16">
         <div className="flex flex-1 flex-col gap-6">
-          <h1 className="text-5xl font-bold">
+          <h1 className="font-heading text-5xl font-bold tracking-tight">
             Become a god of Competitive Programming
           </h1>
           <div className="text-md text-gray-500">

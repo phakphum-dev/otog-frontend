@@ -110,35 +110,35 @@ const Element = ({ attributes, children, element }: RenderElementProps) => {
   switch (element.type) {
     case 'block-quote':
       return (
-        <p className="border-l-2 border-gray-300 pl-2.5" {...attributes}>
+        <h3 className="border-l-2 border-gray-300 pl-2.5" {...attributes}>
           {children}
-        </p>
+        </h3>
       )
     case 'bulleted-list':
       return <ul {...attributes}>{children}</ul>
     case 'heading-one':
       return (
-        <p className="text-4xl" {...attributes}>
+        <h3 className="font-heading text-4xl" {...attributes}>
           {children}
-        </p>
+        </h3>
       )
     case 'heading-two':
       return (
-        <p className="text-3xl" {...attributes}>
+        <h3 className="font-heading text-3xl" {...attributes}>
           {children}
-        </p>
+        </h3>
       )
     case 'heading-three':
       return (
-        <p className="text-2xl" {...attributes}>
+        <h3 className="font-heading text-2xl" {...attributes}>
           {children}
-        </p>
+        </h3>
       )
     case 'heading-four':
       return (
-        <p className="text-xl" {...attributes}>
+        <h3 className="font-heading text-xl" {...attributes}>
           {children}
-        </p>
+        </h3>
       )
     case 'list-item':
       return <li {...attributes}>{children}</li>

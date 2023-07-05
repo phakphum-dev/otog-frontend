@@ -15,12 +15,12 @@ export const Title = ({
   ...rest
 }: TitleProps) => {
   return (
-    <h2 className="flex items-center text-2xl font-bold md:text-3xl">
-      {icon}
-      <div className={clsx('ml-2', lineClamp && 'line-clamp-1')} {...rest}>
+    <div className="flex items-center font-heading text-2xl font-bold md:text-3xl">
+      <div className="text-gray-600 dark:text-gray-400">{icon}</div>
+      <h1 className={clsx('ml-2', lineClamp && 'line-clamp-1')} {...rest}>
         {children}
-      </div>
-    </h2>
+      </h1>
+    </div>
   )
 }
 

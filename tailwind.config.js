@@ -1,5 +1,7 @@
 const plugin = require('tailwindcss/plugin')
 
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 const colors = {
   gray: {
     50: '#F7FAFC',
@@ -163,8 +165,12 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-inter)', 'var(--font-sarabun)'],
-        // heading: ['var(--font-sukhumvit)'],
+        sans: [
+          'var(--font-inter)',
+          'var(--font-sarabun)',
+          ...defaultTheme.fontFamily.sans,
+        ],
+        heading: ['var(--font-sukhumvit)', ...defaultTheme.fontFamily.sans],
       },
       animation: {
         spin: 'spin 0.45s linear infinite',

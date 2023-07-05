@@ -21,7 +21,7 @@ import { UserProvider } from '@src/context/UserContext'
 import { useAnalytics } from '@src/hooks/useAnalytics'
 import { ErrorToastOptions, useErrorToaster } from '@src/hooks/useErrorToast'
 import { Inter, Sarabun } from 'next/font/google'
-// import localFont from 'next/font/local'
+import localFont from 'next/font/local'
 
 const inter = Inter({
   weight: ['400', '500', '600', '700'],
@@ -35,26 +35,26 @@ const sarabun = Sarabun({
   variable: '--font-sarabun',
 })
 
-// const sukhumvit = localFont({
-//   src: [
-//     {
-//       weight: '500',
-//       style: 'normal',
-//       path: '../fonts/SukhumvitSet-Medium.ttf',
-//     },
-//     {
-//       weight: '600',
-//       style: 'normal',
-//       path: '../fonts/SukhumvitSet-SemiBold.ttf',
-//     },
-//     {
-//       weight: '700',
-//       style: 'normal',
-//       path: '../fonts/SukhumvitSet-Bold.ttf',
-//     },
-//   ],
-//   variable: '--font-sukhumvit',
-// })
+const sukhumvit = localFont({
+  src: [
+    {
+      weight: '500',
+      style: 'normal',
+      path: '../fonts/SukhumvitSet-Medium.ttf',
+    },
+    {
+      weight: '600',
+      style: 'normal',
+      path: '../fonts/SukhumvitSet-SemiBold.ttf',
+    },
+    {
+      weight: '700',
+      style: 'normal',
+      path: '../fonts/SukhumvitSet-Bold.ttf',
+    },
+  ],
+  variable: '--font-sukhumvit',
+})
 
 import '@src/styles/nprogress.css'
 const TopProgressBar = dynamic(
@@ -98,6 +98,14 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
+      {/* eslint-disable-next-line react/no-unknown-property */}
+      <style jsx global>{`
+        :root {
+          --font-inter: ${inter.style.fontFamily};
+          --font-sarabun: ${sarabun.style.fontFamily};
+          --font-sukhumvit: ${sukhumvit.style.fontFamily};
+        }
+      `}</style>
       <SessionProvider session={session}>
         <SWRProvider fallback={fallback} session={session}>
           <UserProvider>
@@ -111,9 +119,7 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
                 />
                 <ConfirmModalProvider>
                   <TopProgressBar />
-                  <main
-                    className={`${inter.variable} ${sarabun.variable} flex min-h-screen flex-col font-sans`}
-                  >
+                  <main className="flex min-h-screen flex-col font-sans">
                     <NavBar />
                     <Component {...props} />
                     {!OFFLINE_MODE && <Chat />}

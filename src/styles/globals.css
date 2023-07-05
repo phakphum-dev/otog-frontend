@@ -7,13 +7,11 @@
     @apply dark:border-alpha-white-300;
   }
   body {
-    @apply bg-white text-gray-900 dark:bg-gray-800 dark:text-alpha-white-900;
+    @apply bg-white font-sans text-gray-900 dark:bg-gray-800 dark:text-alpha-white-900;
   }
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
-    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   font-feature-settings: 'kern';
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
