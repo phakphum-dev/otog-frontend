@@ -163,7 +163,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-inter)'],
+        sans: ['var(--font-inter)', 'var(--font-sarabun)'],
+        // heading: ['var(--font-sukhumvit)'],
       },
       animation: {
         spin: 'spin 0.45s linear infinite',

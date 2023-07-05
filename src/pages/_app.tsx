@@ -20,13 +20,41 @@ import { SocketProvider } from '@src/context/SocketContext'
 import { UserProvider } from '@src/context/UserContext'
 import { useAnalytics } from '@src/hooks/useAnalytics'
 import { ErrorToastOptions, useErrorToaster } from '@src/hooks/useErrorToast'
-import { Inter } from 'next/font/google'
+import { Inter, Sarabun } from 'next/font/google'
+// import localFont from 'next/font/local'
 
 const inter = Inter({
-  weight: ['400', '500', '700'],
+  weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
   variable: '--font-inter',
 })
+
+const sarabun = Sarabun({
+  weight: ['400', '500', '600', '700'],
+  subsets: ['latin'],
+  variable: '--font-sarabun',
+})
+
+// const sukhumvit = localFont({
+//   src: [
+//     {
+//       weight: '500',
+//       style: 'normal',
+//       path: '../fonts/SukhumvitSet-Medium.ttf',
+//     },
+//     {
+//       weight: '600',
+//       style: 'normal',
+//       path: '../fonts/SukhumvitSet-SemiBold.ttf',
+//     },
+//     {
+//       weight: '700',
+//       style: 'normal',
+//       path: '../fonts/SukhumvitSet-Bold.ttf',
+//     },
+//   ],
+//   variable: '--font-sukhumvit',
+// })
 
 import '@src/styles/nprogress.css'
 const TopProgressBar = dynamic(
@@ -84,7 +112,7 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
                 <ConfirmModalProvider>
                   <TopProgressBar />
                   <main
-                    className={`${inter.variable} flex min-h-screen flex-col font-sans`}
+                    className={`${inter.variable} ${sarabun.variable} flex min-h-screen flex-col font-sans`}
                   >
                     <NavBar />
                     <Component {...props} />
