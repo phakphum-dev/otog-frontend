@@ -51,8 +51,8 @@ const ChatButton = forwardRef<HTMLButtonElement, ChatButtonProps>(
       <OnlineUsersTooltip placement="top-end">
         <IconButton
           rounded
-          className="text-2xl"
-          variant="solid"
+          className="text-2xl text-gray-600"
+          variant="outline"
           size="lg"
           icon={<IoChatbubbleEllipses />}
           {...props}
@@ -235,6 +235,7 @@ const ChatInput = (props: ChatInputProps) => {
         onKeyDown={onKeydown}
       />
       <IconButton
+        className="text-gray-500 dark:text-gray-300"
         aria-label="send message"
         icon={<IoSend />}
         rounded

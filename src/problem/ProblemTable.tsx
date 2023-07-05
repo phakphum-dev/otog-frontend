@@ -208,7 +208,7 @@ const ProblemRow = (props: ProblemRowProps) => {
               rounded
               onClick={onToggle}
               variant="outline"
-              className="invisible absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 group-hover/row:visible"
+              className="invisible absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 text-gray-600 group-hover/row:visible"
               icon={show ? <FaEye /> : <FaEyeSlash />}
             />
           )}

@@ -102,7 +102,7 @@ const AnnouncementCards = ({ shownAnnouncements }: AnnouncementCardsProps) => {
       {isAdmin && (
         <>
           <IconButton
-            className="invisible absolute right-0 top-0 z-10 group-hover:visible"
+            className="invisible absolute right-0 top-0 z-10 text-gray-600 group-hover:visible"
             aria-label="edit-announcements"
             icon={hasAnnouncements ? <FaPencilAlt /> : <FaPlus />}
             onClick={onOpen}

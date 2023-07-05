@@ -24,7 +24,7 @@ export default function SubmissionPage() {
       <Head>
         <title>Submission #{submission!.id} | OTOG</title>
       </Head>
-      <div className="mt-4 rounded-md p-6 shadow-md">
+      <div className="mt-8 rounded-lg border p-6 shadow-md">
         <TitleLayout className="mt-0">
           <Title icon={<FaTasks />}>
             ผลตรวจข้อ{' '}
