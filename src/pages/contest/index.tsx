@@ -38,7 +38,9 @@ export default function ContestPage() {
         <PageContainer className="flex">
           <div className="flex flex-1 items-center justify-center">
             <div className="flex flex-col items-center gap-4">
-              <h1 className="text-4xl font-bold">ยังไม่มีการแข่งขัน</h1>
+              <h1 className="font-heading text-4xl font-bold">
+                ยังไม่มีการแข่งขัน
+              </h1>
               <Button as={NextLink} href="/contest/history">
                 ประวัติการแข่งขัน
               </Button>
@@ -82,7 +84,7 @@ export const PreContest = (props: ContestProps) => {
     <PageContainer className="flex">
       <div className="flex flex-1 items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <h1 className="text-center text-4xl font-bold">
+          <h1 className="text-center font-heading text-4xl font-bold">
             การแข่งขัน {contest.name} กำลังจะเริ่ม
           </h1>
           <h2 className="text-center text-2xl font-bold">
@@ -115,7 +117,7 @@ export const MidContest = (props: ContestProps) => {
         <Title icon={<FaTrophy />} lineClamp>
           {contest.name}
         </Title>
-        <h2 className="whitespace-nowrap text-4xl font-bold">
+        <h2 className="whitespace-nowrap font-heading text-4xl font-bold">
           {toTimerFormat(remaining)}
         </h2>
       </TitleLayout>
@@ -179,7 +181,7 @@ export const PostContest = (props: ContestProps) => {
     <PageContainer className="flex">
       <div className="flex flex-1 items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <h1 className="text-center text-4xl font-bold">
+          <h1 className="text-center font-heading text-4xl font-bold">
             การแข่งขัน {contest.name} จบลงแล้ว
           </h1>
           <div className="relative">

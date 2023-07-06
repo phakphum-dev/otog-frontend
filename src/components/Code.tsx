@@ -3,12 +3,15 @@ import Highlight, { Language, defaultProps } from 'prism-react-renderer'
 import theme from 'prism-react-renderer/themes/vsDark'
 import { useEffect } from 'react'
 import { toast } from 'react-hot-toast'
-import { FaGlobe, FaRegShareSquare } from 'react-icons/fa'
+import { FaGlobe, FaRegShareSquare, FaSync } from 'react-icons/fa'
 
 import { API_HOST, APP_HOST } from '@src/config'
 import { useClipboard } from '@src/hooks/useClipboard'
 import { CopyIcon } from '@src/icons/CopyIcon'
-import { useSubmissionWithSourceCode } from '@src/submission/queries'
+import {
+  rejudgeSubmission,
+  useSubmissionWithSourceCode,
+} from '@src/submission/queries'
 import {
   SubmissionWithProblem,
   SubmissionWithSourceCode,
@@ -85,7 +88,11 @@ export interface SubmissionContentProps {
 }
 
 export const SubmissionContent = (props: SubmissionContentProps) => {
-  const { submission, canShare = true } = props
+  const { submission: initialSubmission, canShare = true } = props
+
+  const { mutate, data: submission } = useSubmissionWithSourceCode(
+    initialSubmission ? initialSubmission.id : 0
+  )
 
   const { onCopy, hasCopied } = useClipboard(submission?.sourceCode ?? '')
   useEffect(() => {
@@ -97,7 +104,7 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
   const { onCopy: onLinkCopy } = useClipboard(
     submission ? `${APP_HOST}submission/${submission.id}` : ''
   )
-  const { mutate } = useSubmissionWithSourceCode(submission ? submission.id : 0)
+
   const shareCodeMutation = useMutation(shareCode)
   const onShare = async () => {
     if (!submission) return
@@ -129,6 +136,22 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
   const errorDisclosure = useDisclosure()
 
   const { user, isAdmin } = useUserData()
+
+  const rejudgeSubmissionMutation = useMutation(rejudgeSubmission)
+  const rejudge = async () => {
+    if (!submission) return
+    try {
+      const promise = rejudgeSubmissionMutation(submission.id)
+      await toast.promise(promise, {
+        loading: 'กำลังตรวจใหม่',
+        error: 'ส่งตรวจใหม่ไม่สำเร็จ',
+        success: 'ส่งตรวจใหม่สำเร็จ',
+      })
+      mutate()
+    } catch (e) {
+      onErrorToast(e)
+    }
+  }
 
   return (
     <div className="flex flex-col gap-2">
@@ -178,6 +201,15 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
               language={submission.language}
             />
             <div className="absolute right-2 top-2 flex gap-2">
+              {isAdmin && (
+                <IconButton
+                  className="text-gray-600"
+                  aria-label="rejudge"
+                  icon={<FaSync />}
+                  size="sm"
+                  onClick={rejudge}
+                />
+              )}
               {canShare && submission.user.id === user?.id && (
                 <IconButton
                   aria-label="share"

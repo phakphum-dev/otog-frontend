@@ -168,7 +168,14 @@ export function useLatestProblemSubmission(problemId: number) {
 }
 
 export async function rejudgeProblem(problemId: number) {
-  return client.url(`submission/problem/${problemId}/rejudge`).patch()
+  return client.url(`submission/problem/${problemId}/rejudge`).patch().json()
+}
+
+export async function rejudgeSubmission(submissionId: number) {
+  return client
+    .url(`submission/${submissionId}/rejudge`)
+    .patch()
+    .json<Submission>()
 }
 
 export async function shareCode(submissionId: number, show = true) {
