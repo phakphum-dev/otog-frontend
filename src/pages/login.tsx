@@ -52,7 +52,7 @@ export default function LoginPage() {
       <Head>
         <title>Login | OTOG</title>
       </Head>
-      <div className="mx-auto my-16 w-max rounded-lg border p-4 shadow-md">
+      <div className="mx-auto my-8 w-max rounded-lg border p-4 shadow-sm">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-4">
             <div className="mx-auto w-[100px]">

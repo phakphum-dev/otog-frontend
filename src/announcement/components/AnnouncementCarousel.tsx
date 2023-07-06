@@ -14,8 +14,6 @@ import { IconButton } from '@src/ui/IconButton'
 import { Announcement } from '../types'
 import { AnnouncementProvider } from './AnnouncementProvier'
 
-const MotionDiv = motion.div
-
 export interface AnnouncementCarouselProps {
   defaultShow?: boolean
   contestId?: number
@@ -85,7 +83,7 @@ const AnnouncementCards = ({ shownAnnouncements }: AnnouncementCardsProps) => {
   return (
     <div className="group relative my-8 flex h-[180px] cursor-pointer select-none">
       {shownAnnouncements.map((announcement, index, all) => (
-        <MotionDiv
+        <motion.div
           key={announcement.id}
           variants={{
             show: { y: 0, transition: { duration: 0.5 } },
@@ -97,7 +95,7 @@ const AnnouncementCards = ({ shownAnnouncements }: AnnouncementCardsProps) => {
           onClick={nextShowIndex}
         >
           <ReadonlyEditor value={announcement.value} />
-        </MotionDiv>
+        </motion.div>
       ))}
       {isAdmin && (
         <>
