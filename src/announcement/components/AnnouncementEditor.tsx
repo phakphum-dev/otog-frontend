@@ -312,7 +312,11 @@ export const AnnouncementEditor = ({
   }
   return (
     <div className="flex flex-col gap-2 border-b py-4 last:border-b-0">
-      <Slate editor={editor} value={announcement.value} onChange={onChange}>
+      <Slate
+        editor={editor}
+        initialValue={announcement.value}
+        onChange={onChange}
+      >
         <div className="flex flex-wrap justify-between gap-2">
           <div className="flex gap-2">
             <ButtonGroup isAttached>
@@ -351,6 +355,7 @@ export const AnnouncementEditor = ({
           style={{ height: HEIGHT }}
         >
           <Editable
+            className="outline-none"
             placeholder="Enter announcement…"
             renderElement={Element}
             renderLeaf={Leaf}
@@ -371,7 +376,7 @@ export const ReadonlyEditor = ({ value }: ReadonlyEditorProps) => {
   editor.children = value
   return (
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    <Slate editor={editor} value={value} onChange={() => {}}>
+    <Slate editor={editor} initialValue={value} onChange={() => {}}>
       <Editable readOnly renderElement={Element} renderLeaf={Leaf} />
     </Slate>
   )
