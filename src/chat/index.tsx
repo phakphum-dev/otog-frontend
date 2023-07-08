@@ -266,15 +266,19 @@ const OnlineUserModal = (props: OnlineUserModalProps) => {
               onlineUsers.map((user) => (
                 <div key={user.id} className="flex items-center gap-2">
                   <div className="h-2 w-2 rounded-full bg-green-400" />
-                  <Link
-                    as={NextLink}
+                  <NextLink
+                    passHref
+                    legacyBehavior
                     href={`/profile/${user.id}`}
-                    className="max-w-[300px]"
-                    variant="hidden"
-                    onClick={onClose}
                   >
-                    {user.showName}
-                  </Link>
+                    <Link
+                      className="max-w-[300px]"
+                      variant="hidden"
+                      onClick={onClose}
+                    >
+                      {user.showName}
+                    </Link>
+                  </NextLink>
                 </div>
               ))
             ) : (

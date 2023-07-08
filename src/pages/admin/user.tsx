@@ -39,15 +39,15 @@ export default function AdminProblemPage() {
       <TitleLayout>
         <Title icon={<FaTools />}>ระบบ GOTO</Title>
         <div className="flex gap-2">
-          <Button as={NextLink} href="/admin/contest">
-            แข่งขัน
-          </Button>
-          <Button as={NextLink} href="/admin/problem">
-            โจทย์
-          </Button>
-          <Button as={NextLink} href="/admin/user">
-            ผู้ใช้งาน
-          </Button>
+          <NextLink passHref legacyBehavior href="/admin/contest">
+            <Button>แข่งขัน</Button>
+          </NextLink>
+          <NextLink passHref legacyBehavior href="/admin/problem">
+            <Button>โจทย์</Button>
+          </NextLink>
+          <NextLink passHref legacyBehavior href="/admin/user">
+            <Button>ผู้ใช้งาน</Button>
+          </NextLink>
         </div>
       </TitleLayout>
 
@@ -244,14 +244,14 @@ const UserAdminRow = (props: ProblemAdminProps) => {
     <tr>
       <Td>{user.id}</Td>
       <Td className="max-w-[200px]">
-        <Link as={NextLink} href={`/profile/${user.id}`} variant="hidden">
-          {user.username}
-        </Link>
+        <NextLink passHref legacyBehavior href={`/profile/${user.id}`}>
+          <Link variant="hidden">{user.username}</Link>
+        </NextLink>
       </Td>
       <Td className="max-w-[200px]">
-        <Link as={NextLink} href={`/profile/${user.id}`} variant="hidden">
-          {user.showName}
-        </Link>
+        <NextLink passHref legacyBehavior href={`/profile/${user.id}`}>
+          <Link variant="hidden">{user.showName}</Link>
+        </NextLink>
       </Td>
       <Td className="capitalize">{user.role}</Td>
       <Td>

@@ -16,7 +16,7 @@ import { useDisclosure } from '@src/hooks/useDisclosure'
 import { ChevronDownIcon } from '@src/icons/ChevronDownIcon'
 import { HamburgerIcon } from '@src/icons/HamburgerIcon'
 import { useUserSmallAvatar } from '@src/profile/useAvartar'
-import { Button, PolymorphButtonProps } from '@src/ui/Button'
+import { Button, ButtonProps } from '@src/ui/Button'
 import {
   Drawer,
   DrawerBody,
@@ -64,18 +64,20 @@ export const NavBar = () => {
     <>
       <div className="fixed left-0 top-0 z-20 h-14 w-full border-b bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
         <PageContainer className="flex">
-          <Link
-            as={NextLink}
+          <NextLink
+            passHref
+            legacyBehavior
             href={isAdmin ? '/admin/contest' : '/'}
-            className="flex items-center text-gray-800 dark:text-white"
           >
-            <Image
-              src={Logo}
-              width={32}
-              height={32}
-              alt="One Tambon One Grader Logo"
-            />
-          </Link>
+            <Link className="flex items-center text-gray-800 dark:text-white">
+              <Image
+                src={Logo}
+                width={32}
+                height={32}
+                alt="One Tambon One Grader Logo"
+              />
+            </Link>
+          </NextLink>
           <div className="ml-10 hidden gap-6 sm:flex">
             {entries.map((item) => (
               <NavItem key={item.href} {...item} />
@@ -114,12 +116,14 @@ export const NavBar = () => {
           <DrawerBody>
             <div className="mr-6 mt-2 flex flex-col items-start gap-3">
               {user && (
-                <DrawerButton as={NextLink} href={`/profile/${user.id}`}>
-                  <div className="flex items-center gap-2 py-2">
-                    <Avatar src={url} name={user.showName} />
-                    <div className="line-clamp-1"> {user.showName}</div>
-                  </div>
-                </DrawerButton>
+                <NextLink passHref legacyBehavior href={`/profile/${user.id}`}>
+                  <DrawerButton>
+                    <div className="flex items-center gap-2 py-2">
+                      <Avatar src={url} name={user.showName} />
+                      <div className="line-clamp-1"> {user.showName}</div>
+                    </div>
+                  </DrawerButton>
+                </NextLink>
               )}
               {entries.map((item) => (
                 <DrawerItem key={item.href} {...item} />
@@ -154,17 +158,17 @@ const NavItem = (props: ItemProps) => {
   const isActive = usePathActive(href)
   const { pathname } = useRouter()
   return (
-    <Link
-      as={NextLink}
-      scroll={pathname === href}
-      href={href}
-      variant="nav"
-      className="flex items-center border-y-2 border-transparent px-2 py-2 font-medium tracking-wide !no-underline hover:border-b-gray-400 active:border-b-otog-400"
-      isActive={isActive}
-      {...rest}
-    >
-      {title}
-    </Link>
+    <NextLink passHref legacyBehavior href={href}>
+      <Link
+        scroll={pathname === href}
+        variant="nav"
+        className="flex items-center border-y-2 border-transparent px-2 py-2 font-medium tracking-wide !no-underline hover:border-b-gray-400 active:border-b-otog-400"
+        isActive={isActive}
+        {...rest}
+      >
+        {title}
+      </Link>
+    </NextLink>
   )
 }
 
@@ -173,24 +177,24 @@ const DrawerItem = (props: ItemProps) => {
   const isActive = usePathActive(href) || active
   const { pathname } = useRouter()
   return (
-    <DrawerButton
-      as={NextLink}
-      href={href}
-      scroll={pathname === href}
-      className={
-        isActive
-          ? 'text-gray-800 dark:text-white'
-          : 'text-gray-500 dark:text-gray-400'
-      }
-      {...rest}
-    >
-      {title}
-    </DrawerButton>
+    <NextLink passHref legacyBehavior href={href}>
+      <DrawerButton
+        scroll={pathname === href}
+        className={
+          isActive
+            ? 'text-gray-800 dark:text-white'
+            : 'text-gray-500 dark:text-gray-400'
+        }
+        {...rest}
+      >
+        {title}
+      </DrawerButton>
+    </NextLink>
   )
 }
 
-const DrawerButton = <RootComponentType extends React.ElementType>(
-  { className, children, ...props }: PolymorphButtonProps<RootComponentType>,
+const DrawerButton = (
+  { className, children, ...props }: ButtonProps,
   ref: ForwardedRef<HTMLButtonElement>
 ) => {
   return (
@@ -225,9 +229,9 @@ const AvatarMenu = () => {
       {/* fix render menulist on ssr */}
       <MenuList>
         {!OFFLINE_MODE && (
-          <MenuItem as={NextLink} href={`/profile/${user?.id}`}>
-            โปรไฟล์
-          </MenuItem>
+          <NextLink passHref legacyBehavior href={`/profile/${user?.id}`}>
+            <MenuItem>โปรไฟล์</MenuItem>
+          </NextLink>
         )}
         <MenuItem className="text-red-500 dark:text-red-500" onClick={logout}>
           ออกจากระบบ

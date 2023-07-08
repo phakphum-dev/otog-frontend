@@ -38,13 +38,13 @@ export default function ContestHistoryPage() {
                 <tr key={contest.id} className="h-16">
                   <Td>{contest.id}</Td>
                   <Td>
-                    <Link
-                      className="px-1"
-                      as={NextLink}
+                    <NextLink
+                      passHref
+                      legacyBehavior
                       href={`/contest/history/${contest.id}`}
                     >
-                      {contest.name}
-                    </Link>
+                      <Link className="px-1">{contest.name}</Link>
+                    </NextLink>
                   </Td>
                   <Td>
                     <div className="capitalize">{contest.mode}</div>

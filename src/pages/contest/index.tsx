@@ -41,9 +41,9 @@ export default function ContestPage() {
               <h1 className="font-heading text-4xl font-bold">
                 ยังไม่มีการแข่งขัน
               </h1>
-              <Button as={NextLink} href="/contest/history">
-                ประวัติการแข่งขัน
-              </Button>
+              <NextLink passHref legacyBehavior href="/contest/history">
+                <Button>ประวัติการแข่งขัน</Button>
+              </NextLink>
             </div>
           </div>
         </PageContainer>
@@ -185,26 +185,30 @@ export const PostContest = (props: ContestProps) => {
             การแข่งขัน {contest.name} จบลงแล้ว
           </h1>
           <div className="relative">
-            <Button
-              style={{
-                transformStyle: 'preserve-3d',
-                transition: 'all 0.1s ease',
-              }}
-              className={clsx(
-                OFFLINE_MODE &&
-                  "cursor-none after:absolute after:left-0 after:top-0 after:-z-10 after:h-full after:w-full after:rounded-md after:bg-otog-200 after:content-[''] after:-translate-z-2"
-              )}
-              ref={buttonRef}
-              as={NextLink}
+            <NextLink
+              passHref
+              legacyBehavior
               href={
                 OFFLINE_MODE
                   ? '/easter_egg.gif'
                   : `/contest/history/${contest.id}`
               }
-              colorScheme="otog"
             >
-              สรุปผลการแข่งขัน
-            </Button>
+              <Button
+                style={{
+                  transformStyle: 'preserve-3d',
+                  transition: 'all 0.1s ease',
+                }}
+                className={clsx(
+                  OFFLINE_MODE &&
+                    "cursor-none after:absolute after:left-0 after:top-0 after:-z-10 after:h-full after:w-full after:rounded-md after:bg-otog-200 after:content-[''] after:-translate-z-2"
+                )}
+                ref={buttonRef}
+                colorScheme="otog"
+              >
+                สรุปผลการแข่งขัน
+              </Button>
+            </NextLink>
           </div>
         </div>
       </div>

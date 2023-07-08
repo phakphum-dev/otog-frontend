@@ -138,14 +138,15 @@ export default function ContestHistory() {
               >
                 <Td>{user.rank}</Td>
                 <Td className={clsx(!isOpen && 'line-clamp-1')}>
-                  <Link
-                    className="line-clamp-3"
-                    variant="hidden"
-                    as={NextLink}
+                  <NextLink
+                    passHref
+                    legacyBehavior
                     href={`/profile/${user.id}`}
                   >
-                    {user.showName}
-                  </Link>
+                    <Link className="line-clamp-3" variant="hidden">
+                      {user.showName}
+                    </Link>
+                  </NextLink>
                 </Td>
                 <Td>{getTotalScore(user)}</Td>
                 {isOpen &&
@@ -215,15 +216,19 @@ export default function ContestHistory() {
                             <div>-</div>
                           ) : (
                             submissions.map((submission) => (
-                              <Link
-                                as={NextLink}
-                                href={`/profile/${submission.user.id}`}
+                              <NextLink
                                 key={submission.id}
-                                className="line-clamp-1 max-w-[250px]"
-                                variant="hidden"
+                                passHref
+                                legacyBehavior
+                                href={`/profile/${submission.user.id}`}
                               >
-                                {submission.user.showName}
-                              </Link>
+                                <Link
+                                  className="line-clamp-1 max-w-[250px]"
+                                  variant="hidden"
+                                >
+                                  {submission.user.showName}
+                                </Link>
+                              </NextLink>
                             ))
                           )}
                         </div>

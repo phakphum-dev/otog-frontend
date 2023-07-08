@@ -90,9 +90,13 @@ export const SubmitModal = (props: SubmitModalProps) => {
             </ModalBody>
             <ModalFooter>
               <div className="flex gap-2">
-                <Button as={NextLink} href={`/problem/${problem.id}`}>
-                  {submitted ? 'แก้ไข' : 'ใหม่'}
-                </Button>
+                <NextLink
+                  passHref
+                  legacyBehavior
+                  href={`/problem/${problem.id}`}
+                >
+                  <Button>{submitted ? 'แก้ไข' : 'ใหม่'}</Button>
+                </NextLink>
                 <Button colorScheme="otog" type="submit" disabled={isLoading}>
                   ส่ง
                 </Button>

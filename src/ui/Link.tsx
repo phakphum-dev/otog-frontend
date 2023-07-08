@@ -1,7 +1,5 @@
 import { ComponentProps, ForwardedRef, forwardRef } from 'react'
 import { VariantProps, tv } from 'tailwind-variants'
-import { createElement } from 'react'
-import { PolymorphicProps } from '@src/utils/types'
 
 const linkStyles = tv({
   base: 'cursor-pointer hover:underline focus-visible:underline',
@@ -26,15 +24,9 @@ export type LinkProps = ComponentProps<'a'> &
     isActive?: boolean
   }
 
-export type PolymorphLinkProps<T extends React.ElementType> = PolymorphicProps<
-  LinkProps,
-  T
->
-
 export const Link = forwardRef(
-  <T extends React.ElementType>(
+  (
     {
-      as,
       className,
       children,
       href,
@@ -42,21 +34,22 @@ export const Link = forwardRef(
       isActive = false,
       isExternal = false,
       ...props
-    }: PolymorphLinkProps<T>,
+    }: LinkProps,
     ref: ForwardedRef<HTMLAnchorElement>
   ) => {
-    return createElement(
-      as ?? 'a',
-      {
-        className: linkStyles({ variant, className }),
-        href,
-        target: isExternal ? '_blank' : undefined,
-        rel: isExternal ? 'noopener' : undefined,
-        'data-active': isActive,
-        ref,
-        ...props,
-      },
-      children
+    return (
+      /* eslint-disable-next-line react/jsx-no-target-blank */
+      <a
+        className={linkStyles({ variant, className })}
+        href={href}
+        target={isExternal ? '_blank' : undefined}
+        rel={isExternal ? 'noopener' : undefined}
+        data-active={isActive}
+        ref={ref}
+        {...props}
+      >
+        {children}
+      </a>
     )
   }
 )

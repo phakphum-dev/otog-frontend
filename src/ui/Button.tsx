@@ -1,10 +1,8 @@
-import { PolymorphicProps } from '@src/utils/types'
 import clsx from 'clsx'
 import React, {
   ComponentProps,
   ForwardedRef,
   ReactNode,
-  createElement,
   forwardRef,
 } from 'react'
 import { VariantProps, tv } from 'tailwind-variants'
@@ -180,13 +178,9 @@ export type ButtonProps = ComponentProps<'button'> &
     isActive?: boolean
   }
 
-export type PolymorphButtonProps<T extends React.ElementType> =
-  PolymorphicProps<ButtonProps, T>
-
 export const Button = forwardRef(
-  <T extends React.ElementType>(
+  (
     {
-      as,
       className,
       children,
       variant,
@@ -198,36 +192,31 @@ export const Button = forwardRef(
       isActive = false,
       fullWidth = false,
       ...props
-    }: PolymorphButtonProps<T>,
+    }: ButtonProps,
     ref: ForwardedRef<HTMLButtonElement>
   ) => {
-    return createElement(
-      as ?? 'button',
-      {
-        className: buttonStyles({
+    return (
+      <button
+        className={buttonStyles({
           variant,
           colorScheme,
           size,
           fullWidth,
           rounded,
           className,
-        }),
-        'data-active': isActive,
-        type: 'button',
-        ref,
-        ...props,
-      },
-      <>
+        })}
+        data-active={isActive}
+        type="button"
+        ref={ref}
+        {...props}
+      >
         {leftIcon && <ButtonIcon className="mr-2">{leftIcon}</ButtonIcon>}
         {children}
         {rightIcon && <ButtonIcon className="ml-2">{rightIcon}</ButtonIcon>}
-      </>
+      </button>
     )
   }
-) as <T extends React.ElementType>(
-  props: PolymorphButtonProps<T>
-) => React.ReactElement
-// for fix weird forwardRef typing
+)
 
 const ButtonIcon = ({
   children,

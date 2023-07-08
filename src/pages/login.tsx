@@ -84,9 +84,9 @@ export default function LoginPage() {
             {!OFFLINE_MODE && (
               <>
                 <hr />
-                <Button as={NextLink} href="/register">
-                  ลงทะเบียน
-                </Button>
+                <NextLink passHref legacyBehavior href="/register">
+                  <Button>ลงทะเบียน</Button>
+                </NextLink>
               </>
             )}
           </div>
