@@ -203,7 +203,7 @@ export const SubmissionContent = (props: SubmissionContentProps) => {
             <div className="absolute right-2 top-2 flex gap-2">
               {isAdmin && (
                 <IconButton
-                  className="text-gray-600"
+                  className="text-gray-600 dark:text-gray-300"
                   aria-label="rejudge"
                   icon={<FaSync />}
                   size="sm"
