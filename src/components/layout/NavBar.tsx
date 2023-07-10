@@ -158,9 +158,8 @@ const NavItem = (props: ItemProps) => {
   const isActive = usePathActive(href)
   const { pathname } = useRouter()
   return (
-    <NextLink passHref legacyBehavior href={href}>
+    <NextLink passHref legacyBehavior href={href} scroll={pathname === href}>
       <Link
-        scroll={pathname === href}
         variant="nav"
         className="flex items-center border-y-2 border-transparent px-2 py-2 font-medium tracking-wide !no-underline hover:border-b-gray-400 active:border-b-otog-400"
         isActive={isActive}
@@ -177,9 +176,8 @@ const DrawerItem = (props: ItemProps) => {
   const isActive = usePathActive(href) || active
   const { pathname } = useRouter()
   return (
-    <NextLink passHref legacyBehavior href={href}>
+    <NextLink passHref legacyBehavior href={href} scroll={pathname === href}>
       <DrawerButton
-        scroll={pathname === href}
         className={
           isActive
             ? 'text-gray-800 dark:text-white'

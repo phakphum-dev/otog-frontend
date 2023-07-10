@@ -1,7 +1,7 @@
 import { Menu as MenuHeadless, Transition } from '@headlessui/react'
 import clsx from 'clsx'
 import { Fragment, ReactNode } from 'react'
-import { Button, PolymorphButtonProps } from './Button'
+import { Button, ButtonProps } from './Button'
 
 type PropsChildren = { children?: ReactNode }
 
@@ -34,14 +34,14 @@ export const MenuList = ({ children }: PropsChildren) => {
   )
 }
 
-export const MenuItem = <T extends React.ElementType>({
+export const MenuItem = ({
   children,
   className,
   onClick,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ref,
   ...props
-}: PolymorphButtonProps<T>) => {
+}: ButtonProps) => {
   return (
     <MenuHeadless.Item as={Fragment}>
       {({ close }) => (

@@ -9,7 +9,7 @@ export type IconButtonProps = ButtonProps & {
 
 export const IconButton = forwardRef(
   (
-    { icon, className, ...rest }: ButtonProps,
+    { icon, className, ...rest }: IconButtonProps,
     ref: ForwardedRef<HTMLButtonElement>
   ) => {
     return (
