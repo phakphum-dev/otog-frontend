@@ -89,5 +89,9 @@
   },
   "resolutions": {
     "oidc-token-hash": "5.0.1"
+  },
+  "engines": {
+    "node": "^16.20",
+    "pnpm": ">=8"
   }
 }
