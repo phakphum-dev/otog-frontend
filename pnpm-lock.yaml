@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 overrides:
   oidc-token-hash: 5.0.1
 
@@ -166,8 +170,8 @@ devDependencies:
     specifier: ^0.5.2
     version: 0.5.2
   '@types/cookie':
-    specifier: ^0.4.1
-    version: 0.4.1
+    specifier: ^0.5.1
+    version: 0.5.1
   '@types/is-hotkey':
     specifier: ^0.1.7
     version: 0.1.7
@@ -2870,8 +2874,8 @@ packages:
       moment: 2.29.4
     dev: true
 
-  /@types/cookie@0.4.1:
-    resolution: {integrity: sha512-XW/Aa8APYr6jSVVA1y/DEIZX0/GMKLEVekNG727R8cs56ahETkRAy/3DR7+fJyh7oUgGwNQaRfXCun0+KbWY7Q==}
+  /@types/cookie@0.5.1:
+    resolution: {integrity: sha512-COUnqfB2+ckwXXSFInsFdOAWQzCCx+a5hq2ruyj+Vjund94RJQd4LG2u9hnvJrTgunKAaax7ancBYlDrNYxA0g==}
     dev: true
 
   /@types/graceful-fs@4.1.6:
@@ -7441,7 +7445,3 @@ packages:
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
