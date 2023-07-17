@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 overrides:
   oidc-token-hash: 5.0.1
 
@@ -137,8 +141,8 @@ dependencies:
     specifier: 2.1.5
     version: 2.1.5(react@18.2.0)
   tailwind-merge:
-    specifier: ^1.12.0
-    version: 1.12.0
+    specifier: ^1.14.0
+    version: 1.14.0
   tailwind-variants:
     specifier: ^0.1.5
     version: 0.1.5(tailwindcss@3.3.2)
@@ -6870,8 +6874,8 @@ packages:
       string-width: 4.2.3
       strip-ansi: 6.0.1
 
-  /tailwind-merge@1.12.0:
-    resolution: {integrity: sha512-Y17eDp7FtN1+JJ4OY0Bqv9OA41O+MS8c1Iyr3T6JFLnOgLg3EvcyMKZAnQ8AGyvB5Nxm3t9Xb5Mhe139m8QT/g==}
+  /tailwind-merge@1.14.0:
+    resolution: {integrity: sha512-3mFKyCo/MBcgyOTlrY8T7odzZFx+w+qKSMAmdFzRvqBfLlSigU6TZnlFHK0lkMwj9Bj8OYU+9yW9lmGuS0QEnQ==}
     dev: false
 
   /tailwind-variants@0.1.5(tailwindcss@3.3.2):
@@ -6880,7 +6884,7 @@ packages:
     peerDependencies:
       tailwindcss: '*'
     dependencies:
-      tailwind-merge: 1.12.0
+      tailwind-merge: 1.14.0
       tailwindcss: 3.3.2
     dev: false
 
@@ -7441,7 +7445,3 @@ packages:
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
