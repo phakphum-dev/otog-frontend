@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 overrides:
   oidc-token-hash: 5.0.1
 
@@ -9,10 +13,10 @@ dependencies:
     version: 2.0.16(framer-motion@10.12.18)(react@18.2.0)
   '@emotion/react':
     specifier: ^11.10.4
-    version: 11.10.8(@types/react@17.0.50)(react@18.2.0)
+    version: 11.10.8(@types/react@18.2.15)(react@18.2.0)
   '@emotion/styled':
     specifier: ^11.10.4
-    version: 11.10.8(@emotion/react@11.10.8)(@types/react@17.0.50)(react@18.2.0)
+    version: 11.10.8(@emotion/react@11.10.8)(@types/react@18.2.15)(react@18.2.0)
   '@floating-ui/react':
     specifier: ^0.24.1
     version: 0.24.1(react-dom@18.2.0)(react@18.2.0)
@@ -181,8 +185,8 @@ devDependencies:
     specifier: ^0.2.0
     version: 0.2.0
   '@types/react':
-    specifier: 17.0.50
-    version: 17.0.50
+    specifier: 18.2.15
+    version: 18.2.15
   '@types/react-datepicker':
     specifier: ^4.4.2
     version: 4.11.2(react-dom@18.2.0)(react@18.2.0)
@@ -678,7 +682,7 @@ packages:
     resolution: {integrity: sha512-G/YwXTkv7Den9mXDO7AhLWkE3q+I92B+VqAE+dYG4NGPaHZGvt3G8Q0p9vmE+sq7rTGphUbAvmQ9YpbfMQGGlA==}
     dev: false
 
-  /@emotion/react@11.10.8(@types/react@17.0.50)(react@18.2.0):
+  /@emotion/react@11.10.8(@types/react@18.2.15)(react@18.2.0):
     resolution: {integrity: sha512-ZfGfiABtJ1P1OXqOBsW08EgCDp5fK6C5I8hUJauc/VcJBGSzqAirMnFslhFWnZJ/w5HxPI36XbvMV0l4KZHl+w==}
     peerDependencies:
       '@types/react': '*'
@@ -694,7 +698,7 @@ packages:
       '@emotion/use-insertion-effect-with-fallbacks': 1.0.0(react@18.2.0)
       '@emotion/utils': 1.2.0
       '@emotion/weak-memoize': 0.3.0
-      '@types/react': 17.0.50
+      '@types/react': 18.2.15
       hoist-non-react-statics: 3.3.2
       react: 18.2.0
     dev: false
@@ -713,7 +717,7 @@ packages:
     resolution: {integrity: sha512-zxRBwl93sHMsOj4zs+OslQKg/uhF38MB+OMKoCrVuS0nyTkqnau+BM3WGEoOptg9Oz45T/aIGs1qbVAsEFo3nA==}
     dev: false
 
-  /@emotion/styled@11.10.8(@emotion/react@11.10.8)(@types/react@17.0.50)(react@18.2.0):
+  /@emotion/styled@11.10.8(@emotion/react@11.10.8)(@types/react@18.2.15)(react@18.2.0):
     resolution: {integrity: sha512-gow0lF4Uw/QEdX2REMhI8v6wLOabPKJ+4HKNF0xdJ2DJdznN6fxaXpQOx6sNkyBhSUL558Rmcu1Lq/MYlVo4vw==}
     peerDependencies:
       '@emotion/react': ^11.0.0-rc.0
@@ -726,11 +730,11 @@ packages:
       '@babel/runtime': 7.21.5
       '@emotion/babel-plugin': 11.10.8
       '@emotion/is-prop-valid': 1.2.0
-      '@emotion/react': 11.10.8(@types/react@17.0.50)(react@18.2.0)
+      '@emotion/react': 11.10.8(@types/react@18.2.15)(react@18.2.0)
       '@emotion/serialize': 1.1.1
       '@emotion/use-insertion-effect-with-fallbacks': 1.0.0(react@18.2.0)
       '@emotion/utils': 1.2.0
-      '@types/react': 17.0.50
+      '@types/react': 18.2.15
       react: 18.2.0
     dev: false
 
@@ -2948,7 +2952,7 @@ packages:
     resolution: {integrity: sha512-ELYyX3lb3K1WltqdlF1hbnaDGgzlF6PIR5T4W38cSEcfrQDIrPE+Ioq5pwRe/KEJ+ihHMjvTVZQkwJx0pWMNHQ==}
     dependencies:
       '@popperjs/core': 2.11.7
-      '@types/react': 17.0.50
+      '@types/react': 18.2.15
       date-fns: 2.30.0
       react-popper: 2.3.0(@popperjs/core@2.11.7)(react-dom@18.2.0)(react@18.2.0)
     transitivePeerDependencies:
@@ -2959,11 +2963,11 @@ packages:
   /@types/react-dom@18.2.3:
     resolution: {integrity: sha512-hxXEXWxFJXbY0LMj/T69mznqOZJXNtQMqVxIiirVAZnnpeYiD4zt+lPsgcr/cfWg2VLsxZ1y26vigG03prYB+Q==}
     dependencies:
-      '@types/react': 17.0.50
+      '@types/react': 18.2.15
     dev: true
 
-  /@types/react@17.0.50:
-    resolution: {integrity: sha512-ZCBHzpDb5skMnc1zFXAXnL3l1FAdi+xZvwxK+PkglMmBrwjpp9nKaWuEvrGnSifCJmBFGxZOOFuwC6KH/s0NuA==}
+  /@types/react@18.2.15:
+    resolution: {integrity: sha512-oEjE7TQt1fFTFSbf8kkNuc798ahTUzn3Le67/PWjE8MAfYAD/qB7O8hSTcromLFqHCt9bcdOg5GXMokzTjJ5SA==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.3
@@ -7441,7 +7445,3 @@ packages:
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
