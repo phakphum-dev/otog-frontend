@@ -170,8 +170,8 @@ devDependencies:
     specifier: ^0.5.2
     version: 0.5.2
   '@types/cookie':
-    specifier: ^0.4.1
-    version: 0.4.1
+    specifier: ^0.5.2
+    version: 0.5.2
   '@types/is-hotkey':
     specifier: ^0.1.7
     version: 0.1.7
@@ -675,6 +675,7 @@ packages:
 
   /@emotion/memoize@0.7.4:
     resolution: {integrity: sha512-Ja/Vfqe3HpuzRsG1oBtWTHk2PGZ7GR+2Vz5iYGelAw8dx32K0y7PjVuxK6z1nMpZOqAFsRUPCkK1YjJ56qJlgw==}
+    requiresBuild: true
     dev: false
     optional: true
 
@@ -2874,8 +2875,8 @@ packages:
       moment: 2.29.4
     dev: true
 
-  /@types/cookie@0.4.1:
-    resolution: {integrity: sha512-XW/Aa8APYr6jSVVA1y/DEIZX0/GMKLEVekNG727R8cs56ahETkRAy/3DR7+fJyh7oUgGwNQaRfXCun0+KbWY7Q==}
+  /@types/cookie@0.5.2:
+    resolution: {integrity: sha512-DBpRoJGKJZn7RY92dPrgoMew8xCWc2P71beqsjyhEI/Ds9mOyVmBwtekyfhpwFIVt1WrxTonFifiOZ62V8CnNA==}
     dev: true
 
   /@types/graceful-fs@4.1.6:
