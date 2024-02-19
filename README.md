@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://otog.cf">
+  <a href="https://otog.in.th">
     <img src="https://github.com/phakphum-dev/otog-frontend/raw/main/public/logo512.png" width="80" />
   </a>
 </p>
@@ -8,7 +8,7 @@
 
 ### Become a god of competitive programming, code and create algorithms efficiently.
 
-### http://otog.cf/
+### http://otog.in.th/
 
 An online grader which was originally provided for POSN KKU center students but currently open for everybody.
 
