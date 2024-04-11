@@ -24,7 +24,7 @@ export async function updateProblem(problemId: number, formData: FormData) {
 }
 
 export async function toggleProblem(problemId: number, show: boolean) {
-  return client.url(`problem/${problemId}`).patch({ show }).json<Problem>()
+  return client.url(`problem/${problemId}`).post({ show }).json<Problem>()
 }
 
 export async function deleteProblem(problemId: number) {

@@ -21,6 +21,6 @@ export async function toggleContestProblem(
 ) {
   return client
     .url(`contest/${contestId}`)
-    .patch({ problemId, show })
+    .post({ problemId, show })
     .json<Problem>()
 }
