@@ -168,13 +168,13 @@ export function useLatestProblemSubmission(problemId: number) {
 }
 
 export async function rejudgeProblem(problemId: number) {
-  return client.url(`submission/problem/${problemId}/rejudge`).patch().json()
+  return client.url(`submission/problem/${problemId}/rejudge`).post().json()
 }
 
 export async function rejudgeSubmission(submissionId: number) {
   return client
     .url(`submission/${submissionId}/rejudge`)
-    .patch()
+    .post()
     .json<Submission>()
 }
 
